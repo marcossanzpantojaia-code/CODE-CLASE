@@ -1,0 +1,64 @@
+{
+  "slug": "barberia-ejemplo",
+  "name": "Barbería Ejemplo",
+  "timezone": "Europe/Madrid",
+  "currency": "EUR",
+  "defaultCountryCode": "34",
+  "address": "Calle Mayor 1, 28013 Madrid",
+  "mapsUrl": "https://maps.google.com/?q=Calle+Mayor+1+Madrid",
+  "settings": {
+    "slotIntervalMinutes": 15,
+    "minBookingNoticeMinutes": 60,
+    "maxBookingDaysAhead": 60,
+    "confirmationRequestMinutesBefore": 1440,
+    "reminderMinutesBefore": 120,
+    "handoffAutoResumeHours": 24,
+    "remindersEnabled": true
+  },
+  "whatsapp": {
+    "phoneNumberId": "000000000000000",
+    "wabaId": "000000000000000",
+    "displayPhoneNumber": "+34 900 000 000",
+    "accessTokenRef": "env:WHATSAPP_ACCESS_TOKEN",
+    "templateLanguage": "es",
+    "confirmationTemplateName": "cita_confirmacion",
+    "reminderTemplateName": "cita_recordatorio"
+  },
+  "businessHours": [
+    { "weekday": "mon", "start": "10:00", "end": "14:00" },
+    { "weekday": "mon", "start": "16:00", "end": "20:00" },
+    { "weekday": "tue", "start": "10:00", "end": "14:00" },
+    { "weekday": "tue", "start": "16:00", "end": "20:00" },
+    { "weekday": "wed", "start": "10:00", "end": "14:00" },
+    { "weekday": "wed", "start": "16:00", "end": "20:00" },
+    { "weekday": "thu", "start": "10:00", "end": "14:00" },
+    { "weekday": "thu", "start": "16:00", "end": "20:00" },
+    { "weekday": "fri", "start": "10:00", "end": "14:00" },
+    { "weekday": "fri", "start": "16:00", "end": "20:00" },
+    { "weekday": "sat", "start": "10:00", "end": "14:00" }
+  ],
+  "services": [
+    { "name": "Corte caballero", "category": "Corte", "durationMinutes": 30, "price": 15 },
+    { "name": "Barba", "category": "Barba", "durationMinutes": 20, "price": 10 },
+    { "name": "Corte + barba", "category": "Corte", "durationMinutes": 45, "price": 25 },
+    { "name": "Corte mujer", "category": "Corte", "durationMinutes": 45, "price": 25, "bufferMinutes": 15 },
+    { "name": "Tinte", "category": "Color", "durationMinutes": 90, "priceType": "FROM", "price": 40 },
+    { "name": "Mechas", "category": "Color", "durationMinutes": 120, "priceType": "FROM", "price": 60 },
+    { "name": "Balayage", "category": "Color", "durationMinutes": 180, "priceType": "ON_REQUEST", "bookableOnline": false },
+    { "name": "Tratamiento", "category": "Cuidado", "durationMinutes": 30, "price": 20 }
+  ],
+  "staff": [
+    { "name": "Juan", "services": ["Corte caballero", "Barba", "Corte + barba"] },
+    {
+      "name": "Ana",
+      "services": ["Corte caballero", "Corte mujer", "Tinte", "Mechas", "Balayage", "Tratamiento"],
+      "hours": [
+        { "weekday": "tue", "start": "10:00", "end": "14:00" },
+        { "weekday": "wed", "start": "16:00", "end": "20:00" },
+        { "weekday": "thu", "start": "10:00", "end": "14:00" },
+        { "weekday": "thu", "start": "16:00", "end": "20:00" },
+        { "weekday": "sat", "start": "10:00", "end": "14:00" }
+      ]
+    }
+  ]
+}

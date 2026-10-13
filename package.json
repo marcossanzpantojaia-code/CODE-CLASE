@@ -1,0 +1,45 @@
+{
+  "name": "salon-whatsapp-receptionist",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Recepcionista automática por WhatsApp (Cloud API) para peluquerías y barberías: CRM, disponibilidad real, reservas, confirmación y recordatorios.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/copy-assets.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:e2e": "vitest run --project e2e",
+    "start": "node dist/main.js",
+    "dev": "tsx watch src/main.ts",
+    "cli": "node dist/cli/index.js",
+    "cli:dev": "tsx src/cli/index.ts",
+    "migrate": "node dist/cli/index.js migrate"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
+    "fastify": "^5.12.7",
+    "kysely": "^0.29.6",
+    "luxon": "^3.7.2",
+    "pg": "^8.23.1",
+    "pino": "^10.4.0",
+    "prom-client": "^15.1.3",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/luxon": "^3.7.6",
+    "@types/node": "^22.20.5",
+    "@types/pg": "^8.23.1",
+    "eslint": "^10.12.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.2",
+    "vitest": "^4.1.11"
+  }
+}
