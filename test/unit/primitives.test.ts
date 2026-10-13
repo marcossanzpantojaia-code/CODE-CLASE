@@ -82,7 +82,7 @@ describe('conversation state expiry', () => {
 
 describe('configuration', () => {
   const minimal = { DATABASE_URL: 'postgres://x@localhost/db' };
-  it('defaults are safe: bot off, outbound on, Claude Opus 5.5 at low effort', () => {
+  it('defaults are safe: bot off, outbound on, configured default model at low effort', () => {
     const c = loadConfig(minimal);
     expect(c.flags.automatedReceptionistEnabled).toBe(false);
     expect(c.flags.safeMode).toBe(false);
