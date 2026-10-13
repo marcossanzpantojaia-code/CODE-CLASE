@@ -37,7 +37,7 @@ Requisitos: Node 22 (o la imagen Docker), PostgreSQL ≥ 13 con la extensión `b
    Si una plantilla no está configurada o aprobada, el sistema **no** envía nada fuera de la ventana de 24 h y registra una incidencia `TEMPLATE_NOT_CONFIGURED`.
 8. Comprobar credenciales y número: `node dist/cli/index.js whatsapp:check --tenant <slug>` → `{"ok":true, "displayPhoneNumber": ..., "qualityRating": ...}`.
 
-> El número usado con Cloud API no puede usarse a la vez en la app WhatsApp Business del móvil salvo que se haya dado de alta con la modalidad de coexistencia de Meta. Para que el equipo responda a mano usa la API admin (`POST /admin/v1/conversations/:id/reply`).
+> El número usado con Cloud API no puede usarse a la vez en la app WhatsApp Business del móvil salvo que se haya dado de alta con la modalidad de coexistencia de Meta. Para que el equipo responda a mano usa la API admin (`POST /admin/v1/conversations/:id/reply`; ver §6, responder a mano pausa el bot en esa conversación).
 
 ## 3. Configurar la IA
 
@@ -63,17 +63,28 @@ Requisitos: Node 22 (o la imagen Docker), PostgreSQL ≥ 13 con la extensión `b
 | Necesidad | Acción | Efecto |
 |---|---|---|
 | Parar respuestas automáticas, seguir recibiendo y que el equipo atienda | `tenant:flags --tenant X --safe-mode on` o `PATCH /admin/v1/business/flags {"safeMode":true}` | Mensajes guardados, conversaciones marcadas `needs_human`, sin respuestas. Efecto inmediato, sin despliegue. |
-| Apagar el bot de ese negocio | `tenant:flags --tenant X --receptionist off` | Mensajes guardados, sin respuestas. |
+| Apagar el bot de ese negocio | `tenant:flags --tenant X --receptionist off` | Mensajes guardados, sin respuestas automáticas; cada conversación que escribe pasa a la cola del equipo (`needs_human`, motivo `BOT_DISABLED`). |
 | Parar recordatorios | `tenant:flags --tenant X --reminders off` | No se programan ni se envían (se revalida al enviar). |
 | Dejar de usar el número | Desactivar el canal (quitar `whatsapp` del fichero y volver a aplicar) | Los webhooks de ese número se ignoran. |
 
 ## 6. Ver errores
 
-- **Logs** (JSON en stdout, sin teléfonos completos ni textos): buscar por `event`. Los más útiles: `whatsapp.message.received`, `conversation.turn.processed`, `appointment.created`, `appointment.failed`, `human_handoff.requested`, `provider.error`, `llm.error`, `incident.recorded`, `whatsapp.webhook.invalid_signature`, `jobs.failed`, `circuit.state_changed`. Todos llevan `businessId`, `conversationId`, `messageId` o `appointmentId` cuando aplica.
+- **Logs** (JSON en stdout, sin teléfonos completos ni textos): buscar por `event`. Los más útiles: `whatsapp.message.received`, `conversation.turn.processed`, `appointment.created`, `appointment.failed`, `human_handoff.requested`, `provider.error`, `health.ready.check_failed`, `llm.error`, `incident.recorded`, `whatsapp.webhook.invalid_signature`, `jobs.failed`, `circuit.state_changed`. Todos llevan `businessId`, `conversationId`, `messageId` o `appointmentId` cuando aplica.
 - **Incidencias**: `GET /admin/v1/incidents?open=true` (por tenant). Tipos: `LLM_FAILURE`, `WHATSAPP_SEND_FAILURE`, `WHATSAPP_AUTH_FAILURE` (CRITICAL), `TEMPLATE_NOT_CONFIGURED`, `OUTSIDE_SERVICE_WINDOW`, `RUNAWAY_GUARD` (CRITICAL), `LLM_BUDGET_EXCEEDED`, `STALE_REPLY_DROPPED`.
-- **Métricas Prometheus**: `GET /metrics` con `Authorization: Bearer $METRICS_TOKEN`. Alertas recomendadas: `incidents_total{severity="CRITICAL"}` > 0; `rate(whatsapp_failures_total[5m])`; `rate(llm_failures_total[5m])`; `circuit_breaker_open` = 1; `job_queue_depth{status="PENDING"}` creciendo; `histogram_quantile(0.95, rate(reply_latency_seconds_bucket[5m]))` > 30 s; `webhook_invalid_signature_total` creciendo.
+- **Métricas Prometheus**: `GET /metrics` con `Authorization: Bearer $METRICS_TOKEN` (comparación en tiempo constante). Sin `METRICS_TOKEN`, con `NODE_ENV=production` o `APP_ENV=production|staging`, responde 404. Alertas recomendadas: `incidents_total{severity="CRITICAL"}` > 0; `rate(whatsapp_failures_total[5m])`; `rate(llm_failures_total[5m])`; `circuit_breaker_open` = 1; `job_queue_depth{status="PENDING"}` creciendo; `histogram_quantile(0.95, rate(reply_latency_seconds_bucket[5m]))` > 30 s; `webhook_invalid_signature_total` creciendo.
 - **KPIs del negocio**: `GET /admin/v1/stats?from=…&to=…` → reservas generadas automáticamente, conversión, handoffs, latencia p50/p95/p99 de respuesta, coste de IA.
-- **Conversaciones que esperan a una persona**: `GET /admin/v1/conversations?needsHuman=true`; devolverlas al bot con `POST /admin/v1/conversations/:id/resume-bot`.
+- **Conversaciones que esperan a una persona** (cola del equipo): `GET /admin/v1/conversations?needsHuman=true`; devolverlas al bot con `POST /admin/v1/conversations/:id/resume-bot`. Entran en la cola, sin que se pierda ningún mensaje, cuando:
+
+  | Motivo (`reason`) | Cuándo | Vuelve sola al bot |
+  |---|---|---|
+  | `CUSTOMER_REQUEST`, `OFFER_ACCEPTED` | el cliente pide una persona, o la acepta cuando el bot no le entiende o la IA falla | sí, `handoff_auto_resume_hours` (24 h) después |
+  | `STAFF_REPLY` | alguien del equipo responde a mano (`POST /admin/v1/conversations/:id/reply`): el bot deja de contestar en esa conversación | sí, 24 h después de la **última** respuesta manual |
+  | `BOT_DISABLED` | llega un mensaje con el bot apagado (global o del negocio) | sí, 24 h después; al encender el bot no se mete en conversaciones que el equipo puede estar llevando |
+  | `STALE_INBOUND`, `REPLY_NOT_DELIVERED_IN_TIME`, `SEND_FAILED_*` | mensaje o respuesta con horas de retraso, o respuesta que WhatsApp rechazó | sí, 24 h después |
+  | `SAFE_MODE`, `GUARD_*` (anti-bucle, presupuesto de IA) | modo seguro o parada de seguridad | **no**: solo con `resume-bot` |
+
+  Con `handoff_auto_resume_hours` vacío en el fichero del negocio nunca vuelven solas.
+- **Botones de confirmación (Confirmar / Cancelar cita) mientras la conversación está en la cola, en modo seguro o con el bot apagado**: la pulsación se guarda y la conversación queda en la cola, pero la cita **no** se confirma ni se cancela sola (sigue `BOOKED`). El equipo la gestiona: `POST /admin/v1/appointments/:id/cancel` o `…/reschedule`. Los recordatorios tienen su propio flag (`--reminders`) y están activos por defecto.
 
 ## 7. Recuperar el worker
 
@@ -85,7 +96,7 @@ Requisitos: Node 22 (o la imagen Docker), PostgreSQL ≥ 13 con la extensión `b
 ## 8. Comprobar la salud
 
 - `GET /health/live` → 200 mientras el proceso vive.
-- `GET /health/ready` → 200 solo si: BD responde, no hay migraciones pendientes, el worker avanza (si el rol lo incluye) y el webhook tiene secretos. Informa del estado de los circuit breakers de WhatsApp y del LLM, de los flags y del retraso de la cola. **No** llama al LLM (costaría dinero en cada sondeo; su caída degrada al fallback, no impide recibir mensajes). Durante el apagado devuelve 503 `draining`.
+- `GET /health/ready` → 200 solo si: BD responde, no hay migraciones pendientes, el worker avanza (si el rol lo incluye) y el webhook tiene secretos. Informa del estado de los circuit breakers de WhatsApp y del LLM, de los flags y del retraso de la cola, sin detalles de errores (endpoint sin autenticación: el detalle va al log `health.ready.check_failed`). **No** llama al LLM (costaría dinero en cada sondeo; su caída degrada al fallback, no impide recibir mensajes). Durante el apagado devuelve 503 `draining`.
 
 ## 9. Rollback
 

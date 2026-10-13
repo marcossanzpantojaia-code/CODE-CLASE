@@ -98,9 +98,13 @@ export class ReceptionistService {
     if (gate !== 'OPEN') {
       await db.transaction().execute(async (trx) => {
         await this.markProcessed(trx, pending.map((m) => m.id), gate, now);
-        if (gate === 'SAFE_MODE') {
-          const flagged = await markNeedsHuman(trx, { businessId, conversationId, reason: 'SAFE_MODE', at: now });
-          if (flagged) await this.handoffEvent(trx, business, customer, conversationId, 'SAFE_MODE', now);
+        if (gate !== 'HUMAN_HANDLING') {
+          // Nothing automatic will answer, so the team must: this also covers
+          // taps on reminder buttons while the bot is off (reminders are a
+          // separate flag and stay on by default).
+          const reason = gate === 'SAFE_MODE' ? 'SAFE_MODE' : 'BOT_DISABLED';
+          const flagged = await markNeedsHuman(trx, { businessId, conversationId, reason, at: now });
+          if (flagged) await this.handoffEvent(trx, business, customer, conversationId, reason, now);
         }
       });
       log.info({ event: 'receptionist.turn.skipped', gate, messages: pending.length }, 'automatic reply suppressed');

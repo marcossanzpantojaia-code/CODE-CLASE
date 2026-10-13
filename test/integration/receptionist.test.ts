@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import type { App } from '../../src/app.js';
+import { createApiKey } from '../../src/admin/api-keys.js';
 import type { DB } from '../../src/db/database.js';
 import { createTestDatabase, type TestDatabase } from '../helpers/db.js';
 import { MutableClock, TEST_NOW } from '../helpers/clock.js';
@@ -339,11 +340,56 @@ describe('Receptionist conversations (integration)', () => {
     expect(msg).toEqual({ status: 'PROCESSED', processing_outcome: 'SAFE_MODE' });
   });
 
-  it('feature flag off for the tenant: messages stored, no automatic reply', async () => {
+  it('feature flag off for the tenant: messages stored, no automatic reply, conversation in the team queue', async () => {
     await db.updateTable('businesses').set({ automated_receptionist_enabled: false }).where('id', '=', salon.business.id).execute();
     expect(await marcos.say('Hola')).toEqual([]);
+    expect(llm.calls).toHaveLength(0);
     const msg = await db.selectFrom('messages').select('processing_outcome').where('direction', '=', 'INBOUND').executeTakeFirstOrThrow();
     expect(msg.processing_outcome).toBe('TENANT_DISABLED');
+    // Nobody automatic answers, so the message must not go unnoticed.
+    expect(await conversationOf('34600000001')).toMatchObject({ needs_human: true, needs_human_reason: 'BOT_DISABLED' });
+    const handoffs = await db.selectFrom('crm_events').select('data').where('type', '=', 'HUMAN_HANDOFF_REQUESTED').execute();
+    expect(handoffs.map((h) => h.data)).toEqual([{ reason: 'BOT_DISABLED' }]);
+    // Switching the bot on does not barge into a conversation the team may be handling...
+    await db.updateTable('businesses').set({ automated_receptionist_enabled: true }).where('id', '=', salon.business.id).execute();
+    expect(await marcos.say('Hola')).toEqual([]);
+    // ...it takes over again after the auto-resume window (24 h).
+    clock.advanceMinutes(25 * 60);
+    const r = await marcos.say('Hola');
+    expect(r[0]).toContain('Soy el asistente de Barbería Piloto');
+  });
+
+  it('a manual reply from the team pauses the bot in that conversation until it is handed back', async () => {
+    expect((await marcos.say('Hola'))[0]).toContain('Soy el asistente de Barbería Piloto');
+    const conv = await conversationOf('34600000001');
+    const { key } = await createApiKey(db, salon.business.id, 'recepcion');
+    const admin = (url: string, payload?: object) =>
+      app.server!.inject({ method: 'POST', url: `/admin/v1/conversations/${conv.id}${url}`, headers: { authorization: `Bearer ${key}` }, ...(payload ? { payload } : {}) });
+
+    expect((await admin('/reply', { text: 'Hola Marcos, soy Ana. ¿En qué te ayudo?' })).statusCode).toBe(202);
+    await app.worker!.drain();
+    expect(marcos.newReplies()).toEqual(['Hola Marcos, soy Ana. ¿En qué te ayudo?']);
+    expect(await conversationOf('34600000001')).toMatchObject({ needs_human: true, needs_human_reason: 'STAFF_REPLY' });
+
+    // The customer answers the person: the bot stays out (no LLM call, no reply).
+    expect(await marcos.say('¿Tenéis mañana por la tarde para corte y barba?')).toEqual([]);
+    expect(llm.calls).toHaveLength(1);
+
+    // Every manual reply restarts the auto-resume clock: 25 h after the first
+    // reply but 5 h after the latest one, the bot is still quiet.
+    clock.advanceMinutes(20 * 60);
+    expect((await admin('/reply', { text: 'Te escribo luego con los huecos.' })).statusCode).toBe(202);
+    await app.worker!.drain();
+    marcos.newReplies();
+    clock.advanceMinutes(5 * 60);
+    expect(await marcos.say('Vale, gracias')).toEqual([]);
+    expect(llm.calls).toHaveLength(1);
+    const handoffs = await db.selectFrom('crm_events').select('data').where('type', '=', 'HUMAN_HANDOFF_REQUESTED').execute();
+    expect(handoffs.map((h) => h.data)).toEqual([{ reason: 'STAFF_REPLY' }]);
+
+    // Handed back explicitly: the bot answers again.
+    expect((await admin('/resume-bot')).json()).toEqual({ resumed: true });
+    expect((await marcos.say('Hola'))[0]).toContain('Barbería Piloto');
   });
 
   it('a message delivered hours late is not auto-answered: a human follows up (auto-resumable)', async () => {

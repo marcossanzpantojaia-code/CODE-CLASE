@@ -54,12 +54,38 @@ describe('Health checks and metrics', () => {
     }
   });
 
+  it('/metrics is never public in a production deployment, even if APP_ENV was left unset', async () => {
+    const prodLike = { NODE_ENV: 'production', APP_ENV: 'development' };
+    const noToken = await createTestApp({ databaseUrl: tdb.url, clock, role: 'web', env: prodLike });
+    try {
+      expect((await noToken.server!.inject({ method: 'GET', url: '/metrics' })).statusCode).toBe(404);
+    } finally {
+      await noToken.stop('test');
+    }
+    const token = 'metrics-token-0123456789abcdef';
+    const withToken = await createTestApp({ databaseUrl: tdb.url, clock, role: 'web', env: { ...prodLike, METRICS_TOKEN: token } });
+    try {
+      const get = (authorization?: string) =>
+        withToken.server!.inject({ method: 'GET', url: '/metrics', headers: authorization ? { authorization } : {} });
+      expect((await get()).statusCode).toBe(401);
+      expect((await get(`Bearer ${token}x`)).statusCode).toBe(401);
+      expect((await get(token)).statusCode).toBe(401);
+      const ok = await get(`Bearer ${token}`);
+      expect(ok.statusCode).toBe(200);
+      expect(ok.body).toContain('messages_received_total');
+    } finally {
+      await withToken.stop('test');
+    }
+  });
+
   it('readiness fails when the database is unreachable (webhooks must not be accepted)', async () => {
     const broken = await createTestApp({ databaseUrl: 'postgres://nobody@127.0.0.1:1/none', clock, role: 'web' });
     try {
       const res = await broken.server!.inject({ method: 'GET', url: '/health/ready' });
       expect(res.statusCode).toBe(503);
-      expect(res.json<{ checks: { database: string } }>().checks.database).toMatch(/^error/);
+      expect(res.json<{ checks: { database: string } }>().checks.database).toBe('error');
+      // Public endpoint: no connection details (host, port, user) in the response.
+      expect(res.body).not.toMatch(/127\.0\.0\.1|ECONNREFUSED|nobody/);
     } finally {
       await broken.stop('test');
     }

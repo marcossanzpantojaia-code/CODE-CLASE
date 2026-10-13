@@ -18,8 +18,28 @@ Revisión hecha sobre el código de este repositorio antes de cualquier desplieg
 | Rate limiting | OK con matices | Autenticación fallida de la API admin limitada por IP (en memoria, por instancia); IP real calculada con un número de *proxies* de confianza (`TRUST_PROXY`), no falsificable con `X-Forwarded-For` (probado). Presupuesto de llamadas al LLM por conversación y protección anti-bucle. **Recomendado**: límite de tasa en el borde (WAF/balanceador) para `/webhooks/whatsapp` y `/admin`. |
 | Dependencias | OK | `npm audit --omit=dev`: 0 vulnerabilidades (también en CI). Herramientas de desarrollo: 0. |
 | Contenedor | OK | Usuario no root (`node`), solo dependencias de producción, healthcheck de *liveness*. |
-| Superficie HTTP | OK | Sin CORS (no se puede llamar desde navegadores de otros orígenes), errores 5xx sin detalles internos, `/metrics` requiere `METRICS_TOKEN` en staging/producción. TLS lo termina el balanceador (obligatorio para Meta). |
+| Superficie HTTP | OK | Sin CORS (no se puede llamar desde navegadores de otros orígenes), errores 5xx sin detalles internos. `/metrics`: sin `METRICS_TOKEN` responde 404 si `NODE_ENV=production` o `APP_ENV=production\|staging`; con token, comparación en tiempo constante. `/health/ready` (sin autenticación) responde solo `ok`/`error` por comprobación, sin mensajes de error (host, usuario de BD…), que van al log. `test/integration/health.test.ts`. TLS lo termina el balanceador (obligatorio para Meta). |
 | Doble reserva / integridad | OK | Restricción `EXCLUDE` + locks + revalidación (ver ARQUITECTURA §5). |
+
+## Revisión de seguridad de la rama (13-10-2026)
+
+Revisión de todo `src/`, el esquema, el Dockerfile, `docker-compose.yml` y la CI, en tres pasos:
+
+1. Identificación de vulnerabilidades, siguiendo el flujo de datos desde las entradas no confiables (webhook, texto y botones de WhatsApp, salida del LLM, API admin, cabeceras) hasta BD, reservas, envíos y logs.
+2. Filtrado de falsos positivos. No hubo nada que filtrar: el paso 1 no encontró candidatos con confianza ≥ 0,8.
+3. Umbral de confianza ≥ 0,8.
+
+Quedan fuera del alcance: DoS, *rate limiting* y secretos en disco.
+
+Es una revisión de código hecha por el asistente de IA que construyó el sistema. **No sustituye** un pentest o una auditoría independiente antes de abrir el servicio a clientes reales.
+
+**Resultado: 0 vulnerabilidades HIGH o MEDIUM.** Notas de endurecimiento (LOW):
+
+| Nota | Resolución |
+|---|---|
+| `/metrics` comparaba el token con `!==` y solo se protegía según `APP_ENV`. El Dockerfile fija `NODE_ENV=production` pero no `APP_ENV`, así que sin `METRICS_TOKEN` quedaba público. | **Corregido**: comparación en tiempo constante y protección también con `NODE_ENV=production`. Test de regresión. |
+| `/health/ready` devolvía hasta 120 caracteres del error de BD, que pueden incluir host o usuario. | **Corregido**: solo `error`; el detalle va al log. Test de regresión. |
+| `TRUST_PROXY=1` por defecto: sin proxy delante, `X-Forwarded-For` falsificaría la IP del limitador de la API admin. | **Documentado**. Cualquier despliegue real tiene un balanceador que termina TLS, porque Meta exige HTTPS y el servicio no lo termina. Sin proxy, `TRUST_PROXY=0`. |
 
 ## Riesgos residuales de seguridad
 
@@ -27,3 +47,4 @@ Revisión hecha sobre el código de este repositorio antes de cualquier desplieg
 2. Envío al-menos-una-vez: si el proceso muere justo después de que Meta acepte un mensaje y antes de guardarlo, se reenviará (Meta no admite claves de idempotencia).
 3. Las claves de la API admin no caducan solas: rotarlas (`apikey:create` + `apikey:revoke`) cuando cambie el personal.
 4. La seguridad del token de Meta depende del gestor de secretos de la plataforma elegida.
+5. `TRUST_PROXY` debe coincidir con el número real de *proxies* delante del servicio (ver tabla anterior).

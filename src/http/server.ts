@@ -1,3 +1,4 @@
+import { createHash, timingSafeEqual } from 'node:crypto';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
 import Fastify, { type FastifyBaseLogger, type FastifyInstance, type FastifyReply, type FastifyRequest } from 'fastify';
 import { sql } from 'kysely';
@@ -97,7 +98,9 @@ export async function buildServer(deps: ServerDeps): Promise<FastifyInstance> {
       checks.database = 'ok';
     } catch (err) {
       ready = false;
-      checks.database = `error: ${errorMessage(err).slice(0, 120)}`;
+      // Unauthenticated endpoint: the detail (host, user...) goes to the logs only.
+      checks.database = 'error';
+      logger.warn({ event: 'health.ready.check_failed', check: 'database', err: { message: errorMessage(err) } }, 'readiness check failed');
     }
     if (checks.database === 'ok') {
       try {
@@ -114,7 +117,8 @@ export async function buildServer(deps: ServerDeps): Promise<FastifyInstance> {
         checks.queue = { duePending: Number(q.pending), oldestDueLagSeconds: lagSeconds };
       } catch (err) {
         ready = false;
-        checks.migrations = `error: ${errorMessage(err).slice(0, 120)}`;
+        checks.migrations = 'error';
+        logger.warn({ event: 'health.ready.check_failed', check: 'migrations', err: { message: errorMessage(err) } }, 'readiness check failed');
       }
     }
     if (config.role !== 'web') {
@@ -140,8 +144,9 @@ export async function buildServer(deps: ServerDeps): Promise<FastifyInstance> {
 
   app.get('/metrics', async (request, reply) => {
     const token = config.metricsToken;
-    if (!token && (config.appEnv === 'production' || config.appEnv === 'staging')) return reply.code(404).send({ error: 'NOT_FOUND' });
-    if (token && request.headers.authorization !== `Bearer ${token}`) return reply.code(401).send({ error: 'UNAUTHORIZED' });
+    const deployed = config.nodeEnv === 'production' || config.appEnv === 'production' || config.appEnv === 'staging';
+    if (!token && deployed) return reply.code(404).send({ error: 'NOT_FOUND' });
+    if (token && !bearerMatches(request.headers.authorization, token)) return reply.code(401).send({ error: 'UNAUTHORIZED' });
     return reply.header('content-type', metrics.registry.contentType).send(await metrics.registry.metrics());
   });
 
@@ -186,4 +191,11 @@ async function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
   } finally {
     if (t) clearTimeout(t);
   }
+}
+
+/** Constant-time `Authorization: Bearer <token>` check (digests have a fixed length, so nothing leaks through it either). */
+function bearerMatches(header: string | undefined, token: string): boolean {
+  if (typeof header !== 'string') return false;
+  const digest = (v: string) => createHash('sha256').update(v, 'utf8').digest();
+  return timingSafeEqual(digest(header), digest(`Bearer ${token}`));
 }

@@ -83,6 +83,22 @@ export async function markNeedsHuman(trx: Executor, params: { businessId: string
   return Number(res.numUpdatedRows) === 1;
 }
 
+/**
+ * A person wrote to the customer: the bot stays out of the conversation and the
+ * auto-resume clock restarts from now. Returns true when this started the hold.
+ */
+export async function holdForStaff(trx: Executor, params: { businessId: string; conversationId: string; at: Date }): Promise<boolean> {
+  if (await markNeedsHuman(trx, { ...params, reason: 'STAFF_REPLY' })) return true;
+  await trx
+    .updateTable('conversations')
+    .set({ needs_human_since: params.at, version: sql`version + 1` })
+    .where('business_id', '=', params.businessId)
+    .where('id', '=', params.conversationId)
+    .where('needs_human', '=', true)
+    .execute();
+  return false;
+}
+
 export async function resumeBot(trx: Executor, params: { businessId: string; conversationId: string }): Promise<boolean> {
   const res = await trx
     .updateTable('conversations')

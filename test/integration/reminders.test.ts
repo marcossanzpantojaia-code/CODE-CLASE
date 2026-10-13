@@ -108,6 +108,24 @@ describe('Confirmation request & reminders (integration)', () => {
     expect(marcos.newReplies()).toEqual([]); // no reminder after cancelling
   });
 
+  it('with the bot off (reminders still on), a "Cancelar cita" tap is not lost: it lands in the team queue', async () => {
+    await db.updateTable('businesses').set({ automated_receptionist_enabled: false }).where('id', '=', salon.business.id).execute();
+    try {
+      const appt = await book();
+      clock.set(madrid('2026-10-14', '18:30'));
+      await app.worker!.drain();
+      expect(marcos.newReplies()).toEqual(['[template:cita_confirmacion]']);
+      clock.set(madrid('2026-10-14', '18:31'));
+      expect(await marcos.tapTemplateButton(`APPT_CANCEL:${appt.id}:1`, 'Cancelar cita')).toEqual([]);
+      // No automatic action, but the team sees it (needs_human) and the appointment is untouched.
+      const conv = await db.selectFrom('conversations').select(['needs_human', 'needs_human_reason']).executeTakeFirstOrThrow();
+      expect(conv).toEqual({ needs_human: true, needs_human_reason: 'BOT_DISABLED' });
+      expect((await db.selectFrom('appointments').select('status').executeTakeFirstOrThrow()).status).toBe('BOOKED');
+    } finally {
+      await db.updateTable('businesses').set({ automated_receptionist_enabled: true }).where('id', '=', salon.business.id).execute();
+    }
+  });
+
   it('a stale button (appointment rescheduled since) is rejected without acting', async () => {
     const appt = await book();
     await db.transaction().execute((trx) =>

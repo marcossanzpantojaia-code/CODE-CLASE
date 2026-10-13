@@ -7,7 +7,7 @@ import { loadCatalog } from '../catalog/catalog.repository.js';
 import { recordCrmEvent } from '../crm/crm-events.js';
 import { findOrCreateCustomer, getCustomer } from '../crm/customers.js';
 import { textMessage } from '../messaging/content.js';
-import { getConversation, resumeBot } from '../messaging/conversations.repository.js';
+import { getConversation, holdForStaff, resumeBot } from '../messaging/conversations.repository.js';
 import { enqueueOutboundMessage } from '../messaging/outbound.service.js';
 import { listAppointments } from '../scheduling/appointments.repository.js';
 import { resolveServicesAndStaff, validateBookingDate } from '../scheduling/availability.service.js';
@@ -287,9 +287,24 @@ export async function registerAdminRoutes(app: FastifyInstance, deps: ServerDeps
         const conv = await getConversation(db, businessId, id);
         if (!conv) throw new NotFoundError('conversation');
         const key = typeof request.headers['idempotency-key'] === 'string' ? request.headers['idempotency-key'].slice(0, 100) : randomUUID();
-        const res = await db.transaction().execute((trx) =>
-          enqueueOutboundMessage(trx, { businessId, conversationId: id, content: textMessage(body.text), purpose: 'MANUAL', idempotencyKey: `manual:${key}`, now: clock.now() }),
-        );
+        const now = clock.now();
+        const res = await db.transaction().execute(async (trx) => {
+          const sent = await enqueueOutboundMessage(trx, { businessId, conversationId: id, content: textMessage(body.text), purpose: 'MANUAL', idempotencyKey: `manual:${key}`, now });
+          // A person is talking to the customer: the bot must not answer over them.
+          if (sent.created && (await holdForStaff(trx, { businessId, conversationId: id, at: now }))) {
+            await recordCrmEvent(trx, {
+              businessId,
+              customerId: conv.customer_id,
+              type: 'HUMAN_HANDOFF_REQUESTED',
+              occurredAt: now,
+              source: 'STAFF',
+              channel: 'ADMIN_API',
+              conversationId: id,
+              data: { reason: 'STAFF_REPLY' },
+            });
+          }
+          return sent;
+        });
         return reply.code(res.created ? 202 : 200).send({ messageId: res.messageId, queued: res.created });
       });
 
