@@ -1,0 +1,89 @@
+
+=== FECHA ===
+2026-10-22T10:26:26Z
+
+=== SISTEMA ===
+Linux 6.18.44-fc-v140 x86_64
+Ubuntu 24.04.5 LTS
+CPU lógicas: 4
+Model name: Intel(R) Xeon(R) Processor @ 2.80GHz
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       496Mi        14Gi        14Mi       597Mi        15Gi
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda        252G  8.8G   30G  23% /
+
+=== GPU ===
+/dev/dri: no existe (sin VAAPI/QSV)
+nvidia-smi: no encontrado (sin GPU NVIDIA visible)
+
+=== HERRAMIENTAS ===
+ffmpeg     /usr/bin/ffmpeg
+ffprobe    /usr/bin/ffprobe
+node       /opt/node22/bin/node
+npm        /opt/node22/bin/npm
+python3    /usr/bin/python3
+pip3       /usr/bin/pip3
+git        /usr/bin/git
+git-lfs    /usr/bin/git-lfs
+convert    /usr/bin/convert
+sox        NO ENCONTRADO
+blender    NO ENCONTRADO
+resolve    NO ENCONTRADO
+node v22.22.0
+Python 3.13.16
+
+=== FFMPEG ===
+ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+-- Encoders necesarios
+libx264      compilado
+aac          compilado
+libx265      compilado
+prores_ks    compilado
+h264_nvenc   compilado
+h264_qsv     compilado
+h264_vaapi   compilado
+-- Prueba funcional de encoders (1 fotograma)
+libx264      FUNCIONA
+h264_nvenc   no utilizable
+h264_qsv     no utilizable
+h264_vaapi   no utilizable (sin /dev/dri/renderD128)
+-- Filtros que usará el pipeline
+zscale         sí
+tonemap        sí
+lut3d          sí
+scdet          sí
+blackdetect    sí
+freezedetect   sí
+silencedetect  sí
+ebur128        sí
+loudnorm       sí
+signalstats    sí
+xfade          sí
+drawtext       sí
+minterpolate   sí
+vidstabdetect  sí
+zoompan        sí
+tile           sí
+
+=== PYTHON (bibliotecas de análisis) ===
+numpy        instalado
+librosa      NO
+soundfile    NO
+cv2          NO
+scenedetect  NO
+PIL          instalado
+
+=== NAVEGADOR HEADLESS (para Remotion) ===
+/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell -> Chromium 141.0.7390.37
+
+=== RED (código HTTP; 000 = bloqueado o sin resolución DNS) ===
+https://registry.npmjs.org               200
+https://pypi.org                         200
+https://storage.googleapis.com           400
+https://remotion.media                   000
+https://www.remotion.dev                 000
+https://github.com                       400
+https://media.githubusercontent.com      302
+https://drive.usercontent.google.com     000
+https://www.dropbox.com                  000
+https://onedrive.live.com                000

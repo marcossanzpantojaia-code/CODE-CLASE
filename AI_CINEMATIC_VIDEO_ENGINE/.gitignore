@@ -1,0 +1,18 @@
+# Medios: nunca en git (originales, referencias de terceros, música con licencia)
+assets/
+cache/
+previews/
+exports/
+logs/
+*.mp4
+*.mov
+*.m4v
+*.mkv
+*.wav
+*.mp3
+*.aac
+*.m4a
+
+# Entornos locales
+node_modules/
+.venv/
