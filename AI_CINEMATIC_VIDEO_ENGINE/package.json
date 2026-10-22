@@ -1,0 +1,34 @@
+{
+  "name": "ai-cinematic-video-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Motor de edición de vídeo automatizada: FFmpeg + Remotion, guiado por un manifiesto de edición.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "engine": "tsx src/cli.ts",
+    "studio": "remotion studio src/remotion/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "exp01": "tsx experiments/exp01/run.ts"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.537",
+    "@remotion/cli": "4.0.537",
+    "@remotion/renderer": "4.0.537",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.537",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vite": "8.3.4",
+    "vitest": "4.1.11"
+  }
+}

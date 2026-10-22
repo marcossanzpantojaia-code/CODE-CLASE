@@ -4,6 +4,7 @@ cache/
 previews/
 exports/
 logs/
+analysis/
 *.mp4
 *.mov
 *.m4v
@@ -13,6 +14,8 @@ logs/
 *.aac
 *.m4a
 
-# Entornos locales
+# Entornos y descargas locales (regenerables)
 node_modules/
 .venv/
+.cache/
+__pycache__/

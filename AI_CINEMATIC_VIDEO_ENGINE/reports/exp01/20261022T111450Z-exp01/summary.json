@@ -1,0 +1,1220 @@
+{
+  "runId": "20261022T111450Z-exp01",
+  "log": "logs/20261022T111450Z-exp01.jsonl",
+  "manifests": [
+    "edit-decisions/exp01.json",
+    "edit-decisions/exp01-b.json"
+  ],
+  "renders": {
+    "preview": {
+      "runId": "20261022T111450Z-exp01",
+      "manifest": {
+        "path": "edit-decisions/exp01.json",
+        "hash": "60d039d2b3163c5f81c8cc83d9a0c774a65dbbcdbde798897d31986e22ab6bd1",
+        "name": "exp01"
+      },
+      "quality": "preview",
+      "params": {
+        "scale": 0.5,
+        "crf": 26,
+        "x264Preset": "veryfast",
+        "imageFormat": "jpeg",
+        "jpegQuality": 80,
+        "audioBitrate": "160k",
+        "concurrency": 4,
+        "browser": ".cache/chrome-headless-shell/157.0.8080.0/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "output": {
+        "path": "previews/exp01-preview-20261022T111450Z-exp01.mp4",
+        "sha256": "a693646206d9ffedee744ea0536f6116d93b3cce038723f8290b6adf64e45a5f",
+        "bytes": 313093
+      },
+      "props": "cache/render/exp01-60d039d2b316/props.json",
+      "timingsMs": {
+        "ingesta": 7197,
+        "mezcla de audio": 1223,
+        "bundle": 2288,
+        "selección de composición": 523,
+        "render Remotion": 23459,
+        "mux": 590
+      },
+      "ingestNotes": {
+        "s1": [
+          "AVISO: el original es más pequeño que el encuadre: se ampliará 1.78× (pérdida de nitidez)"
+        ],
+        "s2": [],
+        "s3": [
+          "rotación -90° aplicada"
+        ],
+        "s4": [
+          "HDR (arib-std-b67) convertido a SDR BT.709 con tonemap mobius-0.8"
+        ],
+        "music": [],
+        "whoosh": [],
+        "logo": []
+      },
+      "audio": {
+        "file": "cache/audio/exp01-c198401073ae0d62.wav",
+        "pass1": {
+          "input_i": "-27.20",
+          "input_tp": "-7.32",
+          "input_lra": "1.10",
+          "input_thresh": "-37.26",
+          "output_i": "-15.97",
+          "output_tp": "-2.00",
+          "output_lra": "0.20",
+          "output_thresh": "-25.97",
+          "normalization_type": "dynamic",
+          "target_offset": "1.97"
+        },
+        "pass2": {
+          "input_i": "-27.20",
+          "input_tp": "-7.32",
+          "input_lra": "1.10",
+          "input_thresh": "-37.26",
+          "output_i": "-14.23",
+          "output_tp": "-2.00",
+          "output_lra": "0.10",
+          "output_thresh": "-24.23",
+          "normalization_type": "dynamic",
+          "target_offset": "0.23"
+        },
+        "cached": false
+      },
+      "versions": {
+        "node": "v22.22.0",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+        "remotion": "4.0.537",
+        "react": "19.3.1",
+        "platform": "linux-x64"
+      }
+    },
+    "final": {
+      "runId": "20261022T111450Z-exp01",
+      "manifest": {
+        "path": "edit-decisions/exp01.json",
+        "hash": "60d039d2b3163c5f81c8cc83d9a0c774a65dbbcdbde798897d31986e22ab6bd1",
+        "name": "exp01"
+      },
+      "quality": "final",
+      "params": {
+        "scale": 1,
+        "crf": 16,
+        "x264Preset": "medium",
+        "imageFormat": "png",
+        "audioBitrate": "256k",
+        "concurrency": 4,
+        "browser": ".cache/chrome-headless-shell/157.0.8080.0/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "output": {
+        "path": "exports/exp01-final-20261022T111450Z-exp01.mp4",
+        "sha256": "aa369e918d920a6d0f1d357cbcbca5e86665616dfcb1d182883f1f6a55b2b45b",
+        "bytes": 885042
+      },
+      "props": "cache/render/exp01-60d039d2b316/props.json",
+      "timingsMs": {
+        "ingesta": 1027,
+        "mezcla de audio": 1,
+        "bundle": 2023,
+        "selección de composición": 467,
+        "render Remotion": 33746,
+        "mux": 752
+      },
+      "ingestNotes": {
+        "s1": [
+          "AVISO: el original es más pequeño que el encuadre: se ampliará 1.78× (pérdida de nitidez)",
+          "intermedio reutilizado de caché"
+        ],
+        "s2": [
+          "intermedio reutilizado de caché"
+        ],
+        "s3": [
+          "rotación -90° aplicada",
+          "intermedio reutilizado de caché"
+        ],
+        "s4": [
+          "HDR (arib-std-b67) convertido a SDR BT.709 con tonemap mobius-0.8",
+          "intermedio reutilizado de caché"
+        ],
+        "music": [],
+        "whoosh": [],
+        "logo": []
+      },
+      "audio": {
+        "file": "cache/audio/exp01-c198401073ae0d62.wav",
+        "pass1": {
+          "input_i": "-27.20",
+          "input_tp": "-7.32",
+          "input_lra": "1.10",
+          "input_thresh": "-37.26",
+          "output_i": "-15.97",
+          "output_tp": "-2.00",
+          "output_lra": "0.20",
+          "output_thresh": "-25.97",
+          "normalization_type": "dynamic",
+          "target_offset": "1.97"
+        },
+        "pass2": {
+          "input_i": "-27.20",
+          "input_tp": "-7.32",
+          "input_lra": "1.10",
+          "input_thresh": "-37.26",
+          "output_i": "-14.23",
+          "output_tp": "-2.00",
+          "output_lra": "0.10",
+          "output_thresh": "-24.23",
+          "normalization_type": "dynamic",
+          "target_offset": "0.23"
+        },
+        "cached": true
+      },
+      "versions": {
+        "node": "v22.22.0",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+        "remotion": "4.0.537",
+        "react": "19.3.1",
+        "platform": "linux-x64"
+      }
+    },
+    "repeat": {
+      "runId": "20261022T111450Z-exp01",
+      "manifest": {
+        "path": "edit-decisions/exp01.json",
+        "hash": "60d039d2b3163c5f81c8cc83d9a0c774a65dbbcdbde798897d31986e22ab6bd1",
+        "name": "exp01"
+      },
+      "quality": "preview",
+      "params": {
+        "scale": 0.5,
+        "crf": 26,
+        "x264Preset": "veryfast",
+        "imageFormat": "jpeg",
+        "jpegQuality": 80,
+        "audioBitrate": "160k",
+        "concurrency": 4,
+        "browser": ".cache/chrome-headless-shell/157.0.8080.0/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "output": {
+        "path": "previews/exp01-repeat-preview-20261022T111450Z-exp01.mp4",
+        "sha256": "a693646206d9ffedee744ea0536f6116d93b3cce038723f8290b6adf64e45a5f",
+        "bytes": 313093
+      },
+      "props": "cache/render/exp01-60d039d2b316/props.json",
+      "timingsMs": {
+        "ingesta": 762,
+        "mezcla de audio": 1,
+        "bundle": 1839,
+        "selección de composición": 437,
+        "render Remotion": 21959,
+        "mux": 645
+      },
+      "ingestNotes": {
+        "s1": [
+          "AVISO: el original es más pequeño que el encuadre: se ampliará 1.78× (pérdida de nitidez)",
+          "intermedio reutilizado de caché"
+        ],
+        "s2": [
+          "intermedio reutilizado de caché"
+        ],
+        "s3": [
+          "rotación -90° aplicada",
+          "intermedio reutilizado de caché"
+        ],
+        "s4": [
+          "HDR (arib-std-b67) convertido a SDR BT.709 con tonemap mobius-0.8",
+          "intermedio reutilizado de caché"
+        ],
+        "music": [],
+        "whoosh": [],
+        "logo": []
+      },
+      "audio": {
+        "file": "cache/audio/exp01-c198401073ae0d62.wav",
+        "pass1": {
+          "input_i": "-27.20",
+          "input_tp": "-7.32",
+          "input_lra": "1.10",
+          "input_thresh": "-37.26",
+          "output_i": "-15.97",
+          "output_tp": "-2.00",
+          "output_lra": "0.20",
+          "output_thresh": "-25.97",
+          "normalization_type": "dynamic",
+          "target_offset": "1.97"
+        },
+        "pass2": {
+          "input_i": "-27.20",
+          "input_tp": "-7.32",
+          "input_lra": "1.10",
+          "input_thresh": "-37.26",
+          "output_i": "-14.23",
+          "output_tp": "-2.00",
+          "output_lra": "0.10",
+          "output_thresh": "-24.23",
+          "normalization_type": "dynamic",
+          "target_offset": "0.23"
+        },
+        "cached": true
+      },
+      "versions": {
+        "node": "v22.22.0",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+        "remotion": "4.0.537",
+        "react": "19.3.1",
+        "platform": "linux-x64"
+      }
+    },
+    "variantB": {
+      "runId": "20261022T111450Z-exp01",
+      "manifest": {
+        "path": "edit-decisions/exp01-b.json",
+        "hash": "923ecd17a34aa5f9ddd0fdb1c2f97065317b7411dabda0139b00989a35659507",
+        "name": "exp01-b"
+      },
+      "quality": "preview",
+      "params": {
+        "scale": 0.5,
+        "crf": 26,
+        "x264Preset": "veryfast",
+        "imageFormat": "jpeg",
+        "jpegQuality": 80,
+        "audioBitrate": "160k",
+        "concurrency": 4,
+        "browser": ".cache/chrome-headless-shell/157.0.8080.0/chrome-headless-shell-linux64/chrome-headless-shell"
+      },
+      "output": {
+        "path": "previews/exp01-b-preview-20261022T111450Z-exp01.mp4",
+        "sha256": "b65d49f509927a969af08c1fa219bd14b14c9c22afada7b8f5bec7c84685b645",
+        "bytes": 312031
+      },
+      "props": "cache/render/exp01-b-923ecd17a34a/props.json",
+      "timingsMs": {
+        "ingesta": 810,
+        "mezcla de audio": 1334,
+        "bundle": 1879,
+        "selección de composición": 460,
+        "render Remotion": 20861,
+        "mux": 740
+      },
+      "ingestNotes": {
+        "s1": [
+          "AVISO: el original es más pequeño que el encuadre: se ampliará 1.78× (pérdida de nitidez)",
+          "intermedio reutilizado de caché"
+        ],
+        "s2": [
+          "intermedio reutilizado de caché"
+        ],
+        "s3": [
+          "rotación -90° aplicada",
+          "intermedio reutilizado de caché"
+        ],
+        "s4": [
+          "HDR (arib-std-b67) convertido a SDR BT.709 con tonemap mobius-0.8",
+          "intermedio reutilizado de caché"
+        ],
+        "music": [],
+        "whoosh": [],
+        "logo": []
+      },
+      "audio": {
+        "file": "cache/audio/exp01-b-c198401073ae0d62.wav",
+        "pass1": {
+          "input_i": "-27.20",
+          "input_tp": "-7.32",
+          "input_lra": "1.10",
+          "input_thresh": "-37.26",
+          "output_i": "-15.97",
+          "output_tp": "-2.00",
+          "output_lra": "0.20",
+          "output_thresh": "-25.97",
+          "normalization_type": "dynamic",
+          "target_offset": "1.97"
+        },
+        "pass2": {
+          "input_i": "-27.20",
+          "input_tp": "-7.32",
+          "input_lra": "1.10",
+          "input_thresh": "-37.26",
+          "output_i": "-14.23",
+          "output_tp": "-2.00",
+          "output_lra": "0.10",
+          "output_thresh": "-24.23",
+          "normalization_type": "dynamic",
+          "target_offset": "0.23"
+        },
+        "cached": false
+      },
+      "versions": {
+        "node": "v22.22.0",
+        "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers",
+        "remotion": "4.0.537",
+        "react": "19.3.1",
+        "platform": "linux-x64"
+      }
+    }
+  },
+  "baseline": {
+    "file": "cache/exp01/baseline-ffmpeg-preview.mp4",
+    "ms": 2494
+  },
+  "checks": [
+    {
+      "id": "exp-beats",
+      "name": "Beats detectados vs click track (120 BPM)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "≥ 95 % de 28 golpes a ≤ 1 fotograma (33.3 ms)",
+      "measured": "28/28; error medio 2.6 ms, máx 4.0 ms; tempo 120.19 BPM; 28/29 beats ajustados a onset",
+      "details": {
+        "truth": [
+          0.3,
+          0.8,
+          1.3,
+          1.8,
+          2.3,
+          2.8,
+          3.3,
+          3.8,
+          4.3,
+          4.8,
+          5.3,
+          5.8,
+          6.3,
+          6.8,
+          7.3,
+          7.8,
+          8.3,
+          8.8,
+          9.3,
+          9.8,
+          10.3,
+          10.8,
+          11.3,
+          11.8,
+          12.3,
+          12.8,
+          13.3,
+          13.8
+        ],
+        "refined": [
+          {
+            "t": 0,
+            "rawT": 0,
+            "snapped": false,
+            "strength": 0
+          },
+          {
+            "t": 0.3019,
+            "rawT": 0.3135,
+            "snapped": true,
+            "strength": 0.41
+          },
+          {
+            "t": 0.804,
+            "rawT": 0.8098,
+            "snapped": true,
+            "strength": 0.9
+          },
+          {
+            "t": 1.3032,
+            "rawT": 1.309,
+            "snapped": true,
+            "strength": 0.779
+          },
+          {
+            "t": 1.8024,
+            "rawT": 1.8112,
+            "snapped": true,
+            "strength": 0.586
+          },
+          {
+            "t": 2.3017,
+            "rawT": 2.3104,
+            "snapped": true,
+            "strength": 0.331
+          },
+          {
+            "t": 2.8038,
+            "rawT": 2.8096,
+            "snapped": true,
+            "strength": 0.921
+          },
+          {
+            "t": 3.303,
+            "rawT": 3.3117,
+            "snapped": true,
+            "strength": 0.737
+          },
+          {
+            "t": 3.8023,
+            "rawT": 3.811,
+            "snapped": true,
+            "strength": 0.518
+          },
+          {
+            "t": 4.3015,
+            "rawT": 4.3102,
+            "snapped": true,
+            "strength": 0.268
+          },
+          {
+            "t": 4.8036,
+            "rawT": 4.8094,
+            "snapped": true,
+            "strength": 0.877
+          },
+          {
+            "t": 5.3029,
+            "rawT": 5.3116,
+            "snapped": true,
+            "strength": 0.698
+          },
+          {
+            "t": 5.8021,
+            "rawT": 5.8108,
+            "snapped": true,
+            "strength": 0.466
+          },
+          {
+            "t": 6.3013,
+            "rawT": 6.31,
+            "snapped": true,
+            "strength": 0.164
+          },
+          {
+            "t": 6.8034,
+            "rawT": 6.8093,
+            "snapped": true,
+            "strength": 0.844
+          },
+          {
+            "t": 7.3027,
+            "rawT": 7.3114,
+            "snapped": true,
+            "strength": 0.634
+          },
+          {
+            "t": 7.8019,
+            "rawT": 7.8106,
+            "snapped": true,
+            "strength": 0.414
+          },
+          {
+            "t": 8.304,
+            "rawT": 8.3098,
+            "snapped": true,
+            "strength": 0.964
+          },
+          {
+            "t": 8.8033,
+            "rawT": 8.8091,
+            "snapped": true,
+            "strength": 0.795
+          },
+          {
+            "t": 9.3025,
+            "rawT": 9.3112,
+            "snapped": true,
+            "strength": 0.597
+          },
+          {
+            "t": 9.8017,
+            "rawT": 9.8104,
+            "snapped": true,
+            "strength": 0.334
+          },
+          {
+            "t": 10.3039,
+            "rawT": 10.3097,
+            "snapped": true,
+            "strength": 1
+          },
+          {
+            "t": 10.8031,
+            "rawT": 10.8118,
+            "snapped": true,
+            "strength": 0.746
+          },
+          {
+            "t": 11.3023,
+            "rawT": 11.311,
+            "snapped": true,
+            "strength": 0.536
+          },
+          {
+            "t": 11.8015,
+            "rawT": 11.8102,
+            "snapped": true,
+            "strength": 0.28
+          },
+          {
+            "t": 12.3037,
+            "rawT": 12.3095,
+            "snapped": true,
+            "strength": 0.95
+          },
+          {
+            "t": 12.8029,
+            "rawT": 12.8116,
+            "snapped": true,
+            "strength": 0.712
+          },
+          {
+            "t": 13.3021,
+            "rawT": 13.3108,
+            "snapped": true,
+            "strength": 0.478
+          },
+          {
+            "t": 13.8014,
+            "rawT": 13.8101,
+            "snapped": true,
+            "strength": 0.198
+          }
+        ],
+        "errorsMs": [
+          1.9000000000000128,
+          4.0000000000000036,
+          3.1999999999998696,
+          2.3999999999999577,
+          1.7000000000000348,
+          3.8000000000000256,
+          3.0000000000001137,
+          2.2999999999999687,
+          1.5000000000000568,
+          3.6000000000004917,
+          2.9000000000003467,
+          2.100000000000435,
+          1.300000000000523,
+          3.4000000000000696,
+          2.6999999999999247,
+          1.9000000000000128,
+          3.9999999999995595,
+          3.2999999999994145,
+          2.4999999999995026,
+          1.6999999999995907,
+          3.8999999999997925,
+          3.0999999999998806,
+          2.2999999999999687,
+          1.5000000000000568,
+          3.6999999999984823,
+          2.8999999999985704,
+          2.0999999999986585,
+          1.3999999999985135
+        ]
+      }
+    },
+    {
+      "id": "exp-beat-extra",
+      "name": "Beats detectados que no son golpes del click",
+      "severity": "Bajo",
+      "status": "WARN",
+      "expected": "ninguno",
+      "measured": "0.000 s (inicio del colchón grave en t=0)"
+    },
+    {
+      "id": "exp-beat-frames",
+      "name": "Fotogramas de corte elegidos sobre beats detectados",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "54, 114, 174, 234 (golpes reales)",
+      "measured": "54, 114, 174, 234"
+    },
+    {
+      "id": "preview:video-format",
+      "name": "Formato de vídeo",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "h264 yuv420p 540x960 30/1 CFR",
+      "measured": "h264 yuv420p 540x960 30/1 (media 30.000)"
+    },
+    {
+      "id": "preview:color-tags",
+      "name": "Etiquetas de color",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "bt709 / bt709 / bt709",
+      "measured": "bt709 / bt709 / bt709"
+    },
+    {
+      "id": "preview:audio-format",
+      "name": "Formato de audio",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "aac 48000 Hz estéreo",
+      "measured": "aac 48000 Hz 2 canales"
+    },
+    {
+      "id": "preview:frame-count",
+      "name": "Número de fotogramas",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "294",
+      "measured": "294"
+    },
+    {
+      "id": "preview:av-duration",
+      "name": "Duración audio vs vídeo",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "|Δ| ≤ 55 ms",
+      "measured": "vídeo 9.800 s, audio 9.800 s"
+    },
+    {
+      "id": "preview:decode",
+      "name": "Decodificación sin errores",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "sin errores",
+      "measured": "sin errores"
+    },
+    {
+      "id": "preview:black",
+      "name": "Negros no previstos",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "ninguno fuera de los cierres",
+      "measured": "ninguno (1 previstos)"
+    },
+    {
+      "id": "preview:freeze",
+      "name": "Imagen congelada no prevista",
+      "severity": "Medio",
+      "status": "WARN",
+      "expected": "ninguna fuera de los cierres",
+      "measured": "[[1.93333,2.33333],[2.33333,2.73333],[2.73333,3.13333],[3.13333,3.53333]]"
+    },
+    {
+      "id": "preview:silence",
+      "name": "Silencios ≥ 0.5 s",
+      "severity": "Medio",
+      "status": "PASS",
+      "expected": "ninguno",
+      "measured": "ninguno"
+    },
+    {
+      "id": "preview:loudness",
+      "name": "Sonoridad (EBU R128)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "-14 ± 1 LUFS, true peak ≤ -1 dBTP",
+      "measured": "-14.2 LUFS, true peak -1.7 dBTP"
+    },
+    {
+      "id": "preview:cuts",
+      "name": "Cortes en el fotograma exacto del manifiesto",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "54, 114, 174, 234 (pico de diferencia, prominencia ≥ 2)",
+      "measured": "54(Δ0, ×11.8), 114(Δ0, ×83.7), 174(Δ0, ×193.3), 234(Δ0, ×53.7)",
+      "details": [
+        {
+          "frame": 54,
+          "kind": "zoom-through",
+          "id": "c2",
+          "syncToBeat": true,
+          "peakFrame": 54,
+          "prominence": 11.838810719789942
+        },
+        {
+          "frame": 114,
+          "kind": "cut",
+          "id": "c3",
+          "syncToBeat": true,
+          "peakFrame": 114,
+          "prominence": 83.66033396660335
+        },
+        {
+          "frame": 174,
+          "kind": "cut",
+          "id": "c4",
+          "syncToBeat": true,
+          "peakFrame": 174,
+          "prominence": 193.3027385736985
+        },
+        {
+          "frame": 234,
+          "kind": "endcard",
+          "id": "endcard",
+          "syncToBeat": false,
+          "peakFrame": 234,
+          "prominence": 53.6780401997051
+        }
+      ]
+    },
+    {
+      "id": "preview:unexpected-scene-changes",
+      "name": "Cambios de plano no previstos",
+      "severity": "Bajo",
+      "status": "PASS",
+      "expected": "ninguno",
+      "measured": "ninguno"
+    },
+    {
+      "id": "preview:av-offset",
+      "name": "Desfase audio (salida vs mezcla)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "|desfase| ≤ 5 ms, correlación > 0.9",
+      "measured": "0.00 ms (correlación 1.000)"
+    },
+    {
+      "id": "preview:beat-sync",
+      "name": "Cortes sobre eventos musicales",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "|Δ| ≤ 33.3 ms (1 fotograma)",
+      "measured": "c2 2 ms, c3 2 ms, c4 2 ms",
+      "details": [
+        {
+          "id": "c2",
+          "cutFrame": 54,
+          "cutT": 1.8,
+          "beatT": 1.8024,
+          "deltaMs": 2
+        },
+        {
+          "id": "c3",
+          "cutFrame": 114,
+          "cutT": 3.8,
+          "beatT": 3.8023,
+          "deltaMs": 2
+        },
+        {
+          "id": "c4",
+          "cutFrame": 174,
+          "cutT": 5.8,
+          "beatT": 5.8021,
+          "deltaMs": 2
+        }
+      ]
+    },
+    {
+      "id": "preview:originals",
+      "name": "Originales intactos (sha256)",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "7 hashes iguales a la ingesta",
+      "measured": "todos iguales"
+    },
+    {
+      "id": "final:video-format",
+      "name": "Formato de vídeo",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "h264 yuv420p 1080x1920 30/1 CFR",
+      "measured": "h264 yuv420p 1080x1920 30/1 (media 30.000)"
+    },
+    {
+      "id": "final:color-tags",
+      "name": "Etiquetas de color",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "bt709 / bt709 / bt709",
+      "measured": "bt709 / bt709 / bt709"
+    },
+    {
+      "id": "final:audio-format",
+      "name": "Formato de audio",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "aac 48000 Hz estéreo",
+      "measured": "aac 48000 Hz 2 canales"
+    },
+    {
+      "id": "final:frame-count",
+      "name": "Número de fotogramas",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "294",
+      "measured": "294"
+    },
+    {
+      "id": "final:av-duration",
+      "name": "Duración audio vs vídeo",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "|Δ| ≤ 55 ms",
+      "measured": "vídeo 9.800 s, audio 9.800 s"
+    },
+    {
+      "id": "final:decode",
+      "name": "Decodificación sin errores",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "sin errores",
+      "measured": "sin errores"
+    },
+    {
+      "id": "final:black",
+      "name": "Negros no previstos",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "ninguno fuera de los cierres",
+      "measured": "ninguno (1 previstos)"
+    },
+    {
+      "id": "final:freeze",
+      "name": "Imagen congelada no prevista",
+      "severity": "Medio",
+      "status": "WARN",
+      "expected": "ninguna fuera de los cierres",
+      "measured": "[[1.93333,2.33333],[2.33333,2.73333],[2.73333,3.13333],[3.13333,3.53333]]"
+    },
+    {
+      "id": "final:silence",
+      "name": "Silencios ≥ 0.5 s",
+      "severity": "Medio",
+      "status": "PASS",
+      "expected": "ninguno",
+      "measured": "ninguno"
+    },
+    {
+      "id": "final:loudness",
+      "name": "Sonoridad (EBU R128)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "-14 ± 1 LUFS, true peak ≤ -1 dBTP",
+      "measured": "-14.2 LUFS, true peak -1.9 dBTP"
+    },
+    {
+      "id": "final:cuts",
+      "name": "Cortes en el fotograma exacto del manifiesto",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "54, 114, 174, 234 (pico de diferencia, prominencia ≥ 2)",
+      "measured": "54(Δ0, ×12.0), 114(Δ0, ×84.1), 174(Δ0, ×204.9), 234(Δ0, ×51.5)",
+      "details": [
+        {
+          "frame": 54,
+          "kind": "zoom-through",
+          "id": "c2",
+          "syncToBeat": true,
+          "peakFrame": 54,
+          "prominence": 12.024487933482053
+        },
+        {
+          "frame": 114,
+          "kind": "cut",
+          "id": "c3",
+          "syncToBeat": true,
+          "peakFrame": 114,
+          "prominence": 84.11924119241192
+        },
+        {
+          "frame": 174,
+          "kind": "cut",
+          "id": "c4",
+          "syncToBeat": true,
+          "peakFrame": 174,
+          "prominence": 204.9337289812067
+        },
+        {
+          "frame": 234,
+          "kind": "endcard",
+          "id": "endcard",
+          "syncToBeat": false,
+          "peakFrame": 234,
+          "prominence": 51.53862953862954
+        }
+      ]
+    },
+    {
+      "id": "final:unexpected-scene-changes",
+      "name": "Cambios de plano no previstos",
+      "severity": "Bajo",
+      "status": "PASS",
+      "expected": "ninguno",
+      "measured": "ninguno"
+    },
+    {
+      "id": "final:av-offset",
+      "name": "Desfase audio (salida vs mezcla)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "|desfase| ≤ 5 ms, correlación > 0.9",
+      "measured": "0.00 ms (correlación 1.000)"
+    },
+    {
+      "id": "final:beat-sync",
+      "name": "Cortes sobre eventos musicales",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "|Δ| ≤ 33.3 ms (1 fotograma)",
+      "measured": "c2 2 ms, c3 2 ms, c4 2 ms",
+      "details": [
+        {
+          "id": "c2",
+          "cutFrame": 54,
+          "cutT": 1.8,
+          "beatT": 1.8024,
+          "deltaMs": 2
+        },
+        {
+          "id": "c3",
+          "cutFrame": 114,
+          "cutT": 3.8,
+          "beatT": 3.8023,
+          "deltaMs": 2
+        },
+        {
+          "id": "c4",
+          "cutFrame": 174,
+          "cutT": 5.8,
+          "beatT": 5.8021,
+          "deltaMs": 2
+        }
+      ]
+    },
+    {
+      "id": "final:originals",
+      "name": "Originales intactos (sha256)",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "7 hashes iguales a la ingesta",
+      "measured": "todos iguales"
+    },
+    {
+      "id": "exp-aspect",
+      "name": "Sin deformación (círculo de S1 sigue circular)",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "ancho/alto = 1.00 ± 0.03",
+      "measured": "546×548 px → 0.996"
+    },
+    {
+      "id": "exp-rotation",
+      "name": "Rotación de S3 aplicada (banda arriba)",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "luma arriba > 180; abajo, izquierda y derecha < 120",
+      "measured": "arriba 255, abajo 44, izq 44, der 44"
+    },
+    {
+      "id": "exp-slowmo",
+      "name": "Cámara lenta 0.5× sin fotogramas repetidos",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "avance ≈ 6.67 px/fotograma, nunca ≈ 0",
+      "measured": "media 6.73, mínimo 6.08 (52 pasos)",
+      "details": {
+        "xs": [
+          279.58,
+          285.66,
+          291.81,
+          299.81,
+          305.89,
+          312.12,
+          320.05,
+          326.12,
+          332.44,
+          340.28,
+          346.36,
+          352.75,
+          360.51,
+          366.59,
+          373.06,
+          380.75,
+          386.82,
+          393.37,
+          400.98,
+          407.06,
+          413.68,
+          421.21,
+          427.29,
+          433.99,
+          441.45,
+          447.53,
+          454.31,
+          461.68,
+          467.76,
+          474.62,
+          481.92,
+          487.99,
+          494.07,
+          501.03,
+          508.23,
+          515.24,
+          522.38,
+          528.46,
+          535.55,
+          542.62,
+          548.69,
+          555.86,
+          562.85,
+          568.93,
+          576.18,
+          583.08,
+          589.16,
+          596.49,
+          603.32,
+          609.4,
+          616.8,
+          623.55,
+          629.63
+        ]
+      }
+    },
+    {
+      "id": "exp-color-ingest-s1",
+      "name": "Color: original vs intermedio (s1)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "diferencia máx. por canal ≤ 3",
+      "measured": "(95,30,18) vs (95,30,18) → 0.0"
+    },
+    {
+      "id": "exp-color-ingest-s2",
+      "name": "Color: original vs intermedio (s2)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "diferencia máx. por canal ≤ 3",
+      "measured": "(17,57,41) vs (17,57,41) → 0.0"
+    },
+    {
+      "id": "exp-color-ingest-s3",
+      "name": "Color: original vs intermedio (s3)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "diferencia máx. por canal ≤ 3",
+      "measured": "(23,46,93) vs (23,46,93) → 0.0"
+    },
+    {
+      "id": "exp-color-render-c1",
+      "name": "Color: intermedio vs salida Remotion (c1)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "diferencia máx. por canal ≤ 6",
+      "measured": "(95,30,18) vs (94,29,17) → 1.0"
+    },
+    {
+      "id": "exp-color-render-c2",
+      "name": "Color: intermedio vs salida Remotion (c2)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "diferencia máx. por canal ≤ 6",
+      "measured": "(17,57,41) vs (16,56,40) → 1.0"
+    },
+    {
+      "id": "exp-color-render-c3",
+      "name": "Color: intermedio vs salida Remotion (c3)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "diferencia máx. por canal ≤ 6",
+      "measured": "(23,46,93) vs (22,45,92) → 1.0"
+    },
+    {
+      "id": "exp-color-render-c4",
+      "name": "Color: intermedio vs salida Remotion (c4)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "diferencia máx. por canal ≤ 6",
+      "measured": "(126,75,28) vs (125,74,27) → 1.0"
+    },
+    {
+      "id": "exp-hdr",
+      "name": "HDR (HLG): el tonemap acerca el color al SDR de referencia",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "diferencia(tonemap, ref) ≤ 12 y menor que ignorando el HDR",
+      "measured": "ref (126,75,28); tonemap (126,75,28) (Δ0.0); ignorando HDR (100,74,36) (Δ26.0)"
+    },
+    {
+      "id": "exp-determinism",
+      "name": "Determinismo (dos renders del mismo manifiesto)",
+      "severity": "Medio",
+      "status": "PASS",
+      "expected": "0 fotogramas distintos (framemd5)",
+      "measured": "0 de 294 distintos"
+    },
+    {
+      "id": "reexport-b:frame-count",
+      "name": "Número de fotogramas",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "294",
+      "measured": "294"
+    },
+    {
+      "id": "reexport-b:cuts",
+      "name": "Cortes en el fotograma exacto del manifiesto",
+      "severity": "Crítico",
+      "status": "PASS",
+      "expected": "54, 129, 174, 234 (pico de diferencia, prominencia ≥ 2)",
+      "measured": "54(Δ0, ×11.8), 129(Δ0, ×75.7), 174(Δ0, ×170.1), 234(Δ0, ×53.7)",
+      "details": [
+        {
+          "frame": 54,
+          "kind": "zoom-through",
+          "id": "c2",
+          "syncToBeat": true,
+          "peakFrame": 54,
+          "prominence": 11.838810719789942
+        },
+        {
+          "frame": 129,
+          "kind": "cut",
+          "id": "c3",
+          "syncToBeat": true,
+          "peakFrame": 129,
+          "prominence": 75.6597994036324
+        },
+        {
+          "frame": 174,
+          "kind": "cut",
+          "id": "c4",
+          "syncToBeat": true,
+          "peakFrame": 174,
+          "prominence": 170.06457185160812
+        },
+        {
+          "frame": 234,
+          "kind": "endcard",
+          "id": "endcard",
+          "syncToBeat": false,
+          "peakFrame": 234,
+          "prominence": 53.6780401997051
+        }
+      ]
+    },
+    {
+      "id": "reexport-b:av-offset",
+      "name": "Desfase audio (salida vs mezcla)",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "|desfase| ≤ 5 ms, correlación > 0.9",
+      "measured": "0.00 ms (correlación 1.000)"
+    },
+    {
+      "id": "reexport-b:beat-sync",
+      "name": "Cortes sobre eventos musicales",
+      "severity": "Alto",
+      "status": "PASS",
+      "expected": "|Δ| ≤ 33.3 ms (1 fotograma)",
+      "measured": "c2 2 ms, c3 2 ms, c4 2 ms",
+      "details": [
+        {
+          "id": "c2",
+          "cutFrame": 54,
+          "cutT": 1.8,
+          "beatT": 1.8024,
+          "deltaMs": 2
+        },
+        {
+          "id": "c3",
+          "cutFrame": 129,
+          "cutT": 4.3,
+          "beatT": 4.3015,
+          "deltaMs": 2
+        },
+        {
+          "id": "c4",
+          "cutFrame": 174,
+          "cutT": 5.8,
+          "beatT": 5.8021,
+          "deltaMs": 2
+        }
+      ]
+    }
+  ]
+}
