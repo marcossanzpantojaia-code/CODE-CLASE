@@ -3,8 +3,7 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  // AI_CINEMATIC_VIDEO_ENGINE es un proyecto independiente con su propio tsconfig y tests.
-  { ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'AI_CINEMATIC_VIDEO_ENGINE/**'] },
+  { ignores: ['dist/**', 'node_modules/**', 'coverage/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
