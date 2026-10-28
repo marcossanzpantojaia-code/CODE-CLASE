@@ -27,7 +27,7 @@
     ready: false, running: false, active: false,
     w: 0, h: 0, dpr: 1, unit: 200, t: 0, last: 0,
     pointer: { x: -9999, y: -9999, on: false },
-    fish: [], bubbles: [], snow: [], hero: null, heroP: -1,
+    fish: [], bubbles: [], snow: [], ripples: [], hero: null, heroP: -1,
     sprites: {}, layers: {}
   };
 
@@ -142,12 +142,16 @@
   }
 
   function drawBubbles(ctx, dt) {
+    if (state.bubbles.some(function (b) { return b.dead; })) state.bubbles = state.bubbles.filter(function (b) { return !b.dead; });
     var dpr = state.dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     state.bubbles.forEach(function (b) {
       b.y -= b.v * dt;
       b.x += Math.sin(state.t * b.f + b.p) * .35;
-      if (b.y < -20) { b.y = state.h + W.rand(10, 200); b.x = W.rand(0, state.w); }
+      if (b.y < -20) {
+        if (b.burst) { b.dead = true; return; }
+        b.y = state.h + W.rand(10, 200); b.x = W.rand(0, state.w);
+      }
       ctx.beginPath();
       ctx.arc(b.x, b.y, b.r, 0, TAU);
       ctx.strokeStyle = 'rgba(241,248,247,' + b.a + ')';
@@ -188,6 +192,19 @@
           f.startle = Math.min(1, f.startle + dt * 3);
         }
       }
+      // Onda al tocar el agua: empujón que se disipa
+      state.ripples.forEach(function (r) {
+        if (r.age > .25) return;
+        var hx = f.x - f.dir * L * .5, hy = yAt(f, hx);
+        var rx = hx - r.x, ry = hy - r.y, rd = Math.sqrt(rx * rx + ry * ry), RR = 300;
+        if (rd < RR && !r.hit[idx]) {
+          r.hit[idx] = true;
+          f.kick = (f.kick || 0) + (ry >= 0 ? 1 : -1) * (RR - rd) * .8;
+          f.startle = 1;
+        }
+      });
+      f.kick = (f.kick || 0) * Math.exp(-dt * 1.6);
+      target += f.kick;
       f.avoid += (target - f.avoid) * Math.min(1, dt * 2.2);
       f.startle = Math.max(0, f.startle - dt * .6);
       f.x += f.dir * f.speed * f.scale * (1 + f.startle * 1.4) * dt;
@@ -214,6 +231,25 @@
     });
     if (state.hero && state.heroP > 0 && state.heroP < 1) drawFish(front.ctx, state.hero, false);
     drawBubbles(front.ctx, dt);
+    drawRipples(front.ctx, dt);
+  }
+
+  function drawRipples(ctx, dt) {
+    var dpr = state.dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    state.ripples = state.ripples.filter(function (r) { r.age += dt; return r.age < 1.6; });
+    state.ripples.forEach(function (r) {
+      for (var k = 0; k < 3; k++) {
+        var a = r.age - k * .14;
+        if (a <= 0) continue;
+        var rad = 14 + a * 240;
+        ctx.beginPath();
+        ctx.ellipse(r.x, r.y, rad, rad * .9, 0, 0, TAU);
+        ctx.strokeStyle = 'rgba(241,248,247,' + (Math.max(0, .55 * (1 - a / 1.4))).toFixed(3) + ')';
+        ctx.lineWidth = 1.6 - k * .4;
+        ctx.stroke();
+      }
+    });
   }
 
   function frame(now) {
@@ -306,6 +342,15 @@
       } else if (!on) state.running = false;
     },
     setHeroProgress: function (p) { state.heroP = p; },
+    /* Toque en el agua: onda, burbujas y los peces cercanos huyen */
+    splash: function (x, y) {
+      if (!state.ready) return;
+      state.ripples.push({ x: x, y: y, age: 0, hit: {} });
+      for (var i = 0; i < 14; i++) {
+        state.bubbles.push({ x: x + W.rand(-24, 24), y: y + W.rand(-10, 20), r: W.rand(1.5, 6), v: W.rand(60, 160), f: W.rand(1, 3), p: Math.random() * TAU, a: W.rand(.35, .7), burst: true });
+      }
+      if (!state.running) render(0);
+    },
     /* Movimiento reducido: un único fotograma estático y bien compuesto */
     renderStatic: function () {
       if (!state.ready) return;

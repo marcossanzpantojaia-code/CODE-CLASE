@@ -18,8 +18,51 @@
     }
     var badge = W.$('[data-cart-count]');
     if (badge && window.gsap && !W.motion.reduced) {
-      gsap.fromTo(badge, { scale: 1.45 }, { scale: 1, duration: .7, ease: 'elastic.out(1, .45)' });
+      var source = btn.closest('li').querySelector('img');
+      flyToCart(source, badge, function () {
+        gsap.fromTo(badge, { scale: 1.6 }, { scale: 1, duration: .8, ease: 'elastic.out(1, .4)' });
+      });
     }
+  }
+
+  /* El producto "vuela" en arco hasta el contador del carrito */
+  function flyToCart(img, target, done) {
+    if (!img) { done(); return; }
+    var a = img.getBoundingClientRect(), b = target.getBoundingClientRect();
+    var ghost = img.cloneNode();
+    ghost.alt = '';
+    ghost.className = 'fly';
+    ghost.style.left = a.left + 'px';
+    ghost.style.top = a.top + 'px';
+    ghost.style.width = a.width + 'px';
+    ghost.style.height = a.height + 'px';
+    document.body.appendChild(ghost);
+    var dx = b.left + b.width / 2 - (a.left + a.width / 2);
+    var dy = b.top + b.height / 2 - (a.top + a.height / 2);
+    var tl = gsap.timeline({ onComplete: function () { ghost.remove(); done(); } });
+    tl.to(ghost, { x: dx, duration: .85, ease: 'power2.inOut' }, 0)
+      .to(ghost, { y: dy, duration: .85, ease: 'back.in(1.6)' }, 0)
+      .to(ghost, { scale: .08, rotation: 25, duration: .85, ease: 'power2.in' }, 0)
+      .to(ghost, { autoAlpha: 0, duration: .15 }, .72);
+  }
+
+  /* Inclinación 3D de las tarjetas y brillo que sigue al ratón */
+  function tilt(li) {
+    if (!window.gsap || W.motion.reduced || !W.motion.finePointer) return;
+    var card = li.querySelector('.product__card');
+    var rx = gsap.quickTo(card, 'rotationX', { duration: .6, ease: 'power3.out' });
+    var ry = gsap.quickTo(card, 'rotationY', { duration: .6, ease: 'power3.out' });
+    gsap.set(card, { transformPerspective: 900 });
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+      ry((px - .5) * 10);
+      rx((.5 - py) * 8);
+      card.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+      card.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+    });
+    card.addEventListener('pointerenter', function () { gsap.to(card, { y: -8, duration: .6, ease: 'power3.out' }); });
+    card.addEventListener('pointerleave', function () { rx(0); ry(0); gsap.to(card, { y: 0, duration: .8, ease: 'power3.out' }); });
   }
 
   function productCard(p) {
@@ -74,23 +117,51 @@
   function applyFilter(cat, animate) {
     current = cat;
     W.$$('.filter').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.filter === cat)); });
-    var shown = [];
-    W.$$('.product').forEach(function (li) {
-      var match = cat === 'todos' || li.dataset.category === cat;
-      li.hidden = !match;
-      if (match) shown.push(li);
+    var items = W.$$('.product');
+    var flip = animate && window.gsap && window.Flip && !W.motion.reduced;
+    var state = flip ? Flip.getState(items) : null;
+    var grid = W.$('[data-grid]');
+    var h0 = grid.offsetHeight;
+    items.forEach(function (li) {
+      li.hidden = !(cat === 'todos' || li.dataset.category === cat);
     });
-    if (animate && window.gsap && !W.motion.reduced) {
-      gsap.fromTo(shown, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: .7, stagger: .06, ease: 'expo.out', overwrite: true, clearProps: 'transform' });
+    // La rejilla cambia de alto suavemente (Flip saca las tarjetas del flujo)
+    if (flip) gsap.fromTo(grid, { height: h0 }, { height: grid.offsetHeight, duration: .75, ease: 'expo.inOut', clearProps: 'height' });
+    // Las tarjetas que quedan se recolocan; las demás salen y entran con escala
+    if (flip) {
+      Flip.from(state, {
+        duration: .75,
+        ease: 'expo.inOut',
+        absolute: true,
+        stagger: .03,
+        onEnter: function (els) { return gsap.fromTo(els, { opacity: 0, scale: .8, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: .7, stagger: .05, ease: 'expo.out', delay: .15 }); },
+        onLeave: function (els) { return gsap.to(els, { opacity: 0, scale: .8, duration: .4, ease: 'power2.in' }); }
+      });
     }
   }
 
   W.Shop = {
     filter: applyFilter,
+    /* Entradas con el scroll: título por líneas y tarjetas en tandas */
+    reveal: function () {
+      if (!W.motion.cinematic) return;
+      gsap.fromTo('[data-shop-line]', { yPercent: 110 }, {
+        yPercent: 0, duration: 1.1, stagger: .12, ease: 'expo.out',
+        scrollTrigger: { trigger: '#tienda', start: 'top 75%', toggleActions: 'play none none reverse' }
+      });
+      ScrollTrigger.batch('.product', {
+        start: 'top 92%',
+        once: true,
+        onEnter: function (batch) {
+          gsap.fromTo(batch, { y: 70, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1, stagger: .08, ease: 'expo.out' });
+        }
+      });
+    },
     init: function () {
       var grid = W.$('[data-grid]');
       var filters = W.$('[data-filters]');
-      W.products.forEach(function (p) { grid.appendChild(productCard(p)); });
+      W.products.forEach(function (p) { var li = productCard(p); grid.appendChild(li); tilt(li); });
+      if (window.gsap && window.Flip) gsap.registerPlugin(Flip);
 
       W.categories.forEach(function (c) {
         var n = c.id === 'todos' ? W.products.length : W.products.filter(function (p) { return p.category === c.id; }).length;

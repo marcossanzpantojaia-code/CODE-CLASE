@@ -2,12 +2,12 @@
 # Uso, desde la carpeta WILDPAW_CINEMATIC_STORE:  python3 tools/build-single.py
 import base64, re, os, mimetypes
 P = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/'
-MIME = {'.webp': 'image/webp', '.mp4': 'video/mp4', '.woff2': 'font/woff2'}
+MIME = {'.webp': 'image/webp', '.png': 'image/png', '.mp4': 'video/mp4', '.woff2': 'font/woff2'}
 def uri(rel):
     rel = rel.replace('../', '')
     data = open(P + rel, 'rb').read()
     return 'data:%s;base64,%s' % (MIME[os.path.splitext(rel)[1]], base64.b64encode(data).decode())
-ASSET = re.compile(r'(?:\.\./)?assets/[A-Za-z0-9_/.-]+\.(?:webp|mp4|woff2)')
+ASSET = re.compile(r'(?:\.\./)?assets/[A-Za-z0-9_/.-]+\.(?:webp|png|mp4|woff2)')
 html = open(P + 'index.html', encoding='utf-8').read()
 def css(m):
     c = open(P + m.group(1), encoding='utf-8').read()

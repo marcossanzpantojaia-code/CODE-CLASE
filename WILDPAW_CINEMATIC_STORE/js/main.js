@@ -117,6 +117,7 @@
 
     if (!W.motion.cinematic) {
       aquarium.then(function () { W.Scenes.staticMode(); });
+      W.Chase.init();
       return;
     }
 
@@ -129,7 +130,8 @@
       fonts,
       W.loadImage('assets/img/dog-hero.webp'),
       W.loadImage('assets/img/cat-hero.webp'),
-      aquarium
+      aquarium,
+      W.Living.init()
     ];
     runLoader(tasks).then(function () {
       W.Scenes.refit();            // re-ajusta tipografías ya con las fuentes cargadas
@@ -139,6 +141,10 @@
       // Se habilita el scroll cuando la composición del héroe ya está montada
       gsap.delayedCall(2.5, function () {
         W.Scenes.start();
+        W.Chase.init();
+        W.FX.init();
+        W.Shop.reveal();
+        ScrollTrigger.refresh();
         lockScroll(false);
         jumpToHash();
       });

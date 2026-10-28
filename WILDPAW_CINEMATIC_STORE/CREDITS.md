@@ -30,6 +30,19 @@ tienda **demostrativa**; ningún autor respalda este proyecto.
 | Pez mariposa | Acuario de Bergen | Adrián Santos | https://www.flickr.com/photos/adsaman/4997939389 |
 | Damisela azul | Reef Tank at Long Island Aquarium | KEN_S_NY | https://www.flickr.com/photos/45817379@N06/9438650875 |
 
+## Siluetas de "La persecución"
+
+- **Gato:** 12 fotogramas de *Animal Locomotion* (1887) de **Eadweard Muybridge**, dominio público.
+  Imagen digital cortesía del Getty's Open Content Program, distribuida en el paquete npm
+  `@stdlib/datasets-img-locomotion-house-cat` (datos CC0). Modificaciones: segmentación del gato,
+  limpieza de la cuadrícula y conversión a silueta.
+- **Perro:** silueta del ciclo de galope del modelo *Wolf* de **Quaternius** (CC0 1.0), distribuido en el
+  paquete npm `@netforge/asset-library-files`. Solo se usa la sombra renderizada, no el modelo.
+
+## Mapas de profundidad
+
+Hechos para este proyecto a partir de la máscara de cada recorte (sin IA): `assets/img/depth/`.
+
 ## Tipografías (SIL Open Font License 1.1)
 
 - **Archivo** — Omnibus-Type. Fuente variable (anchura y peso).
@@ -39,7 +52,7 @@ Se incluyen localmente en `assets/fonts/` (subconjunto latino) para funcionar si
 
 ## Librerías
 
-- **GSAP 3.15.0** y **ScrollTrigger** (GreenSock) — licencia estándar gratuita
+- **GSAP 3.15.0**, **ScrollTrigger** y **Flip** (GreenSock) — licencia estándar gratuita
   ("Standard No Charge License", https://gsap.com/standard-license). Copiadas sin
   modificar en `js/vendor/`.
 

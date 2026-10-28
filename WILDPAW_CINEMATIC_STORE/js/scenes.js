@@ -72,7 +72,7 @@
   function ambient() {
     // Respiración sutil y deriva de cámara: es movimiento simulado sobre una
     // fotografía fija, no animación real del animal.
-    gsap.to('[data-dog-img]', { scaleY: 1.012, scaleX: 1.004, duration: 2.3, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    gsap.to('.dog__img', { scaleY: 1.012, scaleX: 1.004, duration: 2.3, ease: 'sine.inOut', yoyo: true, repeat: -1 });
     gsap.to('.cat__img', { scaleY: 1.01, duration: 2.8, ease: 'sine.inOut', yoyo: true, repeat: -1, transformOrigin: '50% 100%' });
     gsap.fromTo('[data-toy]', { rotation: -8 }, { rotation: 8, duration: 2.4, ease: 'sine.inOut', yoyo: true, repeat: -1 });
   }
@@ -122,6 +122,7 @@
         end: function () { return '+=' + Math.round(window.innerHeight * (small ? 7 : 8.5)); },
         pin: '[data-stage]',
         scrub: 1,
+        refreshPriority: 2, // primero la historia fijada, luego la persecución, luego el resto
         anticipatePin: 1,
         invalidateOnRefresh: true
       },
@@ -218,8 +219,14 @@
     catScene.inert = t < 1.9 || t > 6.3;
     oceanScene.inert = t < 6.6;
     W.Aquarium.setActive(t > 5.5);
+    if (W.Living) {
+      W.Living.setActive('dog', t < 2.1);
+      W.Living.setActive('cat', t > .3 && t < 7.4);
+      W.Living.setScroll('dog', Math.min(1, t / 1.6));
+      W.Living.setScroll('cat', W.clamp((t - 3.4) / 2.4, -1, 1));
+    }
     var active = t < 1.6 ? 'dog' : t < 6.4 ? 'cat' : 'ocean';
-    if (lastActive !== 'shop' && active !== lastActive) {
+    if (lastActive !== 'shop' && !W.navOverride && active !== lastActive) {
       lastActive = active;
       $$('[data-nav] [data-goto]').forEach(function (a) {
         if (a.dataset.goto === active) a.setAttribute('aria-current', 'true');
@@ -269,6 +276,8 @@
       fitWords();
     },
     refit: fitWords,
+    /* Vuelve a marcar en la barra la escena activa (tras salir de otra sección) */
+    resyncNav: function () { lastActive = ''; if (master) syncScenes.call(master); },
     staticMode: staticMode,
     intro: intro,
     /* Se llama al terminar la intro: crea el scroll y el movimiento ambiental */
@@ -284,7 +293,6 @@
         trigger: '#tienda',
         start: function () { return 'top ' + ($('[data-nav]').offsetHeight + 1); },
         end: 'max',
-        toggleClass: { targets: '[data-nav]', className: 'is-solid' },
         onToggle: function (self) {
           var shopLink = $('[data-nav] a[href="#tienda"]');
           if (self.isActive) {
@@ -297,6 +305,13 @@
             syncScenes.call(master);
           }
         }
+      });
+      // Barra opaca en cuanto termina la historia (fondos claros a partir de aquí)
+      ScrollTrigger.create({
+        trigger: $('#persecucion') || $('#tienda'),
+        start: function () { return 'top ' + ($('[data-nav]').offsetHeight + 1); },
+        end: 'max',
+        toggleClass: { targets: '[data-nav]', className: 'is-solid' }
       });
       ScrollTrigger.refresh();
     },
