@@ -9,8 +9,7 @@
   background: var(--pearl);
   color: var(--ink);
   border-radius: clamp(24px, 3vw, 44px) clamp(24px, 3vw, 44px) 0 0;
-  /* se monta sobre la sección anterior para que las esquinas muestren su fondo */
-  margin-top: calc(-1 * clamp(24px, 3vw, 44px));
+  margin-top: -1px;
   --focus: var(--ink);
 }
 .shop__head {
