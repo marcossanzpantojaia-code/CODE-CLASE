@@ -12,6 +12,10 @@ RUN WILD (vídeo real de un perro y un gato corriendo) → tienda.
    - No necesita Internet, Node.js, npm ni instalar nada: fuentes, GSAP e imágenes están dentro de la carpeta.
 3. Desplázate con la rueda del ratón, el trackpad o las flechas. La barra superior salta a cada escena.
 
+**Versión de un solo archivo:** `WILDPAW-un-solo-archivo.html` (5 MB) lleva dentro todas las
+imágenes, vídeos, fuentes y scripts. Se puede enviar por correo o copiar en un USB y abrir con doble
+clic sin la carpeta `assets/`. Se regenera con `python3 tools/build-single.py`.
+
 Si el centro bloquea abrir archivos locales con `file://` (poco habitual), ejecuta en una terminal,
 desde esta carpeta:
 
