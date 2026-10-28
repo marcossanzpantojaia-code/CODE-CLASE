@@ -219,7 +219,7 @@
     oceanScene.inert = t < 6.6;
     W.Aquarium.setActive(t > 5.5);
     var active = t < 1.6 ? 'dog' : t < 6.4 ? 'cat' : 'ocean';
-    if (lastActive !== 'shop' && active !== lastActive) {
+    if (lastActive !== 'shop' && !W.navOverride && active !== lastActive) {
       lastActive = active;
       $$('[data-nav] [data-goto]').forEach(function (a) {
         if (a.dataset.goto === active) a.setAttribute('aria-current', 'true');
@@ -269,6 +269,8 @@
       fitWords();
     },
     refit: fitWords,
+    /* Vuelve a marcar en la barra la escena activa (tras salir de otra sección) */
+    resyncNav: function () { lastActive = ''; if (master) syncScenes.call(master); },
     staticMode: staticMode,
     intro: intro,
     /* Se llama al terminar la intro: crea el scroll y el movimiento ambiental */

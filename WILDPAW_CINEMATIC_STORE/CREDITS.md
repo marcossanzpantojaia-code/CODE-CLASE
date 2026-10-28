@@ -30,6 +30,20 @@ tienda **demostrativa**; ningún autor respalda este proyecto.
 | Pez mariposa | Acuario de Bergen | Adrián Santos | https://www.flickr.com/photos/adsaman/4997939389 |
 | Damisela azul | Reef Tank at Long Island Aquarium | KEN_S_NY | https://www.flickr.com/photos/45817379@N06/9438650875 |
 
+## Vídeos (CC BY 2.0)
+
+Los dos vídeos de la sección **RUN WILD** proceden del dataset **YFCC100M / Multimedia Commons**
+(vídeos de Flickr con licencia Creative Commons), bajo
+[Creative Commons Attribution 2.0](https://creativecommons.org/licenses/by/2.0/).
+
+**Modificaciones realizadas:** recorte del encuadre, selección de un fragmento, cámara lenta,
+ligero ajuste de contraste/nitidez y recompresión a MP4. Sin audio.
+
+| Uso en la web | Título original | Autor | Enlace |
+|---|---|---|---|
+| Perro corriendo (saluki) | Saluki youngster running | prophetic_blogger | https://www.flickr.com/photos/77705023@N04/8306392757/ |
+| Gato corriendo | light spot chase 2 | yellowcloud | https://www.flickr.com/photos/63794141@N00/6209021287/ |
+
 ## Tipografías (SIL Open Font License 1.1)
 
 - **Archivo** — Omnibus-Type. Fuente variable (anchura y peso).

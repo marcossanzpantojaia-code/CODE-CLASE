@@ -113,6 +113,7 @@
     initMenu();
     initLinks();
     W.Scenes.prepare();
+    W.Run.init();
     var aquarium = W.Aquarium.init();
 
     if (!W.motion.cinematic) {
@@ -139,6 +140,8 @@
       // Se habilita el scroll cuando la composición del héroe ya está montada
       gsap.delayedCall(2.5, function () {
         W.Scenes.start();
+        W.Run.animate();
+        ScrollTrigger.refresh();
         lockScroll(false);
         jumpToHash();
       });

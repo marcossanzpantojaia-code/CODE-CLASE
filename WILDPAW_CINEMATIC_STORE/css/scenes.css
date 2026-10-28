@@ -547,6 +547,186 @@
   color: rgba(241, 248, 247, .7);
 }
 
+/* ================================================ RUN WILD: vídeo real */
+.run {
+  position: relative;
+  z-index: 2;
+  padding: clamp(96px, 11vw, 168px) var(--gutter) calc(clamp(120px, 12vw, 190px) + clamp(24px, 3vw, 44px));
+  background:
+    radial-gradient(60% 50% at 70% 60%, rgba(223, 121, 76, .16), rgba(223, 121, 76, 0) 70%),
+    var(--ink);
+  color: var(--cream);
+  overflow: hidden;
+  --focus: var(--cream);
+}
+.run__head {
+  position: relative;
+  display: grid;
+  gap: 20px;
+}
+.run__eyebrow {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--terra);
+}
+.run__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: .18em;
+  font-size: clamp(68px, 13.4vw, 260px);
+  font-weight: 900;
+  font-stretch: 125%;
+  line-height: .82;
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+}
+.run__title .line--serif { color: var(--terra); text-transform: none; font-size: 1.08em; letter-spacing: -.02em; }
+.run__intro { max-width: 34ch; font-size: 15px; line-height: 1.6; color: rgba(245, 233, 214, .78); }
+.run__aside { grid-column: 9 / 13; grid-row: 1; display: grid; gap: 22px; align-content: start; padding-top: clamp(40px, 5vw, 80px); }
+
+.run__stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 32px);
+  align-items: start;
+  margin-top: clamp(-26px, -1.4vw, -10px);
+}
+.run__clip { position: relative; min-width: 0; }
+.run__clip--dog { grid-column: 1 / 9; grid-row: 1 / span 2; }
+.run__clip--cat { grid-column: 9 / 13; grid-row: 2; margin-top: 8px; }
+.run__frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: clamp(14px, 1.6vw, 24px);
+  background: #0d0b09;
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .8);
+}
+.run__clip--dog .run__frame { aspect-ratio: 16 / 10; }
+.run__clip--cat .run__frame { aspect-ratio: 4 / 5; }
+.run__video {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  transform-origin: 50% 50%;
+}
+/* Viñeta y grano propios: igualan la textura de un vídeo de 2012 con el resto */
+.run__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 45%, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, .42) 100%);
+}
+.run__rec {
+  position: absolute;
+  z-index: 1;
+  left: 14px;
+  top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  background: rgba(16, 13, 11, .55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.run__rec i {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #E5484D;
+  box-shadow: 0 0 0 0 rgba(229, 72, 77, .7);
+  animation: rec 1.6s ease-out infinite;
+}
+@keyframes rec { to { box-shadow: 0 0 0 8px rgba(229, 72, 77, 0); } }
+.run__cap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 16px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(245, 233, 214, .16);
+  font-size: 13px;
+  color: rgba(245, 233, 214, .7);
+}
+.run__cap strong {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(22px, 2vw, 30px);
+  color: var(--cream);
+}
+.run__speed {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  column-gap: 10px;
+  font-size: 14px;
+  color: rgba(245, 233, 214, .75);
+}
+.run__speed b {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(40px, 4.4vw, 76px);
+  line-height: 1;
+  color: var(--terra);
+}
+.run__speed small { grid-column: 1 / -1; margin-top: 4px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+
+.run__toggle {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(clamp(40px, 5vw, 72px) + clamp(24px, 3vw, 44px));
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 233, 214, .3);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transition: border-color .3s, background-color .3s;
+}
+.run__toggle:hover { border-color: var(--cream); background: rgba(245, 233, 214, .06); }
+.run__toggle-icon {
+  width: 12px; height: 12px;
+  border-left: 3.5px solid currentColor;
+  border-right: 3.5px solid currentColor;
+}
+.run__toggle[aria-pressed="true"] .run__toggle-icon {
+  border: 0;
+  border-left: 11px solid currentColor;
+  border-top: 6.5px solid transparent;
+  border-bottom: 6.5px solid transparent;
+  width: 0; height: 0;
+}
+
+@media (max-width: 760px) {
+  .run__stage { grid-template-columns: 1fr; margin-top: -2vw; gap: 0; }
+  .run__clip--dog { grid-column: 1; grid-row: 1; }
+  .run__aside { grid-column: 1; grid-row: 2; padding-top: 28px; max-width: 46%; }
+  .run__intro { font-size: 14px; }
+  .run__clip--cat { grid-column: 1; grid-row: 2; width: 50%; justify-self: end; margin-top: 28px; }
+  .run__toggle { position: static; margin-top: 28px; }
+}
+
 /* Estado inicial en modo cinematográfico (GSAP toma el control después) */
 .is-cinematic .scene--cat { visibility: hidden; }
 

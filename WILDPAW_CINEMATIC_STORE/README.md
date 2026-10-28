@@ -1,7 +1,8 @@
 # WILDPAW — Discover their world
 
 Tienda **demostrativa** de accesorios para perros, gatos y mundo acuático, construida como
-experiencia cinematográfica con scroll: perro → portal → gato → inmersión → océano → tienda.
+experiencia cinematográfica con scroll: perro → portal → gato → inmersión → océano →
+RUN WILD (vídeo real de un perro y un gato corriendo) → tienda.
 
 ## Cómo abrirla en el ordenador de clase
 
@@ -34,8 +35,10 @@ js/decor.js           Hojas, partículas, fondo marino y burbujas generados en S
 js/aquarium.js        Motor de peces en canvas
 js/scenes.js          Intro y línea de tiempo del scroll (GSAP + ScrollTrigger)
 js/cart.js / shop.js  Carrito (estado, persistencia, panel) y catálogo con filtros
+js/run.js             Sección RUN WILD: vídeos en bucle solo cuando se ven, botón de pausa
 js/main.js            Arranque, pantalla de carga, menú móvil, enlaces
 assets/img/           Fotografías recortadas (WebP con transparencia)
+assets/video/         Vídeos reales del perro y el gato corriendo (MP4 + póster)
 assets/fonts/         Archivo e Instrument Serif (OFL)
 capturas/             Capturas de pantalla y vídeo de las transiciones
 CREDITS.md            Autores y licencias de cada foto
@@ -56,6 +59,7 @@ No se usan Three.js, Lenis, Astro ni ninguna API externa.
 |---|---|---|
 | Perro (héroe) | Foto real recortada | Entrada con escala/máscaras, parallax con el ratón, "respiración" sutil y cámara por scroll. **Es movimiento de cámara sobre una foto fija, no animación del animal.** |
 | Gato | Foto real recortada | Entrada lateral, encuadre por scroll y respiración sutil. **El animal no se anima.** El detalle animado es el juguete de plumas (SVG con péndulo). |
+| Perro y gato corriendo (RUN WILD) | 2 vídeos reales (YFCC100M, CC BY 2.0) | **Movimiento real del animal**: un saluki galopando (velocidad real y luego cámara lenta) y un gato corriendo hacia la cámara grabado a 210 fps. Se reproducen en bucle solo cuando la sección está en pantalla y tienen botón de pausa. |
 | Peces | 9 fotos reales recortadas | Nado procedural: cuerpo dividido en franjas que siguen trayectorias curvas, batido de cola simulado (escorzo de la aleta), profundidad por escala y tinte, esquiva del cursor. Es animación generada por código a partir de fotos fijas, no vídeo. |
 
 ## Accesibilidad y movimiento
@@ -66,7 +70,7 @@ No se usan Three.js, Lenis, Astro ni ninguna API externa.
 
 ## Limitaciones conocidas
 
-- La red del entorno de desarrollo bloqueaba Unsplash, Pexels y los bancos de vídeo, así que **no hay vídeo real de animales**. Las fotos salen de Open Images (CC BY 2.0) y tienen como máximo 1024 px, por lo que en pantallas retina o 4K el perro se ve algo blando.
+- Los vídeos del perro y el gato corriendo son reales pero antiguos (2011–2012) y de **640 px de origen**: se ven algo suaves a pantalla grande. Pexels y Pixabay estaban bloqueados desde el entorno de desarrollo. Las fotos del bulldog y del gato del inicio son fijas (Open Images, CC BY 2.0, máximo 1024 px): en pantallas retina o 4K se ven algo blandas.
 - Algunos productos (arnés, collar, acuario, comida, luz) usan fotos de animales como imagen de ambiente, no fotos del producto.
 - El rendimiento solo se midió en Chromium sin GPU (renderizado por software): héroe ≈60 fps, gato ≈45 fps y océano ≈15–20 fps. En equipos con GPU debería ir más fluido, pero no se ha comprobado.
 - Las pruebas se hicieron con Chromium (Playwright). No se probó en Firefox ni Safari.
