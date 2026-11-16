@@ -91,7 +91,7 @@
     var loader = $('.loader');
     loader.classList.add('is-done');
     return gsap.to(loader, {
-      yPercent: -100, duration: 1.15, ease: 'expo.inOut',
+      autoAlpha: 0, duration: .7, ease: 'power2.inOut',
       onComplete: function () { loader.style.display = 'none'; }
     });
   }
@@ -117,7 +117,7 @@
 
     if (!W.motion.cinematic) {
       aquarium.then(function () { W.Scenes.staticMode(); });
-      W.Chase.init();
+      W.Duo.init();
       return;
     }
 
@@ -128,20 +128,20 @@
     var fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
     var tasks = [
       fonts,
-      W.loadImage('assets/img/dog-hero.webp'),
-      W.loadImage('assets/img/cat-hero.webp'),
-      aquarium,
-      W.Living.init()
+      aquarium
     ];
+    // Todo lo que interviene en la primera transición se decodifica antes de empezar
+    $$('[data-actor="dogRun"] img, [data-actor="dogBack"] img, [data-actor="catBack"] [data-layer="s"]')
+      .forEach(function (img) { tasks.push(W.loadImage(img.currentSrc || img.src)); });
     runLoader(tasks).then(function () {
       W.Scenes.refit();            // re-ajusta tipografías ya con las fuentes cargadas
       hideLoader();
       var intro = W.Scenes.intro();
-      intro.delay(.45);
+      intro.delay(.3);
       // Se habilita el scroll cuando la composición del héroe ya está montada
-      gsap.delayedCall(2.5, function () {
+      gsap.delayedCall(2.75, function () {
         W.Scenes.start();
-        W.Chase.init();
+        W.Duo.init();
         W.FX.init();
         W.Shop.reveal();
         ScrollTrigger.refresh();

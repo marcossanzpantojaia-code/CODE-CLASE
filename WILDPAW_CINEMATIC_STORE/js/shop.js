@@ -114,30 +114,43 @@
     return li;
   }
 
+  /* Antes de filtrar se cierra cualquier animación en curso (un filtrado
+     anterior o la entrada de las tarjetas con el scroll). Si no, sus
+     transformaciones a medias se quedan pegadas y las tarjetas se solapan. */
+  var flipAnim = null;
+  function settle(items, grid) {
+    if (!window.gsap) return;
+    if (flipAnim) { flipAnim.progress(1).kill(); flipAnim = null; }
+    gsap.getTweensOf(items).forEach(function (t) { t.progress(1).kill(); });
+    gsap.killTweensOf(grid);
+    gsap.set(items, { clearProps: 'transform,opacity,visibility' });
+    gsap.set(grid, { clearProps: 'height' });
+  }
+
   function applyFilter(cat, animate) {
     current = cat;
     W.$$('.filter').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.filter === cat)); });
     var items = W.$$('.product');
-    var flip = animate && window.gsap && window.Flip && !W.motion.reduced;
-    var state = flip ? Flip.getState(items) : null;
     var grid = W.$('[data-grid]');
+    var flip = animate && window.gsap && window.Flip && !W.motion.reduced;
+    settle(items, grid);
+    var state = flip ? Flip.getState(items) : null;
     var h0 = grid.offsetHeight;
     items.forEach(function (li) {
       li.hidden = !(cat === 'todos' || li.dataset.category === cat);
     });
+    if (!flip) return;
     // La rejilla cambia de alto suavemente (Flip saca las tarjetas del flujo)
-    if (flip) gsap.fromTo(grid, { height: h0 }, { height: grid.offsetHeight, duration: .75, ease: 'expo.inOut', clearProps: 'height' });
+    gsap.fromTo(grid, { height: h0 }, { height: grid.offsetHeight, duration: .75, ease: 'expo.inOut', clearProps: 'height' });
     // Las tarjetas que quedan se recolocan; las demás salen y entran con escala
-    if (flip) {
-      Flip.from(state, {
-        duration: .75,
-        ease: 'expo.inOut',
-        absolute: true,
-        stagger: .03,
-        onEnter: function (els) { return gsap.fromTo(els, { opacity: 0, scale: .8, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: .7, stagger: .05, ease: 'expo.out', delay: .15 }); },
-        onLeave: function (els) { return gsap.to(els, { opacity: 0, scale: .8, duration: .4, ease: 'power2.in' }); }
-      });
-    }
+    flipAnim = Flip.from(state, {
+      duration: .75,
+      ease: 'expo.inOut',
+      absolute: true,
+      stagger: .03,
+      onEnter: function (els) { return gsap.fromTo(els, { opacity: 0, scale: .8, y: 30 }, { opacity: 1, scale: 1, y: 0, duration: .7, stagger: .05, ease: 'expo.out', delay: .15 }); },
+      onLeave: function (els) { return gsap.to(els, { opacity: 0, scale: .8, duration: .4, ease: 'power2.in' }); }
+    });
   }
 
   W.Shop = {

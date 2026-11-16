@@ -1,5 +1,5 @@
-/* WILDPAW — microinteracciones: cursor propio, botones magnéticos, barra de
-   progreso por escenas y toques en el agua. Solo con ratón y sin movimiento
+/* WILDPAW — microinteracciones: puntero propio, botones magnéticos, puntos de
+   progreso y toques en el agua. Solo con ratón y sin movimiento
    reducido; en táctil o con movimiento reducido no se activa nada de esto. */
 (function (W) {
   'use strict';
@@ -59,38 +59,27 @@
     });
   }
 
-  /* ------------------------------------------- Barra de progreso por escenas */
+  /* ------------------------------------ Progreso: puntos de página laterales */
   function rail() {
     var el = document.createElement('div');
     el.className = 'rail';
     el.setAttribute('aria-hidden', 'true');
-    // Textos como contenido CSS (attr): la barra es decorativa y está oculta a lectores de pantalla
-    el.innerHTML = '<span class="rail__num" data-rail-num data-text="01"></span><span class="rail__track"><i data-rail-fill></i></span><span class="rail__total" data-text="05"></span><span class="rail__name" data-rail-name data-text="Perros"></span>';
+    el.innerHTML = '<i></i><i></i><i></i><i></i><i></i>';
     document.body.appendChild(el);
-    var fill = $('[data-rail-fill]', el), num = $('[data-rail-num]', el), name = $('[data-rail-name]', el);
-    var NAMES = ['Perros', 'Gatos', 'Acuáticos', 'Persecución', 'Tienda'];
+    var dots = $$('i', el);
+    var story = $('[data-story]'), duo = $('#juntos'), shop = $('#tienda');
     var last = -1;
     function current() {
-      var st = ScrollTrigger.getAll().filter(function (s) { return s.pin; });
-      var story = st[0], y = window.scrollY;
-      if (!story) return 0;
-      if (y < story.end - 2) {
-        var t = (y - story.start) / (story.end - story.start) * 10;
-        return t < 1.6 ? 0 : t < 6.4 ? 1 : 2;
-      }
-      var shop = $('#tienda');
-      return y + window.innerHeight * .5 < shop.getBoundingClientRect().top + y ? 3 : 4;
+      var mid = window.innerHeight * .5;
+      if (shop.getBoundingClientRect().top < mid) return 4;
+      if (duo && duo.getBoundingClientRect().top < mid) return 3;
+      return story.getBoundingClientRect().bottom > mid ? W.Scenes.activeIndex() : 3;
     }
     function update() {
-      var max = document.documentElement.scrollHeight - window.innerHeight;
-      fill.style.transform = 'scaleY(' + (max > 0 ? window.scrollY / max : 0).toFixed(4) + ')';
       var i = current();
-      if (i !== last) {
-        last = i;
-        num.setAttribute('data-text', '0' + (i + 1));
-        name.setAttribute('data-text', NAMES[i]);
-        gsap.fromTo([num, name], { yPercent: 60, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: .5, ease: 'power3.out', overwrite: true });
-      }
+      if (i === last) return;
+      last = i;
+      dots.forEach(function (d, k) { d.classList.toggle('is-on', k === i); });
     }
     window.addEventListener('scroll', update, { passive: true });
     update();

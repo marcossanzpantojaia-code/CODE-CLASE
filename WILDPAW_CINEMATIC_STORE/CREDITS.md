@@ -1,8 +1,26 @@
 # Créditos y licencias — WILDPAW
 
-## Fotografías (CC BY 2.0)
+## Protagonistas de la historia: golden retriever y gato atigrado
 
-Todas las fotografías proceden del **Open Images Dataset** (Google), cuyas imágenes
+Las seis imágenes de estudio (perro corriendo de frente, perro de espaldas, perro de perfil,
+gato de espaldas, gato saltando y gato de perfil) las **aportó el autor del proyecto** en el
+archivo `gato_y_perro_6_perspectivas.zip`. Están en `assets/img/cast/`.
+
+> **Pendiente de confirmar por el autor:** el origen exacto y los derechos de uso de estas seis
+> imágenes (si son generadas con IA, con qué herramienta y bajo qué condiciones; si son de un
+> banco, con qué licencia). Hasta entonces deben considerarse material del autor para un
+> proyecto de clase, no recursos libres para redistribuir.
+
+**Preparación hecha para esta web** (sin generar ni inventar píxeles nuevos): recorte del fondo
+con un modelo de segmentación (`@imgly/background-removal-node`, ejecutado en local), limpieza del
+color del fondo en los bordes del pelo, extracción de la sombra de contacto a una capa propia,
+dos versiones desenfocadas de cada pose (para el desenfoque de proximidad), igualado de la
+saturación entre poses y conversión a WebP. Las texturas `wash-dog.webp` y `wash-cat.webp` son un
+desenfoque extremo del pelaje de esas mismas fotos.
+
+## Fotografías de productos y peces (CC BY 2.0)
+
+Proceden del **Open Images Dataset** (Google), cuyas imágenes
 se publicaron originalmente en Flickr bajo licencia
 [Creative Commons Attribution 2.0](https://creativecommons.org/licenses/by/2.0/).
 
@@ -12,8 +30,6 @@ tienda **demostrativa**; ningún autor respalda este proyecto.
 
 | Uso en la web | Título original | Autor | Enlace |
 |---|---|---|---|
-| Héroe: bulldog francés | SDIM5493 | Artur Malinowski | https://www.flickr.com/photos/am1974/7354142680 |
-| Escena gato: gato naranja | "Sweet Face..." | Chrismatos | https://www.flickr.com/photos/chrismatos/12570366253 |
 | Producto: juguete (gato siamés) | Yuri | diogo86 | https://www.flickr.com/photos/diogo86/385760099 |
 | Producto: collar (malinois) | HMKC Christmas Fun Run 2012 | SheltieBoy | https://www.flickr.com/photos/montanapets/8264360587/ |
 | Producto: arnés (corgi) | 100均に買い出しに行ったら超かわいいコーギーがいた | ta@keshi kimi | https://www.flickr.com/photos/kimi-/6179233203 |
@@ -30,25 +46,12 @@ tienda **demostrativa**; ningún autor respalda este proyecto.
 | Pez mariposa | Acuario de Bergen | Adrián Santos | https://www.flickr.com/photos/adsaman/4997939389 |
 | Damisela azul | Reef Tank at Long Island Aquarium | KEN_S_NY | https://www.flickr.com/photos/45817379@N06/9438650875 |
 
-## Siluetas de "La persecución"
+## Tipografía
 
-- **Gato:** 12 fotogramas de *Animal Locomotion* (1887) de **Eadweard Muybridge**, dominio público.
-  Imagen digital cortesía del Getty's Open Content Program, distribuida en el paquete npm
-  `@stdlib/datasets-img-locomotion-house-cat` (datos CC0). Modificaciones: segmentación del gato,
-  limpieza de la cuadrícula y conversión a silueta.
-- **Perro:** silueta del ciclo de galope del modelo *Wolf* de **Quaternius** (CC0 1.0), distribuido en el
-  paquete npm `@netforge/asset-library-files`. Solo se usa la sombra renderizada, no el modelo.
-
-## Mapas de profundidad
-
-Hechos para este proyecto a partir de la máscara de cada recorte (sin IA): `assets/img/depth/`.
-
-## Tipografías (SIL Open Font License 1.1)
-
-- **Archivo** — Omnibus-Type. Fuente variable (anchura y peso).
-- **Instrument Serif** — Instrument.
-
-Se incluyen localmente en `assets/fonts/` (subconjunto latino) para funcionar sin conexión.
+- En iPhone, iPad y Mac se usa la tipografía del sistema (**SF Pro**), que no se incluye ni se
+  redistribuye: la pone el propio dispositivo.
+- En el resto de equipos se usa **Inter** (Rasmus Andersson), fuente variable bajo
+  **SIL Open Font License 1.1**, incluida en `assets/fonts/inter-latin-var.woff2` (subconjunto latino).
 
 ## Librerías
 
@@ -56,5 +59,4 @@ Se incluyen localmente en `assets/fonts/` (subconjunto latino) para funcionar si
   ("Standard No Charge License", https://gsap.com/standard-license). Copiadas sin
   modificar en `js/vendor/`.
 
-Todo el código propio (HTML, CSS, JS, ilustraciones SVG de hojas, hierbas, rocas y juguete)
-se ha escrito para este proyecto.
+Todo el código propio (HTML, CSS y JS) se ha escrito para este proyecto.

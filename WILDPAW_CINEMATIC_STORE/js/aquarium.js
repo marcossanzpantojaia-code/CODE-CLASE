@@ -40,9 +40,9 @@
     if (blur && 'filter' in x) x.filter = 'blur(' + blur + 'px)';
     x.drawImage(img, pad, pad);
     x.filter = 'none';
-    // Perspectiva atmosférica: los peces lejanos se tiñen del azul del agua
+    // Perspectiva atmosférica: los peces lejanos se funden con el agua clara
     x.globalCompositeOperation = 'source-atop';
-    x.fillStyle = 'rgba(10, 58, 82,' + tint + ')';
+    x.fillStyle = 'rgba(190, 228, 250,' + tint + ')';
     x.fillRect(0, 0, c.width, c.height);
     return { img: c, w: c.width, h: c.height, pad: pad };
   }
@@ -154,12 +154,12 @@
       }
       ctx.beginPath();
       ctx.arc(b.x, b.y, b.r, 0, TAU);
-      ctx.strokeStyle = 'rgba(241,248,247,' + b.a + ')';
+      ctx.strokeStyle = 'rgba(0,102,204,' + (b.a * .7).toFixed(3) + ')';
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.beginPath();
       ctx.arc(b.x - b.r * .35, b.y - b.r * .35, b.r * .28, 0, TAU);
-      ctx.fillStyle = 'rgba(255,255,255,' + (b.a + .2) + ')';
+      ctx.fillStyle = 'rgba(255,255,255,' + Math.min(1, b.a + .4).toFixed(3) + ')';
       ctx.fill();
     });
   }
@@ -167,7 +167,7 @@
   function drawSnow(ctx, dt) {
     var dpr = state.dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = 'rgba(200,236,232,.5)';
+    ctx.fillStyle = 'rgba(255,255,255,.9)';
     state.snow.forEach(function (s) {
       s.y += s.v * dt; s.x += Math.sin(state.t * .3 + s.p) * .12;
       if (s.y > state.h + 4) { s.y = -4; s.x = W.rand(0, state.w); }
@@ -245,7 +245,7 @@
         var rad = 14 + a * 240;
         ctx.beginPath();
         ctx.ellipse(r.x, r.y, rad, rad * .9, 0, 0, TAU);
-        ctx.strokeStyle = 'rgba(241,248,247,' + (Math.max(0, .55 * (1 - a / 1.4))).toFixed(3) + ')';
+        ctx.strokeStyle = 'rgba(0,91,187,' + (Math.max(0, .45 * (1 - a / 1.4))).toFixed(3) + ')';
         ctx.lineWidth = 1.6 - k * .4;
         ctx.stroke();
       }
@@ -310,7 +310,7 @@
       return Promise.all(all.map(function (sp) {
         return W.loadImage('assets/img/fish/' + sp.key + '.webp').then(function (img) {
           if (!img) return;
-          state.sprites[sp.key] = { near: makeVariant(img, 0, 0), far: makeVariant(img, .42, 1.6) };
+          state.sprites[sp.key] = { near: makeVariant(img, 0, 0), far: makeVariant(img, .5, 1.6) };
         });
       })).then(function () {
         SPECIES = SPECIES.filter(function (sp) { return state.sprites[sp.key]; });

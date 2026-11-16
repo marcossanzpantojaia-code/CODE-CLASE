@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>WILDPAW — Discover their world</title>
   <meta name="description" content="WILDPAW, tienda premium de accesorios para perros, gatos y mundo acuático. Experiencia cinematográfica de demostración.">
-  <meta name="theme-color" content="#F5E9D6">
-  <link rel="preload" href="assets/img/dog-hero.webp" as="image">
+  <meta name="theme-color" content="#FFFFFF">
+  <link rel="preload" href="assets/img/cast/dog-run.webp" as="image">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/scenes.css">
   <link rel="stylesheet" href="css/shop.css">
@@ -21,10 +21,11 @@
   <!-- Pantalla de carga -->
   <div class="loader" aria-hidden="true">
     <div class="loader__brand">
+      <svg class="loader__paw" viewBox="0 0 32 32"><ellipse cx="16" cy="21.5" rx="7.2" ry="6.2"/><ellipse cx="7" cy="13" rx="3.1" ry="3.9" transform="rotate(-18 7 13)"/><ellipse cx="12.6" cy="7.4" rx="3" ry="4"/><ellipse cx="19.4" cy="7.4" rx="3" ry="4"/><ellipse cx="25" cy="13" rx="3.1" ry="3.9" transform="rotate(18 25 13)"/></svg>
       <span class="loader__word">WILDPAW</span>
-      <span class="loader__count"><span data-loader-count>0</span>%</span>
     </div>
     <div class="loader__bar"><span data-loader-bar></span></div>
+    <span class="loader__count"><span data-loader-count>0</span> %</span>
   </div>
 
   <!-- Navegación -->
@@ -62,197 +63,162 @@
     <p class="mobile-menu__note">Tienda demostrativa · sin pagos reales</p>
   </div>
 
-  <div class="grain" aria-hidden="true"></div>
-
   <main id="main">
-    <!-- ============ HISTORIA CINEMATOGRÁFICA: perro → gato → océano ============ -->
+    <!-- ===== HISTORIA: un único estudio blanco. La cámara acompaña al perro,
+         lo deja pasar a través del objetivo, alcanza al gato y se zambulle. ===== -->
     <section class="story" data-story aria-label="Experiencia WILDPAW: tres mundos animales">
       <div class="stage" data-stage>
+        <div class="stage__floor" aria-hidden="true"></div>
 
-        <!-- ESCENA 1 · fondo -->
-        <div class="dog-bg" aria-hidden="true">
-          <div class="dog-bg__glow"></div>
-          <div class="px" data-depth="0.12">
-            <div class="arch" data-arch></div>
-            <div class="arch-line" data-arch-line></div>
-          </div>
-          <div class="bokeh bokeh--a"></div>
-        </div>
-
-        <!-- ESCENA 2 · mundo de los gatos (se revela a través del arco) -->
-        <section class="scene scene--cat" id="gatos" data-scene="cat" aria-labelledby="cat-title">
-          <div class="cat__bg" aria-hidden="true"></div>
-          <div class="cat__light" aria-hidden="true"><i></i><i></i><i></i></div>
-          <span class="scene-index" aria-hidden="true">N°02 — Gatos</span>
-          <div class="cat__leaves cat__leaves--back px" data-depth="0.25" data-leaves="back" aria-hidden="true"></div>
-
-          <div class="cat__type px" data-depth="0.35">
-            <p class="cat__kicker" lang="en"><span class="line"><span class="line__in">Born to be</span></span></p>
-            <h2 class="cat__title" id="cat-title" lang="en">
-              <span class="visually-hidden">Born to be curious.</span>
-              <span class="cat__word" aria-hidden="true" data-cat-word>CURIOUS.</span>
-            </h2>
-          </div>
-
-          <div class="cat__toy px" data-depth="0.6" aria-hidden="true">
-            <div class="cat__toy-swing" data-toy>
-              <svg viewBox="0 0 200 560" class="cat__toy-svg">
-                <defs>
-                  <linearGradient id="fA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7B58F"/><stop offset="1" stop-color="#DF794C"/></linearGradient>
-                  <linearGradient id="fB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6F2E8"/><stop offset="1" stop-color="#B7D5BC"/></linearGradient>
-                  <linearGradient id="fC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8EC"/><stop offset="1" stop-color="#E9D6B8"/></linearGradient>
-                  <radialGradient id="pom" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#FFE3CF"/><stop offset=".6" stop-color="#E8865A"/><stop offset="1" stop-color="#B9532C"/></radialGradient>
-                </defs>
-                <line x1="100" y1="0" x2="100" y2="350" stroke="#F5F4EF" stroke-opacity=".55" stroke-width="1.6"/>
-                <g transform="translate(100 362)">
-                  <g transform="rotate(24)"><path d="M0 0 C 20 34 25 104 7 176 C -13 110 -17 40 0 0 Z" fill="url(#fB)"/><path d="M0 4 Q 4 90 7 172" stroke="#7FA486" stroke-width="1.4" fill="none"/></g>
-                  <g transform="rotate(-22)"><path d="M0 0 C 20 34 25 104 7 176 C -13 110 -17 40 0 0 Z" fill="url(#fC)"/><path d="M0 4 Q 4 90 7 172" stroke="#C9AE86" stroke-width="1.4" fill="none"/></g>
-                  <g><path d="M0 0 C 24 40 29 124 8 196 C -15 128 -21 46 0 0 Z" fill="url(#fA)"/><path d="M0 4 Q 5 100 8 192" stroke="#A9512C" stroke-width="1.6" fill="none"/></g>
-                  <circle r="15" fill="url(#pom)"/>
-                </g>
-              </svg>
-            </div>
-          </div>
-
-          <figure class="cat__figure">
-            <div class="cat__move" data-cat-move>
-              <div class="cat__cam" data-cat-cam>
-                <img class="cat__img" src="assets/img/cat-hero.webp" width="892" height="761" alt="Gato atigrado naranja mirando hacia arriba con los ojos muy abiertos" decoding="async">
-                <canvas class="cat__img living" data-living="cat" data-living-strength=".03" data-living-scroll=".8" aria-hidden="true"></canvas>
-              </div>
-            </div>
-          </figure>
-
-          <p class="cat__sub" lang="en" data-cat-sub><span class="line"><span class="line__in">Everything for their next adventure.</span></span></p>
-
-          <div class="cat__leaves cat__leaves--front px" data-depth="1.1" data-leaves="front" aria-hidden="true"></div>
-          <div class="motes px" data-depth="0.8" data-motes aria-hidden="true"></div>
-
-          <ul class="cat__cards" data-cat-cards aria-label="Productos destacados para gatos"></ul>
-          <div class="cat__shade" aria-hidden="true"></div>
-        </section>
-
-        <!-- ESCENA 1 · palabra detrás del perro -->
-        <div class="dog-word" aria-hidden="true">
-          <div class="px" data-depth="0.25">
-            <div class="word" data-word>
-              <span class="word__part"><span class="ch"><span>W</span></span><span class="ch"><span>I</span></span><span class="ch"><span>L</span></span><span class="ch"><span>D</span></span></span><span class="word__part"><span class="ch"><span>P</span></span><span class="ch"><span>A</span></span><span class="ch"><span>W</span></span></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- ESCENA 1 · primer plano -->
+        <!-- ACTO I · perros -->
         <section class="scene scene--dog" id="perros" data-scene="dog" aria-labelledby="hero-title">
           <h1 class="visually-hidden" id="hero-title">WILDPAW — Discover their world. Tienda premium para perros, gatos y mundo acuático.</h1>
 
-          <div class="dog__meta" aria-hidden="true">
-            <span class="dog__eyebrow" data-hero-fade>Discover their world</span>
-            <span class="dog__index" data-hero-fade>N°01 — Perros</span>
+          <div class="mega mega--dog" aria-hidden="true">
+            <div class="px" data-depth="0.3">
+              <div class="mega__word" data-mega="dog"><span class="mega__part"><span class="ch"><span>W</span></span><span class="ch"><span>I</span></span><span class="ch"><span>L</span></span><span class="ch"><span>D</span></span></span><span class="mega__part"><span class="ch"><span>P</span></span><span class="ch"><span>A</span></span><span class="ch"><span>W</span></span></span></div>
+            </div>
           </div>
 
-          <figure class="dog__figure">
-            <div class="dog__cam" data-dog-cam>
-              <div class="px" data-depth="-0.18">
-                <div class="dog__intro" data-dog-intro>
-                  <img class="dog__img" data-dog-img src="assets/img/dog-hero.webp" width="758" height="1014" alt="Bulldog francés de pelaje leonado con grandes orejas erguidas, mirando de frente a la cámara" decoding="async" fetchpriority="high">
-                  <canvas class="dog__img living" data-living="dog" data-living-strength=".034" data-living-scroll="-.9" aria-hidden="true"></canvas>
-                </div>
+          <figure class="cast">
+            <div class="px" data-depth="-0.2">
+            <div class="actor actor--dog-run" data-actor="dogRun">
+              <img class="actor__shadow" data-shadow src="assets/img/cast/dog-run-shadow.webp" width="983" height="1143" alt="" decoding="async">
+              <div class="actor__body" data-body>
+                <img class="actor__img actor__img--blur" data-layer="b2" src="assets/img/cast/dog-run-b2.webp" width="983" height="1143" alt="" decoding="async">
+                <img class="actor__img actor__img--blur" data-layer="b1" src="assets/img/cast/dog-run-b1.webp" width="983" height="1143" alt="" decoding="async">
+                <img class="actor__img" data-layer="s" src="assets/img/cast/dog-run.webp" width="983" height="1143" alt="Golden retriever corriendo hacia la cámara con la lengua fuera" decoding="async" fetchpriority="high">
               </div>
+            </div>
+            <div class="actor actor--dog-back" data-actor="dogBack" aria-hidden="true">
+              <img class="actor__shadow" data-shadow src="assets/img/cast/dog-back-shadow.webp" width="988" height="1179" alt="" decoding="async">
+              <div class="actor__body" data-body>
+                <img class="actor__img actor__img--blur" data-layer="b2" src="assets/img/cast/dog-back-b2.webp" width="988" height="1179" alt="" decoding="async">
+                <img class="actor__img actor__img--blur" data-layer="b1" src="assets/img/cast/dog-back-b1.webp" width="988" height="1179" alt="" decoding="async">
+                <img class="actor__img" data-layer="s" src="assets/img/cast/dog-back.webp" width="988" height="1179" alt="" decoding="async">
+              </div>
+            </div>
             </div>
           </figure>
 
+          <div class="dog__meta" aria-hidden="true">
+            <span class="chip" data-hero-fade>Discover their world</span>
+            <span class="chip chip--plain" data-hero-fade>01 · Perros</span>
+          </div>
+
           <p class="dog__headline" lang="en">
             <span class="line" data-hero-line><span class="line__in">Their world.</span></span>
-            <span class="line line--serif" data-hero-line><span class="line__in">Your adventure.</span></span>
+            <span class="line" data-hero-line><span class="line__in"><em>Your adventure.</em></span></span>
           </p>
 
           <div class="dog__aside">
             <p class="dog__copy" data-hero-fade>Accesorios premium para perros, gatos y vida acuática. Diseñados para quienes viven a su lado cada aventura.</p>
             <a class="btn btn--explore" href="#gatos" data-goto="cat" data-hero-fade>
-              <span>Explore the world</span>
-              <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span lang="en">Explore the world</span>
+              <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </a>
           </div>
 
-          <div class="badge px" data-depth="0.9" aria-hidden="true">
-            <div class="badge__in" data-badge>
-              <svg class="badge__ring" viewBox="0 0 200 200">
-                <defs><path id="badgeCircle" d="M100 100 m-78 0 a78 78 0 1 1 156 0 a78 78 0 1 1 -156 0"/></defs>
-                <text><textPath href="#badgeCircle" startOffset="0">THEIR WORLD · YOUR ADVENTURE · WILDPAW · EST. 2026 ·</textPath></text>
-              </svg>
-              <svg class="badge__paw" viewBox="0 0 32 32"><ellipse cx="16" cy="21.5" rx="7.2" ry="6.2"/><ellipse cx="7" cy="13" rx="3.1" ry="3.9" transform="rotate(-18 7 13)"/><ellipse cx="12.6" cy="7.4" rx="3" ry="4"/><ellipse cx="19.4" cy="7.4" rx="3" ry="4"/><ellipse cx="25" cy="13" rx="3.1" ry="3.9" transform="rotate(18 25 13)"/></svg>
+          <p class="bridge" lang="en" aria-hidden="true" data-bridge><span class="line"><span class="line__in">Keep up.</span></span></p>
+
+          <div class="scroll-cue" aria-hidden="true" data-hero-fade><i></i><span>Desliza</span></div>
+        </section>
+
+        <!-- ACTO II · gatos -->
+        <section class="scene scene--cat" id="gatos" data-scene="cat" aria-labelledby="cat-title">
+          <div class="mega mega--cat" aria-hidden="true">
+            <div class="px" data-depth="0.3">
+              <div class="mega__word" data-mega="cat"><span class="mega__part"><span class="ch"><span>C</span></span><span class="ch"><span>U</span></span><span class="ch"><span>R</span></span><span class="ch"><span>I</span></span></span><span class="mega__part"><span class="ch"><span>O</span></span><span class="ch"><span>U</span></span><span class="ch"><span>S</span></span></span></div>
             </div>
           </div>
 
-          <div class="dust px" data-depth="1.3" data-dust aria-hidden="true"></div>
-          <div class="bokeh bokeh--b px" data-depth="1.6" aria-hidden="true"></div>
+          <figure class="cast">
+            <div class="px" data-depth="-0.2">
+            <div class="actor actor--cat-back" data-actor="catBack">
+              <img class="actor__shadow" data-shadow src="assets/img/cast/cat-back-shadow.webp" width="1031" height="1196" alt="" decoding="async">
+              <div class="actor__body" data-body>
+                <img class="actor__img actor__img--blur" data-layer="b2" src="assets/img/cast/cat-back-b2.webp" width="1031" height="1196" alt="" decoding="async">
+                <img class="actor__img actor__img--blur" data-layer="b1" src="assets/img/cast/cat-back-b1.webp" width="1031" height="1196" alt="" decoding="async">
+                <img class="actor__img" data-layer="s" src="assets/img/cast/cat-back.webp" width="1031" height="1196" alt="Gato atigrado visto desde atrás, caminando y mirando hacia un lado con curiosidad" decoding="async">
+              </div>
+            </div>
+            <div class="actor actor--cat-leap" data-actor="catLeap" aria-hidden="true">
+              <img class="actor__shadow" data-shadow src="assets/img/cast/cat-leap-shadow.webp" width="894" height="1402" alt="" decoding="async">
+              <div class="actor__body" data-body>
+                <img class="actor__img actor__img--blur" data-layer="b2" src="assets/img/cast/cat-leap-b2.webp" width="894" height="1402" alt="" decoding="async">
+                <img class="actor__img actor__img--blur" data-layer="b1" src="assets/img/cast/cat-leap-b1.webp" width="894" height="1402" alt="" decoding="async">
+                <img class="actor__img" data-layer="s" src="assets/img/cast/cat-leap.webp" width="894" height="1402" alt="" decoding="async">
+              </div>
+            </div>
+            </div>
+          </figure>
 
-          <div class="scroll-cue" aria-hidden="true"><span data-hero-fade>Scroll</span><i data-hero-fade></i></div>
+          <div class="cat__copy">
+            <p class="chip" data-cat-fade aria-hidden="true">02 · Gatos</p>
+            <h2 class="cat__title" id="cat-title" lang="en">
+              <span class="line"><span class="line__in">Born to be</span></span>
+              <span class="line"><span class="line__in"><em>curious.</em></span></span>
+            </h2>
+            <p class="cat__sub" lang="en" data-cat-fade>Everything for their next adventure.</p>
+          </div>
+
+          <ul class="cat__cards" data-cat-cards aria-label="Productos destacados para gatos"></ul>
         </section>
 
-        <!-- ESCENA 3 · mundo acuático (inmersión) -->
+        <!-- ACTO III · mundo acuático -->
         <section class="scene scene--ocean" id="acuaticos" data-scene="ocean" aria-labelledby="ocean-title">
-          <div class="ocean__surface" aria-hidden="true">
-            <svg class="ocean__wave ocean__wave--back" viewBox="0 0 2880 160" preserveAspectRatio="none"><path d="M0 70 C 240 20 480 20 720 70 S 1200 120 1440 70 S 1920 20 2160 70 S 2640 120 2880 70 V160 H0 Z"/></svg>
-            <svg class="ocean__wave ocean__wave--front" viewBox="0 0 2880 160" preserveAspectRatio="none"><path d="M0 90 C 180 50 360 50 540 90 S 900 130 1080 90 S 1260 50 1440 90 S 1800 130 1980 90 S 2340 50 2520 90 S 2700 130 2880 90 V160 H0 Z"/></svg>
-          </div>
           <div class="ocean__inner">
             <div class="ocean__bg" aria-hidden="true"></div>
             <div class="ocean__rays px" data-depth="0.2" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
             <canvas class="ocean__canvas" data-fish-layer="back" aria-hidden="true"></canvas>
-            <div class="ocean__seabed px" data-depth="0.3" data-seabed aria-hidden="true"></div>
             <h2 class="ocean__title" id="ocean-title" lang="en">
               <span class="ocean__title-in" data-ocean-title>
                 <span class="line"><span class="line__in">Dive into</span></span>
-                <span class="line line--serif"><span class="line__in">their world.</span></span>
+                <span class="line"><span class="line__in"><em>their world.</em></span></span>
               </span>
             </h2>
             <canvas class="ocean__canvas" data-fish-layer="front" aria-hidden="true"></canvas>
-            <div class="ocean__grass px" data-depth="0.9" data-grass-front aria-hidden="true"></div>
             <div class="ocean__bubbles" data-bubbles aria-hidden="true"></div>
             <div class="ocean__cta" data-ocean-cta>
               <p>Nueve especies fotografiadas: pez payaso, pez león, garibaldi, cirujano amarillo y más, nadando entre tus letras.</p>
-              <a class="btn btn--light" href="#tienda" data-filter-link="acuaticos"><span>Ver acuáticos</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+              <a class="btn btn--blue" href="#tienda" data-filter-link="acuaticos"><span>Ver acuáticos</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
             </div>
-            <div class="ocean__depth" aria-hidden="true"><span data-depth-meter>-12</span> m</div>
-            <span class="scene-index" aria-hidden="true">N°03 — Acuáticos</span>
+            <div class="ocean__meta" aria-hidden="true">
+              <span class="chip" data-ocean-fade>03 · Acuáticos</span>
+              <span class="chip chip--plain" data-ocean-fade>Profundidad <b><span data-depth-meter>-12</span> m</b></span>
+            </div>
           </div>
         </section>
+
+        <!-- Cuando un animal cruza el objetivo, su pelaje tapa el encuadre -->
+        <div class="wash wash--dog" data-wash="dog" aria-hidden="true"><i></i></div>
+        <div class="wash wash--cat" data-wash="cat" aria-hidden="true"><i></i></div>
       </div>
     </section>
 
-    <!-- ==================== LA PERSECUCIÓN: sombras que corren ==================== -->
-    <section class="chase" id="persecucion" data-chase aria-labelledby="chase-title">
-      <div class="chase__pin" data-chase-pin>
-        <div class="chase__sun" aria-hidden="true"></div>
-        <p class="chase__eyebrow">N°04 — La persecución</p>
-        <h2 class="visually-hidden" id="chase-title">La persecución: un gato y un perro corriendo</h2>
-
-        <div class="chase__marquee" aria-hidden="true">
-          <div class="chase__row chase__row--outline" data-marquee="1"><span>Run wild · Run wild · Run wild · Run wild · </span><span>Run wild · Run wild · Run wild · Run wild · </span></div>
-          <div class="chase__row chase__row--fill" data-marquee="-1"><span>Chase · Jump · Explore · Chase · Jump · Explore · </span><span>Chase · Jump · Explore · Chase · Jump · Explore · </span></div>
+    <!-- ==================== JUNTOS: travelling lateral ==================== -->
+    <section class="duo" id="juntos" data-duo aria-labelledby="duo-title">
+      <div class="duo__marquee" aria-hidden="true">
+        <div class="duo__row" data-marquee="1"><span>Side by side · Side by side · Side by side · </span><span>Side by side · Side by side · Side by side · </span></div>
+      </div>
+      <figure class="duo__cast">
+        <div class="walker walker--dog" data-walker="dog">
+          <img class="walker__shadow" src="assets/img/cast/dog-walk-shadow.webp" width="1122" height="660" alt="" loading="lazy" decoding="async">
+          <img class="walker__img" src="assets/img/cast/dog-walk.webp" width="1122" height="660" alt="Golden retriever caminando de perfil" loading="lazy" decoding="async">
         </div>
-
-        <div class="chase__track" aria-hidden="true">
-          <div class="chase__runner chase__runner--cat" data-runner="cat">
-            <i class="chase__ghost"></i><i class="chase__ghost"></i><i class="chase__ghost"></i><i class="chase__body"></i>
-          </div>
-          <div class="chase__runner chase__runner--dog" data-runner="dog">
-            <i class="chase__ghost"></i><i class="chase__ghost"></i><i class="chase__ghost"></i><i class="chase__body"></i>
-          </div>
-          <div class="chase__floor"></div>
+        <div class="walker walker--cat" data-walker="cat">
+          <img class="walker__shadow" src="assets/img/cast/cat-walk-shadow.webp" width="1113" height="634" alt="" loading="lazy" decoding="async">
+          <img class="walker__img" src="assets/img/cast/cat-walk.webp" width="1113" height="634" alt="Gato atigrado caminando de perfil" loading="lazy" decoding="async">
         </div>
-
-        <div class="chase__bar">
-          <p class="chase__note">Sombras en movimiento: el gato son fotografías reales de Eadweard Muybridge, <cite>Animal Locomotion</cite> (1887); el perro, un ciclo de galope animado.</p>
-          <dl class="chase__stats">
-            <div><dt>Gato doméstico</dt><dd><b data-speed="cat">48</b> km/h</dd></div>
-            <div><dt>Perro (galgo)</dt><dd><b data-speed="dog">70</b> km/h</dd></div>
-          </dl>
-          <a class="btn btn--explore chase__cta" href="#tienda" data-filter-link="todos">
-            <span>Equípalos para correr</span>
-            <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          </a>
+      </figure>
+      <div class="duo__bar">
+        <div>
+          <p class="chip" style="--dot: var(--blue)">04 · Juntos</p>
+          <h2 class="duo__title" id="duo-title" lang="en">Side by side. <em>Every day.</em></h2>
+        </div>
+        <div class="duo__aside">
+          <p>Paseos, siestas y carreras: todo lo que necesitan para compartir el día contigo, en una sola tienda.</p>
+          <a class="btn" href="#tienda" data-filter-link="todos"><span>Ver toda la tienda</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
         </div>
       </div>
     </section>
@@ -260,8 +226,8 @@
     <!-- ================================ TIENDA ================================ -->
     <section class="shop" id="tienda" aria-labelledby="shop-title">
       <div class="shop__head">
-        <p class="shop__eyebrow">WILDPAW Store · N°05</p>
-        <h2 class="shop__title" id="shop-title"><span class="line"><span class="line__in" data-shop-line>Curated for</span></span> <span class="line"><span class="line__in" data-shop-line>the <em>wild ones.</em></span></span></h2>
+        <p class="chip shop__eyebrow" style="--dot: var(--green)">05 · Tienda</p>
+        <h2 class="shop__title" id="shop-title" lang="en"><span class="line"><span class="line__in" data-shop-line>Curated for</span></span> <span class="line"><span class="line__in" data-shop-line><em>the wild ones.</em></span></span></h2>
         <p class="shop__demo"><strong>Tienda demostrativa.</strong> Los productos y precios son ficticios: no se realizan pagos ni cobros.</p>
       </div>
       <div class="shop__filters" role="group" aria-label="Filtrar productos por categoría" data-filters></div>
@@ -277,11 +243,10 @@
     </div>
     <p class="footer__note">Proyecto demostrativo creado en clase. Sin pagos reales, sin recogida de datos personales: el carrito solo se guarda en tu navegador.</p>
     <details class="footer__credits">
-      <summary>Créditos fotográficos (CC BY 2.0)</summary>
-      <p>Fotografías de <a href="https://storage.googleapis.com/openimages/web/index.html">Open Images Dataset</a>, publicadas en Flickr bajo licencia <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>. Modificaciones: fondo eliminado, recorte y ajuste de bordes. Ver también <code>CREDITS.md</code>.</p>
+      <summary>Créditos de imágenes</summary>
+      <p>Golden retriever y gato atigrado de la historia (seis poses): imágenes aportadas por el autor del proyecto y recortadas para esta web.</p>
+      <p>Productos y peces: fotografías de <a href="https://storage.googleapis.com/openimages/web/index.html">Open Images Dataset</a>, publicadas en Flickr bajo licencia <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>. Modificaciones: fondo eliminado, recorte y ajuste de bordes. Ver también <code>CREDITS.md</code>.</p>
       <ul>
-        <li>Bulldog francés — “SDIM5493”, <a href="https://www.flickr.com/photos/am1974/7354142680">Artur Malinowski</a></li>
-        <li>Gato naranja — “Sweet Face…”, <a href="https://www.flickr.com/photos/chrismatos/12570366253">Chrismatos</a></li>
         <li>Gato siamés — “Yuri”, <a href="https://www.flickr.com/photos/diogo86/385760099">diogo86</a></li>
         <li>Malinois — “HMKC Christmas Fun Run 2012”, <a href="https://www.flickr.com/photos/montanapets/8264360587/">SheltieBoy</a></li>
         <li>Corgi — “100均に買い出しに行ったら超かわいいコーギーがいた”, <a href="https://www.flickr.com/photos/kimi-/6179233203">ta@keshi kimi</a></li>
@@ -298,9 +263,8 @@
         <li>Pez mariposa — “Acuario de Bergen”, <a href="https://www.flickr.com/photos/adsaman/4997939389">Adrián Santos</a></li>
         <li>Damisela azul — “Reef Tank at Long Island Aquarium”, <a href="https://www.flickr.com/photos/45817379@N06/9438650875">KEN_S_NY</a></li>
       </ul>
-      <p>Sombras de “La persecución”: gato a partir de <cite>Animal Locomotion</cite> de Eadweard Muybridge (1887, dominio público; vía Getty Open Content y stdlib); perro a partir del ciclo de galope del lobo de <a href="https://quaternius.com">Quaternius</a> (CC0).</p>
     </details>
-    <p class="footer__legal">© 2026 WILDPAW · Demo · Tipografías Archivo e Instrument Serif (SIL OFL) · Animación con GSAP</p>
+    <p class="footer__legal">© 2026 WILDPAW · Demo · Tipografía del sistema (SF Pro) con Inter (SIL OFL) como alternativa · Animación con GSAP</p>
   </footer>
 
   <!-- Carrito -->
@@ -336,10 +300,8 @@
   <script src="js/cart.js"></script>
   <script src="js/shop.js"></script>
   <script src="js/aquarium.js"></script>
-  <script src="js/data/living-photos.js"></script>
-  <script src="js/living.js"></script>
   <script src="js/scenes.js"></script>
-  <script src="js/chase.js"></script>
+  <script src="js/duo.js"></script>
   <script src="js/fx.js"></script>
   <script src="js/main.js"></script>
 </body>
