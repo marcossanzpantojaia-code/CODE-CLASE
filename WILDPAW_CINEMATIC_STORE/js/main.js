@@ -133,6 +133,8 @@
     // Todo lo que interviene en la primera transición se decodifica antes de empezar
     $$('[data-actor="dogRun"] img, [data-actor="dogBack"] img, [data-actor="catBack"] [data-layer="s"]')
       .forEach(function (img) { tasks.push(W.loadImage(img.currentSrc || img.src)); });
+    // Las marionetas se crean cuando sus fotos ya están decodificadas
+    tasks.push(Promise.all(tasks.slice()).then(function () { return W.Scenes.rig(); }));
     runLoader(tasks).then(function () {
       W.Scenes.refit();            // re-ajusta tipografías ya con las fuentes cargadas
       hideLoader();

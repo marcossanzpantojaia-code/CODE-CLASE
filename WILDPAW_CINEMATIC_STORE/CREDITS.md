@@ -16,7 +16,9 @@ con un modelo de segmentación (`@imgly/background-removal-node`, ejecutado en l
 color del fondo en los bordes del pelo, extracción de la sombra de contacto a una capa propia,
 dos versiones desenfocadas de cada pose (para el desenfoque de proximidad), igualado de la
 saturación entre poses y conversión a WebP. Las texturas `wash-dog.webp` y `wash-cat.webp` son un
-desenfoque extremo del pelaje de esas mismas fotos.
+desenfoque extremo del pelaje de esas mismas fotos, y las sombras `*-shadow-soft.webp`, un desenfoque
+de sus sombras. En la web, cada foto se deforma en tiempo real con un esqueleto 2D (`js/rig.js`) para
+mover patas, cola, orejas y lengua: es una modificación de la imagen, no material nuevo.
 
 ## Fotografías de productos y peces (CC BY 2.0)
 

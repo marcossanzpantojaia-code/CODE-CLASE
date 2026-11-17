@@ -1,0 +1,389 @@
+{
+  "_nota": "Esqueletos 2D de las seis poses. Coordenadas en fracciones del lienzo de cada imagen (x de 0 a 1 en el ancho, y de 0 a 1 en el alto). Cada parte es una cadena de puntos: el primero es la articulación que la une al cuerpo (o a la cabeza). 'r' son los radios de la cápsula de influencia en píxeles de la imagen; 'z' es el orden de dibujo (−1 detrás del cuerpo, 1 delante) y 'attach' es el tramo del primer hueso (en fracción) en el que la parte se funde con su padre.",
+  "dog-run": {
+    "soft": 0.16,
+    "root": [0.55, 0.52],
+    "parts": [
+      {
+        "name": "head",
+        "parent": "root",
+        "chain": [[0.6, 0.46], [0.64, 0.25], [0.66, 0.07]],
+        "r": [140, 200, 170],
+        "attach": 0.45,
+        "z": 0
+      },
+      {
+        "name": "earL",
+        "parent": "head",
+        "chain": [[0.52, 0.1], [0.47, 0.25]],
+        "r": [42, 48],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "earR",
+        "parent": "head",
+        "chain": [[0.81, 0.1], [0.86, 0.25]],
+        "r": [38, 42],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "tongue",
+        "parent": "head",
+        "chain": [[0.69, 0.315], [0.725, 0.39]],
+        "r": [34, 40],
+        "attach": 0.35,
+        "z": 0
+      },
+      {
+        "name": "tail",
+        "parent": "root",
+        "chain": [[0.34, 0.17], [0.24, 0.11], [0.14, 0.075], [0.05, 0.06]],
+        "r": [109, 115, 109, 98],
+        "attach": 0.3,
+        "z": -1
+      },
+      {
+        "name": "legFR",
+        "parent": "root",
+        "chain": [[0.7, 0.56], [0.675, 0.76], [0.665, 0.88]],
+        "r": [95, 98, 104],
+        "attach": 0.45,
+        "z": 1
+      },
+      {
+        "name": "legFM",
+        "parent": "root",
+        "chain": [[0.47, 0.6], [0.46, 0.7], [0.46, 0.79]],
+        "r": [78, 87, 84],
+        "attach": 0.5,
+        "z": 1
+      },
+      {
+        "name": "legRL",
+        "parent": "root",
+        "chain": [[0.25, 0.56], [0.235, 0.66], [0.24, 0.735]],
+        "r": [63, 64, 67],
+        "attach": 0.5,
+        "z": -1
+      },
+      {
+        "name": "legRM",
+        "parent": "root",
+        "chain": [[0.37, 0.64], [0.345, 0.75], [0.33, 0.835]],
+        "r": [58, 64, 67],
+        "attach": 0.5,
+        "z": -1
+      }
+    ]
+  },
+  "dog-back": {
+    "soft": 0.16,
+    "root": [0.45, 0.5],
+    "parts": [
+      {
+        "name": "head",
+        "parent": "root",
+        "chain": [[0.33, 0.25], [0.19, 0.15], [0.06, 0.21]],
+        "r": [130, 150, 110],
+        "attach": 0.45,
+        "z": 0
+      },
+      {
+        "name": "tongue",
+        "parent": "head",
+        "chain": [[0.115, 0.255], [0.09, 0.29]],
+        "r": [30, 32],
+        "attach": 0.35,
+        "z": 0
+      },
+      {
+        "name": "tail",
+        "parent": "root",
+        "chain": [[0.57, 0.37], [0.67, 0.39], [0.79, 0.42], [0.92, 0.45]],
+        "r": [121, 126, 126, 115],
+        "attach": 0.3,
+        "z": 1
+      },
+      {
+        "name": "legRA",
+        "parent": "root",
+        "chain": [[0.4, 0.57], [0.4, 0.76], [0.39, 0.9]],
+        "r": [90, 84, 90],
+        "attach": 0.45,
+        "z": 1
+      },
+      {
+        "name": "legRB",
+        "parent": "root",
+        "chain": [[0.54, 0.61], [0.55, 0.74], [0.49, 0.845]],
+        "r": [69, 77, 72],
+        "attach": 0.45,
+        "z": 1
+      },
+      {
+        "name": "legF",
+        "parent": "root",
+        "chain": [[0.27, 0.46], [0.23, 0.58], [0.21, 0.66]],
+        "r": [62, 64, 67],
+        "attach": 0.45,
+        "z": -1
+      }
+    ]
+  },
+  "dog-walk": {
+    "root": [0.5, 0.4],
+    "parts": [
+      {
+        "name": "head",
+        "parent": "root",
+        "chain": [[0.7, 0.4], [0.8, 0.25], [0.93, 0.2]],
+        "r": [95, 125, 110],
+        "attach": 0.5,
+        "z": 0
+      },
+      {
+        "name": "ear",
+        "parent": "head",
+        "chain": [[0.79, 0.13], [0.8, 0.265]],
+        "r": [32, 36],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "tail",
+        "parent": "root",
+        "chain": [[0.27, 0.31], [0.19, 0.28], [0.12, 0.23], [0.05, 0.15]],
+        "r": [69, 80, 86, 80],
+        "attach": 0.35,
+        "z": 0
+      },
+      {
+        "name": "legRB",
+        "parent": "root",
+        "chain": [[0.28, 0.51], [0.195, 0.7], [0.1, 0.87]],
+        "r": [76, 56, 52],
+        "attach": 0.45,
+        "z": 1
+      },
+      {
+        "name": "legRF",
+        "parent": "root",
+        "chain": [[0.37, 0.56], [0.4, 0.75], [0.47, 0.91]],
+        "r": [65, 53, 55],
+        "attach": 0.45,
+        "z": -1
+      },
+      {
+        "name": "legFB",
+        "parent": "root",
+        "chain": [[0.575, 0.56], [0.58, 0.79], [0.59, 0.91]],
+        "r": [62, 50, 58],
+        "attach": 0.4,
+        "z": -1
+      },
+      {
+        "name": "legFF",
+        "parent": "root",
+        "chain": [[0.68, 0.58], [0.8, 0.74], [0.89, 0.84]],
+        "r": [62, 50, 52],
+        "attach": 0.4,
+        "z": 1
+      }
+    ]
+  },
+  "cat-back": {
+    "soft": 0.16,
+    "root": [0.47, 0.5],
+    "parts": [
+      {
+        "name": "head",
+        "parent": "root",
+        "chain": [[0.66, 0.33], [0.76, 0.21], [0.87, 0.2]],
+        "r": [115, 140, 120],
+        "attach": 0.45,
+        "z": 0
+      },
+      {
+        "name": "earA",
+        "parent": "head",
+        "chain": [[0.78, 0.12], [0.8, 0.03]],
+        "r": [46, 40],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "earB",
+        "parent": "head",
+        "chain": [[0.87, 0.12], [0.915, 0.06]],
+        "r": [30, 28],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "tail",
+        "parent": "root",
+        "chain": [[0.36, 0.47], [0.26, 0.44], [0.17, 0.37], [0.12, 0.27], [0.1, 0.17]],
+        "r": [69, 76, 80, 86, 80],
+        "attach": 0.3,
+        "z": 1
+      },
+      {
+        "name": "legRA",
+        "parent": "root",
+        "chain": [[0.43, 0.63], [0.44, 0.8], [0.42, 0.93]],
+        "r": [84, 77, 87],
+        "attach": 0.45,
+        "z": 1
+      },
+      {
+        "name": "legRB",
+        "parent": "root",
+        "chain": [[0.52, 0.66], [0.55, 0.73], [0.53, 0.78]],
+        "r": [52, 56, 58],
+        "attach": 0.45,
+        "z": 1
+      },
+      {
+        "name": "legF",
+        "parent": "root",
+        "chain": [[0.7, 0.47], [0.71, 0.6], [0.71, 0.67]],
+        "r": [52, 56, 58],
+        "attach": 0.45,
+        "z": -1
+      }
+    ]
+  },
+  "cat-leap": {
+    "soft": 0.16,
+    "root": [0.52, 0.48],
+    "parts": [
+      {
+        "name": "head",
+        "parent": "root",
+        "chain": [[0.58, 0.53], [0.56, 0.38], [0.56, 0.25]],
+        "r": [160, 200, 170],
+        "attach": 0.4,
+        "z": 0
+      },
+      {
+        "name": "earL",
+        "parent": "head",
+        "chain": [[0.41, 0.28], [0.36, 0.21]],
+        "r": [42, 40],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "earR",
+        "parent": "head",
+        "chain": [[0.72, 0.27], [0.765, 0.19]],
+        "r": [42, 40],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "tail",
+        "parent": "root",
+        "chain": [[0.25, 0.22], [0.21, 0.12], [0.3, 0.045], [0.46, 0.025]],
+        "r": [69, 64, 64, 60],
+        "attach": 0.3,
+        "z": -1
+      },
+      {
+        "name": "legFA",
+        "parent": "root",
+        "chain": [[0.43, 0.57], [0.55, 0.75], [0.61, 0.87]],
+        "r": [101, 106, 104],
+        "attach": 0.45,
+        "z": 1
+      },
+      {
+        "name": "legFB",
+        "parent": "root",
+        "chain": [[0.78, 0.53], [0.85, 0.63], [0.88, 0.715]],
+        "r": [63, 70, 72],
+        "attach": 0.45,
+        "z": 1
+      },
+      {
+        "name": "legR",
+        "parent": "root",
+        "chain": [[0.26, 0.5], [0.27, 0.6], [0.25, 0.675]],
+        "r": [63, 64, 67],
+        "attach": 0.5,
+        "z": -1
+      }
+    ]
+  },
+  "cat-walk": {
+    "root": [0.5, 0.4],
+    "parts": [
+      {
+        "name": "head",
+        "parent": "root",
+        "chain": [[0.77, 0.37], [0.86, 0.25], [0.96, 0.28]],
+        "r": [90, 110, 90],
+        "attach": 0.5,
+        "z": 0
+      },
+      {
+        "name": "earA",
+        "parent": "head",
+        "chain": [[0.875, 0.19], [0.88, 0.08]],
+        "r": [30, 30],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "earB",
+        "parent": "head",
+        "chain": [[0.925, 0.17], [0.93, 0.08]],
+        "r": [22, 22],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "tail",
+        "parent": "root",
+        "chain": [[0.26, 0.33], [0.16, 0.35], [0.09, 0.29], [0.05, 0.19], [0.06, 0.08]],
+        "r": [52, 46, 44, 46, 52],
+        "attach": 0.3,
+        "z": 0
+      },
+      {
+        "name": "legRB",
+        "parent": "root",
+        "chain": [[0.25, 0.55], [0.18, 0.74], [0.155, 0.9]],
+        "r": [73, 53, 55],
+        "attach": 0.45,
+        "z": 1
+      },
+      {
+        "name": "legRF",
+        "parent": "root",
+        "chain": [[0.38, 0.6], [0.4, 0.77], [0.48, 0.9]],
+        "r": [62, 53, 55],
+        "attach": 0.45,
+        "z": -1
+      },
+      {
+        "name": "legFB",
+        "parent": "root",
+        "chain": [[0.66, 0.6], [0.67, 0.8], [0.68, 0.9]],
+        "r": [50, 45, 51],
+        "attach": 0.4,
+        "z": -1
+      },
+      {
+        "name": "legFF",
+        "parent": "root",
+        "chain": [[0.77, 0.58], [0.84, 0.72], [0.92, 0.83]],
+        "r": [50, 45, 46],
+        "attach": 0.4,
+        "z": 1
+      }
+    ]
+  }
+}

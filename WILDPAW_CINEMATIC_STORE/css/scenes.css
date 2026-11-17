@@ -85,6 +85,9 @@
 }
 .actor__shadow { transform-origin: 60% 92%; }
 .actor__img--blur { opacity: 0; }
+/* Con la marioneta activa, las fotos siguen en el DOM (texto alternativo y
+   opacidad de cada capa) pero no se pintan: se ve el lienzo WebGL */
+.is-rigged > .actor__img, .is-rigged > .walker__img { clip-path: inset(50%); }
 .is-cinematic .actor--dog-back, .is-cinematic .actor--cat-back, .is-cinematic .actor--cat-leap { visibility: hidden; }
 
 /* -------------------------------------------- Pelaje que tapa el objetivo */

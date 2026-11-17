@@ -32,7 +32,7 @@ Rutas relativas a `/home/user/web_engineering_knowledge_library/`. Todas las fic
 | Pin, errores frecuentes, móvil | ST-002, ST-004, ST-006 | `scrolltrigger/ST-002-pinning.md`, `scrolltrigger/ST-004-errores-frecuentes.md`, `scrolltrigger/ST-006-normalizescroll-y-movil.md` | DOCUMENTADO | ScrollTrigger 3.15 |
 | Criterios C1/C2/C3 | EVAL-001 | `testing/EVAL-001-criterios-fidelidad-visual-movimiento-calidad-creativa.md` | — | — |
 
-Fichas citadas en el encargo y **no leídas** en esta sesión: ST-001 (no leída), LN-001 (no leída), informe del lote 32 (no leído; solo su resumen dentro de MBLUR-001), AIVID-001 (no leída), ASSET-001 (no leída).
+Fichas citadas en el encargo y **no leídas** en esta sesión: ST-001 (no leída), LN-001 (no leída), informe del lote 32 (no leído; solo su resumen dentro de MBLUR-001), ASSET-001 (no leída). AIVID-001 se leyó en la segunda iteración (apartado 8).
 
 ## 3. Aplicación
 | Ficha | Decisión tomada | Archivo:línea | ¿Copia código de la fuente? (licencia) | Adaptación propia (sí/no) |
@@ -141,3 +141,63 @@ No ejecutado: herramientas Python de la biblioteca (`preparar_recursos.py`, `cor
 ## 7. Propuestas para la biblioteca (no aplicar desde el proyecto)
 - Correcciones de fichas: SEQ-003/EDIT-001 podrían indicar los tiempos exactos del relevo de tres capas (la capa inferior debe completar su entrada antes de que empiece la salida de la superior; un solape del 40 % deja un valle medido del 3,6 %). ST-002/GS-005 podrían advertir que el elemento fijado conserva su ancho y alto anteriores durante `refreshInit`.
 - Fichas que podrían pasar a IMPLEMENTADO/VALIDADO (con evidencia): ninguna sin revisión humana. Este proyecto aporta un caso real de "corte en el objetivo" con fotografías (EDIT-001 estrategia C), pendiente de valoración C3.
+
+## 8. Segunda iteración: animales que se mueven (marionetas fotográficas)
+
+### 8.1 Encargo
+"Métete en la biblioteca y hazme mejores animaciones con los animales, que tengan mejor movimiento y se vea más complicado". Partida: seis fotos fijas, que hasta ahora solo se acercaban, alejaban y cambiaban de pose con cortes ocultos.
+
+### 8.2 Necesidades → fichas (leídas completas en esta iteración)
+Rutas relativas a `/home/user/web_engineering_knowledge_library/`.
+
+| Necesidad | Ficha | Ruta | Estado | Qué dice para este caso |
+|---|---|---|---|---|
+| Personaje que avanza con el scroll | MP-001 | `scrolltrigger/MP-001-personaje-por-camino-con-scroll.md` | INVESTIGADO | El personaje avanza ligado al scroll y cambia según la dirección (se gira al subir) |
+| Muelles, amortiguación, oscilación | PHYS-001 | `animations/PHYS-001-fisica-para-animacion.md` | INVESTIGADO | Ley de Hooke, amortiguación y cálculo independiente de la frecuencia de la pantalla |
+| Alternativas para dar movimiento a un protagonista | PROD-001 | `animations/PROD-001-movimiento-corto-de-producto-alternativas.md` | INVESTIGADO | Secuencia prerenderizada = máxima calidad; 2,5D = creíble con giros pequeños |
+| Vídeo generado a partir de una foto | AIVID-001 | `frontend/AIVID-001-clips-image-to-video-encadenados-para-transiciones.md` | PROPUESTO | Para deformaciones o giros que una foto no puede dar hace falta un clip; generadores de pago, no autorizados |
+| Foto con volumen sin modelo 3D | GL-003 | `threejs/GL-003-falso-3d-mapa-profundidad.md` | INVESTIGADO | Desplazamiento por profundidad: paralaje, no movimiento de extremidades |
+| Distinguir movimiento correcto de movimiento convincente | AUD-001 | `testing/AUD-001-auditoria-visual-de-escenas-por-scroll.md` | IMPLEMENTADO | P1 (reversible) no basta; revisar siempre la hoja de estados a dos anchos |
+| Motion blur | MBLUR-001 | `animations/MBLUR-001-motion-blur-por-acumulacion-analitica-en-canvas.md` | IMPLEMENTADO (mecánica) | Ya leída en la iteración 1 |
+| Límites de una imagen fija | AIIMG-001 | `frontend/AIIMG-001-integracion-de-imagenes-generadas-por-ia-en-escenas-2-5d.md` | IMPLEMENTADO | Ya leída: una foto fija solo admite traslación, escala, profundidad y oclusión |
+
+### 8.3 Lo que la biblioteca NO cubre y cómo se resolvió (adaptación propia)
+Ninguna ficha describe cómo **deformar una foto con un esqueleto** (patas, cola, orejas). AIIMG-001 y AIVID-001 lo dan por imposible sin secuencia ni vídeo. Se implementó como **adaptación propia**, con la técnica de la herramienta "marioneta" de After Effects y de los programas de animación 2D por huesos [conocimiento general], y se validó con capturas a tamaño completo, no a ojo:
+
+| Decisión | Por qué | Dónde |
+|---|---|---|
+| Malla fina recortada a la silueta (celdas de ~16 px) y esqueleto 2D por pose: cadera, rodilla, pata, cola de 3–4 huesos, cuello, orejas, lengua | Deformar sin inventar píxeles: cada punto de la foto se mueve con sus huesos | `tools/rig-def.json`, `tools/build-rigs.py` → `js/data/rigs.js` |
+| Pesos por cápsulas que compiten entre partes hermanas; reparto suave en vistas de frente y de espaldas | Con frontera dura, las patas que se tocan se cortaban en seco (medido en capturas a 900 px) | `tools/build-rigs.py` |
+| El borde semitransparente del pelo hereda los pesos de la parte opaca más cercana | Sin esto, el pelo del borde se quedaba quieto y se estiraba en dientes de sierra | ídem |
+| Triángulos que cruzan huecos entre patas: fuera con la foto nítida, dentro con la desenfocada | Nítidos se estiran; desenfocados, su falta dejaba cuñas blancas | ídem y `js/rig.js` (`draw`) |
+| Malla ampliada hasta el halo del desenfoque | El borde borroso se recortaba en escalera | ídem |
+| Sombra suave para las marionetas | La sombra original tiene una mancha bajo cada pata que se quedaba en el suelo al levantarla | `assets/img/cast/*-shadow-soft.webp` |
+| Ciclo de paso con apoyo lineal y vuelo suave; ángulo de cada pata calibrado para que todas barran la misma distancia; balanceo con pivote en el suelo | Que la pata apoyada no patine (medido: de 0,6–1,7 px a 0,03–0,3 px de deriva por paso de 1,5–3,3 px) | `js/rig.js` (`swing`, `calibrate`, `animate`) |
+| Orejas, lengua y cola con muelles (PHYS-001) integrados a 120 Hz y empujados por la aceleración del cuerpo | Movimiento secundario: lo que hace que no parezca un recorte rígido | `js/rig.js` (`Spring`) |
+| En "Juntos", la fase del paso sale de la distancia recorrida con el scroll; al subir caminan hacia atrás (MP-001) | Sin patinar y reversible | `js/duo.js` |
+| En la historia, el paso se mezcla por tramos (trote en el héroe, galope al lanzarse, parada curiosa del gato) y se acelera con la velocidad del scroll | Ritmo y respuesta al usuario | `js/scenes.js` (`gait`) |
+| WebGL con plan B en `file://`: si el navegador no deja leer las fotos locales, se cargan incrustadas (`js/data/cast-data.js`) | La web debe abrir con doble clic | `js/rig.js` (`loadCastData`) |
+| El shader reproduce exactamente las tres capas nítida / b1 / b2 del DOM | La transición de desenfoque ya validada no cambia (cobertura 1,000) | `js/rig.js` (`FS`) |
+
+### 8.4 Fichas consultadas y descartadas en esta iteración
+| Ficha | Motivo |
+|---|---|
+| AIVID-001 (clips de vídeo generados) | Es la vía de máxima calidad para un ciclo real, pero exige un generador de pago no autorizado. Queda como siguiente paso, con la autorización del usuario. |
+| PROD-001, alternativa a (secuencia prerenderizada en Blender) | No hay modelos 3D de estos animales; renderizar pelo realista queda fuera de alcance. |
+| GL-003 (mapa de profundidad) | Da volumen, no movimiento de patas; ya se probó en una versión anterior ("fotos vivas") y se retiró. |
+| MBLUR-001 | El desenfoque necesario es de foco y ya está en los recursos; la estela por velocidad no aporta en ciclos de paso lentos. |
+
+### 8.5 Pruebas de esta iteración (Chromium sin GPU: WebGL por software)
+| Prueba | Resultado |
+|---|---|
+| Las 6 marionetas se crean en `file://` (plan B) y por http | Sí, 6/6, sin errores de consola |
+| Patinaje de la pata apoyada en "Juntos" (cálculo exacto) | Perro: 0,07–0,31 px por paso de 3,26 px; gato: 0,03–0,08 px por paso de 1,50 px |
+| Hojas de ciclo a 900 px de alto (las 6 poses) | Sin dientes de sierra ni cuñas; queda un corte pequeño en una pata trasera del perro de espaldas al levantarla (ver pendientes) |
+| Batería de movimiento de la iteración 1 | 9/9 (reversible, sin valles, cortes ocultos, scroll rápido, cambio de tamaño) |
+| Carrito y filtros | 15/15 y 20/20 |
+| Accesibilidad (axe-core, WCAG 2.2 A/AA) | 0 incidencias en 14 puntos (1440 y 390 px); el lienzo es decorativo (`aria-hidden`) y las fotos con su texto alternativo siguen en el DOM |
+| Movimiento reducido | Sin marionetas ni animaciones: fotos estáticas |
+| Rendimiento por tramo, 1440 px (modo ligero por software) | Héroe y mesetas 60 fps; transiciones 49–60 fps; "Juntos" 33–42 fps. A 390 px, 60 fps en "Juntos". El JavaScript de las marionetas cuesta ~0,2 ms por fotograma; el resto es el dibujo por software de este contenedor |
+| Vídeo de estudio a 30 fps exactos (reloj fijo) | `capturas/estudio-movimiento-animales.mp4` |
+
+**Calificación:** la mecánica (C2) está medida. Si el movimiento resulta natural o "de plastilina" es C3 y **lo decide el usuario** viendo el vídeo de estudio y la web.

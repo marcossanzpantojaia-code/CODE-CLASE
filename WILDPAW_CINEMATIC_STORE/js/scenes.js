@@ -142,6 +142,12 @@
     fade(tl, a.s, 0, 1, at + d * 1.5, d); fade(tl, a.b1, 1, 0, at + d * 2.5, d * .5);
   }
 
+  // Tramo del movimiento propio de un actor (marcha, velocidad, extensión)
+  function gait(tl, key, from, to, at, dur, ease) {
+    to = Object.assign({ duration: dur, ease: ease || 'power1.inOut', immediateRender: false }, to);
+    return tl.fromTo(mo(key), from, to, at);
+  }
+
   /* --------------------------------------------------- Tipografía gigante */
   // Ajusta una palabra gigante al ancho disponible (mide el texto y escala)
   function fit(el, ratio) {
@@ -186,7 +192,10 @@
     // El perro llega corriendo desde el fondo; la cámara retrocede a su paso
     tl.fromTo(a.el, pose('dogRun', 'far'), to, .1)
       .fromTo(a.el, { autoAlpha: 0 }, { autoAlpha: 1, duration: .25, ease: 'none' }, .1)
-      .to(a.body, { yPercent: -2.2, duration: .13, ease: 'sine.out', yoyo: true, repeat: 9 }, .1)
+      .add(a.rig
+        // Llega a toda velocidad y, al alcanzar su sitio, baja a un trote
+        ? gsap.fromTo(a.rig.p, { gait: 1, speed: 1.35 }, { gait: GAIT0.dogRun.gait, speed: GAIT0.dogRun.speed, duration: 1.4, ease: 'power2.inOut' })
+        : gsap.to(a.body, { yPercent: -2.2, duration: .13, ease: 'sine.out', yoyo: true, repeat: 9 }), a.rig ? .9 : .1)
       .fromTo(a.shadow, { opacity: 0 }, { opacity: 1, duration: .9, ease: 'power1.out' }, .5)
       .from('[data-mega="dog"] .ch > span', { yPercent: 135, duration: 1.2, stagger: .05 }, .35)
       .from('.dog__headline .line__in', { yPercent: 115, duration: 1.1, stagger: .12 }, .95)
@@ -217,7 +226,12 @@
         scrub: 1,
         refreshPriority: 2,
         anticipatePin: 1,
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
+        // Cuanto más rápido el scroll, más rápido corren (se apaga solo al parar)
+        onUpdate: function (self) {
+          var b = Math.min(1, Math.abs(self.getVelocity()) / 2600);
+          Object.keys(POSE).forEach(function (k) { var p = mo(k); p.boost = Math.max(p.boost || 0, b); });
+        }
       },
       onUpdate: syncScenes
     });
@@ -233,6 +247,9 @@
     tl.fromTo(washDog, { autoAlpha: 0 }, { autoAlpha: 1, duration: .32, ease: 'power1.in', immediateRender: false }, 1.58)
       .fromTo($('i', washDog), { xPercent: 7, scale: 1 }, { xPercent: -7, scale: 1.18, duration: .8 }, 1.55);
 
+    // Se lanza hacia la cámara: del trote al galope
+    gait(tl, 'dogRun', { gait: GAIT0.dogRun.gait, speed: GAIT0.dogRun.speed }, { gait: 1, speed: 1.35 }, .45, .7);
+
     /* --- Corte oculto: con el encuadre tapado se cambia de plano ---------- */
     tl.set(A.dogRun.el, { autoAlpha: 0 }, 1.95)
       .set(megaDog, { autoAlpha: 0 }, 1.95)
@@ -247,6 +264,10 @@
       .fromTo('[data-bridge] .line__in', { yPercent: 112 }, { yPercent: 0, duration: .5, ease: 'power3.out' }, 2.7)
       .fromTo('[data-bridge] .line__in', { yPercent: 0 }, { yPercent: -112, duration: .35, ease: 'power2.in', immediateRender: false }, 3.7);
 
+    // Se para a mirarte ("Keep up.") moviendo la cola, y arranca otra vez al trote
+    gait(tl, 'dogBack', { gait: 1, speed: 1 }, { gait: .2, speed: .8 }, 2.9, .4);
+    gait(tl, 'dogBack', { gait: .2, speed: .8 }, { gait: 1, speed: 1.45 }, 3.7, .25);
+
     /* === C · Dolly: la cámara adelanta al perro y alcanza al gato (3.75 → 5.05) */
     travel(tl, 'dogBack', 'bridge', 'exit', 3.75, 1.1, 'power2.in');
     fade(tl, A.dogBack.shadow, 1, 0, 3.85, .3);
@@ -258,6 +279,9 @@
       .fromTo('[data-cat-fade]', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .4, stagger: .08, ease: 'power2.out' }, 5.05)
       .fromTo('[data-cat-cards] .cat-card', { y: 46, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .45, stagger: .18, ease: 'power3.out' }, 5.15);
 
+    // El gato camina y se detiene, curioso, cuando la cámara lo alcanza
+    gait(tl, 'catBack', { gait: GAIT0.catBack.gait }, { gait: 0 }, 4.75, .4);
+
     /* --- Meseta del gato: empuje muy lento de cámara ----------------------- */
     tl.fromTo(A.catBack.body, { scale: 1 }, { scale: 1.035, duration: 1.5 }, 5.1)
       .fromTo('[data-mega="cat"]', { xPercent: 0 }, { xPercent: -1.2, duration: 1.5 }, 5.1);
@@ -268,6 +292,9 @@
       .fromTo('[data-cat-fade]', { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -12, duration: .3, ease: 'power2.in', immediateRender: false }, 6.5)
       .fromTo(A.catBack.body, { scale: 1.035 }, { scale: 1, duration: .4, immediateRender: false }, 6.62);
     travel(tl, 'catBack', 'plat', 'far2', 6.65, .97, 'power2.inOut');
+    gait(tl, 'catBack', { gait: 0 }, { gait: .9 }, 6.5, .3);
+    // En el aire estira las patas hacia la cámara y la cola se queda atrás
+    gait(tl, 'catLeap', { extend: 0 }, { extend: 1 }, 7.62, .8, 'power1.out');
     tl.fromTo(catLetters, { yPercent: 0 }, { yPercent: -135, duration: .5, stagger: .04, ease: 'power2.in', immediateRender: false }, 7.75)
       .set(A.catBack.el, { autoAlpha: 0 }, 7.62)
       .set(A.catLeap.el, { autoAlpha: 1 }, 7.62);
@@ -353,6 +380,28 @@
     }
   }
 
+  /* Movimiento propio de cada animal (js/rig.js). Si no hay WebGL, un objeto
+     vacío recibe las mismas animaciones y no pasa nada. */
+  var GAIT0 = { dogRun: { gait: .6, speed: .85 }, dogBack: { gait: 1, speed: 1 }, catBack: { gait: .6, speed: 1 }, catLeap: { gait: 0, extend: 0 } };
+  function mo(key) { return (A[key] && A[key].rig) ? A[key].rig.p : (A[key].mo || (A[key].mo = { gait: 0, speed: 1, extend: 0, boost: 0 })); }
+  var POSE = { dogRun: 'dog-run', dogBack: 'dog-back', catBack: 'cat-back', catLeap: 'cat-leap' };
+  function rigAll() {
+    if (!W.Rig || !W.Rig.supported()) return Promise.resolve(false);
+    return Promise.all(Object.keys(POSE).map(function (key) {
+      var a = A[key], g = GAIT0[key];
+      return W.Rig.attach({
+        pose: POSE[key], host: a.body, watch: a.el, shadow: a.shadow,
+        layers: { s: a.s, b1: a.b1, b2: a.b2 }, gait: g.gait
+      }).then(function (r) {
+        if (r) { a.rig = r; Object.keys(g).forEach(function (k) { r.p[k] = g[k]; }); }
+        return !!r;
+      });
+    })).then(function (ok) {
+      if (ok.some(Boolean)) W.Rig.start();
+      return ok.every(Boolean);
+    });
+  }
+
   function collect() {
     $$('[data-actor]').forEach(function (el) {
       A[el.getAttribute('data-actor')] = {
@@ -407,6 +456,8 @@
       return a === 'dog' ? 0 : a === 'cat' ? 1 : 2;
     },
     staticMode: staticMode,
+    /* Crea las marionetas de los animales (promesa; true si todas funcionan) */
+    rig: function () { return W.motion.cinematic ? rigAll() : Promise.resolve(false); },
     intro: intro,
     /* Se llama al terminar la intro: crea el scroll y el movimiento ambiental */
     start: function () {
@@ -415,8 +466,8 @@
       ScrollTrigger.addEventListener('refreshInit', function () { fitWords(); layout(); });
       master = buildMaster();
       syncScenes.call(master);
-      // Respiración: lo único que se mueve en la meseta del héroe
-      gsap.to(A.dogRun.body, { scaleY: 1.006, scaleX: 1.002, duration: 1.9, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+      // Sin marioneta, al menos respira
+      if (!A.dogRun.rig) gsap.to(A.dogRun.body, { scaleY: 1.006, scaleX: 1.002, duration: 1.9, ease: 'sine.inOut', yoyo: true, repeat: -1 });
       parallax();
       ScrollTrigger.create({
         trigger: '#tienda',
