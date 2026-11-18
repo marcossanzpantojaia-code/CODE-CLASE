@@ -123,6 +123,9 @@ Sustituye la llegada del **plano 4 (The Energy)**: hoy el perro crece desde lejo
 ## C5 · El perro gira y sigue su camino (revelado) — PRIORIDAD 2
 
 Para el **plano 5 (The Reveal)**: hoy es un corte bajo el pelaje al contraplano de espaldas.
+Si se produce, sustituye a la foto `dog-back` en el mismo sitio y con el mismo pivote: la sección de
+perros seguiría su flanco igual que ahora, y las pisadas del clip (fotogramas en que apoyan las patas
+traseras) se anotarían para colgar de ellas las entradas, como hoy cuelgan de las fases .2 y .7.
 
 | Campo | Valor |
 |---|---|
@@ -139,7 +142,10 @@ Para el **plano 5 (The Reveal)**: hoy es un corte bajo el pelaje al contraplano 
 
 ## C6 · Perro y gato caminando de perfil (para «Juntos») — PRIORIDAD 3
 
-Dos clips separados (C6-perro, C6-gato), como C1, para el travelling final.
+Dos clips separados (C6-perro, C6-gato), como C1, para el cierre «Juntos». Hoy entran andando con la
+marioneta y se paran en la postura de la foto (una zancada congelada); el clip daría un paso real y,
+con un final distinto (C6b: el perro se sienta, el gato se para y levanta la cola), un cierre en
+reposo de verdad.
 
 **Prompt (perro):**
 `The locked-off camera stays perfectly still as the golden retriever walks in place toward the right of the frame with a relaxed trot, completing two full strides; long golden fur on the chest, legs and tail flows with the movement, head slightly bobbing, tongue out. Clean white seamless studio, soft key light from the upper left, soft contact shadow. Continuous, seamless shot that starts and ends on the exact same frame.`
@@ -156,7 +162,8 @@ Dos clips separados (C6-perro, C6-gato), como C1, para el travelling final.
 | «Te mira» (plano 2) | Corte en iris a un primer plano real de frente + inclinación de cabeza con muelle hacia el cursor (±2,8°) | Inclinación, no giro: el giro real es C2b |
 | Salto y oclusión (plano 3) | La foto del salto se acerca al objetivo, se desenfoca y su pelaje tapa el corte | Sin anticipación ni cambio de forma: C3 |
 | Perro corriendo hacia la cámara (plano 4) | Marioneta de galope + acercamiento en perspectiva | C4 daría las patas y el pelaje reales |
-| Perro que gira (plano 5) | Corte oculto bajo el pelaje al contraplano de espaldas | C5 daría el giro continuo |
+| Perro que gira (plano 5) | Corte oculto bajo el pelaje al contraplano de espaldas; al alejarse abre la sección de perros con sus pisadas | C5 daría el giro continuo |
+| Los dos juntos (cierre) | Marionetas de perfil a la par, paso ligado a la distancia, letras que suben a su paso | Al pararse quedan a mitad de zancada: C6/C6b |
 
 ## Cómo entrarán los clips en la web (cuando existan)
 

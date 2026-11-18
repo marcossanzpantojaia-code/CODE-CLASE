@@ -6,7 +6,9 @@
                        y sigue el cursor con un muelle.
      3 The Leap        salta hacia el objetivo; su pelaje tapa el encuadre.
      4 The Energy      bajo el pelaje, el perro llega galopando desde el fondo.
-     5 The Reveal      cruza la cámara; contraplano: se aleja y mira atrás.
+     5 The Reveal      cruza la cámara; contraplano: se aleja y, al andar, abre
+                       tras de sí la sección de perros (cada palabra y cada
+                       producto llegan con una pisada).
      6 The Meeting     la cámara lo adelanta y alcanza al gato.
      7 The Deep        el gato se aleja y el agua sube: el océano.
    Los cambios de foto se esconden siempre (iris, pelaje, distancia) y todo es
@@ -23,12 +25,17 @@
   var root = document.documentElement;
   var master = null;
   var cleanups = [];
-  var LABELS = { arrival: 0, cat: 1.75, dog: 4.95, ocean: 13.45 };
-  var END = 14.85;
+  /* Plano 5: el perro recorre su camino en WALK unidades dando N5 ciclos de
+     marcha; Q es lo que el plano 5 alarga la historia (todo lo posterior se
+     desplaza Q) */
+  var W5 = 7.1, WALK = 1.5, N5 = 4.2, Q = .9;
+  var X6 = 8.9 + Q;   // el perro arranca otra vez: la cámara lo adelanta
+  var LABELS = { arrival: 0, cat: 1.75, dog: 4.95, ocean: 13.45 + Q };
+  var END = 14.85 + Q;
   var THEME = { arrival: '#F4F2EE', connection: '#EEEAE4', dog: '#F7EAD6', cat: '#FFFFFF', ocean: '#EAF6FF' };
   var CHAPTERS = [
     [0, 'The Arrival'], [1.15, 'The Connection'], [2.85, 'The Leap'], [3.75, 'The Energy'],
-    [7.1, 'The Reveal'], [10.05, 'The Meeting'], [11.4, 'The Deep']
+    [W5, 'The Reveal'], [10.05 + Q, 'The Meeting'], [11.4 + Q, 'The Deep']
   ];
 
   /* Pivote de cada actor (el mismo que transform-origin en el CSS), proporción
@@ -42,6 +49,10 @@
     catBack: { ar: 1031 / 1196, px: .50, py: .50, foot: .95 }
   };
   var A = {};     // elementos de cada actor
+  // Punto del perro de espaldas que arrastra el borde de la sección revelada:
+  // su flanco (horizontal) o su lomo (en vertical), en fracciones del lienzo
+  var EDGE = [.30, .02];
+  var stepP = { ph: 0 };   // fase de la marcha del perro en el plano 5 (sale del scroll)
   var L = null;   // encuadres calculados para el tamaño actual
 
   /* ------------------------------------------------------------- Encuadres */
@@ -88,7 +99,7 @@
       raw.catLeap = { close: at('catLeap', .56, .38, .665, .43, 1.42), lens: [.50, .50, 5.6] };
       raw.dogRun = { hero: stand('dogRun', .56, .93, .84), lens: [.52, .53, 6.2] };
       raw.dogBack = { lens: [.50, .50, 5.2], bridge: stand('dogBack', .67, .90, .60), exit: [1.95, 1.0, 2.6] };
-      raw.catBack = { far: [.36, .475, .12], plat: stand('catBack', .47, .935, .72), far2: [.50, .44, .07] };
+      raw.catBack = { far: [.85, .50, .12], plat: stand('catBack', .47, .935, .72), far2: [.50, .44, .07] };
     } else {
       var dogH = Math.min(.56, 1.0 * k / CAST.dogRun.ar);
       var catH = Math.min(.42, .9 * k / CAST.catBack.ar);
@@ -96,7 +107,7 @@
       raw.catLeap = { close: at('catLeap', .56, .38, .5, .37, .84), lens: [.50, .50, 4.8] };
       raw.dogRun = { hero: stand('dogRun', .52, .745, dogH), lens: [.50, .52, 5.2] };
       raw.dogBack = { lens: [.50, .50, 4.6], bridge: stand('dogBack', .60, .80, Math.min(.44, 1.0 * k / CAST.dogBack.ar)), exit: [3.2, 1.0, 2.2] };
-      raw.catBack = { far: [.20, .33, .085], plat: stand('catBack', .50, .64, catH), far2: [.50, .40, .052] };
+      raw.catBack = { far: [.84, .45, .065], plat: stand('catBack', .50, .64, catH), far2: [.50, .40, .052] };
     }
     // El perro llega desde lejos por el mismo eje: mismo pivote, escala mínima
     raw.dogRun.far = [raw.dogRun.hero[0], raw.dogRun.hero[1], portrait ? .05 : .06];
@@ -115,8 +126,10 @@
         poses[key][name] = { x: p[0] * w - c.px * c.ar * h, y: p[1] * h - c.py * h, s: p[2] };
       });
     });
+    var edge = portrait ? point('dogBack', raw.dogBack.bridge, .5, EDGE[1]) : point('dogBack', raw.dogBack.bridge, EDGE[0], .5);
     L = {
       w: w, h: h, portrait: portrait, poses: poses,
+      edge: portrait ? edge[1] * h : edge[0] * w,
       iris: { x0: head[0] * w, y0: head[1] * h, r0: .2 * walkS * h, x1: face[0] * w, y1: face[1] * h, r1: Math.hypot(w, h) * 1.02 }
     };
     return L;
@@ -218,6 +231,37 @@
     r.p.phase = (gsap.getProperty(A.catWalk.el, 'x') - L.poses.catWalk.enter.x) / stride;
   }
 
+  /* ------------------------------------------- Plano 5: pisadas y barrido */
+  // Instante de la pisada k del perro de espaldas (sus patas traseras apoyan
+  // en las fases .2 y .7 de cada ciclo; ver MOTION['dog-back'] en js/rig.js)
+  function footfall(k) {
+    var x = Math.min(1, (.2 + .5 * k) / N5);
+    return W5 + WALK * (1 - Math.sqrt(1 - x));
+  }
+  // Orden de llegada: rótulo, "Keep", "up.", los tres productos y el enlace
+  function revealSteps() {
+    var c = $('[data-reveal-content]');
+    return [$('.reveal__chip', c)].concat($$('[data-bridge] .line__in', c), $$('[data-dog-cards] .cat-card', c), [$('.reveal__link', c)])
+      .filter(Boolean);
+  }
+  /* El borde de la sección sigue el flanco del perro mientras se aleja y se
+     queda donde él se para; la luz cálida le acompaña. */
+  var revealEls = null;
+  function applyReveal(t) {
+    if (!revealEls) revealEls = { panel: $('[data-reveal-panel]'), spot: $('[data-spot] i') };
+    if (t < W5 - .05 || t > X6 + 1.2) return;
+    var e;
+    if (t >= W5 + WALK) e = L.edge;
+    else { var f = screenPoint('dogBack', L.portrait ? .5 : EDGE[0], L.portrait ? EDGE[1] : .5); e = Math.min(L.portrait ? f[1] : f[0], L.edge); }
+    e = Math.max(0, e);
+    revealEls.panel.style.clipPath = L.portrait ?
+      'inset(0px 0px ' + Math.max(0, L.h - e).toFixed(1) + 'px 0px)' :
+      'inset(0px ' + Math.max(0, L.w - e).toFixed(1) + 'px 0px 0px)';
+    var c = screenPoint('dogBack', .5, .55), s = gsap.getProperty(A.dogBack.el, 'scale');
+    var k = W.clamp(1.7 * s * L.h / Math.max(L.w, L.h), .2, 3);
+    revealEls.spot.style.transform = 'translate(' + c[0].toFixed(1) + 'px,' + c[1].toFixed(1) + 'px) scale(' + k.toFixed(3) + ')';
+  }
+
   /* --------------------------------------------------- Tipografía gigante */
   // Ajusta una palabra gigante al ancho disponible (mide el texto y escala)
   function fit(el, ratio) {
@@ -312,13 +356,16 @@
     var dogScene = $('[data-scene="dog"]'), ocean = $('[data-scene="ocean"]');
     var catLetters = $$('[data-mega="cat"] .ch > span');
     var washDog = $('[data-wash="dog"]'), washCat = $('[data-wash="cat"]');
+    var reveal = $('[data-reveal]'), panel = $('[data-reveal-panel]'), content = $('[data-reveal-content]');
+    var spot = $('[data-spot]');
+    var steps = revealSteps();
 
     var tl = gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: {
         trigger: '[data-story]',
         start: 'top top',
-        end: function () { return '+=' + Math.round(window.innerHeight * (L.portrait ? 10.4 : 12.2)); },
+        end: function () { return '+=' + Math.round(window.innerHeight * (L.portrait ? 11.0 : 12.9)); },
         pin: '[data-stage]',
         scrub: 1,
         refreshPriority: 2,
@@ -406,48 +453,80 @@
       .set('.dog__bg', { autoAlpha: 0 }, 1.95 + o)
       .set([A.dogBack.el, A.catBack.el], { autoAlpha: 1 }, 1.95 + o);
 
-    /* === 5 · The Reveal: contraplano, se aleja; al fondo, el gato ========= */
-    travel(tl, 'dogBack', 'lens', 'bridge', 1.95 + o, 1.25);
-    tl.fromTo(washDog, { autoAlpha: 1 }, { autoAlpha: 0, duration: .34, ease: 'power1.out', immediateRender: false }, 1.98 + o);
+    /* === 5 · The Reveal: contraplano; al alejarse abre la sección de perros
+       La fase de la marcha sale del scroll (stepP), así cada pisada cae en un
+       instante conocido de la línea de tiempo y la tipografía y los productos
+       llegan exactamente con ellas. El recorrido frena al final (outE) y la
+       fase frena igual: la pata apoyada no patina. */
+    var outE = function (p) { return 1 - (1 - p) * (1 - p); };
+    var dE = depthEase('dogBack', 'lens', 'bridge');
+    travel(tl, 'dogBack', 'lens', 'bridge', W5, WALK, function (p) { return dE(outE(p)); });
+    tl.fromTo(stepP, { ph: 0 }, { ph: N5, duration: WALK, ease: outE, immediateRender: false }, W5);
+    tl.fromTo(washDog, { autoAlpha: 1 }, { autoAlpha: 0, duration: .34, ease: 'power1.out', immediateRender: false }, W5 + .03);
     refocus(tl, 'dogBack', 2.25 + o, .16);
     fade(tl, A.dogBack.shadow, 0, 1, 2.6 + o, .5);
-    tl.set('[data-bridge]', { autoAlpha: 1 }, 2.7 + o)
-      .fromTo('[data-bridge] .line__in', { yPercent: 112 }, { yPercent: 0, duration: .5, ease: 'power3.out' }, 2.7 + o)
-      .fromTo('[data-bridge] .line__in', { yPercent: 0 }, { yPercent: -112, duration: .35, ease: 'power2.in', immediateRender: false }, 3.7 + o);
-    // Se para a mirarte ("Keep up.") moviendo la cola, y arranca otra vez al trote
-    gait(tl, 'dogBack', { gait: 1, speed: 1 }, { gait: .2, speed: .8 }, 2.9 + o, .4);
-    gait(tl, 'dogBack', { gait: .2, speed: .8 }, { gait: 1, speed: 1.45 }, 3.7 + o, .25);
+    tl.set(reveal, { autoAlpha: 1 }, W5)
+      .fromTo(spot, { opacity: 0 }, { opacity: 1, duration: .5, ease: 'power1.inOut', immediateRender: false }, W5 + .2);
+    // Una pisada por elemento: la pata apoya y el elemento sale disparado
+    steps.forEach(function (el, i) {
+      var at = footfall(i + 2);
+      if (el.classList.contains('line__in')) {
+        tl.fromTo(el, { yPercent: 108 }, { yPercent: 0, duration: .22, ease: 'power3.out', immediateRender: false }, at);
+      } else {
+        tl.fromTo(el, { y: 26, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .22, ease: 'power3.out', immediateRender: false }, at);
+      }
+    });
+    // Se para, te mira moviendo la cola (meseta) y arranca otra vez al trote
+    gait(tl, 'dogBack', { gait: 1, speed: 1 }, { gait: .25, speed: .8 }, W5 + WALK - .4, .45);
+    gait(tl, 'dogBack', { gait: .25, speed: .8 }, { gait: 1, speed: 1.45 }, X6 - .05, .25);
 
-    /* === 6 · The Meeting: la cámara adelanta al perro y alcanza al gato === */
-    travel(tl, 'dogBack', 'bridge', 'exit', 3.75 + o, 1.1, 'power2.in');
-    fade(tl, A.dogBack.shadow, 1, 0, 3.85 + o, .3);
-    defocus(tl, 'dogBack', 3.95 + o, .13);
-    tl.set(A.dogBack.el, { autoAlpha: 0 }, 4.9 + o);
-    travel(tl, 'catBack', 'far', 'plat', 3.75 + o, 1.3, 'power2.inOut');
-    gait(tl, 'catBack', { gait: GAIT0.catBack.gait }, { gait: 0 }, 4.75 + o, .4);
-    tl.fromTo(A.catBack.body, { scale: 1 }, { scale: 1.03, duration: .6, immediateRender: false }, 10.25)
-      .fromTo(A.catBack.body, { scale: 1.03 }, { scale: 1, duration: .35, immediateRender: false }, 10.85);
+    /* === 6 · The Meeting: la cámara adelanta al perro y alcanza al gato ===
+       Al pasar la cámara entre los dos, el perro sale por la derecha y la
+       sección por la izquierda (el texto, más cerca, va más rápido) */
+    travel(tl, 'dogBack', 'bridge', 'exit', X6, 1.1, 'power2.in');
+    tl.fromTo(stepP, { ph: N5 }, { ph: N5 + 2.4, duration: 1.1, ease: 'power2.in', immediateRender: false }, X6)
+      .fromTo(panel, { x: 0, y: 0 }, {
+        x: function () { return L.portrait ? 0 : -(L.edge + 60); },
+        y: function () { return L.portrait ? -(L.edge + 60) : 0; },
+        duration: 1.0, ease: 'power2.in', immediateRender: false
+      }, X6 + .05)
+      .fromTo(content, { x: 0, y: 0 }, {
+        x: function () { return L.portrait ? 0 : -L.w * .1; },
+        y: function () { return L.portrait ? -L.h * .08 : 0; },
+        duration: 1.0, ease: 'power2.in', immediateRender: false
+      }, X6 + .05)
+      // Lo más cercano se apaga antes: en vertical no llega a cruzar la barra
+      .fromTo(content, { autoAlpha: 1 }, { autoAlpha: 0, duration: .45, ease: 'power1.in', immediateRender: false }, X6 + .1)
+      .fromTo(spot, { opacity: 1 }, { opacity: 0, duration: .5, ease: 'power1.in', immediateRender: false }, X6 + .3)
+      .set(reveal, { autoAlpha: 0 }, X6 + 1.1);
+    fade(tl, A.dogBack.shadow, 1, 0, X6 + .1, .3);
+    defocus(tl, 'dogBack', X6 + .2, .13);
+    tl.set(A.dogBack.el, { autoAlpha: 0 }, X6 + 1.15);
+    travel(tl, 'catBack', 'far', 'plat', X6, 1.3, 'power2.inOut');
+    gait(tl, 'catBack', { gait: GAIT0.catBack.gait }, { gait: 0 }, X6 + 1, .4);
+    tl.fromTo(A.catBack.body, { scale: 1 }, { scale: 1.03, duration: .6, immediateRender: false }, 10.25 + Q)
+      .fromTo(A.catBack.body, { scale: 1.03 }, { scale: 1, duration: .35, immediateRender: false }, 10.85 + Q);
 
     /* === 6 → 7 · The Deep: el gato se aleja y el agua sube ================ */
-    gait(tl, 'catBack', { gait: 0 }, { gait: .9 }, 10.65, .3);
-    travel(tl, 'catBack', 'plat', 'far2', 10.8, .95, 'power2.inOut');
-    tl.set(ocean, { autoAlpha: 1 }, 11.25)
-      .fromTo(ocean, { yPercent: 100 }, { yPercent: 0, duration: .9, ease: 'power2.inOut', immediateRender: false }, 11.25)
-      .set(A.catBack.el, { autoAlpha: 0 }, 12.15);
+    gait(tl, 'catBack', { gait: 0 }, { gait: .9 }, 10.65 + Q, .3);
+    travel(tl, 'catBack', 'plat', 'far2', 10.8 + Q, .95, 'power2.inOut');
+    tl.set(ocean, { autoAlpha: 1 }, 11.25 + Q)
+      .fromTo(ocean, { yPercent: 100 }, { yPercent: 0, duration: .9, ease: 'power2.inOut', immediateRender: false }, 11.25 + Q)
+      .set(A.catBack.el, { autoAlpha: 0 }, 12.15 + Q);
     bubbles.forEach(function (b, i) {
       tl.fromTo(b, { y: 0, autoAlpha: 0, scale: .4 },
         { y: function () { return -window.innerHeight * W.rand(.55, 1.2); }, autoAlpha: 1, scale: 1, duration: W.rand(.7, 1.3), ease: 'power1.out' },
-        11.6 + (i / bubbles.length) * .7);
+        11.6 + Q + (i / bubbles.length) * .7);
       tl.to(b, { autoAlpha: 0, duration: .25 }, '>-0.25');
     });
 
     /* === 7 · Mundo acuático =============================================== */
-    tl.fromTo('.ocean__title .line__in', { yPercent: 112 }, { yPercent: 0, duration: .7, stagger: .15, ease: 'power3.out' }, 12.25)
-      .fromTo('[data-ocean-fade]', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .4, stagger: .1, ease: 'power2.out' }, 12.6)
-      .fromTo('[data-ocean-cta]', { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .5, ease: 'power2.out' }, 13.45)
-      .fromTo('[data-ocean-title]', { scale: 1 }, { scale: 1.05, duration: 2.1 }, 12.7)
-      .to(heroProxy, { p: 1, duration: 2.2, onUpdate: function () { W.Aquarium.setHeroProgress(heroProxy.p); } }, 12.5)
-      .to(depthProxy, { m: 38, duration: 2.6, onUpdate: function () { if (depthEl) depthEl.textContent = '-' + Math.round(depthProxy.m); } }, 12.2)
+    tl.fromTo('.ocean__title .line__in', { yPercent: 112 }, { yPercent: 0, duration: .7, stagger: .15, ease: 'power3.out' }, 12.25 + Q)
+      .fromTo('[data-ocean-fade]', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: .4, stagger: .1, ease: 'power2.out' }, 12.6 + Q)
+      .fromTo('[data-ocean-cta]', { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .5, ease: 'power2.out' }, 13.45 + Q)
+      .fromTo('[data-ocean-title]', { scale: 1 }, { scale: 1.05, duration: 2.1 }, 12.7 + Q)
+      .to(heroProxy, { p: 1, duration: 2.2, onUpdate: function () { W.Aquarium.setHeroProgress(heroProxy.p); } }, 12.5 + Q)
+      .to(depthProxy, { m: 38, duration: 2.6, onUpdate: function () { if (depthEl) depthEl.textContent = '-' + Math.round(depthProxy.m); } }, 12.2 + Q)
       .set({}, {}, END);
 
     return tl;
@@ -456,7 +535,7 @@
   /* ----------------------------------- Escena activa: inert, nav, acuario */
   var lastActive = '', lastChapter = -1;
   var els = null;
-  function activeAt(t) { return t < 3.75 ? 'cat' : t < 10.05 ? 'dog' : t < 11.7 ? 'cat' : 'ocean'; }
+  function activeAt(t) { return t < 3.75 ? 'cat' : t < 10.05 + Q ? 'dog' : t < 11.7 + Q ? 'cat' : 'ocean'; }
   function chapterAt(t) { var i = 0; while (i < CHAPTERS.length - 1 && t >= CHAPTERS[i + 1][0]) i++; return i; }
   function timecode(t) {
     var sec = t * 6.4, fr = Math.floor((sec % 1) * 24);
@@ -474,13 +553,17 @@
     }
     els.arrival.inert = t > .9;
     els.connection.inert = t < 1.3 || t > 2.95;
-    els.dog.inert = t < 4.6 || t > 5.9;
+    // El perro es interactivo con su llamada (plano 4) y con su sección (plano 5)
+    els.dog.inert = !((t >= 4.6 && t <= 5.9) || (t >= footfall(3) && t <= X6 + .3));
     els.cat.inert = true;
-    els.ocean.inert = t < 12.4;
+    els.ocean.inert = t < 12.4 + Q;
     // Pausa las animaciones CSS de lo que no está en cámara
     els.arrival.classList.toggle('is-paused', t > 1.6);
-    els.ocean.classList.toggle('is-paused', t < 11.1);
-    W.Aquarium.setActive(t > 11.15);
+    els.ocean.classList.toggle('is-paused', t < 11.1 + Q);
+    W.Aquarium.setActive(t > 11.15 + Q);
+    // La marcha del perro de espaldas va ligada al scroll; su sección, a él
+    if (A.dogBack.rig) A.dogBack.rig.p.phase = stepP.ph;
+    applyReveal(t);
     // Rótulo del plano y código de tiempo
     var ch = chapterAt(t);
     if (ch !== lastChapter) {
@@ -500,7 +583,7 @@
       });
     }
     var meta = document.querySelector('meta[name="theme-color"]');
-    var theme = t < 1.2 ? 'arrival' : t < 3.75 ? 'connection' : t < 7.1 ? 'dog' : t < 11.7 ? 'cat' : 'ocean';
+    var theme = t < 1.2 ? 'arrival' : t < 3.75 ? 'connection' : t < X6 + .4 ? 'dog' : t < 11.7 + Q ? 'cat' : 'ocean';
     if (meta && meta.content !== THEME[theme]) meta.content = THEME[theme];
   }
 
@@ -559,6 +642,11 @@
     gsap.set('.cat__title .line__in', { yPercent: 112 });
     gsap.set('.dog__headline .line__in', { yPercent: 115 });
     gsap.set('[data-cat-fade], [data-cat-cards] .cat-card, [data-hero-fade]', { autoAlpha: 0 });
+    gsap.set('[data-reveal]', { autoAlpha: 0 });
+    gsap.set('[data-reveal-panel]', { clipPath: 'inset(0px 100% 0px 0px)' });
+    revealSteps().forEach(function (el) {
+      gsap.set(el, el.classList.contains('line__in') ? { yPercent: 108 } : { y: 26, autoAlpha: 0 });
+    });
   }
 
   W.Scenes = {
@@ -589,7 +677,7 @@
     activeIndex: function () {
       if (!master) return 0;
       var t = master.time();
-      return t < 3.75 ? 0 : t < 10.05 ? 1 : 2;
+      return t < 3.75 ? 0 : t < 10.05 + Q ? 1 : 2;
     },
     staticMode: staticMode,
     /* Crea las marionetas de los animales (promesa; true si todas funcionan) */

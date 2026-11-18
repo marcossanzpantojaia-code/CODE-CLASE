@@ -144,7 +144,22 @@
         <!-- PLANOS 4 y 5 · The Energy / The Reveal: el perro -->
         <section class="scene scene--dog" id="perros" data-scene="dog" aria-labelledby="dog-title">
           <div class="dog__bg" aria-hidden="true"></div>
+          <div class="dog__spot" aria-hidden="true" data-spot><i></i></div>
           <h2 class="visually-hidden" id="dog-title">Perros</h2>
+
+          <!-- PLANO 5 · The Reveal: al alejarse, el perro abre tras de sí la
+               sección de perros; cada palabra y cada producto llegan con una pisada -->
+          <div class="reveal" data-reveal>
+            <div class="reveal__panel" data-reveal-panel>
+              <div class="reveal__bg" aria-hidden="true"></div>
+              <div class="reveal__content" data-reveal-content>
+                <p class="chip reveal__chip" data-step>Perros</p>
+                <p class="bridge" lang="en" aria-hidden="true" data-bridge><span class="line"><span class="line__in" data-step>Keep</span></span> <span class="line"><span class="line__in" data-step>up.</span></span></p>
+                <ul class="dog__cards" data-dog-cards aria-label="Productos destacados para perros"></ul>
+                <a class="reveal__link" href="#tienda" data-filter-link="perros" data-step>Ver todo para perros<span aria-hidden="true"> →</span></a>
+              </div>
+            </div>
+          </div>
 
           <figure class="cast">
             <div class="px" data-depth="-0.2">
@@ -182,8 +197,6 @@
               <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </a>
           </div>
-
-          <p class="bridge" lang="en" aria-hidden="true" data-bridge><span class="line"><span class="line__in">Keep up.</span></span></p>
 
         </section>
 
@@ -245,27 +258,34 @@
 
     <!-- ==================== JUNTOS: travelling lateral ==================== -->
     <section class="duo" id="juntos" data-duo aria-labelledby="duo-title">
-      <div class="duo__marquee" aria-hidden="true">
-        <div class="duo__row" data-marquee="1"><span>Side by side · Side by side · Side by side · </span><span>Side by side · Side by side · Side by side · </span></div>
-      </div>
-      <figure class="duo__cast">
-        <div class="walker walker--dog" data-walker="dog">
-          <img class="walker__shadow" src="assets/img/cast/dog-walk-shadow.webp" data-soft="assets/img/cast/dog-walk-shadow-soft.webp" width="1122" height="660" alt="" loading="lazy" decoding="async">
-          <img class="walker__img" src="assets/img/cast/dog-walk.webp" width="1122" height="660" alt="Golden retriever caminando de perfil" loading="lazy" decoding="async">
+      <!-- PLANO FINAL: los dos llegan juntos y se abre la tienda por animal -->
+      <div class="duo__pin" data-duo-pin>
+        <div class="duo__bg" aria-hidden="true"></div>
+        <div class="duo__type" aria-hidden="true">
+          <p class="duo__big" lang="en"><span class="line">Side by side.</span><span class="line line--em">Every day.</span></p>
         </div>
-        <div class="walker walker--cat" data-walker="cat">
-          <img class="walker__shadow" src="assets/img/cast/cat-walk-shadow.webp" data-soft="assets/img/cast/cat-walk-shadow-soft.webp" width="1113" height="634" alt="" loading="lazy" decoding="async">
-          <img class="walker__img" src="assets/img/cast/cat-walk.webp" width="1113" height="634" alt="Gato atigrado caminando de perfil" loading="lazy" decoding="async">
-        </div>
-      </figure>
-      <div class="duo__bar">
-        <div>
-          <p class="chip" style="--dot: var(--blue)">Juntos</p>
-          <h2 class="duo__title" id="duo-title" lang="en">Side by side. <em>Every day.</em></h2>
-        </div>
-        <div class="duo__aside">
-          <p>Paseos, siestas y carreras: todo lo que necesitan para compartir el día contigo, en una sola tienda.</p>
-          <a class="btn" href="#tienda" data-filter-link="todos"><span>Ver toda la tienda</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <figure class="duo__cast">
+          <div class="walker walker--dog" data-walker="dog">
+            <img class="walker__shadow" src="assets/img/cast/dog-walk-shadow.webp" data-soft="assets/img/cast/dog-walk-shadow-soft.webp" width="1122" height="660" alt="" loading="lazy" decoding="async">
+            <img class="walker__img" src="assets/img/cast/dog-walk.webp" width="1122" height="660" alt="Golden retriever caminando de perfil" loading="lazy" decoding="async">
+          </div>
+          <div class="walker walker--cat" data-walker="cat">
+            <img class="walker__shadow" src="assets/img/cast/cat-walk-shadow.webp" data-soft="assets/img/cast/cat-walk-shadow-soft.webp" width="1113" height="634" alt="" loading="lazy" decoding="async">
+            <img class="walker__img" src="assets/img/cast/cat-walk.webp" width="1113" height="634" alt="Gato atigrado caminando de perfil" loading="lazy" decoding="async">
+          </div>
+        </figure>
+        <div class="duo__bar">
+          <div class="duo__intro" data-duo-fade>
+            <p class="chip" style="--dot: var(--blue)">Juntos</p>
+            <h2 class="visually-hidden" id="duo-title" lang="en">Side by side. Every day.</h2>
+            <p class="duo__copy">Paseos, siestas y carreras: todo lo que necesitan para compartir el día contigo, en una sola tienda.</p>
+          </div>
+          <nav class="duo__nav" aria-label="Explorar la tienda por animal">
+            <a href="#tienda" data-filter-link="perros" data-duo-link><small>01</small><span>Perros</span><b data-count="perros"></b></a>
+            <a href="#tienda" data-filter-link="gatos" data-duo-link><small>02</small><span>Gatos</span><b data-count="gatos"></b></a>
+            <a href="#tienda" data-filter-link="acuaticos" data-duo-link><small>03</small><span>Acuáticos</span><b data-count="acuaticos"></b></a>
+            <a class="duo__all" href="#tienda" data-filter-link="todos" data-duo-link><small>04</small><span>Toda la tienda</span><b data-count="todos"></b></a>
+          </nav>
         </div>
       </div>
     </section>

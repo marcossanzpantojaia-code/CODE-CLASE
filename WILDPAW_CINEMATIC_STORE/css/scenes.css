@@ -201,16 +201,59 @@
   justify-items: start;
 }
 .dog__copy { font-size: 17px; line-height: 1.42; color: var(--ink-2); }
-.bridge {
+
+/* ======================================================= PLANO 5: THE REVEAL
+   El perro se aleja y abre tras de sí la sección de perros: el borde del
+   panel sigue su flanco (js/scenes.js → applyReveal) y va por DEBAJO de él,
+   así que el panel parece salir de detrás de su cuerpo. */
+.reveal { position: absolute; inset: 0; }
+.is-cinematic .reveal { visibility: hidden; }
+.reveal__panel { position: absolute; inset: 0; will-change: transform; }
+.reveal__bg { position: absolute; inset: 0; background: linear-gradient(180deg, #FBF4E8 0%, #F5E8D4 58%, #EFDDC3 100%); }
+.reveal__content {
   position: absolute;
   left: var(--gutter);
-  top: 19svh;
-  font-size: clamp(54px, 9.4vw, 170px);
+  top: calc(var(--nav-h) + 5svh);
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+  will-change: transform;
+}
+.reveal__chip { --dot: #C98A3A; background: rgba(255, 255, 255, .72); }
+.bridge {
+  display: flex;
+  gap: .2em;
+  font-size: clamp(54px, 8.2vw, 148px);
   font-weight: 800;
   line-height: .95;
   letter-spacing: -.055em;
 }
-.is-cinematic .bridge { visibility: hidden; }
+.dog__cards { display: grid; gap: 12px; width: min(330px, 25vw); margin-top: 4px; }
+.dog__cards .cat-card, .dog__cards .cat-card:nth-child(n) { position: relative; inset: auto; width: auto; }
+.dog__cards .cat-card__media { background: #F8F0E4; }
+.reveal__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+.reveal__link:hover { text-decoration-thickness: 2px; }
+/* Luz cálida que acompaña al perro (el mundo del perro va con él) */
+.dog__spot { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+.dog__spot i {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100vmax; height: 100vmax;
+  margin: -50vmax 0 0 -50vmax;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(245, 228, 202, .9) 0%, rgba(245, 228, 202, .45) 45%, rgba(245, 228, 202, 0) 100%);
+  will-change: transform;
+}
 
 .scroll-cue {
   position: absolute;
@@ -393,54 +436,90 @@
 .ocean__meta .chip { --dot: var(--blue); background: rgba(255, 255, 255, .8); color: var(--navy); }
 .ocean__meta b { font-weight: 700; font-variant-numeric: tabular-nums; }
 
-/* ================================================== JUNTOS: travelling lateral */
-.duo {
-  position: relative;
-  z-index: 2;
-  min-height: 100svh;
+/* ================================================= PLANO FINAL: JUNTOS
+   Cierre editorial que hace de "sujetalibros" con la llegada: el mismo papel,
+   la tipografía gigante detrás de los animales y la navegación de la tienda
+   por animal. Las letras se levantan al paso de los animales (js/duo.js). */
+.duo { position: relative; z-index: 2; color: var(--ink); }
+.duo__pin { position: relative; height: 100svh; min-height: 560px; overflow: hidden; }
+/* Con movimiento: la sección mide 2,4 pantallas y el encuadre se queda pegado */
+.is-cinematic .duo { height: max(240svh, 1344px); }
+.is-cinematic .duo__pin { position: sticky; top: 0; }
+.duo__bg { position: absolute; inset: 0; background: radial-gradient(70% 62% at 50% 42%, #FFFFFF 0%, #F4F2EE 58%, #E9E5DE 100%); }
+.duo__type { position: absolute; left: 0; right: 0; top: calc(var(--nav-h) + 4svh); pointer-events: none; user-select: none; }
+.duo__big {
   display: grid;
-  grid-template-rows: 1fr auto;
-  overflow: hidden;
-  background: #EEEEF1;
-  color: var(--ink);
-}
-.duo__marquee { position: absolute; left: 0; right: 0; top: 12svh; pointer-events: none; }
-.duo__row {
-  display: flex;
-  width: max-content;
-  font-size: clamp(96px, 21vw, 380px);
+  justify-items: center;
+  font-size: clamp(64px, 11vw, 200px);
   font-weight: 900;
-  line-height: .9;
-  letter-spacing: -.06em;
+  line-height: .86;
+  letter-spacing: -.055em;
   white-space: nowrap;
-  color: #fff;
-  will-change: transform;
 }
-.duo__row span { flex: none; padding-right: .12em; }
-.duo__cast { position: relative; min-height: 52svh; }
+.duo__big .line { display: flex; overflow: visible; padding: 0; margin: 0; }
+.duo__big .line--em { color: #BDB7AE; }
+/* El interletrado lo dan los márgenes de cada máscara (.ch), no letter-spacing */
+.duo__big .ch > span { letter-spacing: 0; }
+.duo__cast { position: absolute; left: 0; right: 0; bottom: 19svh; height: 46svh; }
 .walker { position: absolute; will-change: transform; }
-.walker--dog { left: 7vw; bottom: 3svh; width: min(60vw, 108svh); aspect-ratio: 1122 / 660; }
-.walker--cat { left: 52vw; bottom: -3svh; width: min(38vw, 68svh); aspect-ratio: 1113 / 634; }
+.walker--dog { left: 10vw; bottom: 0; width: min(46vw, 80svh); aspect-ratio: 1122 / 660; }
+.walker--cat { left: 54vw; bottom: -3svh; width: min(29vw, 50svh); aspect-ratio: 1113 / 634; }
 .walker__shadow, .walker__img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+.walker { transition: opacity .5s var(--ease-out); }
+.duo[data-focus="dog"] .walker--cat, .duo[data-focus="cat"] .walker--dog { opacity: .32; }
 .duo__bar {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 5svh;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(0, 2.5fr);
+  gap: 20px 56px;
+  align-items: end;
+}
+.duo__intro .chip { background: #fff; margin-bottom: 12px; }
+.duo__copy { max-width: 36ch; font-size: 16px; line-height: 1.42; color: #57575C; }
+.duo__nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.duo__nav a {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr minmax(260px, 360px);
-  gap: 20px 48px;
-  align-items: end;
-  padding: 3svh var(--gutter) 9svh;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 4px 10px;
+  min-height: 44px;
+  padding: 16px 18px 6px 0;
+  color: var(--ink);
+  text-decoration: none;
 }
-.duo__bar .chip { background: #fff; margin-bottom: 14px; }
-.duo__title { font-size: clamp(38px, 5vw, 88px); font-weight: 700; line-height: 1.02; letter-spacing: -.045em; }
-.duo__title em { color: #77777C; }
-.duo__aside { display: grid; gap: 20px; justify-items: start; }
-.duo__aside p { color: #55555A; font-size: 17px; line-height: 1.42; }
+/* Raya superior que se dibuja de izquierda a derecha (dirección de la marcha) */
+.duo__nav a::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 14px; top: 0;
+  height: 1px;
+  background: rgba(0, 0, 0, .2);
+  transform-origin: left;
+  transform: scaleX(var(--draw, 1));
+}
+.duo__nav small { grid-column: 1 / -1; font: 500 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .14em; color: #57575C; }
+.duo__nav span { font-size: clamp(20px, 1.9vw, 30px); font-weight: 700; line-height: 1.1; letter-spacing: -.03em; white-space: nowrap; }
+.duo__nav a::after {
+  content: '→';
+  position: absolute;
+  right: 18px; top: 12px;
+  font-size: 16px;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .3s, transform .4s var(--ease-out);
+}
+.duo__nav b { grid-column: 1 / -1; font-size: 14px; font-weight: 500; color: #57575C; }
+.duo__nav a:hover::after, .duo__nav a:focus-visible::after { opacity: 1; transform: none; }
+.duo__nav a:hover::before, .duo__nav a:focus-visible::before { background: var(--ink); }
 
 /* ================================================== MODO ESTÁTICO / NO-JS */
 html:not(.is-cinematic) .stage { height: auto; min-height: 0; overflow: visible; }
 html:not(.is-cinematic) .stage__floor,
 html:not(.is-cinematic) .wash,
-html:not(.is-cinematic) .bridge,
 html:not(.is-cinematic) .scroll-cue,
 html:not(.is-cinematic) .hud,
 html:not(.is-cinematic) .ocean__wave,
@@ -484,6 +563,12 @@ html:not(.is-cinematic) .cat__cards {
 }
 html:not(.is-cinematic) .cat-card { position: relative; inset: auto; width: auto; }
 html:not(.is-cinematic) .scene--ocean { height: 100svh; min-height: 560px; }
+html:not(.is-cinematic) .reveal,
+html:not(.is-cinematic) .reveal__panel,
+html:not(.is-cinematic) .reveal__content { position: relative; inset: auto; }
+html:not(.is-cinematic) .reveal { grid-column: 1 / -1; order: 3; margin-top: 4svh; }
+html:not(.is-cinematic) .reveal__bg, html:not(.is-cinematic) .dog__spot { display: none; }
+html:not(.is-cinematic) .dog__cards { width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
 /* ================================================================ MÓVIL */
 @media (max-aspect-ratio: 4/5), (max-width: 700px) {
@@ -500,7 +585,21 @@ html:not(.is-cinematic) .scene--ocean { height: 100svh; min-height: 560px; }
   .dog__aside { left: var(--gutter); right: var(--gutter); bottom: 3.6svh; width: auto; }
   .dog__copy { display: none; }
   .dog__aside .btn { width: 100%; }
-  .bridge { top: calc(var(--nav-h) + 3svh); font-size: clamp(54px, 19vw, 120px); }
+  .reveal__content { left: 0; right: 0; top: calc(var(--nav-h) + 1.5svh); gap: 10px; justify-items: stretch; }
+  .reveal__chip, .reveal__link { display: none; }
+  .bridge { padding: 0 var(--gutter); font-size: clamp(48px, 16.5vw, 112px); }
+  .dog__cards {
+    display: flex;
+    width: auto;
+    gap: 10px;
+    margin: 0;
+    padding: 10px var(--gutter) 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    pointer-events: auto;
+  }
+  .dog__cards::-webkit-scrollbar { display: none; }
 
   .cat__copy { bottom: max(21svh, 178px); gap: 8px; }
   .cat__copy .chip { display: none; }
@@ -525,14 +624,19 @@ html:not(.is-cinematic) .scene--ocean { height: 100svh; min-height: 560px; }
   .ocean__cta .btn { width: 100%; }
   .ocean__meta { top: calc(var(--nav-h) + 1.5svh); bottom: auto; flex-direction: row; }
 
-  .duo__marquee { top: 10svh; }
-  .duo__row { font-size: 34vw; }
-  .duo__cast { min-height: 46svh; }
-  .walker--dog { left: -6vw; bottom: 7svh; width: 96vw; }
-  .walker--cat { left: 40vw; bottom: 0; width: 60vw; }
-  .duo__bar { grid-template-columns: 1fr; padding-bottom: 6svh; }
-  .duo__title { font-size: clamp(34px, 10.6vw, 64px); }
-  .duo__aside .btn { width: 100%; }
+  .duo__type { top: calc(var(--nav-h) + 11svh); }
+  .duo__big { font-size: 17.4vw; }
+  .duo__cast { bottom: 33svh; height: 32svh; }
+  .walker--dog { left: -7vw; bottom: 4svh; width: min(90vw, 50svh); }
+  .walker--cat { left: 45vw; bottom: 0; width: min(55vw, 30svh); }
+  .duo__nav a::after { right: 10px; }
+  .duo__bar { grid-template-columns: 1fr; bottom: 2.6svh; gap: 12px; }
+  .duo__intro .chip { display: none; }
+  .duo__copy { font-size: 15px; }
+  .duo__nav { grid-template-columns: 1fr 1fr; }
+  .duo__nav a { padding: 12px 10px 8px 0; }
+  .duo__nav span { font-size: 20px; }
+  html:not(.is-cinematic) .dog__cards { display: grid; grid-template-columns: 1fr; overflow: visible; padding: 0; }
 
   html:not(.is-cinematic) .scene--arrival,
   html:not(.is-cinematic) .scene--connection,
@@ -545,8 +649,13 @@ html:not(.is-cinematic) .scene--ocean { height: 100svh; min-height: 560px; }
   html:not(.is-cinematic) .cat-card, html:not(.is-cinematic) .cat-card:nth-child(n) { flex: none; }
 }
 
+/* Móvil bajo: el cierre se queda con la tipografía, los animales y la navegación */
+@media (max-aspect-ratio: 4/5) and (max-height: 760px), (max-width: 700px) and (max-height: 760px) {
+  .duo__copy { display: none; }
+}
+
 @media (max-height: 560px) and (min-aspect-ratio: 4/5) {
-  .dog__copy, .arrival__copy, .cat-card p, .ocean__cta p { display: none; }
+  .dog__copy, .arrival__copy, .cat-card p, .ocean__cta p, .duo__copy { display: none; }
   .dog__headline, .cat__title { font-size: clamp(28px, 4vw, 52px); }
   .cat-card:nth-child(1) { top: 30svh; }
   .cat-card:nth-child(2) { top: 50svh; }

@@ -256,3 +256,65 @@ La red del entorno las bloqueaba; se creó, con aprobación del usuario, un ento
 | Rendimiento, 1440 px (WebGL por software, modo ligero) | 45 fps iris, 60 primer plano, 44 salto, 52–60 perro y contraplano, 49–52 agua y océano |
 
 **C3 no está evaluado:** corresponde al usuario.
+
+## 10. Hito 2: escenas 5 (The Reveal) y 6 (Final Composition)
+
+### 10.1 Encargo
+Escena 5: «El perro gira y continúa su recorrido. Aprovecha su movimiento para revelar una sección nueva de la web. La tipografía, los elementos de interfaz y el fondo deben estar coreografiados con la animación. No quiero elementos entrando aleatoriamente.» Escena 6: «Un cierre visual sofisticado con ambos animales […] que conecte con el propósito de la web y ofrezca una navegación clara. No inventes mensajes comerciales, productos o servicios que no existan en el proyecto.»
+
+### 10.2 Fichas aplicadas (biblioteca v0.32.0, solo lectura)
+| Ficha | Ruta | Qué se tomó |
+|---|---|---|
+| EDIT-001 regla 2 | `animations/EDIT-001-edicion-de-transiciones-de-motion-design-a-la-web.md` | «Un elemento guía marca el tempo; los demás copian su easing»: el perro es el elemento guía del plano 5. Su avance en profundidad, la fase de su paso y el borde de la sección usan la misma curva (`outE`), y las entradas cuelgan de sus pisadas |
+| EDIT-001 reglas 6 y 8 | ídem | Secundarios que no arrancan ni paran a la vez (cada elemento en una pisada distinta) y efecto desfasado de la cámara (al adelantarlo, el texto, más cerca, se va antes que el panel) |
+| MOT-001 | `animations/MOT-001-gramatica-de-escena-por-scroll.md` | Estados 0/25/50/75/100 % de cada tramo nuevo y meseta de lectura (8,6–9,8) con la sección interactiva |
+| DEPTH-001 | `animations/DEPTH-001-capas-sandwich-tipografia-objeto.md` | En el cierre, la tipografía gigante va detrás de los dos animales (sándwich), como WILDPAW en la llegada |
+| TXT-001 / TXT-002 (variante B) | `animations/TXT-001-splittext.md`, `animations/TXT-002-revelado-texto-scroll-y-mascara.md` | Letras que salen de su máscara; se usa 130 % en lugar de 110 % porque con 110 % el punto de la «i» asomaba 2 px por el borde (medido) |
+| ART-001 | `ux/ART-001-direccion-de-arte-producto-heroe.md` | «El catálogo va después de la historia» y un color por acto: la sección del perro usa el mismo papel cálido de su plano; el cierre vuelve al papel de la llegada |
+| CONT-001 | `animations/CONT-001-continuidad-de-objeto-entre-escenas.md` | Los mismos dos protagonistas cierran la historia; nada de animales nuevos |
+| ST-002 | `scrolltrigger/ST-002-pinning.md` | El plano 5 vive dentro del pin maestro. En el cierre se probó un pin propio y dejaba un plano vacío de una pantalla; se cambió a un encuadre `position: sticky` con la línea de tiempo desde «top bottom», así los animales entran mientras el encuadre sube (decisión propia, ver 10.4) |
+| EVAL-001 | `testing/EVAL-001-criterios-fidelidad-visual-movimiento-calidad-creativa.md` | C1 y C2 con pruebas medidas; **C3 queda para el usuario** |
+
+Referencias externas: no se inspeccionó ninguna nueva en este hito. El principio de Dogstudio (luz que acompaña al animal, §9.2) se aplica como una luz cálida que sigue al perro en el plano 5; no se le atribuye ninguna técnica concreta.
+
+### 10.3 Aplicación
+| Plano | Técnica | Dónde |
+|---|---|---|
+| 5 · el giro | Contraplano del perro de espaldas tras el corte oculto bajo su pelaje (hito 1) | `js/scenes.js` |
+| 5 · sección revelada | Panel cálido por debajo del perro cuyo borde es su flanco (`screenPoint` en cada fotograma); el panel parece salir de detrás de su cuerpo. En vertical el borde es su lomo (horizontal). Al pararse, el borde se queda | `applyReveal`, `.reveal` |
+| 5 · pisadas | La fase de la marcha la marca el scroll (`stepP`), con la misma curva que su avance: las patas traseras apoyan en las fases .2 y .7 y en esos instantes exactos salen el rótulo «Perros», «Keep», «up.», los tres productos de perro del catálogo y el enlace «Ver todo para perros» (fórmula `footfall(k)`) | `footfall`, `revealSteps` |
+| 5 · fondo | Luz cálida que acompaña al perro y escala con él | `.dog__spot` |
+| 6 · la cámara lo adelanta | El perro sale por la derecha y la sección por la izquierda con la misma curva (`power2.in`); el texto va un 10 % más rápido y se apaga antes (en móvil no cruza la barra) | `js/scenes.js` |
+| Cierre · entrada | Encuadre pegado; los dos recorren la misma distancia y van a la par; paso ligado a la distancia; frenan y vuelven a la postura de la foto | `js/duo.js` |
+| Cierre · letras | Cada letra sube cuando el hocico que va delante pasa por ella (posición, no reloj); al pararse terminan las que queden | `step()` |
+| Cierre · navegación | La raya de cada enlace se dibuja hacia donde andaban; recuentos reales del catálogo (3 · 3 · 3 · 9); al señalar «Perros» o «Gatos» el otro animal se atenúa; abre la tienda filtrada | `.duo__nav`, `js/shop.js` |
+
+Contenido: no se añadió ningún producto, servicio ni mensaje comercial. Textos nuevos: «Ver todo para perros», «Toda la tienda» y los recuentos, que describen categorías y productos que ya existían.
+
+### 10.4 Lo que se corrigió tras verlo
+| Problema observado | Corrección |
+|---|---|
+| Las letras del cierre se adelantaban demasiado a los animales | Adelanto de 14 % → 5 % del ancho |
+| La cabeza del perro tapaba «Every day.» (escritorio y tableta) | Animales más bajos y tamaño limitado por la altura |
+| Flecha de «Toda la tienda» partía la línea | Flecha fuera del flujo |
+| En móvil, las tarjetas subían por debajo del logotipo al irse | El texto se apaga al empezar la salida |
+| Tras redimensionar, la distancia de entrada del cierre era la del tamaño anterior | Se mide en `refreshInit`, antes de que GSAP relea los valores |
+| Enlaces del cierre enfocables sin nombre antes de aparecer (axe: `link-name`) | Ocultos (`visibility`) hasta que se dibujan |
+| Plano vacío de una pantalla al entrar el cierre | Encuadre `sticky`: entran mientras sube |
+| El punto de la «i» asomaba por la máscara | 130 % |
+
+### 10.5 Pruebas del hito 2 (Chromium sin GPU)
+| Prueba | Resultado |
+|---|---|
+| Batería de movimiento (27 comprobaciones) por http y por `file://` | 27/27 en las dos |
+| Borde de la sección frente al flanco del perro (28 muestras) | 0 px de diferencia; solo avanza |
+| Fase del paso frente al avance en profundidad | Error máximo 0,0000 |
+| Elemento ↔ pisada (7) | Fases 1,220 · 1,715 · 2,214 · 2,715 · 3,211 · 3,708 · 4,200 (todas a ≤ 0,02 de .2/.7) |
+| Reversibilidad (12 puntos, incluidos 7,6 · 8,3 · 9,3 · 10,4), scroll rápido, resize 1440→1024 en t = 7,8 y 9,3 | Idénticos a una carga limpia |
+| Cierre: inicio, mitad, final, reversibilidad, pata apoyada, foco del animal, enlace «Gatos» | Correcto; pata 0,06–0,24 px por paso de 1,1–2,5 px |
+| Carrito / filtros / axe (9 puntos × 2 tamaños + movimiento reducido) / teclado / 5 tamaños | 15/15 / 20/20 / 0 incidencias / Tab entra en los productos del perro y en la navegación; Enter filtra / sin desbordes |
+| Rendimiento, 390 px | 60 fps en todos los tramos nuevos |
+| Rendimiento, 1440 px (software, modo ligero) | Plano 5: 56 fps; meseta: 60; cámara y encuentro: 55; agua: 53; cierre: 38–49 (antes 34–39) |
+
+Defectos pendientes: borde escalonado en el halo del perro de espaldas mientras está muy desenfocado (ya existía); las patas se doblan, no giran; el perro no gira de verdad (el giro es un corte a otra foto). **C3 no está evaluado: corresponde al usuario.**
+

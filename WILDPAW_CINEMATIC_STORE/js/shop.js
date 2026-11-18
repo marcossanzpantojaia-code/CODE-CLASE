@@ -192,6 +192,17 @@
       if (cards) {
         ['cat-tree', 'cat-bed', 'cat-toy'].forEach(function (id) { cards.appendChild(catCard(W.Cart.product(id))); });
       }
+      // Los productos de perro aparecen en el plano 5, uno por pisada
+      var dogCards = W.$('[data-dog-cards]');
+      if (dogCards) {
+        ['dog-bed-cave', 'dog-harness', 'dog-collar'].forEach(function (id) { dogCards.appendChild(catCard(W.Cart.product(id))); });
+      }
+      // Recuento real de productos en la navegación del plano final
+      W.$$('[data-count]').forEach(function (el) {
+        var c = el.getAttribute('data-count');
+        var n = c === 'todos' ? W.products.length : W.products.filter(function (p) { return p.category === c; }).length;
+        el.textContent = n + (n === 1 ? ' producto' : ' productos');
+      });
 
       // Enlaces que abren la tienda ya filtrada (p. ej. desde la escena acuática)
       W.$$('[data-filter-link]').forEach(function (a) {
