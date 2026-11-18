@@ -201,3 +201,58 @@ Ninguna ficha describe cómo **deformar una foto con un esqueleto** (patas, cola
 | Vídeo de estudio a 30 fps exactos (reloj fijo) | `capturas/estudio-movimiento-animales.mp4` |
 
 **Calificación:** la mecánica (C2) está medida. Si el movimiento resulta natural o "de plastilina" es C3 y **lo decide el usuario** viendo el vídeo de estudio y la web.
+
+## 9. Tercera iteración: directiva «Cinematic Animal Experience» (hito 1)
+
+### 9.1 Encargo
+Reconstruir la narrativa en seis escenas (The Arrival, The Connection, The Transition, The Energy, The Reveal, Final Composition), con movimiento animal plausible y transiciones de montaje profesional. Empezar por la escena protagonista y la primera transición.
+
+### 9.2 Referencias externas realmente inspeccionadas
+La red del entorno las bloqueaba; se creó, con aprobación del usuario, un entorno con solo esos dominios.
+
+| Referencia | Qué se pudo ver | Principio extraído |
+|---|---|---|
+| Dogstudio (ficha de mesh3d.gallery) | Solo el texto de la ficha y los metadatos: perro 3D azul y violeta en la oscuridad, titular serif alto, hojas que derivan, luz de color que recorre el pelaje con scroll y cursor, WebGL con shaders propios, 7,8 MB. El vídeo de vista previa está en cdn.mesh3d.gallery (dominio no permitido): **no visto** | Un único animal protagonista, gigante, con la luz como elemento que reacciona al usuario |
+| Archon (dev.viseni.com) | Texto técnico de la demo: 241 WebP en un canvas, ScrollTrigger con scrub, `end` proporcional al número de fotogramas, ajuste tipo *cover*, texto con parallax propio | Confirma SEQ-001/002 como vía para los clips IA |
+| Little Guy (angelosgiovanis.com) | Código fuente leído (licencia no indicada: **no se copia**): 48 fotogramas reales de un giro de cabeza recorridos con el cursor, reflejados para el otro lado con una banda central de fundido, muelle (rigidez 90, amortiguación 19), respiración de 0,6 % y miradas sueltas cada 3–7 s | Mirada que sigue al cursor con muelle y miradas propias en reposo; con fotos fijas se aplica como inclinación, no como giro |
+| Codrops, *scroll transitions WebGL* | **Inaccesible**: el sitio responde con un reto de Cloudflare (403) | — |
+| Enky | Solo lo que ya estaba en la biblioteca (CASE-003, informe del lote 20). No se le atribuye ninguna técnica nueva | — |
+
+### 9.3 Fichas leídas en esta iteración (además de las anteriores)
+| Ficha | Ruta | Estado | Decisión |
+|---|---|---|---|
+| SEQ-001 | `/home/user/web_engineering_knowledge_library/animations/SEQ-001-secuencia-de-fotogramas-objeto-continuo.md` | INVESTIGADO | Formato de entrega de los clips IA (canvas + scrub, `clearRect`, DPR, fotograma clave estático con movimiento reducido) → `RECURSOS_IA.md` |
+| SEQ-002 | `/home/user/web_engineering_knowledge_library/animations/SEQ-002-produccion-y-entrega-de-secuencias-prerenderizadas.md` | INVESTIGADO | Juegos por dispositivo, precarga direccional ±5 y presupuesto de memoria → `RECURSOS_IA.md` |
+
+### 9.4 Decisión de tecnología (punto 4 de la directiva)
+| Opción | Veredicto |
+|---|---|
+| A · Vídeo IA → secuencia de fotogramas | La única que da patas que giran, pelaje vivo y un giro real de cabeza. **No ejecutable**: herramientas de pago no autorizadas. Especificada clip a clip con prompts en `RECURSOS_IA.md` |
+| B · Modelos 3D | Sin modelos de golden retriever y gato atigrado con pelaje realista a coste 0; el pelaje en tiempo real quedaría artificial (PROD-001). Descartada |
+| C · 2,5D con las fotos + marioneta validada | **Elegida para el hito 1**: caminata sin patinar (medida), primer plano real para la mirada, saltos y cortes ocultos por oclusión. Lo que exige otro ángulo se resuelve con un corte de montaje, no con un giro fingido |
+
+### 9.5 Aplicación (hito 1)
+| Plano / transición | Técnica | Fichas | Dónde |
+|---|---|---|---|
+| 1 The Arrival | El gato entra andando desde fuera de cuadro; la fase del paso sale de la distancia recorrida; frena (`power2.out`) y se asienta; WILDPAW detrás con la cabeza solapando las letras | MP-001, PHYS-001, DEPTH-001, ART-001 | `js/scenes.js` (`intro`, `walkPhase`) |
+| 1 → 2 corte en iris | Un círculo nace en la cabeza del plano general con una cara del mismo tamaño y crece siguiendo la cara del primer plano; empuje de cámara del 7 % en el plano general (CAM-003, ≤ 8 %) | EDIT-001 (corte motivado), CAM-003, MOT-002 | `js/scenes.js` (`applyIris`) |
+| 2 The Connection | Primer plano real de frente; cabeza que se inclina hacia el cursor ±2,8° con muelle y miradas propias si el ratón se queda quieto; la palabra CURIOUS detrás de las orejas; niebla del color del fondo que corta por el pecho | PHYS-001, DEPTH-001, Little Guy (principio) | `js/rig.js` (mirada), `css/scenes.css` |
+| 2 → 3 → 4 salto y oclusión | El gato salta al objetivo (estira las patas, orejas atrás), relevo de desenfoque sin valle, su pelaje tapa el encuadre; corte oculto; el pelaje sale hacia abajo, en la dirección del salto (raccord de movimiento) | EDIT-001 estrategia C, SEQ-003, INTEG-001 | `js/scenes.js`, `css/scenes.css` (`.wash--cat`) |
+| 4 The Energy | El perro llega galopando desde el fondo con curva de escala exponencial; luz dorada propia del plano | MOT-002, ART-001 (un color por acto) | `js/scenes.js` |
+| 6 → 7 The Deep | El gato se aleja y el agua sube con su ola (revelado con máscara direccional) en lugar de repetir el salto | TRN-001, MASK-002 (no leída) | `js/scenes.js`, `index.html` |
+| Rótulo de plano | Número, nombre del plano, barra de progreso y código de tiempo | ART-001 (interfaz mínima) | `.hud` |
+
+### 9.6 Pruebas del hito 1 (Chromium sin GPU)
+| Prueba | Resultado |
+|---|---|
+| Estados 0/25/50/75/100 % de 7 transiciones | Tablas en la salida de la batería; láminas en `capturas/hito1-*.jpg` |
+| Relevos de desenfoque (gato que salta, perro que se acerca) | Cobertura mínima 1,000 |
+| Cortes 3→4 y 4→5 | Nunca conviven las dos fotos; el cambio ocurre con el pelaje al 100 % |
+| Reversibilidad (9 puntos), scroll rápido, resize 1440→1024 | Correcto (diferencias del iris ≤ 0,3 px, redondeadas) |
+| Zancada de entrada del gato | La pata apoyada se mueve 0,04–0,13 px por paso de 2,44 px |
+| Mirada | Cursor a la izquierda: −2,9°; a la derecha: +2,7°; con el ratón quieto vuelve sola |
+| Carrito / filtros / accesibilidad (16 puntos) / movimiento reducido / 5 tamaños | 15/15 (×2) / 20/20 / 0 incidencias / sin animaciones / sin desbordes |
+| Rendimiento, 390 px | 59–60 fps en todos los tramos |
+| Rendimiento, 1440 px (WebGL por software, modo ligero) | 45 fps iris, 60 primer plano, 44 salto, 52–60 perro y contraplano, 49–52 agua y océano |
+
+**C3 no está evaluado:** corresponde al usuario.

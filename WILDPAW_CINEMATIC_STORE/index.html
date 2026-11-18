@@ -30,7 +30,7 @@
 
   <!-- Navegación -->
   <header class="nav" data-nav>
-    <a class="nav__logo" href="#perros" data-goto="dog" aria-label="WILDPAW, volver al inicio">
+    <a class="nav__logo" href="#inicio" data-goto="arrival" aria-label="WILDPAW, volver al inicio">
       <svg class="nav__paw" viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="21.5" rx="7.2" ry="6.2"/><ellipse cx="7" cy="13" rx="3.1" ry="3.9" transform="rotate(-18 7 13)"/><ellipse cx="12.6" cy="7.4" rx="3" ry="4"/><ellipse cx="19.4" cy="7.4" rx="3" ry="4"/><ellipse cx="25" cy="13" rx="3.1" ry="3.9" transform="rotate(18 25 13)"/></svg>
       <span>WILDPAW</span>
     </a>
@@ -64,21 +64,87 @@
   </div>
 
   <main id="main">
-    <!-- ===== HISTORIA: un único estudio blanco. La cámara acompaña al perro,
-         lo deja pasar a través del objetivo, alcanza al gato y se zambulle. ===== -->
+    <!-- ===== HISTORIA en siete planos. El gato llega y te mira; salta hacia la
+         cámara y, bajo su pelaje, entra el perro corriendo. El perro cruza el
+         objetivo, se gira, alcanza al gato y el agua sube hasta el océano. ===== -->
     <section class="story" data-story aria-label="Experiencia WILDPAW: tres mundos animales">
       <div class="stage" data-stage>
         <div class="stage__floor" aria-hidden="true"></div>
 
-        <!-- ACTO I · perros -->
-        <section class="scene scene--dog" id="perros" data-scene="dog" aria-labelledby="hero-title">
+        <!-- PLANO 1 · The Arrival: el gato entra caminando -->
+        <section class="scene scene--arrival" id="inicio" data-scene="arrival" aria-labelledby="hero-title">
+          <div class="arrival__bg" aria-hidden="true"></div>
           <h1 class="visually-hidden" id="hero-title">WILDPAW — Discover their world. Tienda premium para perros, gatos y mundo acuático.</h1>
-
-          <div class="mega mega--dog" aria-hidden="true">
+          <div class="mega mega--arrival" aria-hidden="true">
             <div class="px" data-depth="0.3">
-              <div class="mega__word" data-mega="dog"><span class="mega__part"><span class="ch"><span>W</span></span><span class="ch"><span>I</span></span><span class="ch"><span>L</span></span><span class="ch"><span>D</span></span></span><span class="mega__part"><span class="ch"><span>P</span></span><span class="ch"><span>A</span></span><span class="ch"><span>W</span></span></span></div>
+              <div class="mega__word" data-mega="arrival"><span class="mega__part"><span class="ch"><span>W</span></span><span class="ch"><span>I</span></span><span class="ch"><span>L</span></span><span class="ch"><span>D</span></span></span><span class="mega__part"><span class="ch"><span>P</span></span><span class="ch"><span>A</span></span><span class="ch"><span>W</span></span></span></div>
             </div>
           </div>
+
+
+          <figure class="cast">
+            <div class="px" data-depth="-0.2">
+            <div class="actor actor--cat-walk" data-actor="catWalk">
+              <img class="actor__shadow" data-shadow src="assets/img/cast/cat-walk-shadow.webp" data-soft="assets/img/cast/cat-walk-shadow-soft.webp" width="1113" height="634" alt="" decoding="async">
+              <div class="actor__body" data-body>
+                <img class="actor__img" data-layer="s" src="assets/img/cast/cat-walk.webp" width="1113" height="634" alt="Gato atigrado marrón y gris caminando de perfil" decoding="async" fetchpriority="high">
+              </div>
+            </div>
+            </div>
+          </figure>
+
+          <div class="arrival__meta" aria-hidden="true">
+            <span class="chip" data-arrive-fade>Discover their world</span>
+          </div>
+          <div class="arrival__aside">
+            <p class="arrival__copy" data-arrive-fade>Accesorios premium para perros, gatos y vida acuática. Diseñados para quienes viven a su lado cada aventura.</p>
+            <a class="btn btn--explore" href="#gatos" data-goto="cat" data-arrive-fade>
+              <span lang="en">Explore the world</span>
+              <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
+          </div>
+          <div class="scroll-cue" aria-hidden="true" data-arrive-fade><i></i><span>Desliza</span></div>
+        </section>
+
+        <!-- PLANO 2 · The Connection: primer plano, te mira -->
+        <section class="scene scene--connection" id="gatos" data-scene="connection" aria-labelledby="cat-title">
+          <div class="connection__bg" aria-hidden="true"></div>
+          <div class="mega mega--connection" aria-hidden="true">
+            <div class="px" data-depth="0.3">
+              <div class="mega__word" data-mega="cat"><span class="mega__part"><span class="ch"><span>C</span></span><span class="ch"><span>U</span></span><span class="ch"><span>R</span></span><span class="ch"><span>I</span></span></span><span class="mega__part"><span class="ch"><span>O</span></span><span class="ch"><span>U</span></span><span class="ch"><span>S</span></span></span></div>
+            </div>
+          </div>
+
+
+          <figure class="cast">
+            <div class="px" data-depth="-0.12">
+            <div class="actor actor--cat-leap" data-actor="catLeap">
+              <img class="actor__shadow" data-shadow src="assets/img/cast/cat-leap-shadow.webp" data-soft="assets/img/cast/cat-leap-shadow-soft.webp" width="894" height="1402" alt="" decoding="async">
+              <div class="actor__body" data-body>
+                <img class="actor__img actor__img--blur" data-layer="b2" src="assets/img/cast/cat-leap-b2.webp" width="894" height="1402" alt="" decoding="async">
+                <img class="actor__img actor__img--blur" data-layer="b1" src="assets/img/cast/cat-leap-b1.webp" width="894" height="1402" alt="" decoding="async">
+                <img class="actor__img" data-layer="s" src="assets/img/cast/cat-leap.webp" width="894" height="1402" alt="Primer plano de un gato atigrado de ojos verdes mirando a la cámara" decoding="async">
+              </div>
+            </div>
+            </div>
+          </figure>
+          <div class="connection__fog" aria-hidden="true"></div>
+          <div class="cat__copy">
+            <p class="chip" data-cat-fade aria-hidden="true">Gatos</p>
+            <h2 class="cat__title" id="cat-title" lang="en">
+              <span class="line"><span class="line__in">Born to be</span></span>
+              <span class="line"><span class="line__in"><em>curious.</em></span></span>
+            </h2>
+            <p class="cat__sub" lang="en" data-cat-fade>Everything for their next adventure.</p>
+          </div>
+
+          <ul class="cat__cards" data-cat-cards aria-label="Productos destacados para gatos"></ul>
+        </section>
+
+        <!-- PLANOS 4 y 5 · The Energy / The Reveal: el perro -->
+        <section class="scene scene--dog" id="perros" data-scene="dog" aria-labelledby="dog-title">
+          <div class="dog__bg" aria-hidden="true"></div>
+          <h2 class="visually-hidden" id="dog-title">Perros</h2>
 
           <figure class="cast">
             <div class="px" data-depth="-0.2">
@@ -102,8 +168,7 @@
           </figure>
 
           <div class="dog__meta" aria-hidden="true">
-            <span class="chip" data-hero-fade>Discover their world</span>
-            <span class="chip chip--plain" data-hero-fade>01 · Perros</span>
+            <span class="chip" data-hero-fade>Perros</span>
           </div>
 
           <p class="dog__headline" lang="en">
@@ -112,8 +177,7 @@
           </p>
 
           <div class="dog__aside">
-            <p class="dog__copy" data-hero-fade>Accesorios premium para perros, gatos y vida acuática. Diseñados para quienes viven a su lado cada aventura.</p>
-            <a class="btn btn--explore" href="#gatos" data-goto="cat" data-hero-fade>
+            <a class="btn btn--explore" href="#acuaticos" data-goto="ocean" data-hero-fade>
               <span lang="en">Explore the world</span>
               <span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </a>
@@ -121,17 +185,10 @@
 
           <p class="bridge" lang="en" aria-hidden="true" data-bridge><span class="line"><span class="line__in">Keep up.</span></span></p>
 
-          <div class="scroll-cue" aria-hidden="true" data-hero-fade><i></i><span>Desliza</span></div>
         </section>
 
-        <!-- ACTO II · gatos -->
-        <section class="scene scene--cat" id="gatos" data-scene="cat" aria-labelledby="cat-title">
-          <div class="mega mega--cat" aria-hidden="true">
-            <div class="px" data-depth="0.3">
-              <div class="mega__word" data-mega="cat"><span class="mega__part"><span class="ch"><span>C</span></span><span class="ch"><span>U</span></span><span class="ch"><span>R</span></span><span class="ch"><span>I</span></span></span><span class="mega__part"><span class="ch"><span>O</span></span><span class="ch"><span>U</span></span><span class="ch"><span>S</span></span></span></div>
-            </div>
-          </div>
-
+        <!-- PLANO 6 · The Meeting: el perro alcanza al gato -->
+        <section class="scene scene--cat" data-scene="cat" aria-label="El perro alcanza al gato">
           <figure class="cast">
             <div class="px" data-depth="-0.2">
             <div class="actor actor--cat-back" data-actor="catBack">
@@ -142,31 +199,14 @@
                 <img class="actor__img" data-layer="s" src="assets/img/cast/cat-back.webp" width="1031" height="1196" alt="Gato atigrado visto desde atrás, caminando y mirando hacia un lado con curiosidad" decoding="async">
               </div>
             </div>
-            <div class="actor actor--cat-leap" data-actor="catLeap" aria-hidden="true">
-              <img class="actor__shadow" data-shadow src="assets/img/cast/cat-leap-shadow.webp" data-soft="assets/img/cast/cat-leap-shadow-soft.webp" width="894" height="1402" alt="" decoding="async">
-              <div class="actor__body" data-body>
-                <img class="actor__img actor__img--blur" data-layer="b2" src="assets/img/cast/cat-leap-b2.webp" width="894" height="1402" alt="" decoding="async">
-                <img class="actor__img actor__img--blur" data-layer="b1" src="assets/img/cast/cat-leap-b1.webp" width="894" height="1402" alt="" decoding="async">
-                <img class="actor__img" data-layer="s" src="assets/img/cast/cat-leap.webp" width="894" height="1402" alt="" decoding="async">
-              </div>
-            </div>
             </div>
           </figure>
 
-          <div class="cat__copy">
-            <p class="chip" data-cat-fade aria-hidden="true">02 · Gatos</p>
-            <h2 class="cat__title" id="cat-title" lang="en">
-              <span class="line"><span class="line__in">Born to be</span></span>
-              <span class="line"><span class="line__in"><em>curious.</em></span></span>
-            </h2>
-            <p class="cat__sub" lang="en" data-cat-fade>Everything for their next adventure.</p>
-          </div>
-
-          <ul class="cat__cards" data-cat-cards aria-label="Productos destacados para gatos"></ul>
         </section>
 
-        <!-- ACTO III · mundo acuático -->
+        <!-- PLANO 7 · The Deep: el agua sube -->
         <section class="scene scene--ocean" id="acuaticos" data-scene="ocean" aria-labelledby="ocean-title">
+          <svg class="ocean__wave" viewBox="0 0 2880 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60 C 240 20 480 20 720 60 S 1200 100 1440 60 S 1920 20 2160 60 S 2640 100 2880 60 V120 H0 Z"/></svg>
           <div class="ocean__inner">
             <div class="ocean__bg" aria-hidden="true"></div>
             <div class="ocean__rays px" data-depth="0.2" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
@@ -184,11 +224,18 @@
               <a class="btn btn--blue" href="#tienda" data-filter-link="acuaticos"><span>Ver acuáticos</span><span class="btn__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
             </div>
             <div class="ocean__meta" aria-hidden="true">
-              <span class="chip" data-ocean-fade>03 · Acuáticos</span>
+              <span class="chip" data-ocean-fade>Acuáticos</span>
               <span class="chip chip--plain" data-ocean-fade>Profundidad <b><span data-depth-meter>-12</span> m</b></span>
             </div>
           </div>
         </section>
+
+        <!-- Rótulo de plano y código de tiempo (decorativo) -->
+        <div class="hud" aria-hidden="true">
+          <div class="hud__scene"><span class="hud__num" data-hud-num>01</span><span class="hud__sep">/07</span><span class="hud__name" data-hud-name>The Arrival</span></div>
+          <div class="hud__line"><i data-hud-bar></i></div>
+          <div class="hud__tc" data-hud-tc>00:00:00:00</div>
+        </div>
 
         <!-- Cuando un animal cruza el objetivo, su pelaje tapa el encuadre -->
         <div class="wash wash--dog" data-wash="dog" aria-hidden="true"><i></i></div>
@@ -213,7 +260,7 @@
       </figure>
       <div class="duo__bar">
         <div>
-          <p class="chip" style="--dot: var(--blue)">04 · Juntos</p>
+          <p class="chip" style="--dot: var(--blue)">Juntos</p>
           <h2 class="duo__title" id="duo-title" lang="en">Side by side. <em>Every day.</em></h2>
         </div>
         <div class="duo__aside">
@@ -226,7 +273,7 @@
     <!-- ================================ TIENDA ================================ -->
     <section class="shop" id="tienda" aria-labelledby="shop-title">
       <div class="shop__head">
-        <p class="chip shop__eyebrow" style="--dot: var(--green)">05 · Tienda</p>
+        <p class="chip shop__eyebrow" style="--dot: var(--green)">Tienda</p>
         <h2 class="shop__title" id="shop-title" lang="en"><span class="line"><span class="line__in" data-shop-line>Curated for</span></span> <span class="line"><span class="line__in" data-shop-line><em>the wild ones.</em></span></span></h2>
         <p class="shop__demo"><strong>Tienda demostrativa.</strong> Los productos y precios son ficticios: no se realizan pagos ni cobros.</p>
       </div>

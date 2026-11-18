@@ -1,5 +1,5 @@
 /* =========================================================================
-   WILDPAW — historia cinematográfica (perro · gato · océano) y sección "Juntos"
+   WILDPAW — historia en siete planos (gato · perro · encuentro · océano) y "Juntos"
    Modo .is-cinematic: escenario fijado; GSAP coloca a los actores (x, y, escala).
    Sin JS / movimiento reducido: las escenas se apilan como secciones normales.
    Regla: nada de mix-blend-mode ni filtros sobre capas animadas; el desenfoque
@@ -27,9 +27,25 @@
 
 .scene { position: absolute; inset: 0; pointer-events: none; }
 .scene a, .scene button, .scene .cat-card { pointer-events: auto; }
+.scene--arrival { z-index: 1; }
 .scene--cat { z-index: 1; }
 .scene--dog { z-index: 2; }
 .scene--ocean { z-index: 3; pointer-events: auto; }
+.scene--connection { z-index: 4; }
+
+/* Luz de cada plano: un solo cambio de color por acto (ART-001), siempre
+   escondido en un corte (iris, pelaje) */
+.arrival__bg, .connection__bg, .dog__bg { position: absolute; inset: 0; }
+.arrival__bg { background: radial-gradient(70% 62% at 56% 46%, #FFFFFF 0%, #F4F2EE 58%, #E9E5DE 100%); }
+.connection__bg { background: radial-gradient(52% 64% at 66% 40%, #FBF9F6 0%, #EEEAE4 58%, #E3DDD4 100%); }
+.dog__bg { background: radial-gradient(64% 62% at 56% 42%, #FFFAF1 0%, #F7EAD6 56%, #EFDCBF 100%); }
+/* El primer plano corta por el pecho: lo de abajo se funde con el fondo */
+.connection__fog {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(227, 221, 212, 0) 54%, rgba(227, 221, 212, .94) 70%, #E3DDD4 80%);
+  pointer-events: none;
+}
 
 .px { position: absolute; inset: 0; will-change: transform; }
 
@@ -55,7 +71,10 @@
    para que la máscara no recorte el trazo */
 .ch { display: block; flex-shrink: 0; overflow: hidden; padding: .1em .05em; margin: -.1em -.078em; }
 .ch > span { display: block; will-change: transform; }
-.mega--cat .ch > span {
+.mega--arrival .mega__word { top: calc(var(--nav-h) + 6.5svh); }
+/* En el primer plano la palabra va a la derecha, detrás de la cabeza */
+.mega--connection .mega__word { top: calc(var(--nav-h) + 1svh); justify-content: flex-end; padding-right: var(--gutter); }
+.mega--connection .ch > span {
   background: linear-gradient(180deg, #D8F6DC 6%, #86E09A 54%, #37C25A 96%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -75,6 +94,7 @@
 .actor--dog-back { --ar: 988 / 1179; transform-origin: 52% 42%; }
 .actor--cat-back { --ar: 1031 / 1196; transform-origin: 50% 50%; }
 .actor--cat-leap { --ar: 894 / 1402; transform-origin: 60% 42%; }
+.actor--cat-walk { --ar: 1113 / 634; transform-origin: 50% 60%; }
 .actor__body { position: absolute; inset: 0; transform-origin: 50% 92%; }
 .actor__shadow, .actor__img {
   position: absolute;
@@ -88,13 +108,13 @@
 /* Con la marioneta activa, las fotos siguen en el DOM (texto alternativo y
    opacidad de cada capa) pero no se pintan: se ve el lienzo WebGL */
 .is-rigged > .actor__img, .is-rigged > .walker__img { clip-path: inset(50%); }
-.is-cinematic .actor--dog-back, .is-cinematic .actor--cat-back, .is-cinematic .actor--cat-leap { visibility: hidden; }
+.is-cinematic .actor--dog-back, .is-cinematic .actor--cat-back { visibility: hidden; }
 
 /* -------------------------------------------- Pelaje que tapa el objetivo */
 .wash {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 6;
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
@@ -103,6 +123,9 @@
 .wash i { position: absolute; inset: -22%; background: center / cover no-repeat; will-change: transform; }
 .wash--dog i { background-image: url('../assets/img/cast/wash-dog.webp'); background-color: #A5754C; }
 .wash--cat i { background-image: url('../assets/img/cast/wash-cat.webp'); background-color: #7D6859; }
+/* El pelaje del gato sale hacia abajo con el borde superior difuminado; la
+   franja difusa queda fuera de cuadro mientras tapa el plano */
+.wash--cat { top: -28%; -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 21%); mask-image: linear-gradient(180deg, transparent 0%, #000 21%); }
 /* Al taparse la lente entra menos luz: viñeta oscura en los bordes */
 .wash::after {
   content: '';
@@ -111,7 +134,44 @@
   background: radial-gradient(120% 95% at 50% 48%, rgba(30, 16, 6, 0) 28%, rgba(30, 16, 6, .42) 100%);
 }
 
-/* ========================================================== ACTO I: PERRO */
+/* ===================================================== PLANO 1: LA LLEGADA */
+.arrival__meta { position: absolute; left: var(--gutter); bottom: calc(8.5svh + 150px); }
+.arrival__aside {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 8.5svh;
+  width: min(340px, 25vw);
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+}
+.arrival__copy { font-size: 17px; line-height: 1.42; color: var(--ink-2); }
+
+/* ------------------------------------------------- Rótulo de plano (HUD) */
+.hud {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 2.4svh;
+  z-index: 7;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font: 500 11px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  pointer-events: none;
+}
+.hud__scene { display: flex; align-items: baseline; gap: 6px; white-space: nowrap; overflow: hidden; }
+.hud__num { color: var(--ink); font-weight: 700; }
+.hud__sep { opacity: .6; }
+.hud__name { margin-left: 10px; display: inline-block; }
+.hud__line { position: relative; flex: 1; height: 1px; background: rgba(0, 0, 0, .14); overflow: hidden; }
+.hud__line i { position: absolute; inset: 0; background: var(--ink); transform-origin: left; transform: scaleX(0); }
+.hud__tc { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ========================================================== PLANO 4: PERRO */
 .dog__meta {
   position: absolute;
   left: var(--gutter);
@@ -154,8 +214,8 @@
 
 .scroll-cue {
   position: absolute;
-  left: var(--gutter);
-  bottom: 2.6svh;
+  right: var(--gutter);
+  bottom: 6.5svh;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -176,7 +236,7 @@
 }
 @keyframes cue { 0% { transform: translateY(0); opacity: 1; } 70%, 100% { transform: translateY(8px); opacity: 0; } }
 
-/* ========================================================== ACTO II: GATO */
+/* ================================================= PLANO 2: EL PRIMER PLANO */
 .cat__copy {
   position: absolute;
   left: var(--gutter);
@@ -195,10 +255,10 @@
 .cat__sub { font-size: clamp(17px, 1.5vw, 22px); line-height: 1.3; color: var(--ink-2); letter-spacing: -.015em; }
 
 .cat__cards { position: absolute; inset: 0; pointer-events: none; }
-.cat-card { position: absolute; right: var(--gutter); width: min(330px, 25vw); }
-.cat-card:nth-child(1) { top: 41svh; }
-.cat-card:nth-child(2) { top: 56.5svh; right: calc(var(--gutter) + 2.4vw); }
-.cat-card:nth-child(3) { top: 72svh; }
+.cat-card { position: absolute; left: var(--gutter); width: min(330px, 25vw); }
+.cat-card:nth-child(1) { top: 20svh; }
+.cat-card:nth-child(2) { top: 32svh; left: calc(var(--gutter) + 1.6vw); }
+.cat-card:nth-child(3) { top: 44svh; }
 .cat-card__inner {
   position: relative;
   display: grid;
@@ -249,6 +309,18 @@
 
 /* ======================================================== ACTO III: OCÉANO */
 .scene--ocean { color: var(--navy); --focus: var(--navy); }
+/* Superficie del agua: va delante de la escena cuando sube */
+.ocean__wave {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% - 1px);
+  width: 200%;
+  max-width: none;
+  height: 7svh;
+  fill: #EAF6FF;
+  animation: wave 9s linear infinite;
+}
+@keyframes wave { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .ocean__inner { position: absolute; inset: 0; overflow: hidden; }
 .ocean__bg {
   position: absolute;
@@ -370,10 +442,14 @@ html:not(.is-cinematic) .stage__floor,
 html:not(.is-cinematic) .wash,
 html:not(.is-cinematic) .bridge,
 html:not(.is-cinematic) .scroll-cue,
+html:not(.is-cinematic) .hud,
+html:not(.is-cinematic) .ocean__wave,
+html:not(.is-cinematic) .connection__fog,
 html:not(.is-cinematic) .actor__img--blur,
-html:not(.is-cinematic) .actor--dog-back,
-html:not(.is-cinematic) .actor--cat-leap { display: none; }
+html:not(.is-cinematic) .actor--dog-back { display: none; }
 html:not(.is-cinematic) .scene { position: relative; inset: auto; pointer-events: auto; }
+html:not(.is-cinematic) .scene--arrival,
+html:not(.is-cinematic) .scene--connection,
 html:not(.is-cinematic) .scene--dog,
 html:not(.is-cinematic) .scene--cat {
   display: grid;
@@ -383,7 +459,10 @@ html:not(.is-cinematic) .scene--cat {
   padding: calc(var(--nav-h) + 2svh) var(--gutter) 9svh;
   overflow: hidden;
 }
-html:not(.is-cinematic) .scene--cat { border-top: 1px solid var(--line); }
+html:not(.is-cinematic) .scene--cat, html:not(.is-cinematic) .scene--connection, html:not(.is-cinematic) .scene--dog { border-top: 1px solid var(--line); }
+html:not(.is-cinematic) .arrival__meta { display: none; }
+html:not(.is-cinematic) .arrival__aside { position: relative; inset: auto; width: min(360px, 100%); }
+html:not(.is-cinematic) .mega--connection .mega__word { justify-content: center; padding-right: 0; }
 html:not(.is-cinematic) .mega,
 html:not(.is-cinematic) .cast,
 html:not(.is-cinematic) .px { position: relative; inset: auto; }
@@ -409,7 +488,14 @@ html:not(.is-cinematic) .scene--ocean { height: 100svh; min-height: 560px; }
 /* ================================================================ MÓVIL */
 @media (max-aspect-ratio: 4/5), (max-width: 700px) {
   .mega__word { flex-direction: column; align-items: center; line-height: .8; top: calc(var(--nav-h) + .5svh); }
-  .dog__meta, .scroll-cue { display: none; }
+  .dog__meta, .scroll-cue, .arrival__meta { display: none; }
+  .arrival__aside { left: var(--gutter); right: var(--gutter); bottom: 6.5svh; width: auto; gap: 14px; }
+  .arrival__copy { font-size: 15px; }
+  .arrival__aside .btn { width: 100%; }
+  .mega--connection .mega__word { justify-content: center; padding-right: 0; }
+  .connection__fog { background: linear-gradient(180deg, rgba(227, 221, 212, 0) 46%, rgba(227, 221, 212, .95) 58%, #E3DDD4 66%); }
+  .hud { bottom: 1.6svh; gap: 10px; font-size: 10px; }
+  .hud__tc { display: none; }
   .dog__headline { bottom: 14.5svh; font-size: clamp(34px, 10.6vw, 64px); }
   .dog__aside { left: var(--gutter); right: var(--gutter); bottom: 3.6svh; width: auto; }
   .dog__copy { display: none; }
@@ -448,6 +534,8 @@ html:not(.is-cinematic) .scene--ocean { height: 100svh; min-height: 560px; }
   .duo__title { font-size: clamp(34px, 10.6vw, 64px); }
   .duo__aside .btn { width: 100%; }
 
+  html:not(.is-cinematic) .scene--arrival,
+  html:not(.is-cinematic) .scene--connection,
   html:not(.is-cinematic) .scene--dog,
   html:not(.is-cinematic) .scene--cat { grid-template-columns: 1fr; }
   html:not(.is-cinematic) .cast { margin-top: 30vw; }
@@ -458,7 +546,7 @@ html:not(.is-cinematic) .scene--ocean { height: 100svh; min-height: 560px; }
 }
 
 @media (max-height: 560px) and (min-aspect-ratio: 4/5) {
-  .dog__copy, .cat-card p, .ocean__cta p { display: none; }
+  .dog__copy, .arrival__copy, .cat-card p, .ocean__cta p { display: none; }
   .dog__headline, .cat__title { font-size: clamp(28px, 4vw, 52px); }
   .cat-card:nth-child(1) { top: 30svh; }
   .cat-card:nth-child(2) { top: 50svh; }

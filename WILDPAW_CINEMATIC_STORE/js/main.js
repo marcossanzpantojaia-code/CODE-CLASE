@@ -98,8 +98,8 @@
 
   function jumpToHash() {
     var h = (location.hash || '').slice(1);
-    var map = { perros: 'dog', gatos: 'cat', acuaticos: 'ocean' };
-    if (map[h] && map[h] !== 'dog') {
+    var map = { inicio: 'arrival', perros: 'dog', gatos: 'cat', acuaticos: 'ocean' };
+    if (map[h] && map[h] !== 'arrival') {
       W.Scenes.scrollTo(map[h]);
     } else if (h === 'tienda') {
       $('#tienda').scrollIntoView();
@@ -131,7 +131,7 @@
       aquarium
     ];
     // Todo lo que interviene en la primera transición se decodifica antes de empezar
-    $$('[data-actor="dogRun"] img, [data-actor="dogBack"] img, [data-actor="catBack"] [data-layer="s"]')
+    $$('[data-actor="catWalk"] img, [data-actor="catLeap"] img, [data-actor="dogRun"] img')
       .forEach(function (img) { tasks.push(W.loadImage(img.currentSrc || img.src)); });
     // Las marionetas se crean cuando sus fotos ya están decodificadas
     tasks.push(Promise.all(tasks.slice()).then(function () { return W.Scenes.rig(); }));
@@ -141,7 +141,8 @@
       var intro = W.Scenes.intro();
       intro.delay(.3);
       // Se habilita el scroll cuando la composición del héroe ya está montada
-      gsap.delayedCall(2.75, function () {
+      // El scroll se habilita cuando el gato ha llegado a su sitio
+      gsap.delayedCall(3.55, function () {
         W.Scenes.start();
         W.Duo.init();
         W.FX.init();

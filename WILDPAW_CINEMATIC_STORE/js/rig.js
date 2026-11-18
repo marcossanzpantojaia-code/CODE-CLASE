@@ -167,6 +167,7 @@
     this.pose = o.pose; this.R = R; this.m = MOTION[o.pose];
     this.margin = this.m.margin || MARGIN0; this.blur = 0;
     this.host = o.host; this.watch = o.watch || o.host; this.shadow = o.shadow || null;
+    this.scene = this.host.closest('[data-scene]');   // si su escena está oculta, no se dibuja
     this.layers = o.layers;           // elementos cuya opacidad decide nítida / b1 / b2
     this.p = { gait: o.gait == null ? 1 : o.gait, speed: 1, boost: 0, extend: 0, phase: null, on: true };
     this.t = Math.random() * 20; this.phase = 0; this.boost = 0; this.prevExtend = 0; this.rate = 0; this.lastPhase = null;
@@ -317,7 +318,8 @@
   };
 
   Actor.prototype.visible = function () {
-    var s = this.watch.style;
+    var s = this.watch.style, sc = this.scene && this.scene.style;
+    if (sc && (sc.visibility === 'hidden' || sc.opacity === '0')) return false;
     return this.p.on && s.visibility !== 'hidden' && s.opacity !== '0' && this.host.offsetParent !== null;
   };
 
@@ -403,6 +405,26 @@
         if (!this.by[bn]) break;
         this.rot(bn, ta * (i === 0 ? .55 : 1) * Math.sin(TAU * T.hz * t * (1 + .3 * this.boost) - i * T.k));
       }
+    }
+
+    // Mirada: la cabeza se inclina hacia el cursor con un muelle (retraso
+    // natural) y las orejas acompañan el giro. Si nadie mueve el ratón, mira a
+    // su alrededor de vez en cuando. Es un gesto pequeño: la cara no se deforma.
+    if (P.look) {
+      var G = this.gaze || (this.gaze = { x: new Spring(90, 19), y: new Spring(90, 19), tx: 0, ty: 0, next: t + 1.5 });
+      var lx = P.lookX || 0, ly = P.lookY || 0;
+      if (P.lookIdle) {
+        if (t > G.next) {
+          var glance = Math.random() < .35;
+          G.tx = glance ? (Math.random() * 2 - 1) * .45 : 0; G.ty = glance ? (Math.random() * 2 - 1) * .25 : 0;
+          G.next = t + 2.4 + Math.random() * 4;
+        }
+        lx = G.tx; ly = G.ty;
+      }
+      var gx = G.x.step(lx, 0, dt), gy = G.y.step(ly, 0, dt);
+      this.rot('head0', gx * 2.8 - gy * .6);
+      this.off('head0', gx * .009 * this.R.w, gy * .006 * this.R.h);
+      this.rot('earL', -G.x.v * .6); this.rot('earR', -G.x.v * .6);
     }
 
     // Salto del gato: patas que se estiran, orejas atrás, la cola se queda atrás

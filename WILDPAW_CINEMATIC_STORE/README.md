@@ -1,18 +1,22 @@
 # WILDPAW — Discover their world
 
 Tienda **demostrativa** de accesorios para perros, gatos y mundo acuático, construida como una
-pequeña película que se dirige con el scroll. Todo ocurre en un único estudio blanco:
+película en siete planos que se dirige con el scroll:
 
-1. **Perros.** Un golden retriever llega galopando hacia la cámara, por delante de la palabra `WILDPAW`.
-2. **El perro cruza el objetivo.** Se acerca hasta desenfocarse y tapar el encuadre con su pelaje;
-   al despejarse lo vemos de espaldas alejándose y, al fondo, un gato.
-3. **Gatos.** La cámara adelanta al perro y alcanza al gato: «Born to be curious» y tres productos.
-4. **El salto.** El gato se aleja, se gira a lo lejos y salta contra la cámara, que cae al agua.
-5. **Acuáticos.** «Dive into their world», con peces fotografiados nadando entre las letras.
-6. **Juntos**: el perro y el gato cruzan el plano caminando de perfil, paso a paso con el scroll, y la **Tienda** con filtros y carrito.
+1. **The Arrival.** Un gato atigrado entra andando por delante de la palabra `WILDPAW` y se para.
+2. **The Connection.** Un corte en iris desde su cabeza abre su primer plano: te mira y su cabeza sigue al cursor.
+3. **The Leap.** Salta hacia la cámara y su pelaje tapa el encuadre.
+4. **The Energy.** Bajo el pelaje aparece un golden retriever que llega galopando desde el fondo.
+5. **The Reveal.** El perro cruza el objetivo; contraplano: se aleja y mira atrás («Keep up.»).
+6. **The Meeting.** La cámara lo adelanta y alcanza al gato.
+7. **The Deep.** El gato se aleja y el agua sube: peces nadando entre las letras.
 
-Los animales no son fotos quietas: un esqueleto 2D deforma cada foto en tiempo real (WebGL). Galopan, trotan, mueven la cola,
-las orejas y la lengua, respiran y se paran a mirar. Ver «Qué movimiento es real» más abajo.
+Después, **Juntos** (los dos caminando de perfil, paso a paso con el scroll) y la **Tienda** con
+filtros y carrito.
+
+Los animales son fotos, pero no quietas: un esqueleto 2D deforma cada foto en tiempo real (WebGL).
+Lo que una foto no puede dar (un giro real de cabeza, patas que giran) está especificado como
+clips de vídeo IA en `RECURSOS_IA.md`.
 
 ## Cómo abrirla en el ordenador de clase
 
@@ -61,6 +65,7 @@ assets/img/fish/      Peces recortados        assets/img/products/  Productos
 assets/fonts/         Inter (OFL), alternativa a la tipografía del sistema
 capturas/             Capturas antes/después, estados de las transiciones y vídeo del recorrido
 CONSULTA_BIBLIOTECA.md  Fichas de la biblioteca aplicadas, decisiones y pruebas
+RECURSOS_IA.md        Clips de vídeo IA necesarios para el movimiento real, con prompts
 CREDITS.md            Autores y licencias
 ```
 
@@ -82,10 +87,12 @@ No se inventa ningún píxel: se doblan los que hay.
 
 | Elemento | Qué se mueve |
 |---|---|
-| Perro corriendo (portada) | Galope: bote del cuerpo, patas delanteras que suben y bajan, cabeza que compensa el bote, orejas y lengua con muelles, cola. Trota en la portada y galopa cuando haces scroll; cuanto más rápido el scroll, más rápido corre. |
+| Gato de perfil (portada) | Entra andando desde fuera de cuadro: la fase del paso sale de la distancia recorrida, así la pata apoyada no patina; frena, se para, respira y mueve la cola. |
+| Gato en primer plano | Te mira; la cabeza se inclina hacia el cursor (±2,8°) con un muelle y, si no mueves el ratón, mira a su alrededor por su cuenta. |
+| Perro corriendo | Llega galopando desde el fondo: bote del cuerpo, patas delanteras que suben y bajan, cabeza que compensa el bote, orejas y lengua con muelles, cola. Cuanto más rápido el scroll, más rápido corre. |
 | Perro de espaldas | Paso, balanceo de cadera, cola moviéndose; se para a mirarte en «Keep up.» y arranca otra vez. |
 | Gato de espaldas | Camina hasta que la cámara lo alcanza y se para, curioso: cola lenta, orejas que se sacuden, mirada. |
-| Gato saltando | Estira las patas hacia la cámara, orejas atrás y la cola se queda atrás (muelle). |
+| Gato saltando | Desde el primer plano salta a la cámara: estira las patas, orejas atrás y la cola se queda atrás (muelle). |
 | Juntos (perfil) | Trote del perro y paso del gato ligados a la distancia que recorren: la pata apoyada no patina. Al subir caminan hacia atrás; sin scroll se quedan quietos, pero respiran y mueven la cola. |
 | Acercarse y alejarse | Movimiento de cámara (escala en perspectiva) con desenfoque de proximidad. |
 | Peces | Nado procedural (franjas, batido de cola, profundidad; esquivan el cursor y huyen al tocar el agua). |
