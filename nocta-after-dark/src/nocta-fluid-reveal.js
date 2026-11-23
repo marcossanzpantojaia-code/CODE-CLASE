@@ -757,7 +757,10 @@ export function mountNoctaFluidReveal(root, options = {}) {
   const resizeObserver = new ResizeObserver(() => applySize());
   const visibilityObserver = new IntersectionObserver(
     (entries) => {
+      const wasVisible = state.visible;
       state.visible = entries[entries.length - 1].isIntersecting;
+      // The idle sweep waits two seconds from the moment the section comes into view.
+      if (state.visible && !wasVisible) state.lastInput = performance.now();
       updateRunning();
     },
     { threshold: 0 },

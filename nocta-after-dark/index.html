@@ -4,11 +4,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>NOCTA / After Dark · unofficial concept</title>
+    <title>Nike NOCTA · After Dark · unofficial concept</title>
     <meta
       name="description"
-      content="Unofficial design concept: an interactive WebGL fluid reveal of the Nike NOCTA Hot Step 2, black to white. Not affiliated with or endorsed by Nike or NOCTA."
+      content="Unofficial design concept: a scroll-driven Nike NOCTA cover followed by an interactive WebGL fluid reveal of the Hot Step 2, black to white. Not affiliated with or endorsed by Nike or NOCTA."
     />
+    <link rel="preload" href="assets/fonts/anton.ttf" as="font" type="font/ttf" crossorigin />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#050505" />
     <link rel="icon" href="data:," />
@@ -20,10 +21,24 @@
   </head>
   <body>
     <main>
-      <section class="nocta-reveal" aria-labelledby="nocta-reveal-title">
-        <h1 class="nocta-reveal__title" id="nocta-reveal-title">
+      <section class="nocta-sweep" aria-labelledby="nocta-sweep-title" data-nocta-sweep>
+        <a class="nocta-sweep__skip" href="#after-dark">Skip animation</a>
+        <div class="nocta-sweep__runway">
+          <div class="nocta-sweep__frame">
+            <img
+              class="nocta-sweep__image"
+              src="assets/nocta-campaign.jpg"
+              alt="Nike NOCTA Hot Step 2 in black, side view, under a dark studio light"
+              decoding="async"
+            />
+            <h1 class="nocta-sweep__headline" id="nocta-sweep-title">Nike NOCTA</h1>
+          </div>
+        </div>
+      </section>
+      <section class="nocta-reveal" id="after-dark" tabindex="-1" aria-labelledby="nocta-reveal-title">
+        <h2 class="nocta-reveal__title" id="nocta-reveal-title">
           <span>NOCTA</span><span class="nocta-reveal__slash" aria-hidden="true">/</span><span>After Dark</span>
-        </h1>
+        </h2>
         <div class="nocta-reveal__frame" data-nocta-reveal data-mode="loading" data-align-black="-0.00104 -0.00351 1.00586">
           <canvas class="nocta-reveal__canvas" role="img" aria-label="Nike NOCTA Hot Step 2 in black, side view"></canvas>
           <img

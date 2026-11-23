@@ -12,7 +12,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { APP_ROOT, startServer } from './serve.mjs';
-import { SILHOUETTE_ASPECT, makeFixturePair } from './fixtures.mjs';
+import { SILHOUETTE_ASPECT, makeFixturePair, syntheticCampaign } from './fixtures.mjs';
 
 const require = createRequire(import.meta.url);
 let playwright;
@@ -34,6 +34,7 @@ const REAL = {
 };
 const realAssetsPresent = existsSync(REAL.black) && existsSync(REAL.white);
 const FIXTURES = makeFixturePair();
+const CAMPAIGN_FIXTURE = syntheticCampaign();
 
 const results = [];
 let scenario = '';
@@ -65,7 +66,10 @@ const PASSIVE_PROBE = () => {
   };
 };
 
-async function open(contextOptions = {}, { fixtures = true, query = '?debug&noidle&lockstep', init = [] } = {}) {
+async function open(
+  contextOptions = {},
+  { fixtures = true, query = '?debug&noidle&lockstep', init = [], scrollToReveal = true } = {},
+) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, ...contextOptions });
   const log = { pageErrors: [], consoleErrors: [], external: [], failed: [] };
   if (fixtures) {
@@ -73,6 +77,9 @@ async function open(contextOptions = {}, { fixtures = true, query = '?debug&noid
       const fx = route.request().url().includes('-black') ? FIXTURES.black : FIXTURES.white;
       return route.fulfill({ status: 200, contentType: 'image/png', body: fx.png });
     });
+    await context.route('**/assets/nocta-campaign.jpg', (route) =>
+      route.fulfill({ status: 200, contentType: 'image/png', body: CAMPAIGN_FIXTURE }),
+    );
     // data-align-* registers the real photo pair; it must not be applied to the stand-ins.
     await context.route((url) => url.origin === origin && url.pathname === '/', async (route) => {
       const response = await route.fetch();
@@ -91,9 +98,14 @@ async function open(contextOptions = {}, { fixtures = true, query = '?debug&noid
   page.on('response', (r) => r.status() >= 400 && log.failed.push(`${r.status()} ${r.url()}`));
   page.on('requestfailed', (r) => log.failed.push(`failed ${r.url()}`));
   await page.goto(`${origin}/${query}`);
-  await page.waitForFunction(() => window.__noctaReveal?.debug.getState().mode !== 'loading', null, {
-    timeout: 30000,
-  });
+  await page.waitForFunction(() => window.__noctaSweep && window.__noctaReveal, null, { timeout: 30000 });
+  if (scrollToReveal) {
+    // The fluid reveal sits after the 400svh cover runway: bring it into view so it initialises.
+    await page.evaluate(() => document.querySelector('.nocta-reveal').scrollIntoView({ block: 'start' }));
+    await page.waitForFunction(() => window.__noctaReveal.debug.getState().mode !== 'loading', null, {
+      timeout: 30000,
+    });
+  }
   return { context, page, log };
 }
 
@@ -275,7 +287,9 @@ function hygiene(log, { allowMissing = false } = {}) {
     : log.consoleErrors;
   check('no console errors', consoleErrors.length === 0, consoleErrors.join(' | '));
   check('no external runtime requests', log.external.length === 0, log.external.join(' | '));
-  const failed = allowMissing ? log.failed.filter((f) => !/nocta-hot-step-2-(black|white)\.png/.test(f)) : log.failed;
+  const failed = allowMissing
+    ? log.failed.filter((f) => !/nocta-hot-step-2-(black|white)\.png|nocta-campaign\.jpg/.test(f))
+    : log.failed;
   check('no missing files / failed requests', failed.length === 0, failed.join(' | '));
 }
 
@@ -285,9 +299,11 @@ async function noOverflow(page) {
     iw: window.innerWidth,
     sh: document.documentElement.scrollHeight,
     ih: window.innerHeight,
+    sections: document.querySelector('.nocta-sweep').offsetHeight + document.querySelector('.nocta-reveal').offsetHeight,
   }));
   check('no horizontal overflow', o.sw <= o.iw, `scrollWidth ${o.sw} / innerWidth ${o.iw}`);
-  check('no vertical overflow beyond the 100svh hero', o.sh <= o.ih + 1, `scrollHeight ${o.sh} / innerHeight ${o.ih}`);
+  check('page height = 400svh cover + 100svh reveal, nothing else', o.sh <= o.sections + 1 && Math.abs(o.sections - 5 * o.ih) <= 2,
+    `scrollHeight ${o.sh} / sections ${o.sections} / 5 x innerHeight ${5 * o.ih}`);
 }
 
 async function geometryChecks(page, label, { realPhotos = false } = {}) {
@@ -533,7 +549,7 @@ section('Idle sweep, offscreen and hidden-tab pause');
   await page.waitForTimeout(800);
   const off = await getState(page);
   check('offscreen: loop paused, no simulation steps, no idle', !off.running && off.stats.steps === s0 && !off.idleActive);
-  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.evaluate(() => document.querySelector('.nocta-reveal').scrollIntoView({ block: 'start' }));
   await page.waitForFunction(() => window.__noctaReveal.debug.getState().running, null, { timeout: 10000 });
   check('back in view: loop resumes', (await getState(page)).running);
 
@@ -672,6 +688,7 @@ section('Phone 390x844 (iPhone UA, touch, DPR 3)');
     document.body.append(spacer);
   });
   await waitFrames(page, 2);
+  const scrollBefore = await page.evaluate(() => window.scrollY);
   // A real touch drag (synthesizeScrollGesture does not scroll in headless Chromium, even off the component).
   const sx = Math.round(box.x + box.width / 2);
   const sy = Math.round(box.y + box.height * 0.7);
@@ -683,7 +700,7 @@ section('Phone 390x844 (iPhone UA, touch, DPR 3)');
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   await page.waitForTimeout(400);
   const scrollY = await page.evaluate(() => window.scrollY);
-  check('vertical touch drag over the artwork scrolls the page', scrollY > 150, `scrollY ${scrollY}`);
+  check('vertical touch drag over the artwork scrolls the page', scrollY - scrollBefore > 150, `scrolled ${scrollY - scrollBefore}px`);
   check('scrolling drag did not toggle', (await page.getAttribute('.nocta-reveal__toggle', 'aria-pressed')) === 'false');
   hygiene(log);
   await context.close();
@@ -716,6 +733,245 @@ section('Tablet 820x1180 (iPad UA, touch, DPR 2)');
   await context.close();
 }
 
+// =========================================================================== scroll headline cover
+
+const sweepState = (page) => page.evaluate(() => window.__noctaSweep.state);
+
+/** Scrolls so the cover's progress is p, then reads the measured geometry. */
+async function sweepAt(page, p) {
+  await page.evaluate((pp) => {
+    const runway = document.querySelector('.nocta-sweep__runway');
+    const top = runway.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, Math.round(top + pp * window.__noctaSweep.state.D));
+  }, p);
+  await waitFrames(page, 2);
+  return page.evaluate(() => {
+    const h = document.querySelector('.nocta-sweep__headline');
+    const f = document.querySelector('.nocta-sweep__frame');
+    const hr = h.getBoundingClientRect();
+    const fr = f.getBoundingClientRect();
+    const m = new DOMMatrixReadOnly(getComputedStyle(h).transform);
+    return {
+      ...window.__noctaSweep.state,
+      tx: m.m41,
+      hLeft: hr.left,
+      hRight: hr.right,
+      hMid: (hr.top + hr.bottom) / 2,
+      fTop: fr.top,
+      fLeft: fr.left,
+      fRight: fr.right,
+      fMid: (fr.top + fr.bottom) / 2,
+      sw: document.documentElement.scrollWidth,
+      iw: window.innerWidth,
+      fontSize: parseFloat(getComputedStyle(h).fontSize),
+      hHeight: h.offsetHeight,
+    };
+  });
+}
+
+async function touchScroll(context, page, vw, vh) {
+  const cdp = await context.newCDPSession(page);
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: vw / 2, y: vh * 0.8 }] });
+  for (let i = 1; i <= 20; i++) {
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: vw / 2, y: vh * 0.8 - i * 25 }] });
+    await page.waitForTimeout(16);
+  }
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await page.waitForTimeout(500);
+  await waitFrames(page, 2);
+}
+
+async function sweepScenario(label, contextOptions, { touch = false } = {}) {
+  section(`Scroll headline cover · ${label}`);
+  const { context, page, log } = await open(contextOptions, { scrollToReveal: false, query: '?debug&noidle' });
+  const anton = await page.evaluate(() => document.fonts.ready.then(() => document.fonts.check('100px Anton')));
+  check('Anton is self-hosted and loaded', anton);
+  const dims = await page.evaluate(() => {
+    const runway = document.querySelector('.nocta-sweep__runway');
+    const f = document.querySelector('.nocta-sweep__frame');
+    const img = document.querySelector('.nocta-sweep__image');
+    const h = document.querySelector('.nocta-sweep__headline');
+    const ir = img.getBoundingClientRect();
+    return {
+      runway: runway.offsetHeight,
+      frame: f.clientHeight,
+      frameW: f.clientWidth,
+      ih: window.innerHeight,
+      sticky: getComputedStyle(f).position,
+      frameOverflow: getComputedStyle(f).overflow,
+      sectionOverflow: getComputedStyle(document.querySelector('.nocta-sweep')).overflow,
+      imgOk: img.complete && img.naturalWidth > 0,
+      fit: getComputedStyle(img).objectFit,
+      alt: img.alt,
+      imgW: ir.width,
+      imgH: ir.height,
+      tag: h.tagName,
+      text: h.textContent.trim(),
+    };
+  });
+  check('runway 400svh with a sticky 100svh frame', near(dims.runway, 4 * dims.ih, 1) && near(dims.frame, dims.ih, 1) && dims.sticky === 'sticky',
+    `runway ${dims.runway}, frame ${dims.frame}, viewport ${dims.ih}, ${dims.sticky}`);
+  check('outer section overflow visible, inner frame overflow hidden', dims.sectionOverflow === 'visible' && dims.frameOverflow === 'hidden');
+  check('campaign image loaded, cover-fitted to the frame, with alt text',
+    dims.imgOk && dims.fit === 'cover' && dims.alt.length > 10 && near(dims.imgW, dims.frameW, 1) && near(dims.imgH, dims.frame, 1));
+  check('headline is a real heading reading "Nike NOCTA"', dims.tag === 'H1' && dims.text === 'Nike NOCTA');
+  const g = await sweepState(page);
+  check('D = runway height - frame height', near(g.D, dims.runway - dims.frame, 0.5), `D ${g.D}`);
+  const samples = [];
+  for (const p of [0, 0.25, 0.5, 0.75, 1]) {
+    const s = await sweepAt(page, p);
+    samples.push(s);
+    const expect = s.V - p * (s.V + s.T);
+    check(`p ${p * 100}%: x = V - p(V + T)`, near(s.p, p, 0.002) && near(s.tx, expect, 1.5),
+      `p ${fmt(s.p)} x ${fmt(s.tx, 1)} expected ${fmt(expect, 1)} (V ${s.V}, T ${s.T})`);
+    if (p > 0 && p < 1) check(`p ${p * 100}%: frame stays pinned`, near(s.fTop, 0, 0.5), `frame top ${fmt(s.fTop, 1)}`);
+    check(`p ${p * 100}%: no horizontal overflow`, s.sw <= s.iw, `scrollWidth ${s.sw} / ${s.iw}`);
+    if (p === 0.25 || p === 0.5 || p === 0.75) await shot(page, `sweep-${label.split(' ')[0]}-${p * 100}`);
+  }
+  check('x decreases monotonically with scroll', samples.every((s, i) => i === 0 || s.tx < samples[i - 1].tx));
+  check('p 0%: first glyph just beyond the right edge', samples[0].hLeft >= samples[0].fRight - 1,
+    `left ${fmt(samples[0].hLeft, 1)} / right edge ${fmt(samples[0].fRight, 1)}`);
+  check('p 100%: last glyph just beyond the left edge', samples[4].hRight <= samples[4].fLeft + 1, `right ${fmt(samples[4].hRight, 1)}`);
+  check('headline stays vertically centred', samples.every((s) => near(s.hMid, s.fMid, 1.5)));
+  check('headline never wraps (single line)', samples[2].hHeight <= samples[2].fontSize * 1.05,
+    `height ${samples[2].hHeight} / font-size ${samples[2].fontSize}`);
+  check('font-size = clamp(115px, 30vw, 500px)', near(samples[2].fontSize, Math.min(500, Math.max(115, 0.3 * samples[2].iw)), 0.5),
+    `${samples[2].fontSize}px`);
+  const back = await sweepAt(page, 0.5);
+  check('scrolling back up reverses exactly', near(back.tx, samples[2].tx, 0.5), `x ${fmt(back.tx, 1)} vs ${fmt(samples[2].tx, 1)}`);
+  const rel = await page.evaluate(async () => {
+    const runway = document.querySelector('.nocta-sweep__runway');
+    const top = runway.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, Math.round(top + window.__noctaSweep.state.D + window.innerHeight * 0.5));
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    return {
+      frameTop: document.querySelector('.nocta-sweep__frame').getBoundingClientRect().top,
+      nextTop: document.querySelector('.nocta-reveal').getBoundingClientRect().top,
+      ih: window.innerHeight,
+      p: window.__noctaSweep.state.p,
+    };
+  });
+  check('pin releases naturally into the next section', near(rel.frameTop, -rel.ih * 0.5, 1.5) && near(rel.nextTop, rel.ih * 0.5, 1.5) && rel.p === 1,
+    `frame top ${fmt(rel.frameTop, 1)}, next section top ${fmt(rel.nextTop, 1)}`);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await waitFrames(page, 2);
+  const before = await sweepState(page);
+  if (touch) {
+    await touchScroll(context, page, contextOptions.viewport.width, contextOptions.viewport.height);
+  } else {
+    await page.mouse.move(400, 400);
+    await page.mouse.wheel(0, 600);
+    await page.waitForTimeout(300);
+    await waitFrames(page, 2);
+  }
+  const after = await sweepState(page);
+  check(`real ${touch ? 'touch' : 'mouse-wheel'} scrolling drives the sweep right-to-left`, after.p > before.p && after.x < before.x,
+    `p ${fmt(before.p)} -> ${fmt(after.p)}, x ${fmt(before.x, 1)} -> ${fmt(after.x, 1)}`);
+  hygiene(log);
+  await context.close();
+}
+
+await sweepScenario('desktop 1440x1000', { viewport: { width: 1440, height: 1000 } });
+await sweepScenario('phone 390x844', {
+  viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: devices['iPhone 13'].userAgent,
+}, { touch: true });
+await sweepScenario('tablet 820x1180', {
+  viewport: { width: 820, height: 1180 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent: devices['iPad Pro 11'].userAgent,
+}, { touch: true });
+
+section('Scroll headline cover · reduced motion');
+{
+  const { context, page, log } = await open({ reducedMotion: 'reduce' }, { scrollToReveal: false, query: '?debug&noidle' });
+  await page.evaluate(() => document.fonts.ready);
+  const read = () => page.evaluate(() => {
+    const runway = document.querySelector('.nocta-sweep__runway');
+    const f = document.querySelector('.nocta-sweep__frame');
+    const h = document.querySelector('.nocta-sweep__headline');
+    const hr = h.getBoundingClientRect();
+    const fr = f.getBoundingClientRect();
+    return {
+      runway: runway.offsetHeight,
+      frame: f.clientHeight,
+      ih: window.innerHeight,
+      pos: getComputedStyle(f).position,
+      inline: h.style.transform,
+      fs: parseFloat(getComputedStyle(h).fontSize),
+      inside: hr.left >= fr.left - 0.5 && hr.right <= fr.right + 0.5 && hr.top >= fr.top - 0.5 && hr.bottom <= fr.bottom + 0.5,
+      centred: Math.abs((hr.left + hr.right) / 2 - (fr.left + fr.right) / 2) < 1.5 && Math.abs((hr.top + hr.bottom) / 2 - (fr.top + fr.bottom) / 2) < 1.5,
+    };
+  });
+  const r = await read();
+  check('runway collapses to one viewport, no pinning', near(r.runway, r.ih, 1) && near(r.frame, r.ih, 1) && r.pos === 'relative',
+    `runway ${r.runway}, frame ${r.frame}, ${r.pos}`);
+  check('entire headline visible and centred at a smaller size', r.inside && r.centred && r.fs <= 140, `font-size ${r.fs}px`);
+  await page.mouse.move(300, 300);
+  await page.mouse.wheel(0, 200);
+  await page.waitForTimeout(300);
+  check('no motion when scrolling', (await read()).inline === '');
+  await shot(page, 'sweep-reduced-motion');
+  hygiene(log);
+  await context.close();
+}
+
+section('Scroll headline cover · skip link, two instances, unmount');
+{
+  const { context, page, log } = await open({}, { scrollToReveal: false, query: '?debug&noidle' });
+  await page.keyboard.press('Tab');
+  const skip = await page.evaluate(() => {
+    const a = document.activeElement;
+    const r = a.getBoundingClientRect();
+    return { cls: a.className, text: a.textContent.trim(), visible: r.top >= 0 && r.bottom <= window.innerHeight && r.width > 0, fv: a.matches(':focus-visible') };
+  });
+  check('first Tab focuses a visible "Skip animation" link', skip.cls.includes('nocta-sweep__skip') && skip.text === 'Skip animation' && skip.visible && skip.fv,
+    JSON.stringify(skip));
+  await shot(page, 'sweep-skip-link');
+  await page.keyboard.press('Enter');
+  await waitFrames(page, 3);
+  const jumped = await page.evaluate(() => ({
+    hash: location.hash,
+    top: document.querySelector('.nocta-reveal').getBoundingClientRect().top,
+    focus: document.activeElement?.id,
+  }));
+  check('skip link jumps to the next section and moves focus there', jumped.hash === '#after-dark' && near(jumped.top, 0, 2) && jumped.focus === 'after-dark',
+    JSON.stringify(jumped));
+  const two = await page.evaluate(async () => {
+    const { mountScrollHeadline } = await import(new URL('src/nocta-scroll-headline.js', document.baseURI).href);
+    const raf2 = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const clone = document.querySelector('.nocta-sweep').cloneNode(true);
+    clone.querySelector('.nocta-sweep__headline').id = 'sweep-2-title';
+    clone.setAttribute('aria-labelledby', 'sweep-2-title');
+    clone.querySelector('.nocta-sweep__skip').remove();
+    document.querySelector('main').append(clone);
+    const second = mountScrollHeadline(clone, { headline: 'After Dark' });
+    await raf2();
+    const runway = clone.querySelector('.nocta-sweep__runway');
+    window.scrollTo(0, Math.round(runway.getBoundingClientRect().top + window.scrollY + 0.5 * second.state.D));
+    await raf2();
+    await raf2();
+    const a = window.__noctaSweep.state;
+    const b = second.state;
+    second.destroy();
+    clone.remove();
+    return { aP: a.p, bP: b.p, bX: b.x, bExpected: b.V - 0.5 * (b.V + b.T) };
+  });
+  check('two instances keep independent progress', two.aP === 1 && near(two.bP, 0.5, 0.003) && near(two.bX, two.bExpected, 1.5), JSON.stringify(two));
+  const un = await page.evaluate(async () => {
+    const raf2 = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    window.scrollTo(0, 0);
+    await raf2();
+    const api = window.__noctaSweep;
+    api.destroy();
+    const before = api.state.updates;
+    window.scrollTo(0, 1500);
+    await raf2();
+    await raf2();
+    return { further: api.state.updates - before, inline: document.querySelector('.nocta-sweep__headline').style.transform };
+  });
+  check('destroy cancels frames and removes listeners/observers', un.further === 0 && un.inline === '', JSON.stringify(un));
+  hygiene(log);
+  await context.close();
+}
+
 // =========================================================================== resize + unmount
 
 section('Resize and unmount');
@@ -723,6 +979,8 @@ section('Resize and unmount');
   const { context, page, log } = await open();
   for (const [w, h] of [[1024, 700], [600, 900], [1920, 600], [1440, 1000]]) {
     await page.setViewportSize({ width: w, height: h });
+    // The 400svh cover above changes height with the viewport: keep the reveal section in view.
+    await page.evaluate(() => document.querySelector('.nocta-reveal').scrollIntoView({ block: 'start' }));
     await page.waitForFunction(([ww]) => Math.abs(window.__noctaReveal.debug.getState().frame[0] - ww) < 1, [w]);
     await waitFrames(page, 2);
     await geometryChecks(page, `${w}x${h}`);
@@ -743,10 +1001,12 @@ section('Resize and unmount');
   check('destroy stops the loop and observers', !after.s.running && after.s.destroyed);
   check('destroy restores the static markup', after.imgShown && after.canvases === 1 && after.mode === undefined);
   const remount = await page.evaluate(async () => {
+    document.querySelector('.nocta-reveal').scrollIntoView({ block: 'start' });
     const { mountNoctaFluidReveal } = await import(new URL('src/nocta-fluid-reveal.js', document.baseURI).href);
     const api = mountNoctaFluidReveal(document.querySelector('[data-nocta-reveal]'), { debug: true });
+    const t0 = performance.now();
     await new Promise((r) => {
-      const t = () => (api.debug.getState().mode === 'loading' ? requestAnimationFrame(t) : r());
+      const t = () => (api.debug.getState().mode === 'loading' && performance.now() - t0 < 20000 ? requestAnimationFrame(t) : r());
       t();
     });
     const mode = api.debug.getState().mode;

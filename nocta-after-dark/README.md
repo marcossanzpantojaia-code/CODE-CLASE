@@ -1,8 +1,11 @@
-# NOCTA / After Dark: WebGL fluid reveal (unofficial concept)
+# Nike NOCTA · After Dark: scroll cover + WebGL fluid reveal (unofficial concept)
 
 > **Unofficial design concept.** This isn't affiliated with, authorised by or endorsed by Nike, Inc. or NOCTA. Product names belong to their owners.
 
-This is a single 100svh hero section for the Nike NOCTA Hot Step 2. At rest it shows the **black** colourway. Moving the pointer or a finger drives a BFECC stable-fluids simulation, which cuts temporary, flowing holes through which the **white** colourway shows. When you stop, the fluid dissipates back to black.
+A two-section campaign page for the Nike NOCTA Hot Step 2:
+
+1. **Cover:** a pinned, full-bleed dark campaign image. As you scroll down, one enormous single-line headline, **NIKE NOCTA**, sweeps from fully offscreen right to fully offscreen left; scrolling up reverses it. It's scroll-scrubbed: no autoplay, no scroll hijacking. After the sweep the pin releases into the next section.
+2. **After Dark:** a 100svh hero. At rest it shows the **black** colourway. Moving the pointer or a finger drives a BFECC stable-fluids simulation, which cuts temporary, flowing holes through which the **white** colourway shows. When you stop, the fluid dissipates back to black.
 
 A click, tap, <kbd>Enter</kbd> or <kbd>Space</kbd> runs a curved, bottom-to-top wipe to white. Activating it again reverses the wipe.
 
@@ -12,7 +15,7 @@ It's plain HTML/CSS/JS with raw WebGL, has no dependencies and no build step, an
 
 | Item | State |
 | --- | --- |
-| Component, shaders, fallbacks, accessibility | Done. Verified in headless Chromium (see [Verification](#verification)) |
+| Cover, fluid reveal, fallbacks, accessibility | Done. Verified in headless Chromium (see [Verification](#verification)) |
 | Product images | **AI-generated renders** made by the project owner from the real product photos, matted locally (see [Image provenance](#image-provenance-and-licence)). **Not committed:** this repository is public and the images depict a copyrighted, trademarked product, so `assets/*.png` is git-ignored. A fresh clone shows the missing-asset state. |
 | Visual result | Reviewed on desktop and phone screenshots. Works, with the limitations listed under [Image provenance](#image-provenance-and-licence) |
 
@@ -30,15 +33,18 @@ Then open <http://127.0.0.1:8080/>. Any static server rooted at `nocta-after-dar
 
 ```
 nocta-after-dark/
-  index.html                 minimal page: editorial title + the section
-  styles.css                 section styles, all scoped under .nocta-reveal
-  src/main.js                mounts the component on [data-nocta-reveal]
+  index.html                 the page: scroll cover, then the fluid reveal section (#after-dark)
+  styles.css                 scoped styles (.nocta-sweep, .nocta-reveal) + @font-face Anton
+  src/main.js                mounts the cover on [data-nocta-sweep] and the reveal on [data-nocta-reveal]
+  src/nocta-scroll-headline.js  cover component: measured scroll-scrubbed headline sweep
   src/nocta-fluid-reveal.js  component: lifecycle, input, idle sweep, wipe, modes, fallback, dispose
   src/fluid-simulation.js    multipass solver (advection, force, divergence, Poisson, projection)
   src/shaders.js             GLSL ES 1.00 for every pass + compositor (WebGL2, WebGL1 fallback)
   src/gl-utils.js            programs, float-format detection, render targets, textures, GL object tracking
   src/layout.js              pure rigid plane-fitting math
-  assets/                    the two product PNGs go here (see assets/README.md; git-ignored)
+  assets/                    product PNGs + nocta-campaign.jpg (see assets/README.md; git-ignored)
+  assets/fonts/anton.ttf     Anton, self-hosted, with assets/fonts/Anton-OFL.txt (SIL OFL 1.1)
+  tools/compose_campaign.py  builds the dark campaign image from the black cut-out
   tools/prepare_mattes.py    mattes for opaque white-background photos (the first, photographic pair)
   tools/prepare_mattes_uniform_bg.py  mattes + rigid registration for a pair on plain uniform backgrounds; prints data-align-black
   tests/serve.mjs            dependency-free static server
@@ -67,9 +73,45 @@ reveal.destroy();     // releases every GL object, observer and listener; the el
 
 Missing child elements are created automatically. Options: `blackSrc`, `whiteSrc`, `blackAlt`, `whiteAlt`, `toggleLabel`, `maxPixelRatio` (default 1.5), `idle`, and `adjust: { black|white: { dx, dy, scale } }`. Equivalent `data-*` attributes also work.
 
+### Cover (scroll headline)
+
+```html
+<section class="nocta-sweep" aria-labelledby="sweep-title" data-nocta-sweep>
+  <a class="nocta-sweep__skip" href="#next-section">Skip animation</a>
+  <div class="nocta-sweep__runway">
+    <div class="nocta-sweep__frame">
+      <img class="nocta-sweep__image" src="assets/nocta-campaign.jpg" alt="…">
+      <h1 class="nocta-sweep__headline" id="sweep-title">Nike NOCTA</h1>
+    </div>
+  </div>
+</section>
+```
+
+```js
+import { mountScrollHeadline } from './src/nocta-scroll-headline.js';
+const cover = mountScrollHeadline(sectionElement, {
+  headline: 'Nike NOCTA', image: 'assets/nocta-campaign.jpg', alt: '…',
+  textColor: '#f2efe8', background: '#050505', scrollLength: '400svh',
+});
+cover.destroy(); // cancels the pending frame, removes the scroll listener and observers
+```
+
+Every option is optional: the markup wins when one is omitted. CSS custom properties `--sweep-text`, `--sweep-bg` and `--sweep-runway` do the same from a stylesheet. Several instances can live on one page.
+
 ## How the specification maps to the code
 
-**Fluid**, in `fluid-simulation.js` and `shaders.js`:
+**Cover**, in `nocta-scroll-headline.js` and `styles.css`:
+
+- The outer section keeps `overflow: visible`. The 400svh runway holds a `position: sticky; top: 0; height: 100svh` frame with `overflow: hidden`.
+- The image is `absolute; inset: 0; object-fit: cover`. The headline is `absolute; left: 0; top: 50%; width: max-content`, Anton, uppercase, `line-height: 1`, `white-space: nowrap`, `font-size: clamp(115px, 30vw, 500px)`, cream `#f2efe8` on `#050505`. Only the headline moves.
+- Geometry, with no easing: `V = frame.clientWidth`, `T = headline.offsetWidth`, `D = runway.offsetHeight − frame.clientHeight`, `p = clamp(−runway.getBoundingClientRect().top / D, 0, 1)`, `x = V − p·(V + T)`, applied as `translate3d(x px, −50%, 0)`.
+- It measures again after `document.fonts.ready`, after the image loads, and on `ResizeObserver` changes to the frame, headline and runway.
+- A passive `scroll` listener schedules at most one `requestAnimationFrame`. That listener only exists while the runway is near the viewport (an `IntersectionObserver` adds and removes it), so there's no permanent global listener. Native scrolling throughout: no wheel or touch interception.
+- Reduced motion (and no JS): the runway collapses to one viewport, nothing is pinned or moves, and the entire headline is centred at `clamp(26px, 10vw, 140px)`.
+- A keyboard-focusable **Skip animation** link appears on focus and jumps (and moves focus) to `#after-dark`. If the campaign image fails, it's hidden instead of showing a broken icon; the headline still works.
+- When the fluid section comes into view after the cover, its idle sweep waits 2 s from that moment, not from page load.
+
+**Fluid reveal**, in `fluid-simulation.js` and `shaders.js`:
 
 - The simulation is `round(frame CSS size × .1)`, stepped at a fixed 60 Hz with `dt = .014`.
 - Cell scale is `px = (1/110, simW/simH/110)`.
@@ -169,7 +211,11 @@ Last run: **207 / 207 checks passed** with the real photos present (**179 / 179*
 
 ## Image provenance and licence
 
-The images in use are **AI-generated renders, not photographs.** The project owner made them with an image-generation tool, starting from aligned reference images built from the real product photos below, and supplied them in this session as WebP: black 1728×910 on plain grey #a8a8a8, white 1672×941 on plain grey #777777. They aren't authentic product photography (the original brief asked for that), and details such as the embossed ribs, laces and outsole accents are the model's rendering, not Nike's product. Treat them as a design concept only.
+**Font:** Anton Regular, © 2020 The Anton Project Authors, SIL Open Font License 1.1. It was downloaded from the URLs supplied with the cover prompt (`thepromptsfactory.com/.../anton.ttf` and `Anton-OFL.txt`), checked (TrueType signature, family "Anton Regular") and self-hosted in `assets/fonts/` together with its licence. It's committed: the OFL allows redistribution with the licence.
+
+**Cover image:** `assets/nocta-campaign.jpg` (2560×1440) is composed by `tools/compose_campaign.py` from the black product render below: a dark set, a cool key light, a silhouette halo and a faint mirrored floor reflection. It uses a uniform scale and a flip only. The prompt's example artwork `zest-citrus.png` wasn't used or downloaded, because the project's own brand imagery takes precedence. It's git-ignored like the product images.
+
+**Product images:** the images in use are **AI-generated renders, not photographs.** The project owner made them with an image-generation tool, starting from aligned reference images built from the real product photos below, and supplied them in this session as WebP: black 1728×910 on plain grey #a8a8a8, white 1672×941 on plain grey #777777. They aren't authentic product photography (the original brief asked for that), and details such as the embossed ribs, laces and outsole accents are the model's rendering, not Nike's product. Treat them as a design concept only.
 
 **Pipeline** (`tools/prepare_mattes_uniform_bg.py`):
 

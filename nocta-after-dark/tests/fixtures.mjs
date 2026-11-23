@@ -88,6 +88,23 @@ export function syntheticSilhouette({ width, height, tone, pad }) {
   };
 }
 
+/** TEST-ONLY stand-in for the cover's campaign image: an abstract dark gradient, no product. */
+export function syntheticCampaign(width = 1600, height = 900) {
+  const rgba = Buffer.alloc(width * height * 4);
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const d = Math.hypot((x - width / 2) / (width * 0.45), (y - height * 0.48) / (height * 0.6));
+      const v = 5 + 25 * Math.exp(-d * d * 1.8);
+      const i = (y * width + x) * 4;
+      rgba[i] = v;
+      rgba[i + 1] = v + 1;
+      rgba[i + 2] = v + 3;
+      rgba[i + 3] = 255;
+    }
+  }
+  return encodePNG(width, height, rgba);
+}
+
 /** Deliberately different canvas sizes and paddings: alignment must come from uniform scale + translation. */
 export function makeFixturePair() {
   return {
