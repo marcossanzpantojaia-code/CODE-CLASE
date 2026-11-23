@@ -49,7 +49,7 @@ nocta-after-dark/
   tools/prepare_mattes.py    mattes for opaque white-background photos (the first, photographic pair)
   tools/prepare_mattes_uniform_bg.py  mattes + rigid registration for a pair on plain uniform backgrounds; prints data-align-black
   tests/serve.mjs            dependency-free static server
-  tests/verify.mjs           Playwright verification suite (290 checks; 318 with the images present)
+  tests/verify.mjs           Playwright verification suite (322 checks; 355 with the images present)
   tests/fixtures.mjs         TEST-ONLY abstract silhouettes for measuring the mechanics
 ```
 
@@ -191,7 +191,7 @@ The mechanics are measured with **test-only abstract silhouettes** (`tests/fixtu
 
 Rendering under SwiftShader is slow, so a debug-only `lockstep` query parameter steps exactly one 60 Hz tick per frame. That way the tests measure simulation time rather than wall-clock time. Production timing is unchanged.
 
-Last run: **318 / 318 checks passed** with the images present (**290 / 290** on a fresh clone, where the real-image section checks the missing-asset state instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
+Last run: **355 / 355 checks passed** with the images present (**322 / 322** on a fresh clone, where the real-image section checks the missing-asset state instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
 
 - **Cover:** Anton is self-hosted and loaded. The runway is 400svh with a sticky 100svh frame. The image is cover-fitted with alt text, and the headline is a real `h1`.
 - **Cover progress:** at 0/25/50/75/100 %, x = V − p(V + T) within 1.5 px, decreasing monotonically and reversing exactly on scroll-up. The first glyph starts just beyond the right edge and the last ends just beyond the left. The headline is vertically centred, stays on a single line, and its font-size equals `clamp(115px, 30vw, 500px)`. The frame stays pinned mid-sweep and releases into the next section, with no horizontal overflow.
