@@ -1,0 +1,6 @@
+# Product photography is not committed by default: this repository is public and the photos are
+# copyrighted Nike product shots. Remove these lines only once publishing them is cleared.
+assets/*.png
+assets/*.webp
+assets/*.jpg
+assets/*.jxl

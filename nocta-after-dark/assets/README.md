@@ -1,7 +1,8 @@
 # Required product photography
 
-This folder ships **empty on purpose**. No sneaker artwork was sourced or substituted.
-Until both files below exist, the page shows the missing-asset state and lists their paths.
+The two PNGs are **git-ignored** (see `../.gitignore`): the repository is public and the photos are copyrighted Nike product shots. A fresh clone therefore has no photos, and the page shows the missing-asset state listing both paths. No artwork is ever substituted.
+
+To recreate them from opaque white-background originals, use `../tools/prepare_mattes.py`. Provenance and limitations of the current pair are recorded in the main README.
 
 | File | Content |
 | --- | --- |

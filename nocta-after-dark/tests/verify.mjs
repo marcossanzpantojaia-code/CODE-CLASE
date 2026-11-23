@@ -284,7 +284,7 @@ async function noOverflow(page) {
   check('no vertical overflow beyond the 100svh hero', o.sh <= o.ih + 1, `scrollHeight ${o.sh} / innerHeight ${o.ih}`);
 }
 
-async function geometryChecks(page, label) {
+async function geometryChecks(page, label, { realPhotos = false } = {}) {
   const st = await getState(page);
   const [W, H] = st.frame;
   const { black, white, product } = st.planes;
@@ -300,9 +300,22 @@ async function geometryChecks(page, label) {
   check(`${label}: product centred at (.5 W, .54 H)`,
     near(product.left + product.width / 2, 0.5 * W, 0.01) && near(product.top + product.height / 2, 0.54 * H, 0.01));
   const bp = black.product;
-  check(`${label}: black and white product boxes coincide (uniform scale + translation only)`,
-    near(bp.left, product.left, 1.5) && near(bp.top, product.top, 1.5) && near(bp.width, product.width, 0.01) && near(bp.height, product.height, 1.5),
-    `black ${fmt(bp.left, 1)},${fmt(bp.top, 1)} ${fmt(bp.width, 1)}x${fmt(bp.height, 1)} / white ${fmt(product.left, 1)},${fmt(product.top, 1)} ${fmt(product.width, 1)}x${fmt(product.height, 1)}`);
+  const boxes = `black ${fmt(bp.left, 1)},${fmt(bp.top, 1)} ${fmt(bp.width, 1)}x${fmt(bp.height, 1)} / white ${fmt(product.left, 1)},${fmt(product.top, 1)} ${fmt(product.width, 1)}x${fmt(product.height, 1)}`;
+  if (!realPhotos) {
+    check(`${label}: black and white product boxes coincide (uniform scale + translation only)`,
+      near(bp.left, product.left, 1.5) && near(bp.top, product.top, 1.5) && near(bp.width, product.width, 0.01) && near(bp.height, product.height, 1.5),
+      boxes);
+  } else {
+    // Two real photographs never have identical boxes (tongue/laces sit differently): heel, toe
+    // and sole line must coincide exactly; the height difference is reported and bounded.
+    const soleB = bp.top + bp.height;
+    const soleW = product.top + product.height;
+    check(`${label}: heel, toe and sole line coincide (uniform scale + translation only)`,
+      near(bp.left, product.left, 0.01) && near(bp.width, product.width, 0.01) && near(soleB, soleW, 0.01), boxes);
+    const dh = Math.abs(bp.height - product.height);
+    check(`${label}: silhouette height difference stays small (tongue/laces)`, dh <= 0.015 * product.height,
+      `${fmt(dh, 1)} px = ${fmt((dh / product.height) * 100, 2)}% of the product height`);
+  }
   const expectCanvas = [Math.round(W * Math.min(st.dpr, 1.5)), Math.round(H * Math.min(st.dpr, 1.5))];
   check(`${label}: canvas = CSS size x min(DPR, 1.5)`, st.canvas[0] === expectCanvas[0] && st.canvas[1] === expectCanvas[1],
     `${st.canvas.join('x')} (dpr cap ${st.dpr})`);
@@ -314,6 +327,12 @@ async function geometryChecks(page, label) {
 }
 
 async function shot(page, name) {
+  // The canvas fades in over .45 s after WebGL starts; never capture mid-fade.
+  await page.waitForFunction(() => {
+    const c = document.querySelector('.nocta-reveal__canvas');
+    const mode = document.querySelector('[data-nocta-reveal]')?.dataset.mode;
+    return !c || !(mode === 'webgl' || mode === 'static') || getComputedStyle(c).opacity === '1';
+  }, null, { timeout: 10000 });
   await page.screenshot({ path: path.join(OUT, `${name}.png`) });
 }
 
@@ -732,7 +751,7 @@ section('Resize and unmount');
 
 section(realAssetsPresent ? 'Real product photography' : 'Real product photography (missing)');
 {
-  const { context, page, log } = await open({}, { fixtures: false, query: '?debug&noidle' });
+  const { context, page, log } = await open({}, { fixtures: false, query: '?debug&noidle&lockstep' });
   const st = await getState(page);
   if (!realAssetsPresent) {
     const status = await page.textContent('.nocta-reveal__status');
@@ -743,7 +762,7 @@ section(realAssetsPresent ? 'Real product photography' : 'Real product photograp
     hygiene(log, { allowMissing: true });
   } else {
     check('real photos load into the WebGL path', st.mode === 'webgl', st.mode);
-    await geometryChecks(page, 'real photos');
+    await geometryChecks(page, 'real photos', { realPhotos: true });
     const transparency = await page.evaluate(async () => {
       const probe = async (src) => {
         const img = new Image();
@@ -767,12 +786,47 @@ section(realAssetsPresent ? 'Real product photography' : 'Real product photograp
     check('black photo has a real transparent background', transparency.black > 0.05, fmt(transparency.black));
     check('white photo has a real transparent background', transparency.white > 0.05, fmt(transparency.white));
     await shot(page, 'real-rest');
+    const box = await frameBox(page);
+    const p = st.planes.product;
+    await page.mouse.move(box.x + p.left + p.width * 0.9, box.y + p.top + p.height * 0.5);
+    await waitTicks(page, 1);
+    await mousePath(page, sweepPoints(box, p, 44, 0.9, 0.15, 0.3));
+    await shot(page, 'real-fluid');
+    await page.mouse.move(box.x + 12, box.y - 24);
+    await page.waitForFunction(() => window.__noctaReveal.debug.getState().asleep, null, { timeout: 180000, polling: 'raf' });
     await page.click('.nocta-reveal__toggle');
+    await page.mouse.move(box.x + 12, box.y - 24);
+    await waitReveal(page, '(s) => s.reveal > 0.4 && s.reveal < 0.75');
+    await shot(page, 'real-wipe');
     await waitReveal(page, '(s) => s.reveal === 1');
     await shot(page, 'real-white');
     check('visual alignment of the real pair', true, 'requires human review of real-rest.png vs real-white.png');
     hygiene(log);
   }
+  await context.close();
+}
+
+if (realAssetsPresent) {
+  section('Real product photography on a phone (390x844)');
+  const { context, page, log } = await open(
+    { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent: devices['iPhone 13'].userAgent },
+    { fixtures: false, query: '?debug&noidle&lockstep' },
+  );
+  await geometryChecks(page, 'real photos phone', { realPhotos: true });
+  const st = await getState(page);
+  const cdp = await context.newCDPSession(page);
+  const box = await frameBox(page);
+  const pts = sweepPoints(box, st.planes.product, 30, 0.88, 0.12, 0.35);
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: pts[0][0], y: pts[0][1] }] });
+  await waitTicks(page, 1);
+  for (const [x, y] of pts.slice(1)) {
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y }] });
+    await waitTicks(page, 1);
+  }
+  await shot(page, 'real-phone-fluid');
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await noOverflow(page);
+  hygiene(log);
   await context.close();
 }
 

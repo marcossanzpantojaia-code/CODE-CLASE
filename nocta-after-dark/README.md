@@ -13,8 +13,8 @@ It's plain HTML/CSS/JS with raw WebGL, has no dependencies and no build step, an
 | Item | State |
 | --- | --- |
 | Component, shaders, fallbacks, accessibility | Done. Verified in headless Chromium (see [Verification](#verification)) |
-| Product photography | **Missing.** See [`assets/README.md`](assets/README.md). The page reports this; it never shows placeholders. |
-| Visual result with the real shoes | **Not verified** until the matched PNG pair is added |
+| Product photography | Real pair supplied by the project owner and matted locally (see [Image provenance](#image-provenance-and-licence)). **Not committed:** this repository is public and the photos are copyrighted, so `assets/*.png` is git-ignored. A fresh clone shows the missing-asset state. |
+| Visual result with the real shoes | Reviewed on desktop and phone screenshots. Works, with the limitations listed under [Image provenance](#image-provenance-and-licence) |
 
 ## Run
 
@@ -38,9 +38,10 @@ nocta-after-dark/
   src/shaders.js             GLSL ES 1.00 for every pass + compositor (WebGL2, WebGL1 fallback)
   src/gl-utils.js            programs, float-format detection, render targets, textures, GL object tracking
   src/layout.js              pure rigid plane-fitting math
-  assets/                    the two product PNGs go here (see assets/README.md)
+  assets/                    the two product PNGs go here (see assets/README.md; git-ignored)
+  tools/prepare_mattes.py    reproducible silhouette mattes for opaque white-background photos
   tests/serve.mjs            dependency-free static server
-  tests/verify.mjs           Playwright verification suite (179 checks)
+  tests/verify.mjs           Playwright verification suite (179 checks; 207 with the real photos present)
   tests/fixtures.mjs         TEST-ONLY abstract silhouettes for measuring the mechanics
 ```
 
@@ -143,9 +144,10 @@ The mechanics are measured with **test-only abstract silhouettes** (`tests/fixtu
 
 Rendering under SwiftShader is slow, so a debug-only `lockstep` query parameter steps exactly one 60 Hz tick per frame. That way the tests measure simulation time rather than wall-clock time. Production timing is unchanged.
 
-Last run: **179 / 179 checks passed** in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
+Last run: **207 / 207 checks passed** with the real photos present (**179 / 179** on a fresh clone, where the real-photo section checks the missing-asset state instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
 
-- Natural aspect ratio of both planes and of the rendered silhouette at every size. The black and white silhouettes coincide within 2 px.
+- Natural aspect ratio of both planes and of the rendered silhouette at every size. The black and white stand-in silhouettes coincide within 2 px.
+- Real photos: both load into the WebGL path with real transparency; heel, toe and sole line coincide exactly (desktop and phone); the silhouette height difference (tongue/laces) is 0.75 %.
 - Canvas size is `CSS × min(DPR, 1.5)`. Simulation size and cell scale match the spec.
 - Black at rest. The pointer reveals white partially.
 - The velocity field holds a balanced vortex pair (curl of both signs). The revealed shape keeps advecting after the pointer stops (IoU 0.26 after 12 steps), which a cursor spotlight wouldn't do. Velocity decays monotonically and the frame dissipates fully back to black.
@@ -162,14 +164,34 @@ Last run: **179 / 179 checks passed** in headless Chromium 1440×1000, 390×844 
 
 - Real GPUs and Safari/WebKit. Only Chromium with SwiftShader was run.
 - Real-device frame rate.
-- How the effect looks with the actual Hot Step 2 photos.
+- The look of the real pair was judged by eye from screenshots (desktop 1440×1000 and phone), not measured.
 
 ## Image provenance and licence
 
-None yet. The repository contains **no product photography**: none was downloaded, generated or substituted. Official Nike/NOCTA imagery is copyrighted, and no licensed matched pair was available to this build. When you add the pair, record here where it came from and the terms that allow its use.
+Both photos were **supplied by the project owner** in this session. Neither file carries source or licence metadata, and nothing was downloaded, generated or substituted.
+
+| File | Supplied as | Content |
+| --- | --- | --- |
+| `nocta-hot-step-2-black.png` | `DZ7293-001.jxl`, JPEG XL, 1200×1200, opaque white background | Black colourway (style code DZ7293-001), lateral side view, toe right |
+| `nocta-hot-step-2-white.png` | pasted image, WebP, 600×316, opaque white background, heavily compressed (9.7 KB) | White colourway, lateral side view, toe right |
+
+These are Nike product photographs and are presumably copyrighted. They're used here only for an unofficial design concept, and the owner is responsible for having the right to use them. Because this repository is **public**, the PNGs are git-ignored and haven't been committed.
+
+**How the transparent PNGs were made** (`tools/prepare_mattes.py`, reproducible byte for byte):
+
+- **Black:** the background is the near-white region connected to the image border. The soft grey contact shadow under the sole is removed per column below the lowest dark rubber pixel, and the bright details enclosed by dark material (air-unit highlights, mesh window) are kept. A 2 px edge band is solved with closed-form matting, and the edge colours are decontaminated so no white fringe glows on the dark page. Padding is added to the canvas for the rim-light halo; nothing is resampled.
+- **White:** white on white has no reliable edge signal, and this source is low resolution with visible WebP blocks. The matte is solved on a uniform 2× Lanczos upscale, which keeps proportions and adds no detail. The black silhouette is registered onto it with one uniform scale and a translation, using the heel, toe and collar top. That registered silhouette decides the edge band; the white's own alpha is kept only where it clearly extends past it with contrast (tongue/laces). The cast shadow under the sole and the background rows below the white outsole's crease line are removed. The silhouette agreement before the sole trim is IoU 0.969.
+
+**Limitations of this pair:**
+
+1. The white photo has half the resolution of the black one. At 1440 px it's shown at roughly 0.9× of its 2× upscale, so it looks softer than the black.
+2. The two photos weren't shot with exactly the same camera setup. With heel, toe and sole aligned as specified, interior details of the white sit about 8 px further toward the toe at 1440 px; the mesh window is the measured reference. Uniform scale and translation can't remove a perspective difference.
+3. A white-on-white edge can't be recovered from the photo, so parts of the white outline follow the black photo's silhouette of the same shoe.
+
+A **matched pair from the same source** would fix all three: for example the same retailer's white DZ7293-100 listing at 1200×1200 or larger, shot with the same setup as `DZ7293-001`, ideally already transparent.
 
 ## Outstanding issues
 
-1. **Add the matched black/white PNG pair** (`assets/README.md`), then rerun `verify.mjs`. The *Real product photography* section switches from the missing-asset check to transparency, geometry and screenshot checks.
-2. **Review the alignment of the real pair** (toe, heel, sole, collar) in `real-rest.png` and `real-white.png`, and tune `data-align-*` if needed. Also tune the rim-light strength (`shaders.js`, `blackComp` terms) against the real black mesh.
+1. **Decide on publishing the photos.** They're local and git-ignored. Committing them would republish copyrighted product photos in a public repository.
+2. **Replace the white photo with a matched, higher-resolution one** (see the limitations above), then run `tools/prepare_mattes.py` and `tests/verify.mjs` again.
 3. Test on physical iOS Safari and Android Chrome. `EXT_color_buffer_float` or `EXT_color_buffer_half_float` is required; otherwise the static fallback is used.
