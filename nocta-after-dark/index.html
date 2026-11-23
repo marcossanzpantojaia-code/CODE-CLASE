@@ -1,0 +1,58 @@
+<!doctype html>
+<!-- Unofficial design concept. Not affiliated with, authorised or endorsed by Nike, Inc. or NOCTA. -->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>NOCTA / After Dark · unofficial concept</title>
+    <meta
+      name="description"
+      content="Unofficial design concept: an interactive WebGL fluid reveal of the Nike NOCTA Hot Step 2, black to white. Not affiliated with or endorsed by Nike or NOCTA."
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#050505" />
+    <link rel="icon" href="data:," />
+    <script>
+      document.documentElement.classList.replace('no-js', 'js');
+    </script>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="src/main.js"></script>
+  </head>
+  <body>
+    <main>
+      <section class="nocta-reveal" aria-labelledby="nocta-reveal-title">
+        <h1 class="nocta-reveal__title" id="nocta-reveal-title">
+          <span>NOCTA</span><span class="nocta-reveal__slash" aria-hidden="true">/</span><span>After Dark</span>
+        </h1>
+        <div class="nocta-reveal__frame" data-nocta-reveal data-mode="loading">
+          <canvas class="nocta-reveal__canvas" role="img" aria-label="Nike NOCTA Hot Step 2 in black, side view"></canvas>
+          <img
+            class="nocta-reveal__photo nocta-reveal__photo--black"
+            src="assets/nocta-hot-step-2-black.png"
+            alt="Nike NOCTA Hot Step 2 in black, side view"
+            decoding="async"
+          />
+          <img
+            class="nocta-reveal__photo nocta-reveal__photo--white"
+            src="assets/nocta-hot-step-2-white.png"
+            alt="Nike NOCTA Hot Step 2 in white, side view"
+            decoding="async"
+            hidden
+          />
+          <button
+            type="button"
+            class="nocta-reveal__toggle"
+            aria-pressed="false"
+            aria-label="Reveal white Nike NOCTA Hot Step 2"
+            aria-describedby="nocta-reveal-note"
+            hidden
+          ></button>
+          <p class="nocta-reveal__status" hidden></p>
+        </div>
+        <p class="nocta-reveal__sr" id="nocta-reveal-note">
+          Unofficial design concept. Not affiliated with, authorised or endorsed by Nike or NOCTA.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>
