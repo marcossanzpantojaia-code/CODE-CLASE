@@ -13,8 +13,8 @@ It's plain HTML/CSS/JS with raw WebGL, has no dependencies and no build step, an
 | Item | State |
 | --- | --- |
 | Component, shaders, fallbacks, accessibility | Done. Verified in headless Chromium (see [Verification](#verification)) |
-| Product photography | Real pair supplied by the project owner and matted locally (see [Image provenance](#image-provenance-and-licence)). **Not committed:** this repository is public and the photos are copyrighted, so `assets/*.png` is git-ignored. A fresh clone shows the missing-asset state. |
-| Visual result with the real shoes | Reviewed on desktop and phone screenshots. Works, with the limitations listed under [Image provenance](#image-provenance-and-licence) |
+| Product images | **AI-generated renders** made by the project owner from the real product photos, matted locally (see [Image provenance](#image-provenance-and-licence)). **Not committed:** this repository is public and the images depict a copyrighted, trademarked product, so `assets/*.png` is git-ignored. A fresh clone shows the missing-asset state. |
+| Visual result | Reviewed on desktop and phone screenshots. Works, with the limitations listed under [Image provenance](#image-provenance-and-licence) |
 
 ## Run
 
@@ -39,7 +39,8 @@ nocta-after-dark/
   src/gl-utils.js            programs, float-format detection, render targets, textures, GL object tracking
   src/layout.js              pure rigid plane-fitting math
   assets/                    the two product PNGs go here (see assets/README.md; git-ignored)
-  tools/prepare_mattes.py    reproducible silhouette mattes for opaque white-background photos
+  tools/prepare_mattes.py    mattes for opaque white-background photos (the first, photographic pair)
+  tools/prepare_mattes_uniform_bg.py  mattes + rigid registration for a pair on plain uniform backgrounds; prints data-align-black
   tests/serve.mjs            dependency-free static server
   tests/verify.mjs           Playwright verification suite (179 checks; 207 with the real photos present)
   tests/fixtures.mjs         TEST-ONLY abstract silhouettes for measuring the mechanics
@@ -147,7 +148,7 @@ Rendering under SwiftShader is slow, so a debug-only `lockstep` query parameter 
 Last run: **207 / 207 checks passed** with the real photos present (**179 / 179** on a fresh clone, where the real-photo section checks the missing-asset state instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
 
 - Natural aspect ratio of both planes and of the rendered silhouette at every size. The black and white stand-in silhouettes coincide within 2 px.
-- Real photos: both load into the WebGL path with real transparency; heel, toe and sole line coincide exactly (desktop and phone); the silhouette height difference (tongue/laces) is 0.75 %.
+- Real images: both load into the WebGL path with real transparency; with the rigid `data-align-black` registration, heel, toe and sole line stay within 4.3 px of each other at 1440 px (limit 1.5 % of the product width) and the height difference is 0.18 %, on desktop and phone.
 - Canvas size is `CSS × min(DPR, 1.5)`. Simulation size and cell scale match the spec.
 - Black at rest. The pointer reveals white partially.
 - The velocity field holds a balanced vortex pair (curl of both signs). The revealed shape keeps advecting after the pointer stops (IoU 0.26 after 12 steps), which a cursor spotlight wouldn't do. Velocity decays monotonically and the frame dissipates fully back to black.
@@ -164,34 +165,26 @@ Last run: **207 / 207 checks passed** with the real photos present (**179 / 179*
 
 - Real GPUs and Safari/WebKit. Only Chromium with SwiftShader was run.
 - Real-device frame rate.
-- The look of the real pair was judged by eye from screenshots (desktop 1440×1000 and phone), not measured.
+- The look of the image pair was judged by eye from screenshots (desktop 1440×1000 and phone), not measured.
 
 ## Image provenance and licence
 
-Both photos were **supplied by the project owner** in this session. Neither file carries source or licence metadata, and nothing was downloaded, generated or substituted.
+The images in use are **AI-generated renders, not photographs.** The project owner made them with an image-generation tool, starting from aligned reference images built from the real product photos below, and supplied them in this session as WebP: black 1728×910 on plain grey #a8a8a8, white 1672×941 on plain grey #777777. They aren't authentic product photography (the original brief asked for that), and details such as the embossed ribs, laces and outsole accents are the model's rendering, not Nike's product. Treat them as a design concept only.
 
-| File | Supplied as | Content |
-| --- | --- | --- |
-| `nocta-hot-step-2-black.png` | `DZ7293-001.jxl`, JPEG XL, 1200×1200, opaque white background | Black colourway (style code DZ7293-001), lateral side view, toe right |
-| `nocta-hot-step-2-white.png` | pasted image, WebP, 600×316, opaque white background, heavily compressed (9.7 KB) | White colourway, lateral side view, toe right |
+**Pipeline** (`tools/prepare_mattes_uniform_bg.py`):
 
-These are Nike product photographs and are presumably copyrighted. They're used here only for an unofficial design concept, and the owner is responsible for having the right to use them. Because this repository is **public**, the PNGs are git-ignored and haven't been committed.
+- Each background is the median border colour. A 2 px edge band is solved with closed-form matting, and the grey is removed from the edge colours.
+- The black gets transparent padding for the rim-light halo. Nothing is resampled.
+- The two silhouettes are registered with one uniform scale and a translation, using least squares on the masks: IoU 0.977, median edge distance 3.6 px.
+- That registration is reproduced exactly by `data-align-black="-0.00104 -0.00351 1.00586"` on the frame element. **The value belongs to this pair:** recompute it with the tool whenever the images change.
+- Interior details overlap closely (mesh window, air unit, midsole panels). Some embossed ribs and laces are drawn slightly differently in the two renders.
 
-**How the transparent PNGs were made** (`tools/prepare_mattes.py`, reproducible byte for byte):
+**Earlier photographic pair** (superseded, kept for the record): `DZ7293-001.jxl`, the black, 1200×1200, and a pasted 600×316 WebP of the white, both opaque white-background Nike product photos supplied by the owner without source or licence metadata. They were matted with `tools/prepare_mattes.py`. The white was too low-resolution, and the two weren't shot with the same setup.
 
-- **Black:** the background is the near-white region connected to the image border. The soft grey contact shadow under the sole is removed per column below the lowest dark rubber pixel, and the bright details enclosed by dark material (air-unit highlights, mesh window) are kept. A 2 px edge band is solved with closed-form matting, and the edge colours are decontaminated so no white fringe glows on the dark page. Padding is added to the canvas for the rim-light halo; nothing is resampled.
-- **White:** white on white has no reliable edge signal, and this source is low resolution with visible WebP blocks. The matte is solved on a uniform 2× Lanczos upscale, which keeps proportions and adds no detail. The black silhouette is registered onto it with one uniform scale and a translation, using the heel, toe and collar top. That registered silhouette decides the edge band; the white's own alpha is kept only where it clearly extends past it with contrast (tongue/laces). The cast shadow under the sole and the background rows below the white outsole's crease line are removed. The silhouette agreement before the sole trim is IoU 0.969.
-
-**Limitations of this pair:**
-
-1. The white photo has half the resolution of the black one. At 1440 px it's shown at roughly 0.9× of its 2× upscale, so it looks softer than the black.
-2. The two photos weren't shot with exactly the same camera setup. With heel, toe and sole aligned as specified, interior details of the white sit about 8 px further toward the toe at 1440 px; the mesh window is the measured reference. Uniform scale and translation can't remove a perspective difference.
-3. A white-on-white edge can't be recovered from the photo, so parts of the white outline follow the black photo's silhouette of the same shoe.
-
-A **matched pair from the same source** would fix all three: for example the same retailer's white DZ7293-100 listing at 1200×1200 or larger, shot with the same setup as `DZ7293-001`, ideally already transparent.
+Nike and NOCTA product designs and marks belong to their owners. This is an unofficial concept, and the owner is responsible for the right to use the source images. Because this repository is **public**, the images are git-ignored and haven't been committed.
 
 ## Outstanding issues
 
-1. **Decide on publishing the photos.** They're local and git-ignored. Committing them would republish copyrighted product photos in a public repository.
-2. **Replace the white photo with a matched, higher-resolution one** (see the limitations above), then run `tools/prepare_mattes.py` and `tests/verify.mjs` again.
+1. **Decide on publishing the images.** They're local and git-ignored; committing them would publish renders of a trademarked product in a public repository.
+2. For authentic photography instead of AI renders, use a matched high-resolution pair from one source, then run the matching tool and `tests/verify.mjs` again.
 3. Test on physical iOS Safari and Android Chrome. `EXT_color_buffer_float` or `EXT_color_buffer_half_float` is required; otherwise the static fallback is used.

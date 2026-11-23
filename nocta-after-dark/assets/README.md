@@ -2,7 +2,9 @@
 
 The two PNGs are **git-ignored** (see `../.gitignore`): the repository is public and the photos are copyrighted Nike product shots. A fresh clone therefore has no photos, and the page shows the missing-asset state listing both paths. No artwork is ever substituted.
 
-To recreate them from opaque white-background originals, use `../tools/prepare_mattes.py`. Provenance and limitations of the current pair are recorded in the main README.
+To recreate them, use `../tools/prepare_mattes_uniform_bg.py` (plain uniform backgrounds) or `../tools/prepare_mattes.py` (opaque white-background photos). Provenance and limitations of the current pair are recorded in the main README.
+
+**`data-align-black` in `../index.html` belongs to the current pair.** `prepare_mattes_uniform_bg.py` prints the value for a new pair; remove the attribute or replace it whenever the images change.
 
 | File | Content |
 | --- | --- |

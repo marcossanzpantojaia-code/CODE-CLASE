@@ -73,6 +73,12 @@ async function open(contextOptions = {}, { fixtures = true, query = '?debug&noid
       const fx = route.request().url().includes('-black') ? FIXTURES.black : FIXTURES.white;
       return route.fulfill({ status: 200, contentType: 'image/png', body: fx.png });
     });
+    // data-align-* registers the real photo pair; it must not be applied to the stand-ins.
+    await context.route((url) => url.origin === origin && url.pathname === '/', async (route) => {
+      const response = await route.fetch();
+      const body = (await response.text()).replace(/\sdata-align-(black|white)="[^"]*"/g, '');
+      return route.fulfill({ response, body });
+    });
   }
   for (const script of init) await context.addInitScript(script);
   const page = await context.newPage();
@@ -306,12 +312,17 @@ async function geometryChecks(page, label, { realPhotos = false } = {}) {
       near(bp.left, product.left, 1.5) && near(bp.top, product.top, 1.5) && near(bp.width, product.width, 0.01) && near(bp.height, product.height, 1.5),
       boxes);
   } else {
-    // Two real photographs never have identical boxes (tongue/laces sit differently): heel, toe
-    // and sole line must coincide exactly; the height difference is reported and bounded.
+    // Two real images never have identical boxes (tongue/laces sit differently, and the pair may
+    // carry a rigid data-align-* registration): heel, toe and sole line must stay within 1.5 % of
+    // the product width of each other, and the height difference is reported and bounded.
     const soleB = bp.top + bp.height;
     const soleW = product.top + product.height;
-    check(`${label}: heel, toe and sole line coincide (uniform scale + translation only)`,
-      near(bp.left, product.left, 0.01) && near(bp.width, product.width, 0.01) && near(soleB, soleW, 0.01), boxes);
+    const tol = 0.015 * product.width;
+    const dl = Math.abs(bp.left - product.left);
+    const dr = Math.abs(bp.left + bp.width - (product.left + product.width));
+    const ds = Math.abs(soleB - soleW);
+    check(`${label}: heel, toe and sole line within 1.5% of product width (uniform scale + translation only)`,
+      dl <= tol && dr <= tol && ds <= tol, `heel ${fmt(dl, 1)} toe ${fmt(dr, 1)} sole ${fmt(ds, 1)} px (limit ${fmt(tol, 1)}); ${boxes}`);
     const dh = Math.abs(bp.height - product.height);
     check(`${label}: silhouette height difference stays small (tongue/laces)`, dh <= 0.015 * product.height,
       `${fmt(dh, 1)} px = ${fmt((dh / product.height) * 100, 2)}% of the product height`);
