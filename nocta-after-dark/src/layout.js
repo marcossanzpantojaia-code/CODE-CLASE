@@ -53,20 +53,34 @@ function placePlane(photo, box, productWidth, centerX, centerY, soleY) {
   };
 }
 
-export function fitPlanes(frameWidth, frameHeight, white, black, layout = PRODUCT_LAYOUT) {
-  const wb = productBox(white);
-  const bb = productBox(black);
-  const minAspect = Math.min(wb.w / wb.h, bb.w / bb.h);
+/**
+ * Fits any number of colourway photos: the reference (white by default) is centred, every other
+ * photo gets the same product width, the same centre x and the reference's sole line.
+ * Returns { productWidth, product, [key]: plane } for every key of `photos`.
+ */
+export function fitColourways(frameWidth, frameHeight, photos, layout = PRODUCT_LAYOUT, referenceKey = 'white') {
+  const keys = Object.keys(photos);
+  const refKey = photos[referenceKey] ? referenceKey : keys[0];
+  const boxes = Object.fromEntries(keys.map((k) => [k, productBox(photos[k])]));
+  const minAspect = Math.min(...keys.map((k) => boxes[k].w / boxes[k].h));
   const productWidth = Math.max(
     1,
     Math.min(frameWidth * layout.maxWidth, frameHeight * layout.maxHeight * minAspect),
   );
   const cx = frameWidth * layout.centerX;
   const cy = frameHeight * layout.centerY;
-  const whitePlane = placePlane(white, wb, productWidth, cx, cy, null);
-  const sole = whitePlane.product.top + whitePlane.product.height;
-  const blackPlane = placePlane(black, bb, productWidth, cx, cy, sole);
-  return { productWidth, white: whitePlane, black: blackPlane, product: whitePlane.product };
+  const refPlane = placePlane(photos[refKey], boxes[refKey], productWidth, cx, cy, null);
+  const sole = refPlane.product.top + refPlane.product.height;
+  const out = { productWidth, product: refPlane.product };
+  for (const k of keys) {
+    out[k] = k === refKey ? refPlane : placePlane(photos[k], boxes[k], productWidth, cx, cy, sole);
+  }
+  return out;
+}
+
+export function fitPlanes(frameWidth, frameHeight, white, black, layout = PRODUCT_LAYOUT) {
+  const r = fitColourways(frameWidth, frameHeight, { white, black }, layout);
+  return { productWidth: r.productWidth, white: r.white, black: r.black, product: r.product };
 }
 
 /** Plane centre/size in GL pixel space (y-up) for the compositor. */

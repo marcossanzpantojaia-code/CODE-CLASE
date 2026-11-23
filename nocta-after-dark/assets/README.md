@@ -10,6 +10,7 @@ To recreate them, use `../tools/prepare_mattes_uniform_bg.py` (plain uniform bac
 | --- | --- |
 | `nocta-hot-step-2-black.png` | Nike NOCTA Hot Step 2, **black** colourway, side view |
 | `nocta-hot-step-2-white.png` | Nike NOCTA Hot Step 2, **white** colourway, side view, the same camera angle, orientation and lens as the black photo |
+| `nocta-hot-step-2-orange.png` | Optional **orange** colourway (third in the cycle). Currently derived from the white with `../tools/recolor_colourway.py` (silver side plate kept) |
 
 ## Requirements
 

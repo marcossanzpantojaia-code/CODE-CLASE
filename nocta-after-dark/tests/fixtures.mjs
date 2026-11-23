@@ -52,10 +52,11 @@ export function syntheticSilhouette({ width, height, tone, pad }) {
   const left = width * pad.left;
   const top = height * pad.top;
   if (top + productH > height) throw new Error('fixture padding leaves no room for the silhouette');
-  const colors =
-    tone === 'black'
-      ? { 1: [112, 112, 112], 2: [100, 100, 100], 3: [132, 132, 132] }
-      : { 1: [240, 240, 240], 2: [255, 255, 255], 3: [222, 222, 222] };
+  const colors = {
+    black: { 1: [112, 112, 112], 2: [100, 100, 100], 3: [132, 132, 132] },
+    white: { 1: [240, 240, 240], 2: [255, 255, 255], 3: [222, 222, 222] },
+    orange: { 1: [235, 110, 30], 2: [225, 95, 20], 3: [250, 140, 60] },
+  }[tone];
   const rgba = Buffer.alloc(width * height * 4);
   const ss = [0.25, 0.75];
   for (let y = 0; y < height; y++) {
@@ -110,5 +111,7 @@ export function makeFixturePair() {
   return {
     black: syntheticSilhouette({ width: 1800, height: 1000, tone: 'black', pad: { left: 0.06, right: 0.1, top: 0.18 } }),
     white: syntheticSilhouette({ width: 1500, height: 960, tone: 'white', pad: { left: 0.09, right: 0.05, top: 0.25 } }),
+    // Same canvas and geometry as the white, like the real orange (a recolour of the white render).
+    orange: syntheticSilhouette({ width: 1500, height: 960, tone: 'orange', pad: { left: 0.09, right: 0.05, top: 0.25 } }),
   };
 }

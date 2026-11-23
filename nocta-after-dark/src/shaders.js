@@ -130,21 +130,26 @@ void main() {
 }
 `;
 
-// 6. Compositor. Two rigid, aspect-correct photo planes over a near-black studio backdrop.
+// 6. Compositor. Two rigid, aspect-correct photo planes over a near-black studio backdrop:
+//    the current colourway (base) and the next one in the cycle (revealed by fluid and wipe).
 //    The source output shader (color = mix(1, (v*.5+.5, 1), |v|)) is evaluated inline and
 //    clamped to [0,1] exactly as an 8-bit render target would store it; reveal energy is
 //    1 - color.r, softened with smoothstep(.085, .115).
 //    Coordinates: vUv and all *Center uniforms are y-up (GL); uPointer is DOM y-down.
 export const COMPOSITE_FRAG = `${PRECISION}
 uniform sampler2D uVelocity;
-uniform sampler2D uBlack;
-uniform sampler2D uWhite;
-uniform sampler2D uHalo;   // pre-blurred alpha of the black photo, same plane UVs
+uniform sampler2D uBase;   // colourway shown at rest
+uniform sampler2D uNext;   // next colourway in the cycle
+uniform sampler2D uHalo;   // pre-blurred alpha of the black photo, on the black plane
 uniform vec2 uFrame;
-uniform vec2 uBlackCenter;
-uniform vec2 uBlackSize;
-uniform vec2 uWhiteCenter;
-uniform vec2 uWhiteSize;
+uniform vec2 uBaseCenter;
+uniform vec2 uBaseSize;
+uniform vec2 uNextCenter;
+uniform vec2 uNextSize;
+uniform vec2 uHaloCenter;
+uniform vec2 uHaloSize;
+uniform float uBaseTint;   // backdrop lift per colourway (black 0, light colourways 1)
+uniform float uNextTint;
 uniform vec2 uProductCenter;
 uniform vec2 uProductSize;
 uniform vec2 uPointer;
@@ -193,8 +198,9 @@ void main() {
   float mask = max(fluidMask, fullMask);
 
   // Uniform sub-pixel translation only: subjectPos = uv + (P - .5) * .008 * (1 - fullReveal).
+  // uParallax carries the (1 - fullReveal) factor from JS (and eases back in after each wipe).
   vec2 P = vec2(uPointer.x, 1.0 - uPointer.y);
-  vec2 subjectUv = uv + (P - 0.5) * 0.008 * (1.0 - uFullReveal) * uParallax;
+  vec2 subjectUv = uv + (P - 0.5) * 0.008 * uParallax;
   vec2 sp = subjectUv * uFrame;
   vec2 fp = uv * uFrame;
 
@@ -205,19 +211,19 @@ void main() {
   vec2 f = vec2((fp.x - uProductCenter.x) / (uProductSize.x * 0.46),
                 (fp.y - soleY) / (uProductSize.y * 0.06 + 2.0));
   bg += vec3(0.80, 0.82, 0.86) * 0.03 * exp(-dot(f, f));
-  // The same reveal mask lifts the backdrop slightly.
-  bg += vec3(0.050, 0.054, 0.060) * mask;
+  // The same reveal mask lifts the backdrop slightly (toward the next colourway's level).
+  bg += vec3(0.050, 0.054, 0.060) * mix(uBaseTint, uNextTint, mask);
 
-  vec2 bUv = planeUv(sp, uBlackCenter, uBlackSize);
-  vec4 b = samplePlane(uBlack, bUv, uBlackSize);
-  vec4 wt = samplePlane(uWhite, planeUv(sp, uWhiteCenter, uWhiteSize), uWhiteSize);
+  vec2 bUv = planeUv(sp, uBaseCenter, uBaseSize);
+  vec4 b = samplePlane(uBase, bUv, uBaseSize);
+  vec4 wt = samplePlane(uNext, planeUv(sp, uNextCenter, uNextSize), uNextSize);
 
   // Restrained cool rim light so the black colourway separates from the backdrop:
   // a soft outer halo from the pre-blurred silhouette alpha plus a thin top-edge highlight.
   // Both are additive light; photo geometry is untouched.
-  float halo = samplePlane(uHalo, bUv, uBlackSize).a * (1.0 - b.a);
-  vec2 upUv = planeUv(sp + vec2(0.0, uHaloRadius * 0.3), uBlackCenter, uBlackSize);
-  float rim = b.a * (1.0 - samplePlane(uBlack, upUv, uBlackSize).a);
+  float halo = samplePlane(uHalo, planeUv(sp, uHaloCenter, uHaloSize), uHaloSize).a * (1.0 - b.a);
+  vec2 upUv = planeUv(sp + vec2(0.0, uHaloRadius * 0.3), uBaseCenter, uBaseSize);
+  float rim = b.a * (1.0 - samplePlane(uBase, upUv, uBaseSize).a);
 
   vec3 blackComp = b.rgb + bg * (1.0 - b.a);
   blackComp += vec3(0.56, 0.59, 0.64) * 0.17 * halo;

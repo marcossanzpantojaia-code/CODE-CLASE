@@ -1,12 +1,12 @@
-// NOCTA Hot Step 2 · black-to-white fluid reveal. Unofficial design concept.
+// NOCTA Hot Step 2 · colourway fluid reveal. Unofficial design concept.
 //
-// mountNoctaFluidReveal(frameElement, options) -> { toggle(next?), destroy(), state, debug }
+// mountNoctaFluidReveal(frameElement, options) -> { advance(), toggle(), destroy(), state, debug }
 //
-// The black photograph is visible at rest. Pointer / touch motion drives a BFECC stable-fluids
-// simulation whose velocity energy cuts temporary holes through which the white photograph is
-// visible; when motion stops the fluid dissipates back to black. Activating the full-frame
-// button (click, tap, Enter, Space) runs a curved bottom-to-top wipe to white; activating it
-// again reverses it.
+// Colourways cycle black -> white -> orange -> black (orange is optional). The current one is
+// visible at rest; pointer / touch motion drives a BFECC stable-fluids simulation whose velocity
+// energy cuts temporary holes through which the NEXT colourway is visible, and the fluid
+// dissipates back when motion stops. Activating the full-frame button (click, tap, Enter, Space)
+// runs a curved bottom-to-top wipe to the next colourway; activations during a wipe are queued.
 
 import { FLUID, FluidSimulation } from './fluid-simulation.js';
 import { COMPOSITE_FRAG, QUAD_VERT } from './shaders.js';
@@ -19,12 +19,15 @@ import {
   createQuad,
   getFloatFormat,
 } from './gl-utils.js';
-import { fitPlanes, rectToGL, toGL } from './layout.js';
+import { fitColourways, rectToGL, toGL } from './layout.js';
 
 const STEP_MS = 1000 / FLUID.stepHz;
 const MAX_STEPS_PER_FRAME = 4;
 const SLEEP_AFTER_STEPS = 240; // .96^240 < 1e-4: nothing left above the reveal threshold
-const REVEAL_OMEGA = 4.5; // critically damped full-reveal spring (~1.2 s, reversible, no jumps)
+const REVEAL_OMEGA = 4.5; // critically damped full-reveal spring (~1.2 s, no jumps)
+const COLOURWAYS = Object.freeze(['black', 'white', 'orange']);
+const NAMES = Object.freeze({ black: 'black', white: 'white', orange: 'orange' });
+const TINT = Object.freeze({ black: 0, white: 1, orange: 0.85 }); // backdrop lift per colourway
 
 // Idle sweep: cosine-eased figure-eight, 2.5 s forward, 1.5 s hold, 2.5 s return, 3 s hold.
 const IDLE = Object.freeze({ delay: 2000, forward: 2500, holdAfterForward: 1500, back: 2500, holdAfterBack: 3000 });
@@ -33,9 +36,10 @@ const IDLE_CYCLE = IDLE.forward + IDLE.holdAfterForward + IDLE.back + IDLE.holdA
 const DEFAULTS = Object.freeze({
   blackSrc: 'assets/nocta-hot-step-2-black.png',
   whiteSrc: 'assets/nocta-hot-step-2-white.png',
+  orangeSrc: 'assets/nocta-hot-step-2-orange.png',
   blackAlt: 'Nike NOCTA Hot Step 2 in black, side view',
   whiteAlt: 'Nike NOCTA Hot Step 2 in white, side view',
-  toggleLabel: 'Reveal white Nike NOCTA Hot Step 2',
+  orangeAlt: 'Nike NOCTA Hot Step 2 in orange with a silver side plate, side view',
   maxPixelRatio: 1.5,
   idle: true,
   debug: false,
@@ -70,14 +74,17 @@ function ensureMarkup(root, options) {
     img.alt = options.blackAlt ?? DEFAULTS.blackAlt;
     return img;
   });
-  const white = find('nocta-reveal__photo--white', () => {
-    const img = document.createElement('img');
-    img.className = 'nocta-reveal__photo';
-    img.src = options.whiteSrc ?? DEFAULTS.whiteSrc;
-    img.alt = options.whiteAlt ?? DEFAULTS.whiteAlt;
-    img.hidden = true;
-    return img;
-  });
+  const photo = (key) =>
+    find(`nocta-reveal__photo--${key}`, () => {
+      const img = document.createElement('img');
+      img.className = 'nocta-reveal__photo';
+      img.src = options[`${key}Src`] ?? DEFAULTS[`${key}Src`];
+      img.alt = options[`${key}Alt`] ?? DEFAULTS[`${key}Alt`];
+      img.hidden = true;
+      return img;
+    });
+  const white = photo('white');
+  const orange = photo('orange');
   const toggle = find('nocta-reveal__toggle', () => {
     const button = document.createElement('button');
     button.type = 'button';
@@ -90,8 +97,8 @@ function ensureMarkup(root, options) {
     return p;
   });
   canvas.setAttribute('role', 'img');
-  if (!toggle.getAttribute('aria-label')) toggle.setAttribute('aria-label', options.toggleLabel ?? DEFAULTS.toggleLabel);
-  return { els: { canvas, black, white, toggle, status }, created };
+  toggle.removeAttribute('aria-pressed'); // a three-state cycle is not an on/off toggle
+  return { els: { canvas, black, white, orange, toggle, status, photos: { black, white, orange } }, created };
 }
 
 function resolveOptions(root, els, options) {
@@ -100,8 +107,10 @@ function resolveOptions(root, els, options) {
     ...DEFAULTS,
     blackSrc: options.blackSrc ?? d.blackSrc ?? els.black.getAttribute('src') ?? DEFAULTS.blackSrc,
     whiteSrc: options.whiteSrc ?? d.whiteSrc ?? els.white.getAttribute('src') ?? DEFAULTS.whiteSrc,
+    orangeSrc: options.orangeSrc ?? d.orangeSrc ?? els.orange.getAttribute('src') ?? DEFAULTS.orangeSrc,
     blackAlt: options.blackAlt ?? (els.black.getAttribute('alt') || DEFAULTS.blackAlt),
     whiteAlt: options.whiteAlt ?? (els.white.getAttribute('alt') || DEFAULTS.whiteAlt),
+    orangeAlt: options.orangeAlt ?? (els.orange.getAttribute('alt') || DEFAULTS.orangeAlt),
     maxPixelRatio: options.maxPixelRatio ?? DEFAULTS.maxPixelRatio,
     idle: options.idle ?? d.idle !== 'false',
     debug: Boolean(options.debug),
@@ -109,6 +118,7 @@ function resolveOptions(root, els, options) {
     adjust: {
       black: options.adjust?.black ?? parseAdjust(d.alignBlack),
       white: options.adjust?.white ?? parseAdjust(d.alignWhite),
+      orange: options.adjust?.orange ?? parseAdjust(d.alignOrange),
     },
   };
 }
@@ -245,9 +255,13 @@ export function mountNoctaFluidReveal(root, options = {}) {
     running: false,
     frozen: false, // debug recording only
     virtualNow: 0,
-    target: 0,
+    order: ['black', 'white'], // available colourways, cycle order
+    current: 0, // index into order: the colourway shown at rest
+    target: 0, // 1 while wiping to the next colourway
+    queued: 0, // activations received during a wipe
     reveal: 0,
     revealVel: 0,
+    parallaxGain: 1,
     pointer: { x: 0, y: 0, active: false, hasOld: false, oldX: 0, oldY: 0, source: 'none' },
     parallax: { x: 0.5, y: 0.5 },
     lastInput: performance.now(),
@@ -287,18 +301,24 @@ export function mountNoctaFluidReveal(root, options = {}) {
     updateRunning();
   }
 
+  const keyAt = (i) => state.order[((i % state.order.length) + state.order.length) % state.order.length];
+  /** Colourway the visitor has asked for (after any wipe in progress and queued steps). */
+  const destination = () => state.current + state.target + state.queued;
+
   function syncPhotos() {
     const dom = state.mode === 'fallback' || state.mode === 'missing' || state.mode === 'loading';
-    const pressed = state.target === 1;
-    const whiteOk = Boolean(photos?.white?.ok);
-    els.black.hidden = !(dom && !(pressed && whiteOk)) || (photos !== null && !photos.black.ok);
-    els.white.hidden = !(dom && pressed && whiteOk);
+    const shown = photos ? keyAt(destination()) : 'black';
+    for (const key of COLOURWAYS) {
+      const ok = photos ? Boolean(photos[key]?.ok) : key === 'black';
+      els.photos[key].hidden = !(dom && ok && key === shown);
+    }
   }
 
   function syncLabels() {
-    const pressed = state.target === 1;
-    els.toggle.setAttribute('aria-pressed', String(pressed));
-    els.canvas.setAttribute('aria-label', pressed ? opts.whiteAlt : opts.blackAlt);
+    const shown = keyAt(destination());
+    const upcoming = keyAt(destination() + 1);
+    els.toggle.setAttribute('aria-label', `Reveal ${NAMES[upcoming]} Nike NOCTA Hot Step 2`);
+    els.canvas.setAttribute('aria-label', opts[`${shown}Alt`]);
   }
 
   function layoutDom() {
@@ -311,8 +331,7 @@ export function mountNoctaFluidReveal(root, options = {}) {
       img.style.maxWidth = 'none';
       img.style.transform = 'none';
     };
-    place(els.black, state.planes.black);
-    place(els.white, state.planes.white);
+    for (const key of COLOURWAYS) if (state.planes[key]) place(els.photos[key], state.planes[key]);
   }
 
   // ---------------------------------------------------------------- sizing
@@ -324,8 +343,9 @@ export function mountNoctaFluidReveal(root, options = {}) {
     state.frameH = Math.max(1, rect.height);
     state.dpr = Math.min(window.devicePixelRatio || 1, opts.maxPixelRatio);
     if (photos?.black?.ok) {
-      const white = photos.white.ok ? photos.white : photos.black;
-      state.planes = fitPlanes(state.frameW, state.frameH, white, photos.black);
+      const set = { black: photos.black, white: photos.white.ok ? photos.white : photos.black };
+      if (photos.orange?.ok) set.orange = photos.orange;
+      state.planes = fitColourways(state.frameW, state.frameH, set);
     }
     layoutDom();
     if (gl && res && !state.contextLost) {
@@ -383,11 +403,8 @@ export function mountNoctaFluidReveal(root, options = {}) {
     res = new GLResources(gl);
     quad = createQuad(res);
     composite = createProgram(res, QUAD_VERT, COMPOSITE_FRAG);
-    textures = {
-      black: createImageTexture(res, photos.black.img, isWebGL2),
-      white: createImageTexture(res, photos.white.img, isWebGL2),
-      halo: createAlphaTexture(res, photos.black.halo),
-    };
+    textures = { halo: createAlphaTexture(res, photos.black.halo) };
+    for (const key of state.order) textures[key] = createImageTexture(res, photos[key].img, isWebGL2);
     sim = new FluidSimulation(res, floatFormat, quad);
     sim.resize(state.frameW * FLUID.resolution, state.frameH * FLUID.resolution);
     state.asleep = true;
@@ -458,9 +475,9 @@ export function mountNoctaFluidReveal(root, options = {}) {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, sim.velocityTexture);
     gl.activeTexture(gl.TEXTURE1);
-    gl.bindTexture(gl.TEXTURE_2D, textures.black);
+    gl.bindTexture(gl.TEXTURE_2D, textures[keyAt(state.current)]);
     gl.activeTexture(gl.TEXTURE2);
-    gl.bindTexture(gl.TEXTURE_2D, textures.white);
+    gl.bindTexture(gl.TEXTURE_2D, textures[keyAt(state.current + 1)]);
     gl.activeTexture(gl.TEXTURE3);
     gl.bindTexture(gl.TEXTURE_2D, textures.halo);
     gl.activeTexture(gl.TEXTURE0);
@@ -470,27 +487,34 @@ export function mountNoctaFluidReveal(root, options = {}) {
     if (!gl || state.contextLost || !composite || !state.planes) return;
     const H = state.frameH;
     const p = state.planes;
-    const black = toGL(p.black, H);
-    const white = toGL(p.white, H);
+    const baseKey = keyAt(state.current);
+    const nextKey = keyAt(state.current + 1);
+    const base = toGL(p[baseKey], H);
+    const next = toGL(p[nextKey], H);
+    const haloPlane = toGL(p.black, H);
     const product = rectToGL(p.product, H);
     const motion = state.mode === 'webgl';
     const loc = (n) => composite.loc(n);
     bindMainState();
     gl.uniform1i(loc('uVelocity'), 0);
-    gl.uniform1i(loc('uBlack'), 1);
-    gl.uniform1i(loc('uWhite'), 2);
+    gl.uniform1i(loc('uBase'), 1);
+    gl.uniform1i(loc('uNext'), 2);
     gl.uniform1i(loc('uHalo'), 3);
     gl.uniform2f(loc('uFrame'), state.frameW, state.frameH);
-    gl.uniform2f(loc('uBlackCenter'), black.center[0], black.center[1]);
-    gl.uniform2f(loc('uBlackSize'), black.size[0], black.size[1]);
-    gl.uniform2f(loc('uWhiteCenter'), white.center[0], white.center[1]);
-    gl.uniform2f(loc('uWhiteSize'), white.size[0], white.size[1]);
+    gl.uniform2f(loc('uBaseCenter'), base.center[0], base.center[1]);
+    gl.uniform2f(loc('uBaseSize'), base.size[0], base.size[1]);
+    gl.uniform2f(loc('uNextCenter'), next.center[0], next.center[1]);
+    gl.uniform2f(loc('uNextSize'), next.size[0], next.size[1]);
+    gl.uniform2f(loc('uHaloCenter'), haloPlane.center[0], haloPlane.center[1]);
+    gl.uniform2f(loc('uHaloSize'), haloPlane.size[0], haloPlane.size[1]);
+    gl.uniform1f(loc('uBaseTint'), TINT[baseKey]);
+    gl.uniform1f(loc('uNextTint'), TINT[nextKey]);
     gl.uniform2f(loc('uProductCenter'), product.center[0], product.center[1]);
     gl.uniform2f(loc('uProductSize'), product.size[0], product.size[1]);
     gl.uniform2f(loc('uPointer'), state.parallax.x, state.parallax.y);
     gl.uniform1f(loc('uFullReveal'), clamp(state.reveal, 0, 1));
     gl.uniform1f(loc('uFluid'), motion ? 1 : 0);
-    gl.uniform1f(loc('uParallax'), motion ? 1 : 0);
+    gl.uniform1f(loc('uParallax'), motion ? state.parallaxGain : 0);
     gl.uniform1f(loc('uHaloRadius'), clamp(p.productWidth * 0.009, 2.5, 12));
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     state.stats.renders++;
@@ -544,20 +568,50 @@ export function mountNoctaFluidReveal(root, options = {}) {
     return { x: p.x, y: p.y, fx: (dx / 2) * FLUID.mouseForce, fy: (dy / 2) * FLUID.mouseForce };
   }
 
-  function toggle(next) {
-    if (state.destroyed) return;
-    state.target = typeof next === 'boolean' ? Number(next) : state.target === 1 ? 0 : 1;
+  /** Next colourway: animated wipe in WebGL mode (queued while one runs), instant otherwise. */
+  function advance() {
+    if (state.destroyed || state.order.length < 2) return;
     state.lastInput = performance.now();
     if (state.idleActive) stopIdle();
-    syncLabels();
     if (state.mode === 'webgl') {
+      if (state.target === 1) state.queued = Math.min(state.queued + 1, state.order.length - 1);
+      else state.target = 1;
       state.needsRender = true;
     } else {
-      state.reveal = state.target;
-      state.revealVel = 0;
+      state.current = (state.current + 1) % state.order.length;
+      settleInstantly();
       syncPhotos();
       render();
     }
+    syncLabels();
+  }
+
+  /** Applies any wipe in progress and queued steps at once (reduced motion, fallbacks). */
+  function settleInstantly() {
+    state.current = (state.current + state.target + state.queued) % state.order.length;
+    state.target = 0;
+    state.queued = 0;
+    state.reveal = 0;
+    state.revealVel = 0;
+    state.parallaxGain = 1;
+  }
+
+  /** End of a wipe: the next colourway becomes the base. Visually seamless: at reveal = 1 the
+   *  frame already shows only the next colourway, the backdrop tint follows the colourway, and
+   *  the fluid (invisible under a full mask) is cleared so it cannot flash the wrong layer. */
+  function commitWipe() {
+    state.current = (state.current + 1) % state.order.length;
+    state.reveal = 0;
+    state.revealVel = 0;
+    state.target = 0;
+    state.parallaxGain = 0;
+    if (sim) sim.clear();
+    state.asleep = true;
+    if (state.queued > 0) {
+      state.queued--;
+      state.target = 1;
+    }
+    syncLabels();
   }
 
   // ---------------------------------------------------------------- idle sweep
@@ -568,7 +622,7 @@ export function mountNoctaFluidReveal(root, options = {}) {
   }
 
   function updateIdle(now) {
-    const allowed = opts.idle && state.mode === 'webgl' && state.target === 0 && state.planes;
+    const allowed = opts.idle && state.mode === 'webgl' && state.target === 0 && state.current === 0 && state.planes;
     if (!allowed) {
       if (state.idleActive) stopIdle();
       return;
@@ -608,11 +662,27 @@ export function mountNoctaFluidReveal(root, options = {}) {
     if (Math.abs(x) < 1e-4 && Math.abs(v) < 1e-3) {
       state.reveal = state.target;
       state.revealVel = 0;
+      if (state.target === 1) commitWipe();
     }
     return true;
   }
 
   function updateParallax(dt) {
+    // (1 - fullReveal) during a wipe, exactly; after a wipe it eases back to 1 instead of jumping.
+    const gainTarget = state.target === 1 ? 1 - clamp(state.reveal, 0, 1) : 1;
+    let gainMoving = false;
+    if (state.target === 1) {
+      gainMoving = state.parallaxGain !== gainTarget;
+      state.parallaxGain = gainTarget;
+    } else if (state.parallaxGain !== 1) {
+      state.parallaxGain = 1 - (1 - state.parallaxGain) * Math.exp(-dt * 6);
+      if (1 - state.parallaxGain < 1e-3) state.parallaxGain = 1;
+      gainMoving = true;
+    }
+    return updatePointerParallax(dt) || gainMoving;
+  }
+
+  function updatePointerParallax(dt) {
     const p = state.pointer;
     const tx = p.active ? (p.x + 1) / 2 : 0.5;
     const ty = p.active ? (1 - p.y) / 2 : 0.5;
@@ -706,8 +776,7 @@ export function mountNoctaFluidReveal(root, options = {}) {
     releasePointer('touch');
     sim?.clear();
     state.asleep = true;
-    state.reveal = state.target;
-    state.revealVel = 0;
+    settleInstantly();
     state.parallax.x = 0.5;
     state.parallax.y = 0.5;
     setMode(state.reducedMotion ? 'static' : 'webgl');
@@ -719,12 +788,16 @@ export function mountNoctaFluidReveal(root, options = {}) {
   async function init() {
     if (state.initStarted || state.destroyed) return;
     state.initStarted = true;
-    const [black, white] = await Promise.all([
+    const [black, white, orange] = await Promise.all([
       loadPhoto(opts.blackSrc, opts.adjust.black),
       loadPhoto(opts.whiteSrc, opts.adjust.white),
+      loadPhoto(opts.orangeSrc, opts.adjust.orange),
     ]);
     if (state.destroyed) return;
-    photos = { black, white };
+    photos = { black, white, orange };
+    if (orange.ok) state.order = ['black', 'white', 'orange'];
+    else console.warn(`[nocta-reveal] ${orange.src} not found: cycling black and white only.`);
+    syncLabels();
 
     const missing = [black, white].filter((p) => !p.ok).map((p) => p.src);
     if (missing.length) {
@@ -738,7 +811,7 @@ export function mountNoctaFluidReveal(root, options = {}) {
       setMode('missing');
       return;
     }
-    for (const p of [black, white]) {
+    for (const p of [black, white, orange].filter((ph) => ph.ok)) {
       if (!p.hasAlpha) {
         console.warn(`[nocta-reveal] ${p.src} is fully opaque; a transparent PNG or a silhouette matte is expected.`);
       }
@@ -794,7 +867,7 @@ export function mountNoctaFluidReveal(root, options = {}) {
   });
   on(t, 'touchend', (e) => e.touches.length === 0 && releasePointer('touch'));
   on(t, 'touchcancel', () => releasePointer('touch'));
-  on(t, 'click', () => toggle());
+  on(t, 'click', () => advance());
   on(document, 'visibilitychange', () => {
     state.docHidden = document.hidden;
     updateRunning();
@@ -827,13 +900,11 @@ export function mountNoctaFluidReveal(root, options = {}) {
       els.canvas = fresh;
     }
     for (const el of created) el.remove();
-    for (const img of [els.black, els.white]) {
-      img.removeAttribute('style');
+    for (const key of COLOURWAYS) {
+      els.photos[key].removeAttribute('style');
+      els.photos[key].hidden = key !== 'black';
     }
-    els.black.hidden = false;
-    els.white.hidden = true;
     els.toggle.hidden = true;
-    els.toggle.setAttribute('aria-pressed', 'false');
     els.status.hidden = true;
     delete root.dataset.mode;
   }
@@ -858,7 +929,16 @@ export function mountNoctaFluidReveal(root, options = {}) {
               white: photos.white.ok
                 ? { width: photos.white.width, height: photos.white.height, bbox: photos.white.bbox }
                 : null,
+              orange: photos.orange?.ok
+                ? { width: photos.orange.width, height: photos.orange.height, bbox: photos.orange.bbox }
+                : null,
             },
+            order: [...state.order],
+            current: state.current,
+            colourway: keyAt(state.current),
+            destination: keyAt(destination()),
+            queued: state.queued,
+            parallaxGain: state.parallaxGain,
             reveal: state.reveal,
             target: state.target,
             idleActive: state.idleActive,
@@ -901,10 +981,11 @@ export function mountNoctaFluidReveal(root, options = {}) {
     : null;
 
   return {
-    toggle,
+    advance,
+    toggle: advance,
     destroy,
     get state() {
-      return { mode: state.mode, revealed: state.target === 1 };
+      return { mode: state.mode, colourway: keyAt(state.current), destination: keyAt(destination()) };
     },
     debug,
   };

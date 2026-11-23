@@ -74,7 +74,8 @@ async function open(
   const log = { pageErrors: [], consoleErrors: [], external: [], failed: [] };
   if (fixtures) {
     await context.route('**/assets/nocta-hot-step-2-*.png', (route) => {
-      const fx = route.request().url().includes('-black') ? FIXTURES.black : FIXTURES.white;
+      const url = route.request().url();
+      const fx = url.includes('-black') ? FIXTURES.black : url.includes('-orange') ? FIXTURES.orange : FIXTURES.white;
       return route.fulfill({ status: 200, contentType: 'image/png', body: fx.png });
     });
     await context.route('**/assets/nocta-campaign.jpg', (route) =>
@@ -130,6 +131,14 @@ async function waitTicks(page, n) {
   );
 }
 
+/** Waits until the cycle rests on `key` (no wipe running, nothing queued). */
+async function waitColourway(page, key) {
+  await waitReveal(page, `(s) => s.colourway === '${key}' && s.target === 0 && s.queued === 0`);
+}
+
+const destinationOf = (page) => page.evaluate(() => window.__noctaReveal.debug.getState().destination);
+const toggleLabel = (page) => page.getAttribute('.nocta-reveal__toggle', 'aria-label');
+
 async function waitFrames(page, n) {
   await page.evaluate(
     (k) => new Promise((resolve) => {
@@ -162,6 +171,10 @@ async function canvasStats(page, grid = 48) {
     const box = () => ({ x0: Infinity, y0: Infinity, x1: -Infinity, y1: -Infinity });
     const wb = box();
     const bb = box();
+    const ob = box();
+    let orange = 0;
+    let topOrange = 0;
+    let botOrange = 0;
     let white = 0;
     let black = 0;
     let topWhite = 0;
@@ -178,14 +191,14 @@ async function canvasStats(page, grid = 48) {
         const i = (y * w + x) * 4;
         const l = (data[i] + data[i + 1] + data[i + 2]) / 3;
         const xd = x * sx;
-        const cls = l >= 190 ? 2 : l >= 80 ? 1 : 0;
+        const cls = data[i] - data[i + 2] > 90 && l >= 60 ? 3 : l >= 190 ? 2 : l >= 80 ? 1 : 0;
         if (cls === 0) {
           const m = p.width * 0.04;
           const away = xd < p.left - m || xd > p.left + p.width + m || yd < p.top - m || yd > p.top + p.height + m;
           if (away && l > bgMax) bgMax = l;
           continue;
         }
-        const b = cls === 2 ? wb : bb;
+        const b = cls === 2 ? wb : cls === 3 ? ob : bb;
         if (xd < b.x0) b.x0 = xd;
         if (xd > b.x1) b.x1 = xd;
         if (yd < b.y0) b.y0 = yd;
@@ -193,14 +206,17 @@ async function canvasStats(page, grid = 48) {
         if (cls === 2) {
           white++;
           cells[Math.min(gy - 1, Math.floor((yd / st.frame[1]) * gy)) * gx + Math.min(gx - 1, Math.floor((xd / st.frame[0]) * gx))]++;
-        } else black++;
+        } else if (cls === 3) orange++;
+        else black++;
         const top = yd < p.top + p.height / 2;
         if (top) {
           topShoe++;
           if (cls === 2) topWhite++;
+          if (cls === 3) topOrange++;
         } else {
           botShoe++;
           if (cls === 2) botWhite++;
+          if (cls === 3) botOrange++;
         }
       }
     }
@@ -208,11 +224,16 @@ async function canvasStats(page, grid = 48) {
     return {
       white,
       black,
-      whiteFraction: white / Math.max(1, white + black),
+      orange,
+      whiteFraction: white / Math.max(1, white + black + orange),
+      orangeFraction: orange / Math.max(1, white + black + orange),
       topWhiteFraction: topWhite / Math.max(1, topShoe),
       bottomWhiteFraction: botWhite / Math.max(1, botShoe),
+      topOrangeFraction: topOrange / Math.max(1, topShoe),
+      bottomOrangeFraction: botOrange / Math.max(1, botShoe),
       whiteBox: fin(wb),
       blackBox: fin(bb),
+      orangeBox: fin(ob),
       bgMax,
       cells: Array.from(cells, (c) => (c > 0 ? 1 : 0)),
       reveal: st.reveal,
@@ -288,7 +309,7 @@ function hygiene(log, { allowMissing = false } = {}) {
   check('no console errors', consoleErrors.length === 0, consoleErrors.join(' | '));
   check('no external runtime requests', log.external.length === 0, log.external.join(' | '));
   const failed = allowMissing
-    ? log.failed.filter((f) => !/nocta-hot-step-2-(black|white)\.png|nocta-campaign\.jpg/.test(f))
+    ? log.failed.filter((f) => !/nocta-hot-step-2-(black|white|orange)\.png|nocta-campaign\.jpg/.test(f))
     : log.failed;
   check('no missing files / failed requests', failed.length === 0, failed.join(' | '));
 }
@@ -316,6 +337,13 @@ async function geometryChecks(page, label, { realPhotos = false } = {}) {
     `${fmt(black.width / black.height, 6)} vs ${fmt(pb.width / pb.height, 6)}`);
   check(`${label}: white plane keeps natural aspect`, near(white.width / white.height, pw.width / pw.height, 1e-9),
     `${fmt(white.width / white.height, 6)} vs ${fmt(pw.width / pw.height, 6)}`);
+  if (st.planes.orange && st.photos.orange) {
+    const po = st.photos.orange;
+    const o = st.planes.orange;
+    check(`${label}: orange plane keeps natural aspect`, near(o.width / o.height, po.width / po.height, 1e-9));
+    check(`${label}: orange plane coincides with white (same geometry)`,
+      near(o.left, white.left, 0.01) && near(o.top, white.top, 0.01) && near(o.width, white.width, 0.01));
+  }
   check(`${label}: product width <= .86 W`, product.width <= 0.86 * W + 1e-6, `${fmt(product.width, 1)} / ${fmt(W, 1)}`);
   check(`${label}: product fully inside frame`,
     product.left >= 0 && product.top >= 0 && product.left + product.width <= W + 1e-6 && product.top + product.height <= H + 1e-6);
@@ -416,17 +444,20 @@ section('Desktop 1440x1000: rest, alignment, fluid, wipe, keyboard');
   const f4 = await canvasStats(page);
   check('fluid fully dissipates back to black', f4.white === 0, `${f4.white} white px after sleep`);
 
-  // --- full wipe, bottom to top, reversible without jumps.
+  // --- colourway cycle: curved bottom-to-top wipes, black -> white -> orange -> black.
+  check('cycle order is black, white, orange', st.order.join() === 'black,white,orange', st.order.join());
+  check('button names what comes next', (await toggleLabel(page)) === 'Reveal white Nike NOCTA Hot Step 2');
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
   await page.mouse.down();
   await page.mouse.up();
-  check('click toggles aria-pressed=true', (await page.getAttribute('.nocta-reveal__toggle', 'aria-pressed')) === 'true');
+  check('click starts the wipe to white', (await destinationOf(page)) === 'white');
+  check('button now offers orange', (await toggleLabel(page)) === 'Reveal orange Nike NOCTA Hot Step 2');
   await waitReveal(page, '(s) => s.reveal > 0.35 && s.reveal < 0.7');
   const mid = await canvasStats(page);
   check('wipe travels bottom-to-top', mid.bottomWhiteFraction > mid.topWhiteFraction + 0.2,
     `reveal ${fmt(mid.reveal)}: bottom ${fmt(mid.bottomWhiteFraction)} vs top ${fmt(mid.topWhiteFraction)} white`);
   await shot(page, 'desktop-wipe-mid');
-  await waitReveal(page, '(s) => s.reveal === 1');
+  await waitColourway(page, 'white');
   const full = await canvasStats(page);
   check('full reveal shows only the white stand-in (>=99%; remainder = anti-aliased edges)', full.whiteFraction >= 0.99 && full.white > 50000,
     `white ${fmt(full.whiteFraction * 100, 2)}% of silhouette pixels`);
@@ -437,32 +468,67 @@ section('Desktop 1440x1000: rest, alignment, fluid, wipe, keyboard');
   check('canvas label follows the state', (await page.getAttribute('.nocta-reveal__canvas', 'aria-label')).includes('white'));
   await shot(page, 'desktop-white');
 
-  // Reverse mid-flight and record every frame.
+  // White at rest: the fluid now reveals the NEXT colourway (orange).
+  await page.mouse.move(box.x + p.left + p.width * 0.92, box.y + p.top + p.height * 0.55);
+  await waitTicks(page, 1);
+  await mousePath(page, sweepPoints(box, p, 40, 0.92, 0.12, 0.18));
+  const wf = await canvasStats(page);
+  check('on white, pointer motion reveals the orange through the fluid', wf.orange > 3000 && wf.orangeFraction < 0.8,
+    `${wf.orange} orange px, ${fmt(wf.orangeFraction * 100, 1)}%`);
+  await shot(page, 'desktop-white-fluid-orange');
+  await page.mouse.move(box.x + 12, box.y - 24);
+  await page.waitForFunction(() => window.__noctaReveal.debug.getState().asleep, null, { timeout: 180000, polling: 'raf' });
+
+  // Wipe white -> orange, bottom to top, then the orange at rest.
   await page.click('.nocta-reveal__toggle');
-  await waitReveal(page, '(s) => s.reveal < 0.6');
+  await page.mouse.move(box.x + 12, box.y - 24);
+  await waitReveal(page, '(s) => s.reveal > 0.35 && s.reveal < 0.7');
+  const midO = await canvasStats(page);
+  check('wipe to orange travels bottom-to-top', midO.bottomOrangeFraction > midO.topOrangeFraction + 0.2,
+    `bottom ${fmt(midO.bottomOrangeFraction)} vs top ${fmt(midO.topOrangeFraction)} orange`);
+  await waitColourway(page, 'orange');
+  const fullO = await canvasStats(page);
+  check('orange at rest shows only the orange stand-in (>=99%)', fullO.orangeFraction >= 0.99 && fullO.orange > 50000,
+    `orange ${fmt(fullO.orangeFraction * 100, 2)}%`);
+  check('orange silhouette coincides with the white one (+/-1 px)',
+    near(fullO.orangeBox.x0, full.whiteBox.x0, 1) && near(fullO.orangeBox.x1, full.whiteBox.x1, 1) &&
+      near(fullO.orangeBox.y0, full.whiteBox.y0, 1) && near(fullO.orangeBox.y1, full.whiteBox.y1, 1));
+  check('canvas label names the orange colourway', (await page.getAttribute('.nocta-reveal__canvas', 'aria-label')).includes('orange'));
+  await shot(page, 'desktop-orange');
+
+  // Two quick activations from orange: queued (black, then white), every frame continuous.
   const samples = await page.evaluate(
     () => new Promise((resolve) => {
-      const out = [];
       const api = window.__noctaReveal;
+      const out = [];
       let n = 0;
+      api.advance();
       const f = () => {
-        out.push(api.debug.getState().reveal);
-        if (n === 4) api.toggle();
-        if (++n < 90) requestAnimationFrame(f);
+        const st2 = api.debug.getState();
+        out.push({ r: st2.reveal, c: st2.current, done: st2.target === 0 && st2.queued === 0 });
+        if (n === 6) api.advance();
+        if (++n < 600 && !(n > 10 && out[out.length - 1].done)) requestAnimationFrame(f);
         else resolve(out);
       };
       requestAnimationFrame(f);
     }),
   );
-  const maxJump = Math.max(...samples.slice(1).map((v, i) => Math.abs(v - samples[i])));
-  const minAfter = Math.min(...samples.slice(0, 20));
-  check('reversal mid-wipe is continuous (no jumps)', maxJump < 0.08, `max per-frame change ${fmt(maxJump)}`);
-  check('reversal changes direction', samples[samples.length - 1] > minAfter + 0.05,
-    `min ${fmt(minAfter)} -> end ${fmt(samples[samples.length - 1])}`);
+  let maxJump = 0;
+  let commits = 0;
+  for (let i = 1; i < samples.length; i++) {
+    if (samples[i].c !== samples[i - 1].c) commits++;
+    else maxJump = Math.max(maxJump, Math.abs(samples[i].r - samples[i - 1].r));
+  }
+  check('activations during a wipe are queued, with no jumps', maxJump < 0.08 && commits === 2,
+    `max per-frame change ${fmt(maxJump)}, ${commits} colourway changes`);
+  const after = await getState(page);
+  check('queue lands two steps on (orange -> black -> white)', after.colourway === 'white', after.colourway);
   await page.click('.nocta-reveal__toggle');
-  await waitReveal(page, '(s) => s.reveal === 0');
+  await page.click('.nocta-reveal__toggle');
+  await page.mouse.move(box.x + 12, box.y - 24);
+  await waitColourway(page, 'black');
   const back = await canvasStats(page);
-  check('second activation restores black', back.white === 0 && back.black > 50000);
+  check('cycle returns to black', back.white === 0 && back.orange === 0 && back.black > 50000);
 
   // --- keyboard
   // Clicking the (non-focusable) title resets the sequential focus start point before the button.
@@ -477,13 +543,12 @@ section('Desktop 1440x1000: rest, alignment, fluid, wipe, keyboard');
   check('visible focus indicator', focus.visible && focus.style === 'solid' && parseFloat(focus.width) >= 2, `${focus.style} ${focus.width}`);
   await shot(page, 'desktop-focus');
   await page.keyboard.press('Enter');
-  check('Enter toggles on', (await page.getAttribute('.nocta-reveal__toggle', 'aria-pressed')) === 'true');
+  check('Enter advances to white', (await destinationOf(page)) === 'white');
   await page.keyboard.press('Space');
-  check('Space toggles off', (await page.getAttribute('.nocta-reveal__toggle', 'aria-pressed')) === 'false');
-  await page.keyboard.press('Space');
-  check('Space toggles on again', (await page.getAttribute('.nocta-reveal__toggle', 'aria-pressed')) === 'true');
+  check('Space advances to orange', (await destinationOf(page)) === 'orange');
   await page.keyboard.press('Enter');
-  await waitReveal(page, '(s) => s.reveal === 0');
+  check('Enter advances back to black', (await destinationOf(page)) === 'black');
+  await waitColourway(page, 'black');
   const access = await page.evaluate(() => {
     const b = document.querySelector('.nocta-reveal__toggle');
     return { tag: b.tagName, type: b.type, label: b.getAttribute('aria-label'), nested: b.querySelectorAll('a,button,input,select,textarea,[tabindex]').length };
@@ -586,7 +651,12 @@ section('Reduced motion');
   check('static black photo shown', px.black > 50000);
   await page.click('.nocta-reveal__toggle');
   const on = await canvasStats(page);
-  check('toggle still works, switching instantly (no wipe animation)', on.reveal === 1 && on.white > 50000 && on.whiteFraction >= 0.99);
+  const rmState = await getState(page);
+  check('activation still works, switching instantly (no wipe animation)',
+    rmState.colourway === 'white' && rmState.target === 0 && on.white > 50000 && on.whiteFraction >= 0.99);
+  await page.click('.nocta-reveal__toggle');
+  const onO = await canvasStats(page);
+  check('next activation shows orange instantly', (await getState(page)).colourway === 'orange' && onO.orangeFraction >= 0.99);
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.waitForFunction(() => window.__noctaReveal.debug.getState().mode === 'webgl');
   check('preference change at runtime switches back to WebGL motion', true);
@@ -631,13 +701,16 @@ for (const [label, script] of [
   check('real black photo element shown with accessible alt', fb.shown && fb.alt === 'Nike NOCTA Hot Step 2 in black, side view');
   check('fallback photo keeps natural aspect', near(fb.ratio, fb.natural, fb.natural * 0.002), `${fmt(fb.ratio, 4)} vs ${fmt(fb.natural, 4)}`);
   check('exactly one canvas, hidden', fb.canvases === 1 && fb.canvasVisible === 'hidden');
+  const shownPhoto = () => page.evaluate(() =>
+    ['black', 'white', 'orange'].filter((k) => !document.querySelector(`.nocta-reveal__photo--${k}`).hidden).join());
   await page.click('.nocta-reveal__toggle');
-  const swapped = await page.evaluate(() => ({
-    white: !document.querySelector('.nocta-reveal__photo--white').hidden,
-    black: !document.querySelector('.nocta-reveal__photo--black').hidden,
-    pressed: document.querySelector('.nocta-reveal__toggle').getAttribute('aria-pressed'),
-  }));
-  check('interaction not broken: toggle swaps to the white photo', swapped.white && !swapped.black && swapped.pressed === 'true');
+  const s1 = await shownPhoto();
+  await page.click('.nocta-reveal__toggle');
+  const s2 = await shownPhoto();
+  await page.click('.nocta-reveal__toggle');
+  const s3 = await shownPhoto();
+  check('interaction not broken: the cycle swaps photos (white, orange, black)', s1 === 'white' && s2 === 'orange' && s3 === 'black',
+    `${s1} -> ${s2} -> ${s3}`);
   await shot(page, `fallback-${label.toLowerCase().replace(/\W+/g, '-')}`);
   hygiene(log);
   await context.close();
@@ -674,13 +747,18 @@ section('Phone 390x844 (iPhone UA, touch, DPR 3)');
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   check('touch drag reveals white through the fluid', touchStats.white > 200, `${touchStats.white} white px`);
   await shot(page, 'phone-touch-fluid');
-  check('touch drag did not toggle', (await page.getAttribute('.nocta-reveal__toggle', 'aria-pressed')) === 'false');
+  check('touch drag did not advance the cycle', (await destinationOf(page)) === 'black');
   await page.tap('.nocta-reveal__toggle');
-  check('tap toggles the full reveal', (await page.getAttribute('.nocta-reveal__toggle', 'aria-pressed')) === 'true');
-  await waitReveal(page, '(s) => s.reveal === 1');
+  check('tap advances to white', (await destinationOf(page)) === 'white');
+  await waitColourway(page, 'white');
   await shot(page, 'phone-white');
   await page.tap('.nocta-reveal__toggle');
-  check('second tap restores black', (await page.getAttribute('.nocta-reveal__toggle', 'aria-pressed')) === 'false');
+  check('second tap advances to orange', (await destinationOf(page)) === 'orange');
+  await waitColourway(page, 'orange');
+  await shot(page, 'phone-orange');
+  await page.tap('.nocta-reveal__toggle');
+  check('third tap returns to black', (await destinationOf(page)) === 'black');
+  await waitColourway(page, 'black');
 
   await page.evaluate(() => {
     const spacer = document.createElement('div');
@@ -701,7 +779,7 @@ section('Phone 390x844 (iPhone UA, touch, DPR 3)');
   await page.waitForTimeout(400);
   const scrollY = await page.evaluate(() => window.scrollY);
   check('vertical touch drag over the artwork scrolls the page', scrollY - scrollBefore > 150, `scrolled ${scrollY - scrollBefore}px`);
-  check('scrolling drag did not toggle', (await page.getAttribute('.nocta-reveal__toggle', 'aria-pressed')) === 'false');
+  check('scrolling drag did not advance the cycle', (await destinationOf(page)) === 'black');
   hygiene(log);
   await context.close();
 }
@@ -723,7 +801,7 @@ section('Tablet 820x1180 (iPad UA, touch, DPR 2)');
   const rest = await canvasStats(page);
   check('black at rest on tablet', rest.white === 0 && rest.black > 20000);
   await page.tap('.nocta-reveal__toggle');
-  await waitReveal(page, '(s) => s.reveal === 1');
+  await waitColourway(page, 'white');
   const full = await canvasStats(page);
   check('tap reveals white on tablet, silhouettes aligned (+/-2 px)',
     full.whiteFraction >= 0.99 && near(full.whiteBox.x0, rest.blackBox.x0, 2) && near(full.whiteBox.x1, rest.blackBox.x1, 2) &&
@@ -731,6 +809,46 @@ section('Tablet 820x1180 (iPad UA, touch, DPR 2)');
   await shot(page, 'tablet-white');
   hygiene(log);
   await context.close();
+}
+
+// =========================================================================== orange optional
+
+section('Orange colourway missing: cycle falls back to black and white');
+{
+  const ctx2 = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const log2 = { pageErrors: [], consoleErrors: [], external: [], failed: [], warnings: [] };
+  await ctx2.route('**/assets/nocta-hot-step-2-*.png', (route) => {
+    const url = route.request().url();
+    if (url.includes('-orange')) return route.fulfill({ status: 404, body: 'missing' });
+    return route.fulfill({ status: 200, contentType: 'image/png', body: url.includes('-black') ? FIXTURES.black.png : FIXTURES.white.png });
+  });
+  await ctx2.route('**/assets/nocta-campaign.jpg', (route) => route.fulfill({ status: 200, contentType: 'image/png', body: CAMPAIGN_FIXTURE }));
+  await ctx2.route((url) => url.origin === origin && url.pathname === '/', async (route) => {
+    const response = await route.fetch();
+    return route.fulfill({ response, body: (await response.text()).replace(/\sdata-align-(black|white)="[^"]*"/g, '') });
+  });
+  const page2 = await ctx2.newPage();
+  page2.on('pageerror', (e) => log2.pageErrors.push(String(e)));
+  page2.on('console', (m) => {
+    if (m.type() === 'error') log2.consoleErrors.push(m.text());
+    if (m.type() === 'warning') log2.warnings.push(m.text());
+  });
+  page2.on('response', (r) => r.status() >= 400 && log2.failed.push(`${r.status()} ${r.url()}`));
+  await page2.goto(`${origin}/?debug&noidle&lockstep`);
+  await page2.waitForFunction(() => window.__noctaReveal);
+  await page2.evaluate(() => document.querySelector('.nocta-reveal').scrollIntoView({ block: 'start' }));
+  await page2.waitForFunction(() => window.__noctaReveal.debug.getState().mode === 'webgl', null, { timeout: 30000 });
+  const st2 = await getState(page2);
+  check('cycle order falls back to black, white', st2.order.join() === 'black,white', st2.order.join());
+  check('a console warning names the missing orange file', log2.warnings.some((w) => /nocta-hot-step-2-orange\.png/.test(w)));
+  await page2.click('.nocta-reveal__toggle');
+  await waitColourway(page2, 'white');
+  check('button then offers black again', (await toggleLabel(page2)) === 'Reveal black Nike NOCTA Hot Step 2');
+  await page2.click('.nocta-reveal__toggle');
+  await waitColourway(page2, 'black');
+  check('two-colourway cycle returns to black', (await getState(page2)).colourway === 'black');
+  hygiene(log2, { allowMissing: true });
+  await ctx2.close();
 }
 
 // =========================================================================== scroll headline cover
@@ -1052,10 +1170,12 @@ section(realAssetsPresent ? 'Real product photography' : 'Real product photograp
       return {
         black: await probe('assets/nocta-hot-step-2-black.png'),
         white: await probe('assets/nocta-hot-step-2-white.png'),
+        orange: await probe('assets/nocta-hot-step-2-orange.png'),
       };
     });
     check('black photo has a real transparent background', transparency.black > 0.05, fmt(transparency.black));
     check('white photo has a real transparent background', transparency.white > 0.05, fmt(transparency.white));
+    check('orange image has a real transparent background', transparency.orange > 0.05, fmt(transparency.orange));
     await shot(page, 'real-rest');
     const box = await frameBox(page);
     const p = st.planes.product;
@@ -1069,9 +1189,13 @@ section(realAssetsPresent ? 'Real product photography' : 'Real product photograp
     await page.mouse.move(box.x + 12, box.y - 24);
     await waitReveal(page, '(s) => s.reveal > 0.4 && s.reveal < 0.75');
     await shot(page, 'real-wipe');
-    await waitReveal(page, '(s) => s.reveal === 1');
+    await waitColourway(page, 'white');
     await shot(page, 'real-white');
-    check('visual alignment of the real pair', true, 'requires human review of real-rest.png vs real-white.png');
+    await page.click('.nocta-reveal__toggle');
+    await page.mouse.move(box.x + 12, box.y - 24);
+    await waitColourway(page, 'orange');
+    await shot(page, 'real-orange');
+    check('visual alignment of the real images', true, 'requires human review of real-rest/white/orange.png');
     hygiene(log);
   }
   await context.close();

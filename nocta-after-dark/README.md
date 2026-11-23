@@ -5,9 +5,9 @@
 A two-section campaign page for the Nike NOCTA Hot Step 2:
 
 1. **Cover:** a pinned, full-bleed dark campaign image. As you scroll down, one enormous single-line headline, **NIKE NOCTA**, sweeps from fully offscreen right to fully offscreen left; scrolling up reverses it. It's scroll-scrubbed: no autoplay, no scroll hijacking. After the sweep the pin releases into the next section.
-2. **After Dark:** a 100svh hero. At rest it shows the **black** colourway. Moving the pointer or a finger drives a BFECC stable-fluids simulation, which cuts temporary, flowing holes through which the **white** colourway shows. When you stop, the fluid dissipates back to black.
+2. **After Dark:** a 100svh hero that cycles three colourways: **black → white → orange → black**. At rest it shows the current one (black on arrival). Moving the pointer or a finger drives a BFECC stable-fluids simulation, which cuts temporary, flowing holes through which the **next** colourway shows. When you stop, the fluid dissipates back to the current one.
 
-A click, tap, <kbd>Enter</kbd> or <kbd>Space</kbd> runs a curved, bottom-to-top wipe to white. Activating it again reverses the wipe.
+A click, tap, <kbd>Enter</kbd> or <kbd>Space</kbd> runs a curved, bottom-to-top wipe to the next colourway. Activations during a wipe are queued, so a quick double click lands two colourways on.
 
 It's plain HTML/CSS/JS with raw WebGL, has no dependencies and no build step, and makes no external runtime requests. It is fully separate from the WhatsApp receptionist service in this repository: nothing in `src/`, `test/`, the Dockerfile or CI depends on it.
 
@@ -44,7 +44,8 @@ nocta-after-dark/
   src/layout.js              pure rigid plane-fitting math
   assets/                    product PNGs + nocta-campaign.jpg (see assets/README.md; git-ignored)
   assets/fonts/anton.ttf     Anton, self-hosted, with assets/fonts/Anton-OFL.txt (SIL OFL 1.1)
-  tools/compose_campaign.py  builds the dark campaign image from the black cut-out
+  tools/compose_campaign.py  builds the cover image from the black cut-out (dark set + subtle orange camouflage touches)
+  tools/recolor_colourway.py derives the orange colourway from the white cut-out, keeping the silver side plate
   tools/prepare_mattes.py    mattes for opaque white-background photos (the first, photographic pair)
   tools/prepare_mattes_uniform_bg.py  mattes + rigid registration for a pair on plain uniform backgrounds; prints data-align-black
   tests/serve.mjs            dependency-free static server
@@ -59,7 +60,8 @@ nocta-after-dark/
   <canvas class="nocta-reveal__canvas" role="img" aria-label="Nike NOCTA Hot Step 2 in black, side view"></canvas>
   <img class="nocta-reveal__photo nocta-reveal__photo--black" src="assets/nocta-hot-step-2-black.png" alt="Nike NOCTA Hot Step 2 in black, side view">
   <img class="nocta-reveal__photo nocta-reveal__photo--white" src="assets/nocta-hot-step-2-white.png" alt="Nike NOCTA Hot Step 2 in white, side view" hidden>
-  <button type="button" class="nocta-reveal__toggle" aria-pressed="false" aria-label="Reveal white Nike NOCTA Hot Step 2" hidden></button>
+  <img class="nocta-reveal__photo nocta-reveal__photo--orange" src="assets/nocta-hot-step-2-orange.png" alt="Nike NOCTA Hot Step 2 in orange with a silver side plate, side view" hidden>
+  <button type="button" class="nocta-reveal__toggle" aria-label="Reveal white Nike NOCTA Hot Step 2" hidden></button>
   <p class="nocta-reveal__status" hidden></p>
 </div>
 ```
@@ -67,11 +69,12 @@ nocta-after-dark/
 ```js
 import { mountNoctaFluidReveal } from './src/nocta-fluid-reveal.js';
 const reveal = mountNoctaFluidReveal(frameElement, { idle: true });
-reveal.toggle();      // or reveal.toggle(true / false)
+reveal.advance();     // next colourway (toggle() is an alias); queued while a wipe runs
+reveal.state;         // { mode, colourway, destination }
 reveal.destroy();     // releases every GL object, observer and listener; the element can be mounted again
 ```
 
-Missing child elements are created automatically. Options: `blackSrc`, `whiteSrc`, `blackAlt`, `whiteAlt`, `toggleLabel`, `maxPixelRatio` (default 1.5), `idle`, and `adjust: { black|white: { dx, dy, scale } }`. Equivalent `data-*` attributes also work.
+Missing child elements are created automatically. Options: `blackSrc`, `whiteSrc`, `orangeSrc`, `blackAlt`, `whiteAlt`, `orangeAlt`, `maxPixelRatio` (default 1.5), `idle`, and `adjust: { black|white|orange: { dx, dy, scale } }`. Equivalent `data-*` attributes also work. The orange is optional: if its file is missing, a console warning names it and the cycle runs black ↔ white.
 
 ### Cover (scroll headline)
 
@@ -133,7 +136,8 @@ Every option is optional: the markup wins when one is omitted. CSS custom proper
 - Full wipe: `wave = uv.y + sin(uv.x·π)·sin(fullReveal·π)·.2`, mask `smoothstep(1−fR−.018, 1−fR+.018, wave)`, combined with `max`.
   - The wave is evaluated top-down so the wipe rises from the bottom.
   - One endpoint guard: the raw formula's soft edge lands on the frame border at `fR = 0` and `fR = 1`. It's faded out over the first and last 2% so the frame is exactly black at rest and exactly white when full.
-- `fullReveal` follows a critically damped spring (about 1.2 s), so reversing it is continuous.
+- `fullReveal` follows a critically damped spring (about 1.2 s). At its end, the next colourway becomes the base with no visible change: the frame already shows only that colourway, the backdrop lift follows a per-colourway level (black 0, white 1, orange 0.85), the parallax factor eases back in instead of jumping, and the fluid (hidden under a full mask) is cleared.
+- The base/next pair is generic in the compositor (`uBase`/`uNext`); the halo always comes from the black photo's silhouette.
 
 **Photos:**
 
@@ -155,11 +159,11 @@ Every option is optional: the markup wins when one is omitted. CSS custom proper
 - Starts after 2 s with no pointer input.
 - Path: a cosine-eased figure-eight over the shoe. 2.5 s forward, 1.5 s hold, 2.5 s return, 3 s hold.
 - Stops on the first real pointer or touch movement.
-- Never runs offscreen, in a hidden tab, while white is toggled on, or with reduced motion.
+- Only runs on the black colourway at rest. Never runs offscreen, in a hidden tab, during a wipe, or with reduced motion.
 
 **Input and accessibility:**
 
-- One native, transparent, full-frame `<button>` with `aria-pressed`, a fixed accessible name, a visible `:focus-visible` outline and no nested controls.
+- One native, transparent, full-frame `<button>` with a visible `:focus-visible` outline and no nested controls. A three-state cycle isn't an on/off toggle, so it has no `aria-pressed`: its accessible name says what comes next ("Reveal orange Nike NOCTA Hot Step 2"), and the canvas's `role="img"` label names the colourway shown.
 - Pointer and touch listeners are all passive. `touch-action: manipulation` keeps vertical scrolling and pinch-zoom working.
 - The canvas exposes `role="img"` with a label that follows the state.
 
@@ -198,8 +202,8 @@ Last run: **318 / 318 checks passed** with the images present (**290 / 290** on 
 - Canvas size is `CSS × min(DPR, 1.5)`. Simulation size and cell scale match the spec.
 - Black at rest. The pointer reveals white partially.
 - The velocity field holds a balanced vortex pair (curl of both signs). The revealed shape keeps advecting after the pointer stops (IoU 0.26 after 12 steps), which a cursor spotlight wouldn't do. Velocity decays monotonically and the frame dissipates fully back to black.
-- The wipe runs bottom-to-top and reverses mid-flight with no per-frame jump (max change 0.025).
-- Keyboard (<kbd>Tab</kbd>, <kbd>Enter</kbd>, <kbd>Space</kbd>) and the visible focus ring. Touch drag reveals without toggling; a tap toggles. A vertical touch drag over the artwork scrolls the page, and every listener is passive.
+- The cycle: black → white → orange → black, with the button label always naming the next one. Each wipe runs bottom-to-top. On white, the fluid reveals the orange, and the orange silhouette coincides with the white within 1 px. Activations during a wipe are queued with no per-frame jump. Reduced motion and the fallbacks switch instantly, and a missing orange file falls back to a black ↔ white cycle with a warning.
+- Keyboard (<kbd>Tab</kbd>, <kbd>Enter</kbd>, <kbd>Space</kbd>) and the visible focus ring. Touch drag reveals without advancing; each tap advances. A vertical touch drag over the artwork scrolls the page, and every listener is passive.
 - Idle starts at about 2 s and stops on pointer input. The loop pauses offscreen and in a hidden tab.
 - Reduced motion, including a preference change at runtime.
 - No-WebGL and no-float-buffer fallbacks. Context loss and restore.
@@ -217,7 +221,9 @@ Last run: **318 / 318 checks passed** with the images present (**290 / 290** on 
 
 **Font:** Anton Regular, © 2020 The Anton Project Authors, SIL Open Font License 1.1. It was downloaded from the URLs supplied with the cover prompt (`thepromptsfactory.com/.../anton.ttf` and `Anton-OFL.txt`), checked (TrueType signature, family "Anton Regular") and self-hosted in `assets/fonts/` together with its licence. It's committed: the OFL allows redistribution with the licence.
 
-**Cover image:** `assets/nocta-campaign.jpg` (2560×1440) is composed by `tools/compose_campaign.py` from the black product render below: a dark set, a cool key light, a silhouette halo and a faint mirrored floor reflection. It uses a uniform scale and a flip only. The prompt's example artwork `zest-citrus.png` wasn't used or downloaded, because the project's own brand imagery takes precedence. It's git-ignored like the product images.
+**Cover image:** `assets/nocta-campaign.jpg` (2560×1440) is composed by `tools/compose_campaign.py` from the black product render below: a dark set, a cool key light, a silhouette halo and a faint mirrored floor reflection, plus a few **subtle orange camouflage touches**. These are procedural, few and large, low opacity, and weighted toward the edges and corners so the shoe and headline keep a clean field. It uses a uniform scale and a flip only.
+
+**Orange colourway:** `assets/nocta-hot-step-2-orange.png` is **derived** by `tools/recolor_colourway.py` from the white render with a luminance gradient map (deep shadow → total orange → warm specular). Pixels and alpha don't move, so it has exactly the white's geometry. The side plate (mesh window and chrome swoosh) is detected as the largest compact dark region and kept **silver**, as on the real colourway. It's a derived render, not a photograph, and it's git-ignored. The prompt's example artwork `zest-citrus.png` wasn't used or downloaded, because the project's own brand imagery takes precedence. It's git-ignored like the product images.
 
 **Product images:** the images in use are **AI-generated renders, not photographs.** The project owner made them with an image-generation tool, starting from aligned reference images built from the real product photos below, and supplied them in this session as WebP: black 1728×910 on plain grey #a8a8a8, white 1672×941 on plain grey #777777. They aren't authentic product photography (the original brief asked for that), and details such as the embossed ribs, laces and outsole accents are the model's rendering, not Nike's product. Treat them as a design concept only.
 
