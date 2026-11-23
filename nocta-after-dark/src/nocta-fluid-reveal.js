@@ -243,6 +243,8 @@ export function mountNoctaFluidReveal(root, options = {}) {
     reducedMotion: reducedMotionQuery.matches,
     contextLost: false,
     running: false,
+    frozen: false, // debug recording only
+    virtualNow: 0,
     target: 0,
     reveal: 0,
     revealVel: 0,
@@ -644,11 +646,16 @@ export function mountNoctaFluidReveal(root, options = {}) {
 
   function tick(now) {
     state.rafId = requestAnimationFrame(tick);
-    state.stats.ticks++;
     // `lockstep` (tests only) advances exactly one 60 Hz step per animation frame so slow
     // software renderers measure simulation time instead of wall-clock time.
     const dtMs = opts.lockstep ? STEP_MS : clamp(now - state.lastTime, 0, 100);
     state.lastTime = now;
+    frame(now, dtMs, true);
+  }
+
+  /** One loop iteration; `allowRender` false lets debug recording skip frames it won't capture. */
+  function frame(now, dtMs, allowRender) {
+    state.stats.ticks++;
     updateIdle(now);
     state.acc += dtMs;
     let steps = 0;
@@ -666,14 +673,19 @@ export function mountNoctaFluidReveal(root, options = {}) {
       state.needsRender = true;
     }
     if (stepped || revealMoving || parallaxMoving || state.needsRender) {
-      state.needsRender = false;
-      render();
+      state.needsRender = !allowRender;
+      if (allowRender) render();
     }
   }
 
   function updateRunning() {
     const run =
-      state.mode === 'webgl' && state.visible && !state.docHidden && !state.destroyed && !state.contextLost;
+      !state.frozen &&
+      state.mode === 'webgl' &&
+      state.visible &&
+      !state.docHidden &&
+      !state.destroyed &&
+      !state.contextLost;
     if (run && !state.rafId) {
       state.lastTime = performance.now();
       state.acc = 0;
@@ -869,6 +881,19 @@ export function mountNoctaFluidReveal(root, options = {}) {
           return { width, height, data };
         },
         loseContext: () => gl?.getExtension('WEBGL_lose_context'),
+        /** Recording only: stop the rAF loop so frames advance exclusively through advance(). */
+        freeze() {
+          state.frozen = true;
+          state.virtualNow = performance.now();
+          updateRunning();
+        },
+        /** Recording only: run exactly one loop iteration of `ms` (default one 60 Hz step). */
+        advance(ms = STEP_MS, { render: doRender = true } = {}) {
+          if (!state.frozen || state.mode !== 'webgl') return;
+          state.virtualNow += ms;
+          frame(state.virtualNow, ms, doRender);
+          if (doRender) render();
+        },
       }
     : null;
 
