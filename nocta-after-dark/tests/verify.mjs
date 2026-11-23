@@ -490,9 +490,12 @@ section('Desktop 1440x1000: rest, alignment, fluid, wipe, keyboard');
   const fullO = await canvasStats(page);
   check('orange at rest shows only the orange stand-in (>=99%)', fullO.orangeFraction >= 0.99 && fullO.orange > 50000,
     `orange ${fmt(fullO.orangeFraction * 100, 2)}%`);
-  check('orange silhouette coincides with the white one (+/-1 px)',
-    near(fullO.orangeBox.x0, full.whiteBox.x0, 1) && near(fullO.orangeBox.x1, full.whiteBox.x1, 1) &&
-      near(fullO.orangeBox.y0, full.whiteBox.y0, 1) && near(fullO.orangeBox.y1, full.whiteBox.y1, 1));
+  // Same planes (checked exactly above); pixel boxes differ only by the class thresholds at the
+  // anti-aliased edge (orange counts from ~44 % coverage, white from ~70 %), hence +/-2 px.
+  const dO = [fullO.orangeBox.x0 - full.whiteBox.x0, fullO.orangeBox.y0 - full.whiteBox.y0,
+    fullO.orangeBox.x1 - full.whiteBox.x1, fullO.orangeBox.y1 - full.whiteBox.y1];
+  check('orange silhouette coincides with the white one (+/-2 px, as for black/white)', dO.every((v) => Math.abs(v) <= 2),
+    `offsets left ${fmt(dO[0], 1)} top ${fmt(dO[1], 1)} right ${fmt(dO[2], 1)} bottom ${fmt(dO[3], 1)} px`);
   check('canvas label names the orange colourway', (await page.getAttribute('.nocta-reveal__canvas', 'aria-label')).includes('orange'));
   await shot(page, 'desktop-orange');
 
