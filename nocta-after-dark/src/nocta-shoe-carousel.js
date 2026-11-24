@@ -5,9 +5,10 @@
 //
 // mountShoeCarousel(sectionElement, options) -> { next(), previous(), select(i), destroy(), state, debug }
 //
-// Each item may carry data-href (a page or route): clicking or tapping the centre shoe opens it.
-// So does the keyboard-focusable link laid over the centre shoe. A neighbour first steps into the
-// centre.
+// Each item may carry data-href (a page or route): clicking or tapping the centre shoe opens it,
+// as does the optional keyboard link laid over it. A neighbour steps into the centre; with
+// options.openNeighbours it glides all the way to the centre and then opens. options.onSelect(info)
+// fires whenever the selected shoe changes (and once when the line-up is ready).
 //
 // The world is the spec's y-up, right-handed scene, with the camera on +z looking at the origin.
 // Each frame it maps exactly onto CSS:
@@ -214,6 +215,7 @@ export function mountShoeCarousel(root, options = {}) {
     selected: 0,
     announcements: 0,
     opened: 0,
+    pendingOpen: false, // a clicked neighbour opens once it has glided into the centre
     frames: 0,
     renders: 0,
     pointer: { tx: 0, ty: 0, x: 0, y: 0 },
@@ -329,6 +331,19 @@ export function mountShoeCarousel(root, options = {}) {
     openLink.hidden = !item.href;
   }
 
+  function selectionInfo() {
+    const item = items[s.selected];
+    return { index: s.selected, href: item.href, alt: item.alt, element: item.img.closest('li') ?? item.img };
+  }
+
+  /** Once a clicked neighbour is (nearly) in the centre, open it. */
+  function maybeOpenPending() {
+    if (s.pendingOpen && Math.abs(s.target - s.position) < 0.05) {
+      s.pendingOpen = false;
+      open();
+    }
+  }
+
   /** Opens the shoe in the centre (its data-href), as a click on the link would. */
   function open() {
     const item = items[mod(Math.round(s.target / SPACING), n)];
@@ -431,6 +446,7 @@ export function mountShoeCarousel(root, options = {}) {
     lastNow = now;
     stepMotion(dt);
     render();
+    maybeOpenPending();
     if (needsFrames()) raf = requestAnimationFrame(tick);
     else s.running = false;
   }
@@ -457,6 +473,7 @@ export function mountShoeCarousel(root, options = {}) {
     if (s.mode !== 'ready' || s.destroyed || s.frozen) return;
     if (s.paused || s.reducedMotion) {
       applyInstantly();
+      maybeOpenPending();
       return;
     }
     if (!canRun() || raf || !needsFrames()) return;
@@ -473,12 +490,14 @@ export function mountShoeCarousel(root, options = {}) {
     if (sel === s.selected) return;
     s.selected = sel;
     syncOpenLink();
+    options.onSelect?.(selectionInfo());
     live.textContent = `${items[sel].alt}. ${sel + 1} of ${n}`;
     s.announcements++;
   }
 
-  function move(steps) {
+  function move(steps, { keepPending = false } = {}) {
     if (s.mode !== 'ready' || !steps) return;
+    if (!keepPending) s.pendingOpen = false;
     s.target = snap(s.target) + steps * SPACING;
     syncSelection();
     wake();
@@ -524,6 +543,7 @@ export function mountShoeCarousel(root, options = {}) {
 
   function onPointerDown(e) {
     if (s.mode !== 'ready' || !e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    s.pendingOpen = false;
     s.drag = { id: e.pointerId, x0: e.clientX, y0: e.clientY, lastX: e.clientX, lastT: e.timeStamp, lastDelta: 0, horizontal: false, cancelled: false };
   }
 
@@ -566,9 +586,9 @@ export function mountShoeCarousel(root, options = {}) {
     if (e.pointerType === 'mouse' && !dragging()) {
       const hit = hitTest(e.clientX, e.clientY);
       const step = Boolean(hit && Math.abs(hit.offset) >= SPACING / 2);
-      const opens = Boolean(hit && !step && items[hit.item].href && s.position === s.target);
-      if (step) viewport.dataset.hover = 'step';
-      else if (opens) viewport.dataset.hover = 'open';
+      const opens = Boolean(hit && items[hit.item].href && (step ? options.openNeighbours : s.position === s.target));
+      if (opens) viewport.dataset.hover = 'open';
+      else if (step) viewport.dataset.hover = 'step';
       else delete viewport.dataset.hover;
     }
     if (!s.paused || dragging()) wake(); // while paused the tilt stays frozen
@@ -590,8 +610,14 @@ export function mountShoeCarousel(root, options = {}) {
     // A click or tap that never became a drag: a neighbouring shoe steps the line-up towards it,
     // the shoe in the centre opens its page.
     const hit = hitTest(e.clientX, e.clientY);
-    if (hit && Math.abs(hit.offset) >= SPACING / 2) move(Math.sign(hit.offset));
-    else if (hit && mod(Math.round(s.target / SPACING), clones) === hit.index) open();
+    if (hit && Math.abs(hit.offset) >= SPACING / 2) {
+      if (options.openNeighbours && items[hit.item].href) {
+        s.pendingOpen = true;
+        move(Math.round(hit.offset / SPACING), { keepPending: true });
+      } else {
+        move(Math.sign(hit.offset));
+      }
+    } else if (hit && mod(Math.round(s.target / SPACING), clones) === hit.index) open();
   }
 
   function onPointerLeave(e) {
@@ -708,6 +734,7 @@ export function mountShoeCarousel(root, options = {}) {
     layout();
     setMode('ready');
     syncOpenLink();
+    options.onSelect?.(selectionInfo());
     if (s.reducedMotion) s.elapsed = ENTRANCE_S;
     render();
     controls.hidden = false;
@@ -834,6 +861,7 @@ export function mountShoeCarousel(root, options = {}) {
         selected: s.selected,
         announcements: s.announcements,
         opened: s.opened,
+        pendingOpen: s.pendingOpen,
         live: live.textContent,
         frames: s.frames,
         renders: s.renders,
@@ -869,6 +897,7 @@ export function mountShoeCarousel(root, options = {}) {
         s.armed = true;
         for (let i = 0; i < steps; i++) stepMotion(1 / 60);
         render();
+        maybeOpenPending();
       },
     };
   }

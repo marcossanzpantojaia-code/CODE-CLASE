@@ -5,10 +5,19 @@
 A small campaign site:
 
 - **Home: the line-up.** A 100svh carousel on a dark charcoal stage. Six shoes float as rigid cut-out cards in a 3D wave: the NOCTA Hot Step 2, the Air Force 1 and the Air Max Plus (TN), each in black and white. It follows the 3D product-carousel spec: 24 clones, a 4.5 s opening, damped easing and snapping, drag with throw, horizontal wheel, arrow keys, previous/next, dots, pause and replay. It's CSS 3D, with no WebGL or library (see [Line-up carousel](#line-up-carousel-3d-wave)).
-- **Opening a shoe.** A click or tap on the shoe in the centre, or <kbd>Enter</kbd> on its focusable link, opens that shoe's page. A neighbour first steps into the centre. The line-up zooms into the shoe and fades through black (a view transition; none under reduced motion). A **Line-up** button and the browser's Back button return home, keeping the selection.
+- **Line-up details:** an info panel shows the count (01 / 06), the model name, the colourway and a **Discover** button for the centre shoe. A giant outline of the model name (NOCTA, AF1, TN) sits behind the wave, and a "drag, swipe or click a shoe" hint fades once you move.
+- **Opening a shoe.** Click or tap the shoe in the centre, or use **Discover**. A neighbour glides into the centre and then opens (at once under reduced motion); any other input before it arrives cancels that. The line-up zooms into the shoe and fades through black (a view transition; none under reduced motion).
+- **Site chrome, on every view:**
+  - A fixed **header** with the Line-up brand, the shoe navigation (NOCTA · Air Force 1 · TN, with the current page marked), a **Line-up** back button on product pages and a skip link. It hides while you scroll down and returns when you scroll up or focus it.
+  - A **footer** with the same links, **Back to top** and the disclaimer.
+  - Browser Back and Forward work too. Coming home keeps the selection.
 - **Each product page** has the same two parts, the ones built first for NOCTA:
-  1. **Cover:** a pinned, full-bleed dark campaign image. As you scroll down, one enormous single-line headline (**NIKE NOCTA**, **NIKE AIR FORCE 1** or **NIKE AIR MAX PLUS**) sweeps from fully offscreen right to fully offscreen left; scrolling up reverses it. It's scroll-scrubbed: no autoplay, no scroll hijacking. After the sweep the pin releases into the next section.
-  2. **Colourway reveal:** a 100svh WebGL hero. At rest it shows the colourway that was clicked in the line-up. Moving the pointer or a finger drives a BFECC stable-fluids simulation, which cuts temporary, flowing holes through which the **next** colourway shows; when you stop, the fluid dissipates back. A click, tap, <kbd>Enter</kbd> or <kbd>Space</kbd> runs a curved, bottom-to-top wipe to the next colourway, and activations during a wipe are queued. The cycle is black → white → orange for NOCTA (*After Dark*), and black ↔ white for the Air Force 1 (*Since ’82*) and the Air Max Plus (*Tuned Air*).
+  1. **Cover:** a pinned, full-bleed dark campaign image. As you scroll down, one enormous single-line headline (**NIKE NOCTA**, **NIKE AIR FORCE 1** or **NIKE TN**) sweeps from fully offscreen right to fully offscreen left; scrolling up reverses it. It's scroll-scrubbed: no autoplay, no scroll hijacking. After the sweep the pin releases into the next section.
+  2. **Colourway reveal:** a 100svh WebGL hero. At rest it shows the colourway that was clicked in the line-up. Moving the pointer or a finger drives a BFECC stable-fluids simulation, which cuts temporary, flowing holes through which the **next** colourway shows; when you stop, the fluid dissipates back. A click, tap, <kbd>Enter</kbd> or <kbd>Space</kbd> runs a curved, bottom-to-top wipe to the next colourway, and activations during a wipe are queued. The cycle is black → white → orange for NOCTA (*After Dark*), and black ↔ white for the Air Force 1 (*Since ’82*) and the Air Max Plus (*Tuned Air*). **Colourway swatches** in the title row jump to a colourway: they queue the wipes it takes. A quiet hint in the frame explains move/click (drag/tap on touch).
+  3. **Details:** an eyebrow, a heading, a short text and a spec list (first release, designer, cushioning, the colourways here). It has two buttons, **Back to the line-up** and **Next: …**.
+  4. **Shoe cards:** large *Previous shoe* / *Next shoe* cards with the cut-out. The order wraps around: NOCTA → Air Force 1 → TN → NOCTA.
+
+  The facts in the copy are the commonly published ones: the Air Force 1 is from 1982, by Bruce Kilgore, the first basketball shoe with Nike Air; the Air Max Plus is from 1998, by Sean McDowell, with Tuned Air, hence "TN". NOCTA is Drake's line with Nike. No dates or tech claims are made for the Hot Step 2.
 
 **Pages and URLs.** It's one HTML page with hash routes, so any static server works without server-side routing:
 
@@ -44,9 +53,10 @@ Then open <http://127.0.0.1:8080/>. Any static server rooted at `nocta-after-dar
 
 ```
 nocta-after-dark/
-  index.html                 the line-up home (#line-up) + one <template> per product page (cover + reveal)
-  styles.css                 scoped styles (.nocta-lineup, .nocta-sweep, .nocta-reveal, .nocta-back) + page transition + Anton
-  src/main.js                hash router: mounts the line-up, clones and mounts/destroys the product pages
+  index.html                 header, the line-up home (#line-up), footer, and one <template> per product page
+                             (cover, reveal with swatches, details, shoe cards)
+  styles.css                 scoped styles (.nocta-lineup, .nocta-sweep, .nocta-reveal, .site-*, .nocta-details, .nocta-pager)
+  src/main.js                hash router + site chrome: header state, line-up info panel, swatches, page lifecycle
   src/nocta-scroll-headline.js  cover component: measured scroll-scrubbed headline sweep
   src/nocta-shoe-carousel.js line-up component: CSS 3D wave, opening timeline, input, raycast, a11y, dispose
   src/nocta-fluid-reveal.js  component: lifecycle, input, idle sweep, wipe, modes, fallback, dispose
@@ -61,8 +71,9 @@ nocta-after-dark/
   tools/prepare_mattes.py    mattes for opaque white-background photos (the first, photographic pair)
   tools/prepare_mattes_uniform_bg.py  mattes + rigid registration for a pair on plain uniform backgrounds; prints data-align-black
   tools/prepare_cutouts.py   WebP cut-outs for the line-up: from plain-background images, or from existing transparent PNGs
+  tools/make_thumbs.py       480 px WebP thumbnails of the black cut-outs for the shoe cards
   tests/serve.mjs            dependency-free static server
-  tests/verify.mjs           Playwright verification suite (490 checks; 554 with the images present)
+  tests/verify.mjs           Playwright verification suite (510 checks; 574 with the images present)
   tests/fixtures.mjs         TEST-ONLY abstract silhouettes for measuring the mechanics
 ```
 
@@ -138,7 +149,11 @@ Every option is optional: the markup wins when one is omitted. CSS custom proper
 
 ```js
 import { mountShoeCarousel } from './src/nocta-shoe-carousel.js';
-const lineup = mountShoeCarousel(sectionElement, { onOpen: ({ href }) => router.go(href) }); // default: location.assign(href)
+const lineup = mountShoeCarousel(sectionElement, {
+  onOpen: ({ href }) => router.go(href), // default: location.assign(href)
+  onSelect: ({ index, href, alt, element }) => updateInfoPanel(element.dataset), // on every selection change
+  openNeighbours: true, // a clicked neighbour glides into the centre, then opens
+});
 lineup.next(); lineup.previous(); lineup.select(2);  // the dots use select(): shortest wrapped route
 lineup.open();                                       // what a click on the centre shoe does
 lineup.pause(); lineup.resume(); lineup.replay();
@@ -161,7 +176,8 @@ Without JS the list shows as a plain grid of the four cut-outs. With JS the list
 - **CSS 3D instead of Three.js and WebGL.** The spec's cans are a GLB model with an HDR environment and per-flavour textures. None of that exists for these shoes: they are photos-as-cards, so rigid planes with CSS transforms are exact and add no dependencies. This also drops the cylinder label-texture step, the spec's tone mapping and PMREM, which have no meaning for flat cut-outs.
 - **Yaw is soft-limited.** On a cylinder, the spec's yaw x·0.5 − π/9 mostly scrolls the label. Taken literally on a flat card, it turns the first neighbour edge-on and shows the second one from behind. The card yaw is therefore the same expression passed through 0.72·tanh(yaw/0.72): identical near the centre, monotonic, and never past about 41°. The can's mesh-child label spin (rotation.z = yaw·0.6) has no flat-card equivalent and is left out.
 - **Wheel:** only horizontal wheel or trackpad motion (or <kbd>Shift</kbd> + wheel) steps the line-up, because it sits inside a scrolling page. A vertical wheel keeps scrolling the page, and <kbd>Ctrl</kbd> + wheel (pinch zoom) is left to the browser. This listener is the only non-passive one on the page, because it must cancel the sideways scroll.
-- **Clicking a neighbour** steps one shoe toward it, as the spec says. **Clicking the centre shoe opens its page** (its `data-href`). That is the site's navigation, so it isn't in the spec. The same raycast is used, so transparent pixels never open anything. For the keyboard, a link sits exactly over the centre shoe. It has no pointer events, so drags still start anywhere, and it shows a focus ring around the shoe.
+- **Clicking a neighbour:** by default it steps one shoe toward it, as the spec says. On this site (`openNeighbours: true`) the clicked shoe glides all the way into the centre and then opens its page. **Clicking the centre shoe opens its page** (its `data-href`); that is the site's navigation, so it isn't in the spec. The same alpha-tested raycast is used, so transparent pixels never open anything. Keyboard users have the **Discover** button. An optional `.nocta-lineup__open` link laid exactly over the centre shoe is still supported for pages without one.
+- **Info panel and outline name:** the spec has no product headings. The site asked for web-page detail, so the page's own layer (`main.js`, through `onSelect`) adds them outside the carousel component.
 - **Six items, not six flavours.** There are 24 clones of 6 shoes, which is the spec's own count. The dots, the announcements and the open link follow the selection.
 
 ## How the specification maps to the code
@@ -254,7 +270,7 @@ The mechanics are measured with **test-only abstract silhouettes** (`tests/fixtu
 
 Rendering under SwiftShader is slow, so a debug-only `lockstep` query parameter steps exactly one 60 Hz tick per frame. That way the tests measure simulation time rather than wall-clock time. Production timing is unchanged.
 
-Last run: **554 / 554 checks passed** with the images present (**490 / 490** on a fresh clone, where the real-image sections check the missing-asset states instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
+Last run: **574 / 574 checks passed** with the images present (**510 / 510** on a fresh clone, where the real-image sections check the missing-asset states instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
 
 - **Cover:** Anton is self-hosted and loaded. The runway is 400svh with a sticky 100svh frame. The image is cover-fitted with alt text, and the headline is a real `h1`.
 - **Cover progress:** at 0/25/50/75/100 %, x = V − p(V + T) within 1.5 px, decreasing monotonically and reversing exactly on scroll-up. The first glyph starts just beyond the right edge and the last ends just beyond the left. The headline is vertically centred, stays on a single line, and its font-size equals `clamp(115px, 30vw, 500px)`. The frame stays pinned mid-sweep and releases into the next section, with no horizontal overflow.
@@ -291,9 +307,13 @@ Last run: **554 / 554 checks passed** with the images present (**490 / 490** on 
   - A missing image shows its exact URL and no carousel. `destroy()` cleans up and the carousel remounts.
   - The announcement fires only when the selected shoe changes. The images keep their names and the clones are decorative. The section is 100svh before loading, with no headings or captions.
   - With the real cut-outs: transparent corners, and each card keeps its image aspect.
-- **Routing:**
-  - Home is the line-up alone, one viewport tall.
-  - The focusable link sits exactly over the centre shoe and follows the selection. Shift+Tab reaches it with a visible ring, and Enter opens the page of the shoe that was clicked, with that colourway at rest, focus on the new page and a view transition.
+- **Routing and site chrome:**
+  - Home is the 100svh line-up plus the footer. The info panel shows the count, name, colourway, the outline name and a Discover link that follows the selection; the hint fades after the first move.
+  - Header: the current page is marked, the back button and skip link appear only on product pages, it hides on scroll down and returns on scroll up.
+  - Swatches: three on NOCTA and two on AF1 and TN, with the arrival colourway pressed. Picking one queues the wipes it takes.
+  - Details: copy, specs and Back / Next buttons. Shoe cards: Previous / Next, wrapping round. The header navigation, Next and the cards all change pages, and Back to top works.
+  - Neighbours: a clicked neighbour glides in and then opens its page; other input cancels it, and reduced motion opens at once.
+  - Shift+Tab from the controls reaches Discover with a visible ring. Enter opens the selected shoe's page with that colourway at rest, focus on the new page and a view transition.
   - The hidden line-up stops its loop. The Line-up button returns home with the selection kept, and the left page is destroyed (0 GL objects).
   - A mouse click on the centre Air Force 1 opens its page. Its cover sweeps exactly like NOCTA's (x = V − p(V + T)), and its reveal is black ↔ white with labels that name it.
   - Browser back and forward work, an in-page anchor keeps the page, and an unknown route goes home.

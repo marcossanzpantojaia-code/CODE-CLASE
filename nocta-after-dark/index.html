@@ -20,6 +20,16 @@
     <script type="module" src="src/main.js"></script>
   </head>
   <body>
+    <header class="site-header">
+      <a class="site-skip" href="#after-dark" hidden>Skip animation</a>
+      <a class="site-header__brand" href="#/" aria-label="Line-up, home">Line-up<span aria-hidden="true">concept</span></a>
+      <nav class="site-nav" aria-label="Shoes">
+          <a class="site-nav__link" href="#/nocta" data-page="nocta">NOCTA</a>
+          <a class="site-nav__link" href="#/air-force-1" data-page="air-force-1">Air Force 1</a>
+          <a class="site-nav__link" href="#/air-max-plus" data-page="air-max-plus">TN</a>
+      </nav>
+      <a class="site-header__back" href="#/" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg><span>Line-up</span></a>
+    </header>
     <main>
       <section
         class="nocta-lineup"
@@ -32,18 +42,27 @@
         data-mode="loading"
       >
         <h1 class="nocta-lineup__sr">Nike line-up (unofficial concept)</h1>
+        <p class="nocta-lineup__backdrop" aria-hidden="true"><span data-lineup-backdrop>NOCTA</span></p>
         <ul class="nocta-lineup__items">
-          <li data-href="#/nocta/black"><img src="assets/nocta-hot-step-2-black.webp" alt="Nike NOCTA Hot Step 2 in black, side view" decoding="async" /></li>
-          <li data-href="#/nocta/white"><img src="assets/nocta-hot-step-2-white.webp" alt="Nike NOCTA Hot Step 2 in white, side view" decoding="async" /></li>
-          <li data-href="#/air-force-1/black"><img src="assets/nike-air-force-1-black.webp" alt="Nike Air Force 1 in black, side view" decoding="async" /></li>
-          <li data-href="#/air-force-1/white"><img src="assets/nike-air-force-1-white.webp" alt="Nike Air Force 1 in white, side view" decoding="async" /></li>
-          <li data-href="#/air-max-plus/black"><img src="assets/nike-air-max-plus-black.webp" alt="Nike Air Max Plus in black, side view" decoding="async" /></li>
-          <li data-href="#/air-max-plus/white"><img src="assets/nike-air-max-plus-white.webp" alt="Nike Air Max Plus in white, side view" decoding="async" /></li>
+          <li data-href="#/nocta/black" data-page="nocta" data-name="NOCTA Hot Step 2" data-colour="Black" data-short="NOCTA" data-line="NOCTA × Nike"><img src="assets/nocta-hot-step-2-black.webp" alt="Nike NOCTA Hot Step 2 in black, side view" decoding="async" /></li>
+          <li data-href="#/nocta/white" data-page="nocta" data-name="NOCTA Hot Step 2" data-colour="White" data-short="NOCTA" data-line="NOCTA × Nike"><img src="assets/nocta-hot-step-2-white.webp" alt="Nike NOCTA Hot Step 2 in white, side view" decoding="async" /></li>
+          <li data-href="#/air-force-1/black" data-page="air-force-1" data-name="Air Force 1" data-colour="Black" data-short="AF1" data-line="Nike · since 1982"><img src="assets/nike-air-force-1-black.webp" alt="Nike Air Force 1 in black, side view" decoding="async" /></li>
+          <li data-href="#/air-force-1/white" data-page="air-force-1" data-name="Air Force 1" data-colour="White" data-short="AF1" data-line="Nike · since 1982"><img src="assets/nike-air-force-1-white.webp" alt="Nike Air Force 1 in white, side view" decoding="async" /></li>
+          <li data-href="#/air-max-plus/black" data-page="air-max-plus" data-name="Air Max Plus TN" data-colour="Black" data-short="TN" data-line="Nike · Tuned Air since 1998"><img src="assets/nike-air-max-plus-black.webp" alt="Nike Air Max Plus in black, side view" decoding="async" /></li>
+          <li data-href="#/air-max-plus/white" data-page="air-max-plus" data-name="Air Max Plus TN" data-colour="White" data-short="TN" data-line="Nike · Tuned Air since 1998"><img src="assets/nike-air-max-plus-white.webp" alt="Nike Air Max Plus in white, side view" decoding="async" /></li>
         </ul>
         <div class="nocta-lineup__viewport" aria-hidden="true">
           <div class="nocta-lineup__stage"></div>
         </div>
-        <a class="nocta-lineup__open" hidden></a>
+        <div class="nocta-lineup__info" data-lineup-info hidden>
+          <p class="nocta-lineup__count"><span data-lineup-index>01</span><span aria-hidden="true"> / </span><span class="nocta-lineup__sr"> of </span><span data-lineup-total>06</span></p>
+          <p class="nocta-lineup__name" data-lineup-name>NOCTA Hot Step 2</p>
+          <p class="nocta-lineup__meta"><span data-lineup-colour>Black</span><span aria-hidden="true"> · </span><span data-lineup-line>NOCTA × Nike</span></p>
+          <a class="nocta-button nocta-button--solid" data-lineup-cta href="#/nocta/black">Discover<span class="nocta-lineup__sr" data-lineup-cta-name> Nike NOCTA Hot Step 2 in black</span><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9.5 5.5 16 12l-6.5 6.5" /></svg></a>
+        </div>
+        <p class="nocta-lineup__hint" aria-hidden="true" data-lineup-hint hidden>
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M8 8 4 12l4 4M16 8l4 4-4 4M4 12h16" /></svg><span>Drag, swipe or click a shoe</span>
+        </p>
         <div class="nocta-lineup__controls" hidden>
           <button type="button" class="nocta-lineup__button" data-action="previous" aria-label="Previous shoe">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>
@@ -62,18 +81,30 @@
           </button>
         </div>
         <p class="nocta-lineup__sr" id="nocta-lineup-help">
-          Use the left and right arrow keys, the previous and next buttons or the dots to change the shoe. Open the shoe in the
-          centre to see its page.
+          Use the left and right arrow keys, the previous and next buttons or the dots to change the shoe, and Discover to open its page.
         </p>
         <p class="nocta-lineup__sr nocta-lineup__live" aria-live="polite" aria-atomic="true"></p>
         <p class="nocta-lineup__status" hidden></p>
-        <p class="nocta-lineup__sr">Unofficial design concept. Not affiliated with, authorised or endorsed by Nike or NOCTA.</p>
       </section>
       <div class="nocta-product" data-product-view tabindex="-1" hidden></div>
     </main>
+    <footer class="site-footer">
+      <div class="site-footer__row">
+        <a class="site-footer__brand" href="#/">Line-up</a>
+        <nav class="site-footer__nav" aria-label="Footer">
+          <a href="#/">All shoes</a>
+          <a href="#/nocta">NOCTA Hot Step 2</a>
+          <a href="#/air-force-1">Air Force 1</a>
+          <a href="#/air-max-plus">Air Max Plus TN</a>
+        </nav>
+        <button type="button" class="nocta-button site-footer__top" data-back-to-top>Back to top<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" /></svg></button>
+      </div>
+      <p class="site-footer__legal">
+        Unofficial design concept. Not affiliated with, authorised or endorsed by Nike, Inc. or NOCTA. Product names and designs belong to their owners.
+      </p>
+    </footer>
     <template id="product-nocta">
       <section class="nocta-sweep" aria-labelledby="nocta-sweep-title" data-nocta-sweep>
-        <a class="nocta-sweep__skip" href="#after-dark">Skip animation</a>
         <div class="nocta-sweep__runway">
           <div class="nocta-sweep__frame">
             <img class="nocta-sweep__image" src="assets/nocta-campaign.jpg" alt="Nike NOCTA Hot Step 2 in black, side view, under a dark studio light" decoding="async" />
@@ -81,14 +112,17 @@
           </div>
         </div>
       </section>
-      <a class="nocta-back" href="#/">
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>
-        <span>Line-up</span>
-      </a>
       <section class="nocta-reveal" id="after-dark" tabindex="-1" aria-labelledby="nocta-reveal-title">
-        <h2 class="nocta-reveal__title" id="nocta-reveal-title">
-          <span>NOCTA</span><span class="nocta-reveal__slash" aria-hidden="true">/</span><span>After Dark</span>
-        </h2>
+        <div class="nocta-reveal__bar">
+          <h2 class="nocta-reveal__title" id="nocta-reveal-title">
+            <span>NOCTA</span><span class="nocta-reveal__slash" aria-hidden="true">/</span><span>After Dark</span>
+          </h2>
+          <div class="nocta-swatches" role="group" aria-label="Colourway" data-swatches>
+            <button type="button" class="nocta-swatch" data-colourway="black" aria-pressed="true"><span class="nocta-swatch__dot" aria-hidden="true"></span>Black</button>
+            <button type="button" class="nocta-swatch" data-colourway="white" aria-pressed="false"><span class="nocta-swatch__dot" aria-hidden="true"></span>White</button>
+            <button type="button" class="nocta-swatch" data-colourway="orange" aria-pressed="false"><span class="nocta-swatch__dot" aria-hidden="true"></span>Orange</button>
+          </div>
+        </div>
         <div class="nocta-reveal__frame" data-nocta-reveal data-mode="loading" data-product="Nike NOCTA Hot Step 2" data-align-black="-0.00104 -0.00351 1.00586">
           <canvas class="nocta-reveal__canvas" role="img" aria-label="Nike NOCTA Hot Step 2 in black, side view"></canvas>
           <img
@@ -104,13 +138,13 @@
             decoding="async"
             hidden
           />
-            <img
-              class="nocta-reveal__photo nocta-reveal__photo--orange"
-              src="assets/nocta-hot-step-2-orange.png"
-              alt="Nike NOCTA Hot Step 2 in orange with a silver side plate, side view"
-              decoding="async"
-              hidden
-            />
+          <img
+            class="nocta-reveal__photo nocta-reveal__photo--orange"
+            src="assets/nocta-hot-step-2-orange.png"
+            alt="Nike NOCTA Hot Step 2 in orange with a silver side plate, side view"
+            decoding="async"
+            hidden
+          />
           <button
             type="button"
             class="nocta-reveal__toggle"
@@ -118,16 +152,48 @@
             aria-describedby="nocta-reveal-note"
             hidden
           ></button>
+          <p class="nocta-reveal__hint" aria-hidden="true">
+            <span class="nocta-reveal__hint-fine">Move over the shoe to see the next colourway · click to switch</span>
+            <span class="nocta-reveal__hint-touch">Drag over the shoe to reveal · tap to switch</span>
+          </p>
           <p class="nocta-reveal__status" hidden></p>
         </div>
         <p class="nocta-reveal__sr" id="nocta-reveal-note">
           Unofficial design concept. Not affiliated with, authorised or endorsed by Nike or NOCTA.
         </p>
       </section>
+      <section class="nocta-details" aria-labelledby="nocta-details-title">
+        <div class="nocta-details__intro">
+          <p class="nocta-details__eyebrow">NOCTA × Nike · Hot Step 2</p>
+          <h2 class="nocta-details__title" id="nocta-details-title">Made for after dark</h2>
+          <p class="nocta-details__copy">NOCTA is Drake’s line with Nike. Here the Hot Step 2’s sculpted, ribbed upper comes in black, in white and in an orange that keeps its silver side plate. Move over the shoe to see through to the next colourway, or click it to switch.</p>
+          <div class="nocta-details__actions">
+            <a class="nocta-button nocta-button--solid" href="#/"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>Back to the line-up</a>
+            <a class="nocta-button" href="#/air-force-1">Next: Air Force 1<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9.5 5.5 16 12l-6.5 6.5" /></svg></a>
+          </div>
+        </div>
+        <dl class="nocta-details__specs">
+          <div><dt>Line</dt><dd>NOCTA × Nike</dd></div>
+          <div><dt>Model</dt><dd>Hot Step 2</dd></div>
+          <div><dt>Colourways here</dt><dd>Black, White, Orange</dd></div>
+          <div><dt>Theme</dt><dd>After Dark</dd></div>
+        </dl>
+      </section>
+      <nav class="nocta-pager" aria-label="More shoes">
+        <a class="nocta-pager__card nocta-pager__card--previous" href="#/air-max-plus">
+          <img class="nocta-pager__thumb" src="assets/nike-air-max-plus-black-thumb.webp" alt="" decoding="async" loading="lazy" />
+          <span class="nocta-pager__dir"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>Previous shoe</span>
+          <span class="nocta-pager__name">Air Max Plus TN</span>
+        </a>
+        <a class="nocta-pager__card nocta-pager__card--next" href="#/air-force-1">
+          <img class="nocta-pager__thumb" src="assets/nike-air-force-1-black-thumb.webp" alt="" decoding="async" loading="lazy" />
+          <span class="nocta-pager__dir"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9.5 5.5 16 12l-6.5 6.5" /></svg>Next shoe</span>
+          <span class="nocta-pager__name">Air Force 1</span>
+        </a>
+      </nav>
     </template>
     <template id="product-air-force-1">
       <section class="nocta-sweep" aria-labelledby="air-force-1-sweep-title" data-nocta-sweep>
-        <a class="nocta-sweep__skip" href="#colourways">Skip animation</a>
         <div class="nocta-sweep__runway">
           <div class="nocta-sweep__frame">
             <img class="nocta-sweep__image" src="assets/nike-air-force-1-campaign.jpg" alt="Nike Air Force 1 in black, side view, under a dark studio light" decoding="async" />
@@ -135,14 +201,16 @@
           </div>
         </div>
       </section>
-      <a class="nocta-back" href="#/">
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>
-        <span>Line-up</span>
-      </a>
       <section class="nocta-reveal" id="colourways" tabindex="-1" aria-labelledby="air-force-1-reveal-title">
-        <h2 class="nocta-reveal__title" id="air-force-1-reveal-title">
-          <span>Air Force 1</span><span class="nocta-reveal__slash" aria-hidden="true">/</span><span>Since &rsquo;82</span>
-        </h2>
+        <div class="nocta-reveal__bar">
+          <h2 class="nocta-reveal__title" id="air-force-1-reveal-title">
+            <span>Air Force 1</span><span class="nocta-reveal__slash" aria-hidden="true">/</span><span>Since &rsquo;82</span>
+          </h2>
+          <div class="nocta-swatches" role="group" aria-label="Colourway" data-swatches>
+            <button type="button" class="nocta-swatch" data-colourway="black" aria-pressed="true"><span class="nocta-swatch__dot" aria-hidden="true"></span>Black</button>
+            <button type="button" class="nocta-swatch" data-colourway="white" aria-pressed="false"><span class="nocta-swatch__dot" aria-hidden="true"></span>White</button>
+          </div>
+        </div>
         <div class="nocta-reveal__frame" data-nocta-reveal data-mode="loading" data-product="Nike Air Force 1" data-colourways="black white" data-align-black="-0.00315 -0.00252 0.99718">
           <canvas class="nocta-reveal__canvas" role="img" aria-label="Nike Air Force 1 in black, side view"></canvas>
           <img
@@ -165,31 +233,65 @@
             aria-describedby="air-force-1-reveal-note"
             hidden
           ></button>
+          <p class="nocta-reveal__hint" aria-hidden="true">
+            <span class="nocta-reveal__hint-fine">Move over the shoe to see the next colourway · click to switch</span>
+            <span class="nocta-reveal__hint-touch">Drag over the shoe to reveal · tap to switch</span>
+          </p>
           <p class="nocta-reveal__status" hidden></p>
         </div>
         <p class="nocta-reveal__sr" id="air-force-1-reveal-note">
           Unofficial design concept. Not affiliated with, authorised or endorsed by Nike or NOCTA.
         </p>
       </section>
+      <section class="nocta-details" aria-labelledby="air-force-1-details-title">
+        <div class="nocta-details__intro">
+          <p class="nocta-details__eyebrow">Nike · Air Force 1</p>
+          <h2 class="nocta-details__title" id="air-force-1-details-title">A classic since ’82</h2>
+          <p class="nocta-details__copy">Introduced in 1982 and designed by Bruce Kilgore, the Air Force 1 was the first basketball shoe with Nike Air. Here it comes in triple black and triple white: move over the shoe to see one through the other, or click it to switch.</p>
+          <div class="nocta-details__actions">
+            <a class="nocta-button nocta-button--solid" href="#/"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>Back to the line-up</a>
+            <a class="nocta-button" href="#/air-max-plus">Next: Air Max Plus TN<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9.5 5.5 16 12l-6.5 6.5" /></svg></a>
+          </div>
+        </div>
+        <dl class="nocta-details__specs">
+          <div><dt>First released</dt><dd>1982</dd></div>
+          <div><dt>Designer</dt><dd>Bruce Kilgore</dd></div>
+          <div><dt>Cushioning</dt><dd>Nike Air</dd></div>
+          <div><dt>Colourways here</dt><dd>Black, White</dd></div>
+        </dl>
+      </section>
+      <nav class="nocta-pager" aria-label="More shoes">
+        <a class="nocta-pager__card nocta-pager__card--previous" href="#/nocta">
+          <img class="nocta-pager__thumb" src="assets/nocta-hot-step-2-black-thumb.webp" alt="" decoding="async" loading="lazy" />
+          <span class="nocta-pager__dir"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>Previous shoe</span>
+          <span class="nocta-pager__name">NOCTA Hot Step 2</span>
+        </a>
+        <a class="nocta-pager__card nocta-pager__card--next" href="#/air-max-plus">
+          <img class="nocta-pager__thumb" src="assets/nike-air-max-plus-black-thumb.webp" alt="" decoding="async" loading="lazy" />
+          <span class="nocta-pager__dir"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9.5 5.5 16 12l-6.5 6.5" /></svg>Next shoe</span>
+          <span class="nocta-pager__name">Air Max Plus TN</span>
+        </a>
+      </nav>
     </template>
     <template id="product-air-max-plus">
       <section class="nocta-sweep" aria-labelledby="air-max-plus-sweep-title" data-nocta-sweep>
-        <a class="nocta-sweep__skip" href="#colourways">Skip animation</a>
         <div class="nocta-sweep__runway">
           <div class="nocta-sweep__frame">
             <img class="nocta-sweep__image" src="assets/nike-air-max-plus-campaign.jpg" alt="Nike Air Max Plus in black, side view, under a dark studio light" decoding="async" />
-            <h1 class="nocta-sweep__headline" id="air-max-plus-sweep-title">Nike Air Max Plus</h1>
+            <h1 class="nocta-sweep__headline" id="air-max-plus-sweep-title">Nike TN</h1>
           </div>
         </div>
       </section>
-      <a class="nocta-back" href="#/">
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>
-        <span>Line-up</span>
-      </a>
       <section class="nocta-reveal" id="colourways" tabindex="-1" aria-labelledby="air-max-plus-reveal-title">
-        <h2 class="nocta-reveal__title" id="air-max-plus-reveal-title">
-          <span>Air Max Plus</span><span class="nocta-reveal__slash" aria-hidden="true">/</span><span>Tuned Air</span>
-        </h2>
+        <div class="nocta-reveal__bar">
+          <h2 class="nocta-reveal__title" id="air-max-plus-reveal-title">
+            <span>Air Max Plus</span><span class="nocta-reveal__slash" aria-hidden="true">/</span><span>Tuned Air</span>
+          </h2>
+          <div class="nocta-swatches" role="group" aria-label="Colourway" data-swatches>
+            <button type="button" class="nocta-swatch" data-colourway="black" aria-pressed="true"><span class="nocta-swatch__dot" aria-hidden="true"></span>Black</button>
+            <button type="button" class="nocta-swatch" data-colourway="white" aria-pressed="false"><span class="nocta-swatch__dot" aria-hidden="true"></span>White</button>
+          </div>
+        </div>
         <div class="nocta-reveal__frame" data-nocta-reveal data-mode="loading" data-product="Nike Air Max Plus" data-colourways="black white" data-align-black="0.00054 0.00217 0.99883">
           <canvas class="nocta-reveal__canvas" role="img" aria-label="Nike Air Max Plus in black, side view"></canvas>
           <img
@@ -212,12 +314,45 @@
             aria-describedby="air-max-plus-reveal-note"
             hidden
           ></button>
+          <p class="nocta-reveal__hint" aria-hidden="true">
+            <span class="nocta-reveal__hint-fine">Move over the shoe to see the next colourway · click to switch</span>
+            <span class="nocta-reveal__hint-touch">Drag over the shoe to reveal · tap to switch</span>
+          </p>
           <p class="nocta-reveal__status" hidden></p>
         </div>
         <p class="nocta-reveal__sr" id="air-max-plus-reveal-note">
           Unofficial design concept. Not affiliated with, authorised or endorsed by Nike or NOCTA.
         </p>
       </section>
+      <section class="nocta-details" aria-labelledby="air-max-plus-details-title">
+        <div class="nocta-details__intro">
+          <p class="nocta-details__eyebrow">Nike · Air Max Plus</p>
+          <h2 class="nocta-details__title" id="air-max-plus-details-title">Tuned Air, since ’98</h2>
+          <p class="nocta-details__copy">The Air Max Plus arrived in 1998 with Tuned Air, which is where the TN name comes from. Sean McDowell drew its wavy cage from palm trees against a sunset. Black and white here: move over the shoe to see one through the other, or click it to switch.</p>
+          <div class="nocta-details__actions">
+            <a class="nocta-button nocta-button--solid" href="#/"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>Back to the line-up</a>
+            <a class="nocta-button" href="#/nocta">Next: NOCTA Hot Step 2<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9.5 5.5 16 12l-6.5 6.5" /></svg></a>
+          </div>
+        </div>
+        <dl class="nocta-details__specs">
+          <div><dt>First released</dt><dd>1998</dd></div>
+          <div><dt>Designer</dt><dd>Sean McDowell</dd></div>
+          <div><dt>Cushioning</dt><dd>Tuned Air</dd></div>
+          <div><dt>Colourways here</dt><dd>Black, White</dd></div>
+        </dl>
+      </section>
+      <nav class="nocta-pager" aria-label="More shoes">
+        <a class="nocta-pager__card nocta-pager__card--previous" href="#/air-force-1">
+          <img class="nocta-pager__thumb" src="assets/nike-air-force-1-black-thumb.webp" alt="" decoding="async" loading="lazy" />
+          <span class="nocta-pager__dir"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>Previous shoe</span>
+          <span class="nocta-pager__name">Air Force 1</span>
+        </a>
+        <a class="nocta-pager__card nocta-pager__card--next" href="#/nocta">
+          <img class="nocta-pager__thumb" src="assets/nocta-hot-step-2-black-thumb.webp" alt="" decoding="async" loading="lazy" />
+          <span class="nocta-pager__dir"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M9.5 5.5 16 12l-6.5 6.5" /></svg>Next shoe</span>
+          <span class="nocta-pager__name">NOCTA Hot Step 2</span>
+        </a>
+      </nav>
     </template>
   </body>
 </html>

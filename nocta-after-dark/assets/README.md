@@ -16,6 +16,7 @@ To recreate them, use `../tools/prepare_mattes_uniform_bg.py` (plain uniform bac
 | `nike-air-force-1-black.png`, `-white.png` | Air Force 1 page: the reveal pair (`../tools/prepare_mattes_uniform_bg.py … nike-air-force-1`) |
 | `nike-air-max-plus-black.png`, `-white.png` | Air Max Plus page: the reveal pair (prefix `nike-air-max-plus`) |
 | `nike-air-force-1-campaign.jpg`, `nike-air-max-plus-campaign.jpg` | Their covers (`../tools/compose_campaign.py <black png> <out> studio`) |
+| `*-black-thumb.webp` (NOCTA, AF1, TN) | 480 px thumbnails for the previous/next shoe cards (`../tools/make_thumbs.py`) |
 | `nike-air-force-1-black.webp` | Line-up: Nike Air Force 1, **black**, side view, transparent cut-out |
 | `nike-air-force-1-white.webp` | Line-up: Nike Air Force 1, **white**, side view, transparent cut-out |
 | `nike-air-max-plus-white.webp` | Line-up: Nike Air Max Plus, **white**, side view, transparent cut-out |

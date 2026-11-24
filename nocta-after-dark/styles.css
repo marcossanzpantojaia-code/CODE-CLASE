@@ -166,18 +166,32 @@ body {
   display: none !important;
 }
 
+/* Title row: the title on the left, the colourway swatches (if any) on the right. */
+.nocta-reveal__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 24px;
+  padding: clamp(18px, 3vw, 40px) var(--nocta-gutter) clamp(6px, 1vw, 12px);
+}
+
 .nocta-reveal__title {
   display: flex;
   align-items: center;
   gap: 0.42em;
   margin: 0;
-  padding: clamp(18px, 3vw, 40px) var(--nocta-gutter) clamp(6px, 1vw, 12px);
+  padding: 0;
   font-family: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
   font-size: clamp(1.125rem, 0.85rem + 1.4vw, 2.125rem);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
+}
+
+.nocta-reveal > .nocta-reveal__title {
+  padding: clamp(18px, 3vw, 40px) var(--nocta-gutter) clamp(6px, 1vw, 12px);
 }
 
 /* The only touch of NOCTA yellow: a tiny mark beside the title, well away from the artwork. */
@@ -600,84 +614,6 @@ body {
   }
 }
 
-/* The link laid over the centre shoe: no pointer events (the stage handles clicks and drags),
-   only a clear keyboard focus ring around the shoe that Enter opens. */
-.nocta-lineup__open {
-  position: absolute;
-  z-index: 1;
-  border-radius: 12px;
-  pointer-events: none;
-}
-
-.nocta-lineup__open:focus {
-  outline: none;
-}
-
-.nocta-lineup__open:focus-visible {
-  outline: 2px solid var(--lineup-focus);
-  outline-offset: 6px;
-}
-
-/* ------------------------------------------------------------------ Product pages (scoped) */
-
-.nocta-product:focus {
-  outline: none;
-}
-
-.nocta-product[data-page='air-force-1'] .nocta-reveal {
-  --nocta-accent: #ecebe7;
-}
-
-.nocta-product[data-page='air-max-plus'] .nocta-reveal {
-  --nocta-accent: #f5b70a; /* the yellow of the heel tag */
-}
-
-.nocta-back {
-  position: fixed;
-  top: max(14px, env(safe-area-inset-top));
-  right: max(14px, env(safe-area-inset-right));
-  z-index: 20;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 44px;
-  padding: 0 16px 0 12px;
-  border: 1px solid rgba(236, 235, 231, 0.32);
-  border-radius: 22px;
-  background: rgba(5, 5, 5, 0.55);
-  color: #ecebe7;
-  font: 600 0.8125rem/1 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
-  letter-spacing: 0.06em;
-  text-decoration: none;
-  text-transform: uppercase;
-  -webkit-tap-highlight-color: transparent;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: border-color 0.2s ease, background-color 0.2s ease;
-}
-
-.nocta-back svg {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.nocta-back:hover {
-  border-color: rgba(236, 235, 231, 0.7);
-  background: rgba(30, 30, 32, 0.7);
-}
-
-.nocta-back:focus {
-  outline: none;
-}
-
-.nocta-back:focus-visible {
-  outline: 2px solid #f2f1ed;
-  outline-offset: 3px;
-}
-
 /* Page change: the line-up zooms into the chosen shoe and fades through black (View Transitions,
    where supported); going back runs the reverse. Reduced motion turns it off. */
 :root {
@@ -724,13 +660,690 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nocta-back {
-    transition: none;
-  }
-
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none !important;
+  }
+}
+
+/* ================================================================== Site chrome and page details */
+
+/* Shared button: pill, outline by default, solid for the primary action. */
+.nocta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 20px;
+  border: 1px solid rgba(236, 235, 231, 0.36);
+  border-radius: 22px;
+  background: transparent;
+  color: #ecebe7;
+  font: 600 0.8125rem/1 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.nocta-button svg,
+.site-header__back svg,
+.nocta-pager__dir svg {
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nocta-button:hover {
+  border-color: rgba(236, 235, 231, 0.8);
+  background: rgba(236, 235, 231, 0.08);
+}
+
+.nocta-button--solid {
+  border-color: #ecebe7;
+  background: #ecebe7;
+  color: #0b0b0c;
+}
+
+.nocta-button--solid:hover {
+  border-color: #ffffff;
+  background: #ffffff;
+}
+
+.nocta-button:focus,
+.site-header a:focus,
+.site-footer a:focus,
+.nocta-pager__card:focus,
+.nocta-swatch:focus {
+  outline: none;
+}
+
+.nocta-button:focus-visible,
+.site-header a:focus-visible,
+.site-footer a:focus-visible,
+.nocta-pager__card:focus-visible,
+.nocta-swatch:focus-visible {
+  outline: 2px solid #f2f1ed;
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 3vw, 40px);
+  height: 64px;
+  padding: env(safe-area-inset-top) max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+  background: linear-gradient(rgba(5, 5, 5, 0.78), rgba(5, 5, 5, 0));
+  color: #ecebe7;
+  font-family: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  view-transition-name: site-header; /* stays put while the pages change underneath */
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.site-header[data-hidden]:not(:focus-within) {
+  transform: translateY(-100%);
+}
+
+.site-header__brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  color: inherit;
+  font: 400 1.5rem/1 'Anton', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.site-header__brand span {
+  font: 600 0.625rem/1 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  letter-spacing: 0.16em;
+  color: #8c8e92;
+}
+
+.site-nav {
+  display: flex;
+  gap: clamp(4px, 1.6vw, 24px);
+  margin-right: auto;
+}
+
+.site-nav__link {
+  position: relative;
+  padding: 12px 6px;
+  color: #b9bbbf;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.site-nav__link:hover,
+.site-nav__link[aria-current='page'] {
+  color: #ffffff;
+}
+
+.site-nav__link[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  height: 2px;
+  background: currentColor;
+}
+
+.site-header__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 16px 0 12px;
+  border: 1px solid rgba(236, 235, 231, 0.36);
+  border-radius: 20px;
+  background: rgba(5, 5, 5, 0.5);
+  color: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.site-header__back:hover {
+  border-color: rgba(236, 235, 231, 0.8);
+  background: rgba(30, 30, 32, 0.8);
+}
+
+.site-header [hidden] {
+  display: none !important;
+}
+
+/* Skip link: first in the tab order on product pages, visible only when focused. */
+.site-skip {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 40;
+  padding: 12px 16px;
+  background: #f2efe8;
+  color: #050505;
+  font: 600 0.875rem/1 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 24px));
+}
+
+.site-skip:focus-visible {
+  transform: none;
+  outline: 2px solid #f2efe8;
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .site-header {
+    height: 56px;
+  }
+
+  .site-header__brand {
+    font-size: 1.25rem;
+  }
+
+  .site-header__brand span {
+    display: none;
+  }
+
+  .site-nav__link {
+    padding: 12px 4px;
+    font-size: 0.6875rem;
+  }
+
+  .site-header__back {
+    padding: 0 10px;
+  }
+
+  .site-header__back span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+
+/* ------------------------------------------------------------------ line-up details */
+
+/* A giant outline of the selected model behind the wave. */
+.nocta-lineup__backdrop {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.nocta-lineup__backdrop span {
+  font: 400 min(30vw, 42svh) / 1 'Anton', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(236, 235, 231, 0.13);
+  transform: translateY(-4%);
+}
+
+.nocta-lineup__backdrop span.is-in {
+  animation: nocta-backdrop-in 0.7s cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+@keyframes nocta-backdrop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4%) scale(0.96);
+  }
+}
+
+.nocta-lineup__info {
+  position: absolute;
+  top: clamp(84px, 13svh, 140px);
+  left: var(--lineup-gutter);
+  z-index: 1;
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  max-width: min(680px, 62vw);
+}
+
+.nocta-lineup__info.is-in > * {
+  animation: nocta-info-in 0.5s cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+.nocta-lineup__info.is-in > :nth-child(2) {
+  animation-delay: 0.04s;
+}
+
+.nocta-lineup__info.is-in > :nth-child(3) {
+  animation-delay: 0.08s;
+}
+
+@keyframes nocta-info-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.nocta-lineup__count,
+.nocta-lineup__meta {
+  margin: 0;
+  color: #9a9ca0;
+  font: 600 0.75rem/1.3 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nocta-lineup__count [data-lineup-index] {
+  color: #ecebe7;
+}
+
+.nocta-lineup__name {
+  text-wrap: balance;
+  margin: 0;
+  font: 400 clamp(2rem, 1.2rem + 3.4vw, 4.25rem) / 0.95 'Anton', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.nocta-lineup__info .nocta-button {
+  margin-top: 8px;
+}
+
+.nocta-lineup__hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(max(var(--lineup-gutter), env(safe-area-inset-bottom) + 12px) + 58px);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #8c8e92;
+  font: 600 0.6875rem/1 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.nocta-lineup__hint svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nocta-lineup__hint[data-done] {
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  .nocta-lineup__info {
+    left: 50%;
+    justify-items: center;
+    max-width: calc(100% - 32px);
+    text-align: center;
+    transform: translateX(-50%);
+  }
+}
+
+/* ------------------------------------------------------------------ product pages */
+
+.nocta-product:focus {
+  outline: none;
+}
+
+.nocta-product[data-page='air-force-1'] {
+  --nocta-accent: #ecebe7;
+}
+
+.nocta-product[data-page='air-max-plus'] {
+  --nocta-accent: #f5b70a; /* the yellow of the heel tag */
+}
+
+.nocta-product[data-page] .nocta-reveal {
+  --nocta-accent: inherit;
+}
+
+.nocta-product[data-page='nocta'] {
+  --nocta-accent: #e8c81a;
+}
+
+/* Colourway swatches in the reveal's title row. */
+.nocta-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.nocta-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  margin: 0;
+  padding: 0 14px 0 10px;
+  border: 1px solid rgba(236, 235, 231, 0.22);
+  border-radius: 20px;
+  background: transparent;
+  color: #b9bbbf;
+  font: 600 0.75rem/1 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.nocta-swatch:hover {
+  border-color: rgba(236, 235, 231, 0.6);
+  color: #ecebe7;
+}
+
+.nocta-swatch[aria-pressed='true'] {
+  border-color: #ecebe7;
+  background: rgba(236, 235, 231, 0.1);
+  color: #ffffff;
+}
+
+.nocta-swatch__dot {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(236, 235, 231, 0.5);
+  border-radius: 50%;
+}
+
+.nocta-swatch[data-colourway='black'] .nocta-swatch__dot {
+  background: #101012;
+}
+
+.nocta-swatch[data-colourway='white'] .nocta-swatch__dot {
+  background: #f1f0ec;
+}
+
+.nocta-swatch[data-colourway='orange'] .nocta-swatch__dot {
+  background: #e8631a;
+}
+
+/* A quiet usage hint inside the reveal frame; it never takes pointer events. */
+.nocta-reveal__hint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(12px, 2.4svh, 24px);
+  z-index: 2;
+  margin: 0;
+  color: #8c8e92;
+  font: 600 0.6875rem/1.3 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.nocta-reveal__hint-touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .nocta-reveal__hint-fine {
+    display: none;
+  }
+
+  .nocta-reveal__hint-touch {
+    display: inline;
+  }
+}
+
+.nocta-reveal__frame[data-mode='missing'] .nocta-reveal__hint,
+.nocta-reveal__frame[data-mode='loading'] .nocta-reveal__hint {
+  display: none;
+}
+
+/* Details: copy and actions on the left, a spec list on the right. */
+.nocta-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 96px);
+  padding: clamp(64px, 10vw, 140px) clamp(16px, 6vw, 96px);
+  background: #050505;
+  color: #ecebe7;
+  font-family: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+}
+
+.nocta-details__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  color: #9a9ca0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.nocta-details__eyebrow::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--nocta-accent, #ecebe7);
+}
+
+.nocta-details__title {
+  text-wrap: balance;
+  margin: 0 0 22px;
+  font: 400 clamp(2.5rem, 1.4rem + 4.6vw, 5.5rem) / 0.95 'Anton', 'Helvetica Neue', Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.nocta-details__copy {
+  max-width: 54ch;
+  margin: 0 0 32px;
+  color: #b9bbbf;
+  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+  line-height: 1.6;
+}
+
+.nocta-details__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.nocta-details__specs {
+  align-self: end;
+  margin: 0;
+  border-top: 1px solid rgba(236, 235, 231, 0.16);
+}
+
+.nocta-details__specs div {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(236, 235, 231, 0.16);
+}
+
+.nocta-details__specs dt {
+  color: #8c8e92;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nocta-details__specs dd {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  .nocta-details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Previous / next shoe: two large cards with the cut-out. */
+.nocta-pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: rgba(236, 235, 231, 0.12);
+  font-family: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+}
+
+.nocta-pager__card {
+  position: relative;
+  display: grid;
+  align-content: end;
+  gap: 8px;
+  min-height: clamp(220px, 34vw, 400px);
+  padding: clamp(20px, 3vw, 40px);
+  overflow: hidden;
+  background: radial-gradient(ellipse 80% 70% at 50% 40%, #1d1e20, #0a0a0b 80%);
+  color: #ecebe7;
+  text-decoration: none;
+  isolation: isolate;
+}
+
+.nocta-pager__card--next {
+  justify-items: end;
+  text-align: right;
+}
+
+.nocta-pager__thumb {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  z-index: -1;
+  width: min(70%, 420px);
+  height: auto;
+  transform: translateX(-50%);
+  transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.nocta-pager__card:hover .nocta-pager__thumb {
+  transform: translateX(-50%) translateY(-6px) scale(1.04);
+}
+
+.nocta-pager__dir {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #9a9ca0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.nocta-pager__card--next .nocta-pager__dir {
+  flex-direction: row-reverse;
+}
+
+.nocta-pager__name {
+  text-wrap: balance;
+  font: 400 clamp(1.5rem, 1rem + 2.2vw, 3rem) / 1 'Anton', 'Helvetica Neue', Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------ footer */
+
+.site-footer {
+  padding: clamp(36px, 5vw, 64px) clamp(16px, 6vw, 96px) max(28px, env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(236, 235, 231, 0.12);
+  background: #050505;
+  color: #b9bbbf;
+  font-family: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+}
+
+.site-footer__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 32px;
+}
+
+.site-footer__brand {
+  color: #ecebe7;
+  font: 400 1.75rem/1 'Anton', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.site-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  margin-right: auto;
+}
+
+.site-footer__nav a {
+  padding: 10px 0;
+  color: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.site-footer__nav a:hover {
+  color: #ffffff;
+}
+
+.site-footer__legal {
+  margin: 28px 0 0;
+  color: #6c6e72;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .nocta-button,
+  .nocta-swatch,
+  .nocta-pager__thumb,
+  .nocta-lineup__hint {
+    transition: none;
+  }
+
+  .nocta-lineup__backdrop span.is-in,
+  .nocta-lineup__info.is-in > * {
+    animation: none;
   }
 }

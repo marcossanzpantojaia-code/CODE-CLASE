@@ -334,6 +334,10 @@ export function mountNoctaFluidReveal(root, options = {}) {
     const upcoming = keyAt(destination() + 1);
     els.toggle.setAttribute('aria-label', `Reveal ${NAMES[upcoming]} ${opts.product}`);
     els.canvas.setAttribute('aria-label', opts[`${shown}Alt`]);
+    // Lets the page keep its own controls (colourway swatches) in step with the reveal.
+    root.dispatchEvent(new CustomEvent('nocta-reveal:change', {
+      detail: { colourway: keyAt(state.current), destination: shown, order: [...state.order] },
+    }));
   }
 
   function layoutDom() {
