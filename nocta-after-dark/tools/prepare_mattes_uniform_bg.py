@@ -2,7 +2,9 @@
 
 Usage (Python 3.10+, in a virtualenv):
     pip install numpy scipy pillow pymatting
-    python prepare_mattes_uniform_bg.py <black image> <white image> <out_dir> <diagnostics_dir>
+    python prepare_mattes_uniform_bg.py <black image> <white image> <out_dir> <diagnostics_dir> [<name prefix>]
+
+Writes <prefix>-black.png and <prefix>-white.png (default prefix: nocta-hot-step-2).
 
 For each image the background colour is the median of the border; background = pixels within
 12/255 of it that are connected to the border; a 2-px band around the silhouette is solved with
@@ -24,6 +26,7 @@ from scipy import ndimage as ndi
 from scipy import optimize
 
 black_path, white_path, out_dir, diag_dir = sys.argv[1:5]
+prefix = sys.argv[5] if len(sys.argv) > 5 else 'nocta-hot-step-2'
 
 
 def border_connected(mask):
@@ -80,8 +83,8 @@ def diag(name, col, alpha):
 
 imgB, alphaB, colB, padB, bgB = matte(black_path, 0.06)
 imgW, alphaW, colW, padW, bgW = matte(white_path, 0.0)
-a8B = save(f'{out_dir}/nocta-hot-step-2-black.png', colB, alphaB)
-a8W = save(f'{out_dir}/nocta-hot-step-2-white.png', colW, alphaW)
+a8B = save(f'{out_dir}/{prefix}-black.png', colB, alphaB)
+a8W = save(f'{out_dir}/{prefix}-white.png', colW, alphaW)
 diag('black', colB, alphaB)
 diag('white', colW, alphaW)
 

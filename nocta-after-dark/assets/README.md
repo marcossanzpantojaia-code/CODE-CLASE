@@ -4,7 +4,7 @@ The product images are **git-ignored** (see `../.gitignore`): the repository is 
 
 To recreate them, use `../tools/prepare_mattes_uniform_bg.py` (plain uniform backgrounds) or `../tools/prepare_mattes.py` (opaque white-background photos). Provenance and limitations of the current pair are recorded in the main README.
 
-**`data-align-black` in `../index.html` belongs to the current pair.** `prepare_mattes_uniform_bg.py` prints the value for a new pair; remove the attribute or replace it whenever the images change.
+**Each `data-align-black` in `../index.html` (one per product template) belongs to its current pair.** `prepare_mattes_uniform_bg.py` prints the value for a new pair; remove the attribute or replace it whenever the images change.
 
 | File | Content |
 | --- | --- |
@@ -12,6 +12,10 @@ To recreate them, use `../tools/prepare_mattes_uniform_bg.py` (plain uniform bac
 | `nocta-hot-step-2-white.png` | Nike NOCTA Hot Step 2, **white** colourway, side view, the same camera angle, orientation and lens as the black photo |
 | `nocta-hot-step-2-orange.png` | Optional **orange** colourway (third in the cycle). Currently derived from the white with `../tools/recolor_colourway.py` (silver side plate kept) |
 | `nocta-campaign.jpg` | Cover image, composed by `../tools/compose_campaign.py` |
+| `nocta-hot-step-2-black.webp`, `-white.webp` | Line-up cards cut from the two NOCTA PNGs above |
+| `nike-air-force-1-black.png`, `-white.png` | Air Force 1 page: the reveal pair (`../tools/prepare_mattes_uniform_bg.py … nike-air-force-1`) |
+| `nike-air-max-plus-black.png`, `-white.png` | Air Max Plus page: the reveal pair (prefix `nike-air-max-plus`) |
+| `nike-air-force-1-campaign.jpg`, `nike-air-max-plus-campaign.jpg` | Their covers (`../tools/compose_campaign.py <black png> <out> studio`) |
 | `nike-air-force-1-black.webp` | Line-up: Nike Air Force 1, **black**, side view, transparent cut-out |
 | `nike-air-force-1-white.webp` | Line-up: Nike Air Force 1, **white**, side view, transparent cut-out |
 | `nike-air-max-plus-white.webp` | Line-up: Nike Air Max Plus, **white**, side view, transparent cut-out |

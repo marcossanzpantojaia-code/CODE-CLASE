@@ -5,6 +5,10 @@
 //
 // mountShoeCarousel(sectionElement, options) -> { next(), previous(), select(i), destroy(), state, debug }
 //
+// Each item may carry data-href (a page or route): clicking or tapping the centre shoe opens it.
+// So does the keyboard-focusable link laid over the centre shoe. A neighbour first steps into the
+// centre.
+//
 // The world is the spec's y-up, right-handed scene, with the camera on +z looking at the origin.
 // Each frame it maps exactly onto CSS:
 //   perspective = f = (H/2) / tan(FOV/2)  (pixels; the distance from the eye to the z=0 plane)
@@ -168,6 +172,7 @@ export function mountShoeCarousel(root, options = {}) {
   const controls = root.querySelector('.nocta-lineup__controls');
   const dotsBox = root.querySelector('.nocta-lineup__dots');
   const live = root.querySelector('.nocta-lineup__live');
+  const openLink = root.querySelector('.nocta-lineup__open');
   const status = root.querySelector('.nocta-lineup__status');
   const button = (action) => root.querySelector(`[data-action="${action}"]`);
   const buttons = { previous: button('previous'), next: button('next'), pause: button('pause'), replay: button('replay') };
@@ -176,7 +181,14 @@ export function mountShoeCarousel(root, options = {}) {
     throw new Error('mountShoeCarousel: items, viewport, stage, controls, dots and live region are required');
   }
 
-  const items = sources.map((img) => ({ img, src: img.getAttribute('src'), alt: img.alt, aspect: 2, mask: null }));
+  const items = sources.map((img) => ({
+    img,
+    src: img.getAttribute('src'),
+    alt: img.alt,
+    href: img.closest('[data-href]')?.dataset.href ?? null,
+    aspect: 2,
+    mask: null,
+  }));
   const n = items.length;
   const clones = n * Math.ceil(BASE_CLONES / n); // 24 for four shoes: the pattern repeats across the wrap
   const halfSpan = (clones * SPACING) / 2; // 42
@@ -201,6 +213,7 @@ export function mountShoeCarousel(root, options = {}) {
     target: 0,
     selected: 0,
     announcements: 0,
+    opened: 0,
     frames: 0,
     renders: 0,
     pointer: { tx: 0, ty: 0, x: 0, y: 0 },
@@ -222,6 +235,7 @@ export function mountShoeCarousel(root, options = {}) {
   // ------------------------------------------------------------------ geometry and rendering
 
   function layout() {
+    if (!viewport.clientWidth || !viewport.clientHeight) return false; // hidden (another view is showing)
     cam.W = viewport.clientWidth;
     cam.H = viewport.clientHeight;
     cam.aspect = cam.H > 0 ? cam.W / cam.H : 1;
@@ -239,6 +253,7 @@ export function mountShoeCarousel(root, options = {}) {
       card.el.style.top = `${(-h / 2).toFixed(2)}px`;
       card.transform = '';
     }
+    return true;
   }
 
   function brightnessOf(pose, M, ent) {
@@ -246,7 +261,7 @@ export function mountShoeCarousel(root, options = {}) {
   }
 
   function render() {
-    if (s.mode !== 'ready') return;
+    if (s.mode !== 'ready' || !cam.W) return;
     s.renders++;
     const ent = entranceAt(s.elapsed);
     cam.z = ent.cameraZ * cam.zoom;
@@ -288,6 +303,40 @@ export function mountShoeCarousel(root, options = {}) {
         card.img.style.filter = `brightness(${b.toFixed(3)})`;
       }
     }
+    placeOpenLink();
+  }
+
+  /** The focusable link that opens the selected shoe sits exactly over the centre card. */
+  function placeOpenLink() {
+    if (!openLink) return;
+    const centre = cards[mod(Math.round(s.position / SPACING), clones)];
+    const box = centre && centre.visible && project(centre.index);
+    if (!box) return;
+    const rect = root.getBoundingClientRect();
+    const vr = viewport.getBoundingClientRect();
+    openLink.style.left = `${(box.left - rect.left).toFixed(1)}px`;
+    openLink.style.top = `${(box.top - rect.top).toFixed(1)}px`;
+    openLink.style.width = `${(box.right - box.left).toFixed(1)}px`;
+    openLink.style.height = `${(Math.min(box.bottom, vr.bottom) - box.top).toFixed(1)}px`;
+  }
+
+  function syncOpenLink() {
+    if (!openLink) return;
+    const item = items[s.selected];
+    if (item.href) openLink.setAttribute('href', item.href);
+    else openLink.removeAttribute('href');
+    openLink.setAttribute('aria-label', `Open ${item.alt.replace(/, side view$/, '')}`);
+    openLink.hidden = !item.href;
+  }
+
+  /** Opens the shoe in the centre (its data-href), as a click on the link would. */
+  function open() {
+    const item = items[mod(Math.round(s.target / SPACING), n)];
+    if (!item.href) return false;
+    s.opened++;
+    if (options.onOpen) options.onOpen({ index: items.indexOf(item), href: item.href, alt: item.alt });
+    else window.location.assign(item.href);
+    return true;
   }
 
   /** World ray through a client point against every visible card; transparent pixels never hit. */
@@ -423,6 +472,7 @@ export function mountShoeCarousel(root, options = {}) {
     dots.forEach((d, i) => d.setAttribute('aria-pressed', String(i === sel)));
     if (sel === s.selected) return;
     s.selected = sel;
+    syncOpenLink();
     live.textContent = `${items[sel].alt}. ${sel + 1} of ${n}`;
     s.announcements++;
   }
@@ -516,7 +566,9 @@ export function mountShoeCarousel(root, options = {}) {
     if (e.pointerType === 'mouse' && !dragging()) {
       const hit = hitTest(e.clientX, e.clientY);
       const step = Boolean(hit && Math.abs(hit.offset) >= SPACING / 2);
+      const opens = Boolean(hit && !step && items[hit.item].href && s.position === s.target);
       if (step) viewport.dataset.hover = 'step';
+      else if (opens) viewport.dataset.hover = 'open';
       else delete viewport.dataset.hover;
     }
     if (!s.paused || dragging()) wake(); // while paused the tilt stays frozen
@@ -535,9 +587,11 @@ export function mountShoeCarousel(root, options = {}) {
       return;
     }
     if (cancelled || d.cancelled) return;
-    // A click or tap that never became a drag: a neighbouring shoe steps the line-up towards it.
+    // A click or tap that never became a drag: a neighbouring shoe steps the line-up towards it,
+    // the shoe in the centre opens its page.
     const hit = hitTest(e.clientX, e.clientY);
     if (hit && Math.abs(hit.offset) >= SPACING / 2) move(Math.sign(hit.offset));
+    else if (hit && mod(Math.round(s.target / SPACING), clones) === hit.index) open();
   }
 
   function onPointerLeave(e) {
@@ -653,6 +707,7 @@ export function mountShoeCarousel(root, options = {}) {
     buildDots();
     layout();
     setMode('ready');
+    syncOpenLink();
     if (s.reducedMotion) s.elapsed = ENTRANCE_S;
     render();
     controls.hidden = false;
@@ -706,8 +761,7 @@ export function mountShoeCarousel(root, options = {}) {
   );
   io.observe(root);
   ro = new ResizeObserver(() => {
-    if (s.mode !== 'ready') return;
-    layout();
+    if (s.mode !== 'ready' || !layout()) return;
     render();
   });
   ro.observe(viewport);
@@ -725,6 +779,10 @@ export function mountShoeCarousel(root, options = {}) {
     cards.length = 0;
     dots.length = 0;
     controls.hidden = true;
+    if (openLink) {
+      openLink.hidden = true;
+      openLink.removeAttribute('style');
+    }
     if (status) {
       status.hidden = true;
       status.textContent = '';
@@ -741,6 +799,7 @@ export function mountShoeCarousel(root, options = {}) {
     next: () => move(1),
     previous: () => move(-1),
     select,
+    open,
     replay,
     pause: () => setPaused(true),
     resume: () => setPaused(false),
@@ -774,6 +833,7 @@ export function mountShoeCarousel(root, options = {}) {
         target: s.target,
         selected: s.selected,
         announcements: s.announcements,
+        opened: s.opened,
         live: live.textContent,
         frames: s.frames,
         renders: s.renders,

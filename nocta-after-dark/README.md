@@ -1,14 +1,24 @@
-# Nike NOCTA · After Dark: scroll cover + WebGL fluid reveal + 3D line-up (unofficial concept)
+# Nike line-up: 3D carousel home + NOCTA, Air Force 1 and Air Max Plus pages (unofficial concept)
 
 > **Unofficial design concept.** This isn't affiliated with, authorised by or endorsed by Nike, Inc. or NOCTA. Product names belong to their owners.
 
-A three-section campaign page:
+A small campaign site:
 
-1. **Cover:** a pinned, full-bleed dark campaign image. As you scroll down, one enormous single-line headline, **NIKE NOCTA**, sweeps from fully offscreen right to fully offscreen left; scrolling up reverses it. It's scroll-scrubbed: no autoplay, no scroll hijacking. After the sweep the pin releases into the next section.
-2. **After Dark:** a 100svh hero that cycles three colourways: **black → white → orange → black**. At rest it shows the current one (black on arrival). Moving the pointer or a finger drives a BFECC stable-fluids simulation, which cuts temporary, flowing holes through which the **next** colourway shows. When you stop, the fluid dissipates back to the current one.
+- **Home: the line-up.** A 100svh carousel on a dark charcoal stage. Six shoes float as rigid cut-out cards in a 3D wave: the NOCTA Hot Step 2, the Air Force 1 and the Air Max Plus (TN), each in black and white. It follows the 3D product-carousel spec: 24 clones, a 4.5 s opening, damped easing and snapping, drag with throw, horizontal wheel, arrow keys, previous/next, dots, pause and replay. It's CSS 3D, with no WebGL or library (see [Line-up carousel](#line-up-carousel-3d-wave)).
+- **Opening a shoe.** A click or tap on the shoe in the centre, or <kbd>Enter</kbd> on its focusable link, opens that shoe's page. A neighbour first steps into the centre. The line-up zooms into the shoe and fades through black (a view transition; none under reduced motion). A **Line-up** button and the browser's Back button return home, keeping the selection.
+- **Each product page** has the same two parts, the ones built first for NOCTA:
+  1. **Cover:** a pinned, full-bleed dark campaign image. As you scroll down, one enormous single-line headline (**NIKE NOCTA**, **NIKE AIR FORCE 1** or **NIKE AIR MAX PLUS**) sweeps from fully offscreen right to fully offscreen left; scrolling up reverses it. It's scroll-scrubbed: no autoplay, no scroll hijacking. After the sweep the pin releases into the next section.
+  2. **Colourway reveal:** a 100svh WebGL hero. At rest it shows the colourway that was clicked in the line-up. Moving the pointer or a finger drives a BFECC stable-fluids simulation, which cuts temporary, flowing holes through which the **next** colourway shows; when you stop, the fluid dissipates back. A click, tap, <kbd>Enter</kbd> or <kbd>Space</kbd> runs a curved, bottom-to-top wipe to the next colourway, and activations during a wipe are queued. The cycle is black → white → orange for NOCTA (*After Dark*), and black ↔ white for the Air Force 1 (*Since ’82*) and the Air Max Plus (*Tuned Air*).
 
-   A click, tap, <kbd>Enter</kbd> or <kbd>Space</kbd> runs a curved, bottom-to-top wipe to the next colourway. Activations during a wipe are queued, so a quick double click lands two colourways on.
-3. **Line-up:** a 100svh carousel on a dark charcoal stage. Four shoes (Air Force 1 black and white, Air Max Plus white and black) float as rigid cut-out cards in a 3D wave. It follows the 3D product-carousel spec: 24 clones, a 4.5 s opening, damped easing and snapping, drag with throw, horizontal wheel, arrow keys, previous/next, four dots, pause and replay. It's CSS 3D, with no WebGL or library (see [Line-up carousel](#line-up-carousel-3d-wave)).
+**Pages and URLs.** It's one HTML page with hash routes, so any static server works without server-side routing:
+
+| URL | Page |
+| --- | --- |
+| `#/` (or none) | the line-up |
+| `#/nocta`, `#/air-force-1`, `#/air-max-plus` | a product page, black at rest |
+| `…/white`, `…/orange` | the same page with that colourway at rest (the line-up links use these) |
+
+Each product page is cloned from its `<template>` when you arrive and destroyed when you leave, which releases every GL object. Any other hash, such as the skip link's `#after-dark`, is an ordinary in-page anchor. An unknown route shows the line-up.
 
 It's plain HTML/CSS/JS with raw WebGL, has no dependencies and no build step, and makes no external runtime requests. It is fully separate from the WhatsApp receptionist service in this repository: nothing in `src/`, `test/`, the Dockerfile or CI depends on it.
 
@@ -16,8 +26,8 @@ It's plain HTML/CSS/JS with raw WebGL, has no dependencies and no build step, an
 
 | Item | State |
 | --- | --- |
-| Cover, fluid reveal, line-up, fallbacks, accessibility | Done. Verified in headless Chromium (see [Verification](#verification)) |
-| Product images | **AI-generated renders** made by the project owner from the real product photos, matted locally (see [Image provenance](#image-provenance-and-licence)). **Not committed:** this repository is public and the images depict copyrighted, trademarked products, so `assets/*.png` and `assets/*.webp` are git-ignored. A fresh clone shows the missing-asset state. |
+| Line-up home, three product pages, routing, fallbacks, accessibility | Done. Verified in headless Chromium (see [Verification](#verification)) |
+| Product images | Supplied by the project owner (the NOCTA pair are **AI-generated renders**), matted locally (see [Image provenance](#image-provenance-and-licence)). **Not committed:** this repository is public and the images depict copyrighted, trademarked products, so `assets/*.png` and `assets/*.webp` are git-ignored. A fresh clone shows the missing-asset state. |
 | Visual result | Reviewed on desktop and phone screenshots. Works, with the limitations listed under [Image provenance](#image-provenance-and-licence) |
 
 ## Run
@@ -34,9 +44,9 @@ Then open <http://127.0.0.1:8080/>. Any static server rooted at `nocta-after-dar
 
 ```
 nocta-after-dark/
-  index.html                 the page: scroll cover, the fluid reveal (#after-dark), the line-up (#line-up)
-  styles.css                 scoped styles (.nocta-sweep, .nocta-reveal, .nocta-lineup) + @font-face Anton
-  src/main.js                mounts the cover, the reveal and the line-up on their data-* hooks
+  index.html                 the line-up home (#line-up) + one <template> per product page (cover + reveal)
+  styles.css                 scoped styles (.nocta-lineup, .nocta-sweep, .nocta-reveal, .nocta-back) + page transition + Anton
+  src/main.js                hash router: mounts the line-up, clones and mounts/destroys the product pages
   src/nocta-scroll-headline.js  cover component: measured scroll-scrubbed headline sweep
   src/nocta-shoe-carousel.js line-up component: CSS 3D wave, opening timeline, input, raycast, a11y, dispose
   src/nocta-fluid-reveal.js  component: lifecycle, input, idle sweep, wipe, modes, fallback, dispose
@@ -44,15 +54,15 @@ nocta-after-dark/
   src/shaders.js             GLSL ES 1.00 for every pass + compositor (WebGL2, WebGL1 fallback)
   src/gl-utils.js            programs, float-format detection, render targets, textures, GL object tracking
   src/layout.js              pure rigid plane-fitting math
-  assets/                    product PNGs, line-up WebP cut-outs, nocta-campaign.jpg (see assets/README.md; git-ignored)
+  assets/                    reveal PNG pairs, line-up WebP cut-outs, cover JPGs (see assets/README.md; git-ignored)
   assets/fonts/anton.ttf     Anton, self-hosted, with assets/fonts/Anton-OFL.txt (SIL OFL 1.1)
-  tools/compose_campaign.py  builds the cover image from the black cut-out (dark set + subtle orange camouflage touches)
+  tools/compose_campaign.py  builds a cover image from a black cut-out (dark set; NOCTA adds subtle orange camouflage touches)
   tools/recolor_colourway.py derives the orange colourway from the white cut-out, keeping the silver side plate
   tools/prepare_mattes.py    mattes for opaque white-background photos (the first, photographic pair)
   tools/prepare_mattes_uniform_bg.py  mattes + rigid registration for a pair on plain uniform backgrounds; prints data-align-black
-  tools/prepare_cutouts.py   transparent WebP cut-outs for the line-up from single images on plain backgrounds
+  tools/prepare_cutouts.py   WebP cut-outs for the line-up: from plain-background images, or from existing transparent PNGs
   tests/serve.mjs            dependency-free static server
-  tests/verify.mjs           Playwright verification suite (443 checks; 483 with the images present)
+  tests/verify.mjs           Playwright verification suite (490 checks; 554 with the images present)
   tests/fixtures.mjs         TEST-ONLY abstract silhouettes for measuring the mechanics
 ```
 
@@ -109,10 +119,11 @@ Every option is optional: the markup wins when one is omitted. CSS custom proper
 ```html
 <section class="nocta-lineup" id="line-up" tabindex="-1" aria-roledescription="carousel" aria-label="…" data-nocta-lineup data-mode="loading">
   <ul class="nocta-lineup__items">            <!-- the source of truth: one <img> per shoe, in order -->
-    <li><img src="assets/nike-air-force-1-black.webp" alt="Nike Air Force 1 in black, side view"></li>
+    <li data-href="#/air-force-1/black"><img src="assets/nike-air-force-1-black.webp" alt="Nike Air Force 1 in black, side view"></li>
     …
   </ul>
   <div class="nocta-lineup__viewport" aria-hidden="true"><div class="nocta-lineup__stage"></div></div>
+  <a class="nocta-lineup__open" hidden></a>  <!-- optional: keyboard link to the centre shoe's data-href -->
   <div class="nocta-lineup__controls" hidden>  <!-- previous, dots (filled by JS), next, pause, replay -->
     <button type="button" class="nocta-lineup__button" data-action="previous" aria-label="Previous shoe">…</button>
     <div class="nocta-lineup__dots" role="group" aria-label="Choose a shoe"></div>
@@ -127,8 +138,9 @@ Every option is optional: the markup wins when one is omitted. CSS custom proper
 
 ```js
 import { mountShoeCarousel } from './src/nocta-shoe-carousel.js';
-const lineup = mountShoeCarousel(sectionElement);
+const lineup = mountShoeCarousel(sectionElement, { onOpen: ({ href }) => router.go(href) }); // default: location.assign(href)
 lineup.next(); lineup.previous(); lineup.select(2);  // the dots use select(): shortest wrapped route
+lineup.open();                                       // what a click on the centre shoe does
 lineup.pause(); lineup.resume(); lineup.replay();
 lineup.destroy();  // cancels the frame, removes listeners, observers, clones and dots; can be mounted again
 ```
@@ -149,7 +161,8 @@ Without JS the list shows as a plain grid of the four cut-outs. With JS the list
 - **CSS 3D instead of Three.js and WebGL.** The spec's cans are a GLB model with an HDR environment and per-flavour textures. None of that exists for these shoes: they are photos-as-cards, so rigid planes with CSS transforms are exact and add no dependencies. This also drops the cylinder label-texture step, the spec's tone mapping and PMREM, which have no meaning for flat cut-outs.
 - **Yaw is soft-limited.** On a cylinder, the spec's yaw x·0.5 − π/9 mostly scrolls the label. Taken literally on a flat card, it turns the first neighbour edge-on and shows the second one from behind. The card yaw is therefore the same expression passed through 0.72·tanh(yaw/0.72): identical near the centre, monotonic, and never past about 41°. The can's mesh-child label spin (rotation.z = yaw·0.6) has no flat-card equivalent and is left out.
 - **Wheel:** only horizontal wheel or trackpad motion (or <kbd>Shift</kbd> + wheel) steps the line-up, because it sits inside a scrolling page. A vertical wheel keeps scrolling the page, and <kbd>Ctrl</kbd> + wheel (pinch zoom) is left to the browser. This listener is the only non-passive one on the page, because it must cancel the sideways scroll.
-- **Clicking a neighbour** steps one shoe toward it, as the spec says. Clicking the centre shoe does nothing.
+- **Clicking a neighbour** steps one shoe toward it, as the spec says. **Clicking the centre shoe opens its page** (its `data-href`). That is the site's navigation, so it isn't in the spec. The same raycast is used, so transparent pixels never open anything. For the keyboard, a link sits exactly over the centre shoe. It has no pointer events, so drags still start anywhere, and it shows a focus ring around the shoe.
+- **Six items, not six flavours.** There are 24 clones of 6 shoes, which is the spec's own count. The dots, the announcements and the open link follow the selection.
 
 ## How the specification maps to the code
 
@@ -241,7 +254,7 @@ The mechanics are measured with **test-only abstract silhouettes** (`tests/fixtu
 
 Rendering under SwiftShader is slow, so a debug-only `lockstep` query parameter steps exactly one 60 Hz tick per frame. That way the tests measure simulation time rather than wall-clock time. Production timing is unchanged.
 
-Last run: **483 / 483 checks passed** with the images present (**443 / 443** on a fresh clone, where the real-image sections check the missing-asset states instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
+Last run: **554 / 554 checks passed** with the images present (**490 / 490** on a fresh clone, where the real-image sections check the missing-asset states instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
 
 - **Cover:** Anton is self-hosted and loaded. The runway is 400svh with a sticky 100svh frame. The image is cover-fitted with alt text, and the headline is a real `h1`.
 - **Cover progress:** at 0/25/50/75/100 %, x = V − p(V + T) within 1.5 px, decreasing monotonically and reversing exactly on scroll-up. The first glyph starts just beyond the right edge and the last ends just beyond the left. The headline is vertically centred, stays on a single line, and its font-size equals `clamp(115px, 30vw, 500px)`. The frame stays pinned mid-sweep and releases into the next section, with no horizontal overflow.
@@ -278,6 +291,14 @@ Last run: **483 / 483 checks passed** with the images present (**443 / 443** on 
   - A missing image shows its exact URL and no carousel. `destroy()` cleans up and the carousel remounts.
   - The announcement fires only when the selected shoe changes. The images keep their names and the clones are decorative. The section is 100svh before loading, with no headings or captions.
   - With the real cut-outs: transparent corners, and each card keeps its image aspect.
+- **Routing:**
+  - Home is the line-up alone, one viewport tall.
+  - The focusable link sits exactly over the centre shoe and follows the selection. Shift+Tab reaches it with a visible ring, and Enter opens the page of the shoe that was clicked, with that colourway at rest, focus on the new page and a view transition.
+  - The hidden line-up stops its loop. The Line-up button returns home with the selection kept, and the left page is destroyed (0 GL objects).
+  - A mouse click on the centre Air Force 1 opens its page. Its cover sweeps exactly like NOCTA's (x = V − p(V + T)), and its reveal is black ↔ white with labels that name it.
+  - Browser back and forward work, an in-page anchor keeps the page, and an unknown route goes home.
+  - Deep links (`#/air-max-plus/white`) work, and reduced motion uses no view transition.
+  - With the real AF1 and TN pairs: WebGL path, plane aspect, alignment (heel, toe and sole within 1.5 % of the product width), fluid, wipe and cover screenshots.
 
 **Not verified (assumptions):**
 
@@ -304,13 +325,24 @@ Last run: **483 / 483 checks passed** with the images present (**443 / 443** on 
 - That registration is reproduced exactly by `data-align-black="-0.00104 -0.00351 1.00586"` on the frame element. **The value belongs to this pair:** recompute it with the tool whenever the images change.
 - Interior details overlap closely (mesh window, air unit, midsole panels). Some embossed ribs and laces are drawn slightly differently in the two renders.
 
-**Line-up images:** four WebP images supplied by the project owner in this session, all 1672×941 on plain grey backgrounds (#8d8d8d, #7d7d7d, #787878 and #929190): the Nike Air Force 1 in black and in white, toe right, and the Nike Air Max Plus in white and in black, toe left. Their source and licence weren't stated. `tools/prepare_cutouts.py` turns each one into a transparent cut-out:
+**Line-up and AF1/TN images:** four WebP images supplied by the project owner in this session, all 1672×941 on plain grey backgrounds (#8d8d8d, #7d7d7d, #787878 and #929190): the Nike Air Force 1 in black and in white, toe right, and the Nike Air Max Plus in white and in black, toe left. Their source and licence weren't stated. `tools/prepare_cutouts.py` turns each one into a transparent cut-out:
 
 - Background: pixels within 12/255 of the border median that are connected to the border. No colour key is used inside the shoe.
 - Edges: a 2 px band solved with closed-form matting, with the grey removed from the edge colours.
 - Output: cropped to the silhouette with a 1.2 % margin, downscaled once (premultiplied Lanczos) to 1400 px wide, and written as WebP with full-quality alpha. The results are 1400×743, 1400×735, 1400×671 and 1400×684.
 
 None of the four had a floor shadow. They aren't mirrored, so the logos and the AIR lettering read correctly. Like the other images, they are git-ignored.
+
+The two NOCTA cards (`nocta-hot-step-2-black.webp` and `-white.webp`) are made by the same tool from the reveal's existing transparent PNGs. It keeps their matte, then crops, scales and encodes them the same way.
+
+**Air Force 1 and Air Max Plus pages:** the same four supplied images, processed as black/white pairs by `tools/prepare_mattes_uniform_bg.py` (prefixes `nike-air-force-1` and `nike-air-max-plus`). That's the same pipeline as the NOCTA pair: closed-form edge matting, halo padding on the black, and one uniform scale plus a translation fitted by least squares.
+
+| Pair | IoU | Median edge distance | `data-align-black` |
+| --- | --- | --- | --- |
+| Air Force 1 | 0.958 | 4.1 px | `-0.00315 -0.00252 0.99718` |
+| Air Max Plus | 0.975 | 3.0 px | `0.00054 0.00217 0.99883` |
+
+The two Air Max Plus renders differ by about 2 % in heel/tongue height, so the test allows 2.5 % there and 1.5 % elsewhere. The two covers (`nike-air-force-1-campaign.jpg` and `nike-air-max-plus-campaign.jpg`, 2560×1440) are composed from each black cut-out by `tools/compose_campaign.py` in its `studio` style: the same dark set as NOCTA's without the orange camouflage, which belongs to the NOCTA orange colourway.
 
 **Earlier photographic pair** (superseded, kept for the record): `DZ7293-001.jxl`, the black, 1200×1200, and a pasted 600×316 WebP of the white, both opaque white-background Nike product photos supplied by the owner without source or licence metadata. They were matted with `tools/prepare_mattes.py`. The white was too low-resolution, and the two weren't shot with the same setup.
 

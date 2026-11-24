@@ -402,7 +402,8 @@ body {
   cursor: grabbing;
 }
 
-.nocta-lineup__viewport[data-hover='step'] {
+.nocta-lineup__viewport[data-hover='step'],
+.nocta-lineup__viewport[data-hover='open'] {
   cursor: pointer;
 }
 
@@ -571,9 +572,165 @@ body {
   border: 0;
 }
 
+/* Narrow phones: six dots and four buttons in one row with a 16 px margin (targets stay >= 24 px). */
+@media (max-width: 420px) {
+  .nocta-lineup__controls {
+    gap: 4px;
+  }
+
+  .nocta-lineup__button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .nocta-lineup__dot {
+    width: 24px;
+    height: 40px;
+  }
+
+  .nocta-lineup__divider {
+    margin: 0 2px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nocta-lineup__button,
   .nocta-lineup__dot::before {
     transition: none;
+  }
+}
+
+/* The link laid over the centre shoe: no pointer events (the stage handles clicks and drags),
+   only a clear keyboard focus ring around the shoe that Enter opens. */
+.nocta-lineup__open {
+  position: absolute;
+  z-index: 1;
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.nocta-lineup__open:focus {
+  outline: none;
+}
+
+.nocta-lineup__open:focus-visible {
+  outline: 2px solid var(--lineup-focus);
+  outline-offset: 6px;
+}
+
+/* ------------------------------------------------------------------ Product pages (scoped) */
+
+.nocta-product:focus {
+  outline: none;
+}
+
+.nocta-product[data-page='air-force-1'] .nocta-reveal {
+  --nocta-accent: #ecebe7;
+}
+
+.nocta-product[data-page='air-max-plus'] .nocta-reveal {
+  --nocta-accent: #f5b70a; /* the yellow of the heel tag */
+}
+
+.nocta-back {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  right: max(14px, env(safe-area-inset-right));
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 16px 0 12px;
+  border: 1px solid rgba(236, 235, 231, 0.32);
+  border-radius: 22px;
+  background: rgba(5, 5, 5, 0.55);
+  color: #ecebe7;
+  font: 600 0.8125rem/1 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.nocta-back svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nocta-back:hover {
+  border-color: rgba(236, 235, 231, 0.7);
+  background: rgba(30, 30, 32, 0.7);
+}
+
+.nocta-back:focus {
+  outline: none;
+}
+
+.nocta-back:focus-visible {
+  outline: 2px solid #f2f1ed;
+  outline-offset: 3px;
+}
+
+/* Page change: the line-up zooms into the chosen shoe and fades through black (View Transitions,
+   where supported); going back runs the reverse. Reduced motion turns it off. */
+:root {
+  view-transition-name: root;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+:root[data-transition='open']::view-transition-old(root) {
+  animation-name: nocta-zoom-out;
+}
+
+:root[data-transition='open']::view-transition-new(root),
+:root[data-transition='close']::view-transition-new(root) {
+  animation-name: nocta-fade-in;
+}
+
+:root[data-transition='close']::view-transition-old(root) {
+  animation-name: nocta-fade-out;
+}
+
+@keyframes nocta-zoom-out {
+  to {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes nocta-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes nocta-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nocta-back {
+    transition: none;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

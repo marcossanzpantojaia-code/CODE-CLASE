@@ -2,6 +2,9 @@
 //
 // mountNoctaFluidReveal(frameElement, options) -> { advance(), toggle(), destroy(), state, debug }
 //
+// Options: product (name used in labels), colourways ('black white' or 'black white orange'),
+// start (the colourway shown at rest on arrival).
+//
 // Colourways cycle black -> white -> orange -> black (orange is optional). The current one is
 // visible at rest; pointer / touch motion drives a BFECC stable-fluids simulation whose velocity
 // energy cuts temporary holes through which the NEXT colourway is visible, and the fluid
@@ -40,6 +43,7 @@ const DEFAULTS = Object.freeze({
   blackAlt: 'Nike NOCTA Hot Step 2 in black, side view',
   whiteAlt: 'Nike NOCTA Hot Step 2 in white, side view',
   orangeAlt: 'Nike NOCTA Hot Step 2 in orange with a silver side plate, side view',
+  product: 'Nike NOCTA Hot Step 2',
   maxPixelRatio: 1.5,
   idle: true,
   debug: false,
@@ -54,7 +58,7 @@ function parseAdjust(value) {
   return { dx: dx || 0, dy: dy || 0, scale: scale > 0 ? scale : 1 };
 }
 
-function ensureMarkup(root, options) {
+function ensureMarkup(root, options, wantOrange) {
   const created = [];
   const find = (cls, make) => {
     let el = root.querySelector(`.${cls}`);
@@ -74,17 +78,17 @@ function ensureMarkup(root, options) {
     img.alt = options.blackAlt ?? DEFAULTS.blackAlt;
     return img;
   });
-  const photo = (key) =>
+  const photo = (key, load = true) =>
     find(`nocta-reveal__photo--${key}`, () => {
       const img = document.createElement('img');
       img.className = 'nocta-reveal__photo';
-      img.src = options[`${key}Src`] ?? DEFAULTS[`${key}Src`];
+      if (load) img.src = options[`${key}Src`] ?? DEFAULTS[`${key}Src`];
       img.alt = options[`${key}Alt`] ?? DEFAULTS[`${key}Alt`];
       img.hidden = true;
       return img;
     });
   const white = photo('white');
-  const orange = photo('orange');
+  const orange = photo('orange', wantOrange); // a two-colourway product gets an inert placeholder
   const toggle = find('nocta-reveal__toggle', () => {
     const button = document.createElement('button');
     button.type = 'button';
@@ -101,8 +105,14 @@ function ensureMarkup(root, options) {
   return { els: { canvas, black, white, orange, toggle, status, photos: { black, white, orange } }, created };
 }
 
-function resolveOptions(root, els, options) {
+function wantedColourways(root, options) {
+  const list = options.colourways ?? (root.dataset.colourways ? root.dataset.colourways.trim().split(/[\s,]+/) : null);
+  return Array.isArray(list) && !list.includes('orange') ? ['black', 'white'] : [...COLOURWAYS];
+}
+
+function resolveOptions(root, els, options, colourways) {
   const d = root.dataset;
+  const start = options.start ?? d.start;
   return {
     ...DEFAULTS,
     blackSrc: options.blackSrc ?? d.blackSrc ?? els.black.getAttribute('src') ?? DEFAULTS.blackSrc,
@@ -111,6 +121,9 @@ function resolveOptions(root, els, options) {
     blackAlt: options.blackAlt ?? (els.black.getAttribute('alt') || DEFAULTS.blackAlt),
     whiteAlt: options.whiteAlt ?? (els.white.getAttribute('alt') || DEFAULTS.whiteAlt),
     orangeAlt: options.orangeAlt ?? (els.orange.getAttribute('alt') || DEFAULTS.orangeAlt),
+    product: options.product ?? d.product ?? DEFAULTS.product,
+    colourways,
+    start: COLOURWAYS.includes(start) ? start : 'black',
     maxPixelRatio: options.maxPixelRatio ?? DEFAULTS.maxPixelRatio,
     idle: options.idle ?? d.idle !== 'false',
     debug: Boolean(options.debug),
@@ -237,8 +250,9 @@ function loadPhoto(src, adjust) {
 export function mountNoctaFluidReveal(root, options = {}) {
   if (!(root instanceof HTMLElement)) throw new TypeError('mountNoctaFluidReveal: a frame element is required');
 
-  const { els, created } = ensureMarkup(root, options);
-  const opts = resolveOptions(root, els, options);
+  const colourways = wantedColourways(root, options);
+  const { els, created } = ensureMarkup(root, options, colourways.includes('orange'));
+  const opts = resolveOptions(root, els, options, colourways);
   const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   const listeners = new AbortController();
   const on = (target, type, fn, extra = {}) =>
@@ -257,6 +271,7 @@ export function mountNoctaFluidReveal(root, options = {}) {
     virtualNow: 0,
     order: ['black', 'white'], // available colourways, cycle order
     current: 0, // index into order: the colourway shown at rest
+    home: 0, // index of the colourway shown on arrival (opts.start); the idle sweep runs only there
     target: 0, // 1 while wiping to the next colourway
     queued: 0, // activations received during a wipe
     reveal: 0,
@@ -317,7 +332,7 @@ export function mountNoctaFluidReveal(root, options = {}) {
   function syncLabels() {
     const shown = keyAt(destination());
     const upcoming = keyAt(destination() + 1);
-    els.toggle.setAttribute('aria-label', `Reveal ${NAMES[upcoming]} Nike NOCTA Hot Step 2`);
+    els.toggle.setAttribute('aria-label', `Reveal ${NAMES[upcoming]} ${opts.product}`);
     els.canvas.setAttribute('aria-label', opts[`${shown}Alt`]);
   }
 
@@ -622,7 +637,7 @@ export function mountNoctaFluidReveal(root, options = {}) {
   }
 
   function updateIdle(now) {
-    const allowed = opts.idle && state.mode === 'webgl' && state.target === 0 && state.current === 0 && state.planes;
+    const allowed = opts.idle && state.mode === 'webgl' && state.target === 0 && state.current === state.home && state.planes;
     if (!allowed) {
       if (state.idleActive) stopIdle();
       return;
@@ -788,22 +803,25 @@ export function mountNoctaFluidReveal(root, options = {}) {
   async function init() {
     if (state.initStarted || state.destroyed) return;
     state.initStarted = true;
+    const wantOrange = opts.colourways.includes('orange');
     const [black, white, orange] = await Promise.all([
       loadPhoto(opts.blackSrc, opts.adjust.black),
       loadPhoto(opts.whiteSrc, opts.adjust.white),
-      loadPhoto(opts.orangeSrc, opts.adjust.orange),
+      wantOrange ? loadPhoto(opts.orangeSrc, opts.adjust.orange) : { ok: false, src: null },
     ]);
     if (state.destroyed) return;
     photos = { black, white, orange };
     if (orange.ok) state.order = ['black', 'white', 'orange'];
-    else console.warn(`[nocta-reveal] ${orange.src} not found: cycling black and white only.`);
+    else if (wantOrange) console.warn(`[nocta-reveal] ${orange.src} not found: cycling black and white only.`);
+    state.home = Math.max(0, state.order.indexOf(opts.start));
+    if (white.ok) state.current = state.home;
     syncLabels();
 
     const missing = [black, white].filter((p) => !p.ok).map((p) => p.src);
     if (missing.length) {
       console.error(
         `[nocta-reveal] Missing product photography: ${missing.join(', ')}. ` +
-          'Add the matched Nike NOCTA Hot Step 2 PNGs described in assets/README.md.',
+          `Add the matched ${opts.product} PNGs described in assets/README.md.`,
       );
       els.status.textContent = `Product photography missing: ${missing.join(' · ')}`;
       els.status.hidden = false;

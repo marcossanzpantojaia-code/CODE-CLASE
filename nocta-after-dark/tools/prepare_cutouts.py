@@ -4,7 +4,8 @@ Usage (Python 3.10+, in a virtualenv):
     pip install numpy scipy pillow pymatting
     python prepare_cutouts.py <out_dir> <diagnostics_dir> <image>=<name> [<image>=<name> ...]
 
-For each image the background colour is the median of the border; background = pixels within
+Inputs that already have a transparent background (such as the fluid reveal's PNGs) keep their
+matte and are only cropped, scaled and encoded. For any other image the background colour is the median of the border; background = pixels within
 12/255 of it that are connected to the border (no colour key inside the shoe, so shaded white
 leather or a black upper is never punched through). A 2-px band around the silhouette is solved
 with closed-form matting and the edge colours are decontaminated, so no grey fringe shows on the
@@ -38,7 +39,12 @@ def largest_component(mask):
 
 
 def cutout(path):
-    img = np.asarray(Image.open(path).convert('RGB')).astype(np.float64) / 255.0
+    src = Image.open(path)
+    if src.mode in ('RGBA', 'LA') or 'transparency' in src.info:
+        rgba = np.asarray(src.convert('RGBA')).astype(np.float64) / 255.0
+        if (rgba[..., 3] < 0.01).mean() > 0.05:  # already a cut-out (e.g. the reveal's PNGs): keep its matte
+            return rgba[..., :3], rgba[..., 3], None
+    img = np.asarray(src.convert('RGB')).astype(np.float64) / 255.0
     border = np.concatenate([img[0], img[-1], img[:, 0], img[:, -1]])
     bg = np.median(border, axis=0)
     d = np.abs(img - bg).max(axis=2)
@@ -88,7 +94,7 @@ def main():
             Image.fromarray(np.round(comp * 255).astype(np.uint8)).save(f'{diag_dir}/{name}-on-{label}.png')
         report[name] = {
             'source': src,
-            'background_rgb': [round(float(v) * 255, 1) for v in bg],
+            'background_rgb': None if bg is None else [round(float(v) * 255, 1) for v in bg],
             'crop_xyxy': crop,
             'scale': round(scale, 4),
             'size': [int(alpha.shape[1]), int(alpha.shape[0])],

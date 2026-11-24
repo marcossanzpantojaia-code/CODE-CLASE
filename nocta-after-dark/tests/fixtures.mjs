@@ -116,9 +116,11 @@ export function makeFixturePair() {
   };
 }
 
-/** TEST-ONLY stand-ins for the four line-up cut-outs (black and white tones, different canvases). */
+/** TEST-ONLY stand-ins for the six line-up cut-outs (black and white tones, different canvases). */
 export function makeLineupFixtures() {
   return {
+    'nocta-hot-step-2-black': syntheticSilhouette({ width: 1400, height: 610, tone: 'black', pad: { left: 0.02, right: 0.02, top: 0.05 } }),
+    'nocta-hot-step-2-white': syntheticSilhouette({ width: 1350, height: 580, tone: 'white', pad: { left: 0.02, right: 0.03, top: 0.04 } }),
     'nike-air-force-1-black': syntheticSilhouette({ width: 1400, height: 600, tone: 'black', pad: { left: 0.02, right: 0.02, top: 0.04 } }),
     'nike-air-force-1-white': syntheticSilhouette({ width: 1300, height: 560, tone: 'white', pad: { left: 0.03, right: 0.02, top: 0.05 } }),
     'nike-air-max-plus-white': syntheticSilhouette({ width: 1400, height: 620, tone: 'white', pad: { left: 0.02, right: 0.03, top: 0.06 } }),
