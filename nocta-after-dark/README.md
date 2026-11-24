@@ -19,6 +19,17 @@ A small campaign site:
 
   The facts in the copy are the commonly published ones: the Air Force 1 is from 1982, by Bruce Kilgore, the first basketball shoe with Nike Air; the Air Max Plus is from 1998, by Sean McDowell, with Tuned Air, hence "TN". NOCTA is Drake's line with Nike. No dates or tech claims are made for the Hot Step 2.
 
+**Finishing layer** (same structure, more polish):
+
+- **Covers:** a portrait composition on phones and tablets (`<picture>`, the whole shoe instead of a crop), and a bottom bar with the page index (01 / 03 · name), an animated **Scroll** cue and the colourways. It fades once you scroll.
+- **Line-up:** a larger hero shoe on landscape screens (card width 4.1 instead of 3.6). On phones the wave's optical centre is lowered to 57 % so it clears the info panel; the stage and the perspective origin move together, so the projection and the raycast stay exact. There's a soft light cone from where the spotlights are, a floor glow, and a loading state.
+- **Details:** colourway cards (cut-out thumbnails) that mirror the swatches. Picking one scrolls up to the reveal and switches to it. The details, the colourway cards and the shoe cards rise in as they enter the viewport.
+- **Site-wide:**
+  - A fine film grain (an inline SVG tile, no blending, no pointer events) and a reading-progress hairline on product pages.
+  - The cover of the shoe in the centre of the line-up is prefetched, so opening it lands on a finished frame.
+  - An inline SVG favicon and share metadata.
+- **Reduced motion** keeps all of it static: no entrances, no scroll cue animation, no loader animation.
+
 **Pages and URLs.** It's one HTML page with hash routes, so any static server works without server-side routing:
 
 | URL | Page |
@@ -73,7 +84,7 @@ nocta-after-dark/
   tools/prepare_cutouts.py   WebP cut-outs for the line-up: from plain-background images, or from existing transparent PNGs
   tools/make_thumbs.py       480 px WebP thumbnails of the black cut-outs for the shoe cards
   tests/serve.mjs            dependency-free static server
-  tests/verify.mjs           Playwright verification suite (510 checks; 574 with the images present)
+  tests/verify.mjs           Playwright verification suite (524 checks; 588 with the images present)
   tests/fixtures.mjs         TEST-ONLY abstract silhouettes for measuring the mechanics
 ```
 
@@ -270,7 +281,7 @@ The mechanics are measured with **test-only abstract silhouettes** (`tests/fixtu
 
 Rendering under SwiftShader is slow, so a debug-only `lockstep` query parameter steps exactly one 60 Hz tick per frame. That way the tests measure simulation time rather than wall-clock time. Production timing is unchanged.
 
-Last run: **574 / 574 checks passed** with the images present (**510 / 510** on a fresh clone, where the real-image sections check the missing-asset states instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
+Last run: **588 / 588 checks passed** with the images present (**524 / 524** on a fresh clone, where the real-image sections check the missing-asset states instead), in headless Chromium 1440×1000, 390×844 (iPhone UA, touch, DPR 3), 820×1180 (iPad UA, touch, DPR 2), and resizes to 1024×700, 600×900 and 1920×600. Covered:
 
 - **Cover:** Anton is self-hosted and loaded. The runway is 400svh with a sticky 100svh frame. The image is cover-fitted with alt text, and the headline is a real `h1`.
 - **Cover progress:** at 0/25/50/75/100 %, x = V − p(V + T) within 1.5 px, decreasing monotonically and reversing exactly on scroll-up. The first glyph starts just beyond the right edge and the last ends just beyond the left. The headline is vertically centred, stays on a single line, and its font-size equals `clamp(115px, 30vw, 500px)`. The frame stays pinned mid-sweep and releases into the next section, with no horizontal overflow.
@@ -325,7 +336,7 @@ Last run: **574 / 574 checks passed** with the images present (**510 / 510** on 
 - Real GPUs and Safari/WebKit. Only Chromium with SwiftShader was run.
 - Real-device frame rate.
 - The look of the image pair and of the line-up cut-outs was judged by eye from screenshots (desktop 1440×1000 and phone), not measured.
-- The line-up's CSS 3D depth sorting and rasterisation on Safari/WebKit.
+- The line-up's CSS 3D depth sorting and rasterisation on Safari/WebKit, and the view transitions there.
 
 ## Image provenance and licence
 

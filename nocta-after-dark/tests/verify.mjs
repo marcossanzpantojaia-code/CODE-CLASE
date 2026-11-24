@@ -84,7 +84,7 @@ async function open(
   { fixtures = true, query = '?debug&noidle&lockstep', init = [], scrollToReveal = true, routes = [], route = '#/nocta' } = {},
 ) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, ...contextOptions });
-  const log = { pageErrors: [], consoleErrors: [], warnings: [], external: [], failed: [] };
+  const log = { pageErrors: [], consoleErrors: [], warnings: [], external: [], failed: [], requests: [] };
   if (fixtures) {
     // Every product page (NOCTA, Air Force 1, Air Max Plus) gets the same stand-in pair and cover.
     await context.route('**/assets/*.png', (route) => {
@@ -117,6 +117,7 @@ async function open(
   });
   page.on('request', (r) => {
     const url = r.url();
+    log.requests.push(url);
     if (!url.startsWith(origin) && !url.startsWith('data:')) log.external.push(url);
   });
   page.on('response', (r) => r.status() >= 400 && log.failed.push(`${r.status()} ${r.url()}`));
@@ -971,6 +972,8 @@ async function sweepScenario(label, contextOptions, { touch = false } = {}) {
       frameOverflow: getComputedStyle(f).overflow,
       sectionOverflow: getComputedStyle(document.querySelector('.nocta-sweep')).overflow,
       imgOk: img.complete && img.naturalWidth > 0,
+      src: img.currentSrc,
+      portraitScreen: window.matchMedia('(max-aspect-ratio: 4/5)').matches,
       fit: getComputedStyle(img).objectFit,
       alt: img.alt,
       imgW: ir.width,
@@ -979,6 +982,8 @@ async function sweepScenario(label, contextOptions, { touch = false } = {}) {
       text: h.textContent.trim(),
     };
   });
+  check(dims.portraitScreen ? 'portrait screen: the portrait cover composition is used' : 'landscape screen: the landscape cover is used',
+    dims.portraitScreen ? dims.src.endsWith('/assets/nocta-campaign-portrait.jpg') : dims.src.endsWith('/assets/nocta-campaign.jpg'), dims.src.split('/').pop());
   check('runway 400svh with a sticky 100svh frame', near(dims.runway, 4 * dims.ih, 1) && near(dims.frame, dims.ih, 1) && dims.sticky === 'sticky',
     `runway ${dims.runway}, frame ${dims.frame}, viewport ${dims.ih}, ${dims.sticky}`);
   check('outer section overflow visible, inner frame overflow hidden', dims.sectionOverflow === 'visible' && dims.frameOverflow === 'hidden');
@@ -1617,6 +1622,9 @@ section('Line-up carousel · phone 390x844 (iPhone UA, touch, DPR 3)');
   const g = await lineupGeometry(page, 'phone');
   check('portrait: camera z x 1.08 and ratio = clamp(1440/390, 1, 2.4) = 2.4', g.st.camera.z === 29 * 1.08 && g.st.camera.ratio === 2.4,
     `z ${fmt(g.st.camera.z)}, ratio ${g.st.camera.ratio}`);
+  check('portrait: optical centre lowered to 57 % (clear of the info panel), standard card width', g.st.camera.cy === 0.57 && g.st.camera.cardW === 3.6);
+  const panelBottom = await page.evaluate(() => document.querySelector('[data-lineup-info]').getBoundingClientRect().bottom);
+  check('the info panel ends above the centre shoe', panelBottom < g.centreBox.top, `panel ${fmt(panelBottom, 1)} / shoe top ${fmt(g.centreBox.top, 1)}`);
   finalWaveChecks(g.st, 'phone');
   check('the centre shoe fits the phone width', g.centreBox.left >= 0 && g.centreBox.right <= g.vw,
     `${fmt(g.centreBox.left, 1)}..${fmt(g.centreBox.right, 1)} of ${g.vw}`);
@@ -1906,6 +1914,18 @@ section('Routing: the line-up is home, every shoe opens its page');
   check('home: the line-up, no product page mounted, no back button or skip link', !v.lineupHidden && v.viewHidden && v.sweeps === 0 && v.reveals === 0 &&
     v.title === 'Nike line-up · unofficial concept' && (await appRoute(page)) === null && !v.back && v.skip === null && v.current === '', JSON.stringify(v));
   await noOverflow(page);
+  const chrome = await page.evaluate(() => ({
+    icon: document.querySelector('link[rel=icon]').getAttribute('href'),
+    og: document.querySelector('meta[property="og:title"]')?.content,
+    progressHidden: document.querySelector('.site-progress').hidden,
+    grain: getComputedStyle(document.body, '::after').pointerEvents,
+    cam: window.__noctaLineup.debug.getState().camera,
+  }));
+  check('finish: SVG favicon inline, share metadata, grain never takes the pointer, no progress bar at home',
+    chrome.icon.startsWith('data:image/svg+xml') && chrome.og === 'Nike line-up · unofficial concept' && chrome.grain === 'none' && chrome.progressHidden,
+    JSON.stringify({ icon: chrome.icon.slice(0, 24), og: chrome.og, grain: chrome.grain, progressHidden: chrome.progressHidden }));
+  check('wide screen: larger hero shoe (card width 4.1), optical centre at mid-height', chrome.cam.cardW === 4.1 && chrome.cam.cy === 0.5,
+    `cardW ${chrome.cam.cardW}, cy ${chrome.cam.cy}`);
   const panel = () => page.evaluate(() => ({
     index: document.querySelector('[data-lineup-index]').textContent,
     total: document.querySelector('[data-lineup-total]').textContent,
@@ -1925,6 +1945,8 @@ section('Routing: the line-up is home, every shoe opens its page');
   pn = await panel();
   check('the panel follows the selection', pn.index === '02' && pn.colour === 'White' && pn.href === '#/nocta/white', JSON.stringify(pn));
   check('the drag hint fades once the line-up has moved', (await page.getAttribute('[data-lineup-hint]', 'data-done')) === '');
+  await page.waitForTimeout(700);
+  check('the cover of the selected shoe is prefetched', log.requests.some((u) => u.endsWith('/assets/nocta-campaign.jpg')));
   await page.focus('[data-action=previous]');
   await page.keyboard.press('Shift+Tab');
   const ring = await page.evaluate(() => {
@@ -1944,6 +1966,14 @@ section('Routing: the line-up is home, every shoe opens its page');
     JSON.stringify(v));
   check('focus moves to the new page, scrolled to the top', v.active === 'nocta-product' && (await page.evaluate(() => window.scrollY)) === 0, v.active);
   check('the page change uses a view transition', (await page.evaluate(() => window.__vt)) >= 1);
+  const meta = await page.evaluate(() => {
+    const m = document.querySelector('.nocta-sweep__meta');
+    return { text: m.textContent.split(/\s+/).join(' ').trim(), hidden: m.getAttribute('aria-hidden'), opacity: getComputedStyle(m).opacity,
+      progress: !document.querySelector('.site-progress').hidden };
+  });
+  check('cover: index, name, scroll cue and colourways along the bottom (decorative), progress bar shown',
+    meta.text === '01 / 03 · NOCTA Hot Step 2 Scroll Black · White · Orange' && meta.hidden === 'true' && meta.opacity === '1' && meta.progress,
+    JSON.stringify(meta));
   await page.waitForTimeout(300);
   check('the hidden line-up stops its loop', !(await lineup(page)).running);
   await noOverflow(page);
@@ -1951,6 +1981,13 @@ section('Routing: the line-up is home, every shoe opens its page');
   await page.waitForFunction(() => window.__noctaReveal.debug.getState().mode === 'webgl', null, { timeout: 30000 });
   await page.waitForTimeout(200);
   check('scrolling down hides the header', (await page.getAttribute('.site-header', 'data-hidden')) === '');
+  const prog = await page.evaluate(() => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const m = new DOMMatrixReadOnly(getComputedStyle(document.querySelector('.site-progress span')).transform);
+    return { scale: m.a, expected: window.scrollY / max, scrolled: document.querySelector('[data-product-view]').hasAttribute('data-scrolled') };
+  });
+  check('the progress bar follows the scroll, and the cover cue has faded', near(prog.scale, prog.expected, 0.002) && prog.scrolled,
+    `${fmt(prog.scale)} vs ${fmt(prog.expected)}`);
   let rs = await getState(page);
   const swatches = () => page.$$eval('.nocta-swatch', (bs) => bs.filter((b) => !b.hidden).map((b) => `${b.dataset.colourway}:${b.getAttribute('aria-pressed')}`).join(' '));
   check('the white shoe that was clicked is the colourway at rest; three-colourway cycle', rs.colourway === 'white' &&
@@ -2011,6 +2048,15 @@ section('Routing: the line-up is home, every shoe opens its page');
     details.actions.join() === 'Back to the line-up>#/,Next: Air Max Plus TN>#/air-max-plus', JSON.stringify(details));
   check('shoe cards: previous NOCTA, next Air Max Plus TN', details.pager.join() === 'Previous shoe:NOCTA Hot Step 2>#/nocta,Next shoe:Air Max Plus TN>#/air-max-plus',
     details.pager.join());
+  const cards = () => page.$$eval('.nocta-colourway', (bs) => bs.filter((b) => !b.hidden).map((b) => `${b.dataset.colourway}:${b.getAttribute('aria-pressed')}`).join(' '));
+  check('colourway cards mirror the swatches', (await cards()) === 'black:false white:true', await cards());
+  await page.evaluate(() => document.querySelector('.nocta-colourways').scrollIntoView({ block: 'center' }));
+  await page.waitForFunction(() => document.querySelector('.nocta-colourways').classList.contains('is-visible'), null, { timeout: 10000 });
+  check('details rise in as they enter the viewport', true);
+  await page.click('.nocta-colourway[data-colourway=black]');
+  await page.waitForFunction(() => Math.abs(document.querySelector('.nocta-reveal').getBoundingClientRect().top) < 2, null, { timeout: 10000 });
+  check('a colourway card scrolls the reveal into view and switches to it', (await destinationOf(page)) === 'black' && (await cards()) === 'black:true white:false');
+  await waitColourway(page, 'black');
   await page.evaluate(() => document.querySelector('.nocta-pager').scrollIntoView({ block: 'center' }));
   await page.screenshot({ path: path.join(OUT, 'route-details-pager.png') });
   await page.click('.nocta-pager__card--next');
@@ -2056,6 +2102,7 @@ section('Routing: deep links, colourway on arrival, reduced motion');
   const rs = await getState(page);
   check('…with the white colourway at rest (reduced motion: static mode)', rs.mode === 'static' && rs.colourway === 'white' && rs.order.join() === 'black,white' &&
     (await toggleLabel(page)) === 'Reveal black Nike Air Max Plus', `${rs.mode} ${rs.colourway}`);
+  check('reduced motion: no entrance animations (content is simply there)', (await page.$$('.is-pending')).length === 0);
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.click('.site-header__back');
   await waitRoute(page, null);

@@ -63,55 +63,124 @@ function syncHeader(route) {
     header.dataset.view = route ? 'page' : 'home';
     delete header.dataset.hidden;
   }
+  if (progress) progress.hidden = !route;
+  delete view?.dataset.scrolled;
+  syncScroll();
 }
 
+const progress = $('.site-progress');
+const progressBar = progress?.firstElementChild;
 let lastScrollY = window.scrollY;
+let scrollFrame = 0;
+
+/** Reading progress and the cover's scroll cue; one update per frame at most. */
+function syncScroll() {
+  scrollFrame = 0;
+  const y = window.scrollY;
+  if (progressBar && !progress.hidden) {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max).toFixed(4) : 0})`;
+  }
+  if (view && !view.hidden) {
+    if (y > 24) view.dataset.scrolled = '';
+    else delete view.dataset.scrolled;
+  }
+}
+
+// The page also grows without scrolling (lazy images, the reveal starting): keep the bar honest.
+new ResizeObserver(() => {
+  if (!scrollFrame) scrollFrame = requestAnimationFrame(syncScroll);
+}).observe(document.body);
+
 window.addEventListener(
   'scroll',
   () => {
-    if (!header) return;
     const y = window.scrollY;
-    if (y > lastScrollY + 4 && y > 80) header.dataset.hidden = '';
-    else if (y < lastScrollY - 4 || y <= 80) delete header.dataset.hidden;
+    if (header) {
+      if (y > lastScrollY + 4 && y > 80) header.dataset.hidden = '';
+      else if (y < lastScrollY - 4 || y <= 80) delete header.dataset.hidden;
+    }
     lastScrollY = y;
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(syncScroll);
   },
   { passive: true },
 );
 
 // ------------------------------------------------------------------ product pages
 
-/** Colourway swatches: show the colourway asked for, and step the reveal's cycle to the one picked. */
-function wireSwatches(frameEl, reveal, start, signal) {
-  const group = view.querySelector('[data-swatches]');
-  if (!group) return;
+/**
+ * Colourway controls: the swatches in the reveal's title row and the colourway cards in the
+ * details. Both show the colourway asked for, and picking one queues the wipes it takes. A card
+ * also scrolls the reveal into view. A pick made before the reveal has its photos waits for them.
+ */
+function wireColourways(frameEl, reveal, start, signal) {
+  const buttons = () => view.querySelectorAll('.nocta-swatch, .nocta-colourway');
   let order = null; // the reveal's cycle once its photos are in (orange may be missing)
+  let pending = null;
   const sync = (destination) => {
-    for (const b of group.querySelectorAll('.nocta-swatch')) {
+    for (const b of buttons()) {
       b.hidden = Boolean(order) && !order.includes(b.dataset.colourway);
       b.setAttribute('aria-pressed', String(b.dataset.colourway === destination));
     }
+  };
+  const pick = (colour) => {
+    if (!order) {
+      pending = colour;
+      return;
+    }
+    const from = order.indexOf(reveal.state.destination);
+    const to = order.indexOf(colour);
+    if (from < 0 || to < 0) return;
+    for (let i = 0; i < (to - from + order.length) % order.length; i++) reveal.advance();
   };
   frameEl.addEventListener(
     'nocta-reveal:change',
     (e) => {
       order = e.detail.order;
       sync(e.detail.destination);
+      if (pending) {
+        const colour = pending;
+        pending = null;
+        pick(colour);
+      }
     },
     { signal },
   );
-  group.addEventListener(
+  view.addEventListener(
     'click',
     (e) => {
-      const button = e.target.closest('.nocta-swatch');
-      if (!button || !order) return;
-      const from = order.indexOf(reveal.state.destination);
-      const to = order.indexOf(button.dataset.colourway);
-      if (from < 0 || to < 0) return;
-      for (let i = 0; i < (to - from + order.length) % order.length; i++) reveal.advance();
+      const button = e.target.closest('.nocta-swatch, .nocta-colourway');
+      if (!button) return;
+      if (button.classList.contains('nocta-colourway')) {
+        $('.nocta-reveal', view)?.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth', block: 'start' });
+      }
+      pick(button.dataset.colourway);
     },
     { signal },
   );
   sync(start);
+}
+
+/** Details, colourway cards and shoe cards rise in as they enter the viewport. */
+function wireEntrances(signal) {
+  if (reducedMotion.matches || typeof IntersectionObserver !== 'function') return;
+  const targets = view.querySelectorAll('.nocta-details__intro, .nocta-details__specs, .nocta-colourways, .nocta-pager__card');
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.12 },
+  );
+  targets.forEach((el, i) => {
+    el.classList.add('is-pending');
+    if (el.classList.contains('nocta-pager__card')) el.style.setProperty('--delay', `${(i % 2) * 0.08}s`);
+    io.observe(el);
+  });
+  signal.addEventListener('abort', () => io.disconnect());
 }
 
 function unmountPage() {
@@ -140,7 +209,8 @@ function mountPage(route) {
   const abort = new AbortController();
   const reveal = frameEl ? mountNoctaFluidReveal(frameEl, { ...revealOptions, start: route.start }) : null;
   current = { ...route, abort, sweep: sweepEl ? mountScrollHeadline(sweepEl) : null, reveal };
-  if (reveal) wireSwatches(frameEl, reveal, route.start, abort.signal);
+  if (reveal) wireColourways(frameEl, reveal, route.start, abort.signal);
+  wireEntrances(abort.signal);
   if (debug) {
     window.__noctaSweep = current.sweep;
     window.__noctaReveal = current.reveal;
@@ -237,6 +307,26 @@ function showSelection({ index, href, alt, element }) {
   info.panel.classList.add('is-in');
 }
 
+/** Warm the cache with the cover of the shoe in the centre, so opening it lands on a finished frame. */
+const prefetched = new Set();
+let prefetchTimer = 0;
+function prefetchCover(page) {
+  clearTimeout(prefetchTimer);
+  prefetchTimer = setTimeout(() => {
+    const t = document.getElementById(`product-${page}`);
+    if (!t) return;
+    const portrait = window.matchMedia('(max-aspect-ratio: 4/5)').matches;
+    const url = portrait
+      ? t.content.querySelector('.nocta-sweep source')?.getAttribute('srcset')
+      : t.content.querySelector('.nocta-sweep__image')?.getAttribute('src');
+    if (!url || prefetched.has(url)) return;
+    prefetched.add(url);
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = url;
+  }, 450);
+}
+
 if (lineupSection) {
   let firstSelection = true;
   const instance = mountShoeCarousel(lineupSection, {
@@ -244,6 +334,7 @@ if (lineupSection) {
     openNeighbours: true,
     onSelect: (sel) => {
       showSelection(sel);
+      if (sel.element.dataset.page) prefetchCover(sel.element.dataset.page);
       if (info?.hint) {
         if (firstSelection) info.hint.hidden = false;
         else info.hint.dataset.done = ''; // the hint fades once the visitor has moved the line-up

@@ -2,7 +2,10 @@
 
 Usage:
     pip install numpy scipy pillow
-    python compose_campaign.py <nocta-hot-step-2-black.png> <out.jpg> [camo|studio]
+    python compose_campaign.py <nocta-hot-step-2-black.png> <out.jpg> [camo|studio] [WxH] [product width fraction]
+
+Defaults: 2560x1440, product 0.66 of the width. The portrait covers used on phones are
+1200x2134 with the product at 0.9 of the width.
 
 camo (default): the dark studio set (cool graphite key light, silhouette halo, faint floor
 reflection) with a few subtle orange camouflage touches toward the edges and corners.
@@ -17,8 +20,8 @@ from scipy import ndimage as ndi
 
 src, out = sys.argv[1:3]
 style = sys.argv[3] if len(sys.argv) > 3 else 'camo'
-W, H = 2560, 1440
-PRODUCT_W = 0.66 * W
+W, H = (int(v) for v in sys.argv[4].lower().split('x')) if len(sys.argv) > 4 else (2560, 1440)
+PRODUCT_W = (float(sys.argv[5]) if len(sys.argv) > 5 else 0.66) * W
 rng = np.random.default_rng(7)
 
 shoe = Image.open(src).convert('RGBA')
@@ -75,7 +78,8 @@ if style == 'camo':
     # Subtle orange camouflage touches: sparse, low opacity, weighted toward the edges and
     # corners so the shoe and the headline keep a clean, dark field around them.
     r = np.hypot((xx - W * 0.5) / (W * 0.5), (yy - H * 0.5) / (H * 0.5))
-    edge = np.clip((r - 0.45) / 0.5, 0, 1) ** 1.2
+    portrait = H > W  # the shoe spans most of a narrow frame: keep the touches further out and lighter
+    edge = np.clip((r - (0.62 if portrait else 0.45)) / 0.5, 0, 1) ** 1.2 * (0.7 if portrait else 1)
     big = W * H * 0.0012
     for color, sigma, coverage, opacity in (('#4a1c06', 120, 0.26, 0.55), ('#8e3610', 95, 0.13, 0.5), ('#d2581a', 70, 0.045, 0.42)):
         m = (touches(sigma, coverage, big) * edge * opacity)[..., None]

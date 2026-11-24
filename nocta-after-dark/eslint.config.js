@@ -9,7 +9,7 @@ const browser = readonly([
   'IntersectionObserver', 'ResizeObserver', 'AbortController', 'Image', 'HTMLElement',
   'HTMLCanvasElement', 'EventTarget', 'Element', 'Event', 'URL', 'URLSearchParams',
   'getComputedStyle', 'console', 'WebGLRenderingContext', 'WebGL2RenderingContext',
-  'DOMMatrixReadOnly', 'location', 'WheelEvent', 'PointerEvent', 'KeyboardEvent', 'setTimeout', 'CustomEvent',
+  'DOMMatrixReadOnly', 'location', 'WheelEvent', 'PointerEvent', 'KeyboardEvent', 'setTimeout', 'clearTimeout', 'CustomEvent',
 ]);
 
 const node = readonly(['process', 'Buffer', 'URL', 'console']);

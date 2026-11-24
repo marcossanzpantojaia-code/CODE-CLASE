@@ -51,6 +51,10 @@ const TILT_GAIN = 0.2;
 const TILT_REF_PX = 1280;
 const YAW_LIMIT = 0.72; // flat-card adaptation, radians (~41 degrees)
 const CARD_WIDTH = 3.6; // world units before SCALE; every shoe gets the same length
+const CARD_WIDTH_WIDE = 4.1; // landscape screens (aspect >= 1.2) have room for a larger hero shoe
+const WIDE_ASPECT = 1.2;
+const CENTRE_Y = 0.5; // the camera's optical centre, as a fraction of the viewport height
+const CENTRE_Y_PORTRAIT = 0.57; // phones: the wave sits lower, clear of the info panel above it
 const ENV_LIGHT = 0.74; // ambient share of the brightness, so cards outside the spotlights stay legible
 const LIGHTS = Object.freeze([
   { pos: [0, 3.5, 0], target: [0, 0, 1] },
@@ -198,7 +202,7 @@ export function mountShoeCarousel(root, options = {}) {
   const { signal } = listeners;
   const cards = [];
   const dots = [];
-  const cam = { W: 0, H: 0, aspect: 1, zoom: 1, f: 1, z: CAMERA_Z, k: 1, kRef: 1, ratio: 1 };
+  const cam = { W: 0, H: 0, aspect: 1, zoom: 1, f: 1, z: CAMERA_Z, k: 1, kRef: 1, ratio: 1, cardW: CARD_WIDTH, cy: CENTRE_Y };
   const s = {
     mode: 'loading',
     destroyed: false,
@@ -245,9 +249,17 @@ export function mountShoeCarousel(root, options = {}) {
     cam.f = cam.H / 2 / Math.tan(FOV / 2);
     cam.kRef = cam.f / (CAMERA_Z_START * cam.zoom); // the largest k of the opening: cards are never upscaled
     cam.ratio = clamp(1440 / Math.max(1, root.clientWidth), 1, 2.4);
+    cam.cardW = cam.aspect >= WIDE_ASPECT ? CARD_WIDTH_WIDE : CARD_WIDTH;
+    cam.cy = cam.aspect < PORTRAIT_ASPECT ? CENTRE_Y_PORTRAIT : CENTRE_Y;
+    // Moving the optical centre moves the stage and the perspective origin together, so the
+    // projection stays the camera's (see pointAt / hitTest).
     viewport.style.perspective = `${cam.f.toFixed(3)}px`;
+    viewport.style.perspectiveOrigin = `50% ${(cam.cy * 100).toFixed(3)}%`;
+    stage.style.top = `${(cam.cy * 100).toFixed(3)}%`;
     for (const card of cards) {
-      const w = CARD_WIDTH * SCALE * cam.kRef;
+      const half = (cam.cardW * SCALE) / 2;
+      card.radius = Math.hypot(half, half / card.aspect);
+      const w = cam.cardW * SCALE * cam.kRef;
       const h = w / card.aspect;
       card.el.style.width = `${w.toFixed(2)}px`;
       card.el.style.height = `${h.toFixed(2)}px`;
@@ -279,7 +291,8 @@ export function mountShoeCarousel(root, options = {}) {
       const sx = pose.x * proj;
       const sy = -pose.y * proj;
       const r = card.radius * proj;
-      const visible = Math.abs(sx) - r < cam.W / 2 + CULL_MARGIN_PX && Math.abs(sy) - r < cam.H / 2 + CULL_MARGIN_PX;
+      const visible = Math.abs(sx) - r < cam.W / 2 + CULL_MARGIN_PX &&
+        sy - r < cam.H * (1 - cam.cy) + CULL_MARGIN_PX && -sy - r < cam.H * cam.cy + CULL_MARGIN_PX;
       if (visible !== card.visible) {
         card.visible = visible;
         card.el.style.visibility = visible ? '' : 'hidden';
@@ -359,7 +372,7 @@ export function mountShoeCarousel(root, options = {}) {
     if (s.mode !== 'ready') return null;
     const rect = viewport.getBoundingClientRect();
     const px = clientX - rect.left - rect.width / 2;
-    const py = clientY - rect.top - rect.height / 2;
+    const py = clientY - rect.top - rect.height * cam.cy;
     const origin = [0, 0, cam.z];
     const dir = [px / cam.f, -py / cam.f, -1];
     let best = null;
@@ -373,7 +386,7 @@ export function mountShoeCarousel(root, options = {}) {
       const t = dot(sub(centre, origin), nrm) / denom;
       if (!(t > 0)) continue;
       const rel = sub([origin[0] + dir[0] * t, origin[1] + dir[1] * t, origin[2] + dir[2] * t], centre);
-      const w = CARD_WIDTH * SCALE;
+      const w = cam.cardW * SCALE;
       const u = dot(rel, column(M, 0)) / w + 0.5;
       const v = 0.5 - dot(rel, column(M, 1)) / (w / card.aspect);
       if (u < 0 || u > 1 || v < 0 || v > 1) continue;
@@ -390,12 +403,12 @@ export function mountShoeCarousel(root, options = {}) {
     if (!card || !card.pose) return null;
     const rect = viewport.getBoundingClientRect();
     const M = card.matrix || poseMatrix(card.pose);
-    const w = CARD_WIDTH * SCALE;
+    const w = cam.cardW * SCALE;
     const a = (u - 0.5) * w;
     const b = (0.5 - v) * (w / card.aspect);
     const p = [card.pose.x + M[0] * a + M[1] * b, card.pose.y + M[3] * a + M[4] * b, card.pose.z + M[6] * a + M[7] * b];
     const proj = cam.f / (cam.z - p[2]);
-    return { x: rect.left + rect.width / 2 + p[0] * proj, y: rect.top + rect.height / 2 - p[1] * proj };
+    return { x: rect.left + rect.width / 2 + p[0] * proj, y: rect.top + rect.height * cam.cy - p[1] * proj };
   }
 
   /** Projected client-space bounding box of a card (used by the tests against the CSS result). */
@@ -711,7 +724,7 @@ export function mountShoeCarousel(root, options = {}) {
       el.append(img);
       stage.append(el);
       const aspect = items[item].aspect;
-      const half = (CARD_WIDTH * SCALE) / 2;
+      const half = (cam.cardW * SCALE) / 2;
       cards.push({
         index: i,
         item,
@@ -816,6 +829,8 @@ export function mountShoeCarousel(root, options = {}) {
     }
     live.textContent = '';
     viewport.style.perspective = '';
+    viewport.style.perspectiveOrigin = '';
+    stage.style.top = '';
     delete viewport.dataset.hover;
     delete root.dataset.mode;
     delete root.dataset.paused;

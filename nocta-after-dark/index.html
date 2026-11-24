@@ -10,9 +10,13 @@
       content="Unofficial design concept: a 3D line-up of the Nike NOCTA Hot Step 2, Air Force 1 and Air Max Plus; each shoe opens a scroll-driven cover and an interactive WebGL fluid reveal of its colourways. Not affiliated with or endorsed by Nike or NOCTA."
     />
     <link rel="preload" href="assets/fonts/anton.ttf" as="font" type="font/ttf" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nike line-up · unofficial concept" />
+    <meta property="og:description" content="NOCTA Hot Step 2, Air Force 1 and Air Max Plus TN in a 3D line-up, each with its own scroll cover and fluid colourway reveal. Unofficial design concept." />
+    <meta name="twitter:card" content="summary" />
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#050505" />
-    <link rel="icon" href="data:," />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%227%22 fill=%22%23050505%22/%3E%3Cpath d=%22M10 7v18h12%22 fill=%22none%22 stroke=%22%23f2efe8%22 stroke-width=%224%22/%3E%3C/svg%3E" />
     <script>
       document.documentElement.classList.replace('no-js', 'js');
     </script>
@@ -20,6 +24,7 @@
     <script type="module" src="src/main.js"></script>
   </head>
   <body>
+    <div class="site-progress" aria-hidden="true"><span></span></div>
     <header class="site-header">
       <a class="site-skip" href="#after-dark" hidden>Skip animation</a>
       <a class="site-header__brand" href="#/" aria-label="Line-up, home">Line-up<span aria-hidden="true">concept</span></a>
@@ -42,6 +47,7 @@
         data-mode="loading"
       >
         <h1 class="nocta-lineup__sr">Nike line-up (unofficial concept)</h1>
+        <p class="nocta-lineup__loading" aria-hidden="true"><span></span>Loading the line-up</p>
         <p class="nocta-lineup__backdrop" aria-hidden="true"><span data-lineup-backdrop>NOCTA</span></p>
         <ul class="nocta-lineup__items">
           <li data-href="#/nocta/black" data-page="nocta" data-name="NOCTA Hot Step 2" data-colour="Black" data-short="NOCTA" data-line="NOCTA × Nike"><img src="assets/nocta-hot-step-2-black.webp" alt="Nike NOCTA Hot Step 2 in black, side view" decoding="async" /></li>
@@ -107,8 +113,16 @@
       <section class="nocta-sweep" aria-labelledby="nocta-sweep-title" data-nocta-sweep>
         <div class="nocta-sweep__runway">
           <div class="nocta-sweep__frame">
-            <img class="nocta-sweep__image" src="assets/nocta-campaign.jpg" alt="Nike NOCTA Hot Step 2 in black, side view, under a dark studio light" decoding="async" />
+            <picture>
+              <source media="(max-aspect-ratio: 4/5)" srcset="assets/nocta-campaign-portrait.jpg" />
+              <img class="nocta-sweep__image" src="assets/nocta-campaign.jpg" alt="Nike NOCTA Hot Step 2 in black, side view, under a dark studio light" decoding="async" />
+            </picture>
             <h1 class="nocta-sweep__headline" id="nocta-sweep-title">Nike NOCTA</h1>
+            <div class="nocta-sweep__meta" aria-hidden="true">
+              <span class="nocta-sweep__index">01 / 03 · NOCTA Hot Step 2</span>
+              <span class="nocta-sweep__scroll"><span>Scroll</span><i></i></span>
+              <span class="nocta-sweep__colours">Black · White · Orange</span>
+            </div>
           </div>
         </div>
       </section>
@@ -178,6 +192,12 @@
           <div><dt>Colourways here</dt><dd>Black, White, Orange</dd></div>
           <div><dt>Theme</dt><dd>After Dark</dd></div>
         </dl>
+        <div class="nocta-colourways" role="group" aria-labelledby="nocta-colourways-title">
+          <p class="nocta-colourways__title" id="nocta-colourways-title">Colourways <span>3</span></p>
+          <button type="button" class="nocta-colourway" data-colourway="black"><img src="assets/nocta-hot-step-2-black-thumb.webp" alt="" decoding="async" loading="lazy" /><span class="nocta-colourway__name">Black</span><span class="nocta-lineup__sr"> colourway: show it above</span></button>
+          <button type="button" class="nocta-colourway" data-colourway="white"><img src="assets/nocta-hot-step-2-white-thumb.webp" alt="" decoding="async" loading="lazy" /><span class="nocta-colourway__name">White</span><span class="nocta-lineup__sr"> colourway: show it above</span></button>
+          <button type="button" class="nocta-colourway" data-colourway="orange"><img src="assets/nocta-hot-step-2-orange-thumb.webp" alt="" decoding="async" loading="lazy" /><span class="nocta-colourway__name">Orange</span><span class="nocta-lineup__sr"> colourway: show it above</span></button>
+        </div>
       </section>
       <nav class="nocta-pager" aria-label="More shoes">
         <a class="nocta-pager__card nocta-pager__card--previous" href="#/air-max-plus">
@@ -196,8 +216,16 @@
       <section class="nocta-sweep" aria-labelledby="air-force-1-sweep-title" data-nocta-sweep>
         <div class="nocta-sweep__runway">
           <div class="nocta-sweep__frame">
-            <img class="nocta-sweep__image" src="assets/nike-air-force-1-campaign.jpg" alt="Nike Air Force 1 in black, side view, under a dark studio light" decoding="async" />
+            <picture>
+              <source media="(max-aspect-ratio: 4/5)" srcset="assets/nike-air-force-1-campaign-portrait.jpg" />
+              <img class="nocta-sweep__image" src="assets/nike-air-force-1-campaign.jpg" alt="Nike Air Force 1 in black, side view, under a dark studio light" decoding="async" />
+            </picture>
             <h1 class="nocta-sweep__headline" id="air-force-1-sweep-title">Nike Air Force 1</h1>
+            <div class="nocta-sweep__meta" aria-hidden="true">
+              <span class="nocta-sweep__index">02 / 03 · Air Force 1</span>
+              <span class="nocta-sweep__scroll"><span>Scroll</span><i></i></span>
+              <span class="nocta-sweep__colours">Black · White</span>
+            </div>
           </div>
         </div>
       </section>
@@ -259,6 +287,11 @@
           <div><dt>Cushioning</dt><dd>Nike Air</dd></div>
           <div><dt>Colourways here</dt><dd>Black, White</dd></div>
         </dl>
+        <div class="nocta-colourways" role="group" aria-labelledby="air-force-1-colourways-title">
+          <p class="nocta-colourways__title" id="air-force-1-colourways-title">Colourways <span>2</span></p>
+          <button type="button" class="nocta-colourway" data-colourway="black"><img src="assets/nike-air-force-1-black-thumb.webp" alt="" decoding="async" loading="lazy" /><span class="nocta-colourway__name">Black</span><span class="nocta-lineup__sr"> colourway: show it above</span></button>
+          <button type="button" class="nocta-colourway" data-colourway="white"><img src="assets/nike-air-force-1-white-thumb.webp" alt="" decoding="async" loading="lazy" /><span class="nocta-colourway__name">White</span><span class="nocta-lineup__sr"> colourway: show it above</span></button>
+        </div>
       </section>
       <nav class="nocta-pager" aria-label="More shoes">
         <a class="nocta-pager__card nocta-pager__card--previous" href="#/nocta">
@@ -277,8 +310,16 @@
       <section class="nocta-sweep" aria-labelledby="air-max-plus-sweep-title" data-nocta-sweep>
         <div class="nocta-sweep__runway">
           <div class="nocta-sweep__frame">
-            <img class="nocta-sweep__image" src="assets/nike-air-max-plus-campaign.jpg" alt="Nike Air Max Plus in black, side view, under a dark studio light" decoding="async" />
+            <picture>
+              <source media="(max-aspect-ratio: 4/5)" srcset="assets/nike-air-max-plus-campaign-portrait.jpg" />
+              <img class="nocta-sweep__image" src="assets/nike-air-max-plus-campaign.jpg" alt="Nike Air Max Plus in black, side view, under a dark studio light" decoding="async" />
+            </picture>
             <h1 class="nocta-sweep__headline" id="air-max-plus-sweep-title">Nike TN</h1>
+            <div class="nocta-sweep__meta" aria-hidden="true">
+              <span class="nocta-sweep__index">03 / 03 · Air Max Plus TN</span>
+              <span class="nocta-sweep__scroll"><span>Scroll</span><i></i></span>
+              <span class="nocta-sweep__colours">Black · White</span>
+            </div>
           </div>
         </div>
       </section>
@@ -340,6 +381,11 @@
           <div><dt>Cushioning</dt><dd>Tuned Air</dd></div>
           <div><dt>Colourways here</dt><dd>Black, White</dd></div>
         </dl>
+        <div class="nocta-colourways" role="group" aria-labelledby="air-max-plus-colourways-title">
+          <p class="nocta-colourways__title" id="air-max-plus-colourways-title">Colourways <span>2</span></p>
+          <button type="button" class="nocta-colourway" data-colourway="black"><img src="assets/nike-air-max-plus-black-thumb.webp" alt="" decoding="async" loading="lazy" /><span class="nocta-colourway__name">Black</span><span class="nocta-lineup__sr"> colourway: show it above</span></button>
+          <button type="button" class="nocta-colourway" data-colourway="white"><img src="assets/nike-air-max-plus-white-thumb.webp" alt="" decoding="async" loading="lazy" /><span class="nocta-colourway__name">White</span><span class="nocta-lineup__sr"> colourway: show it above</span></button>
+        </div>
       </section>
       <nav class="nocta-pager" aria-label="More shoes">
         <a class="nocta-pager__card nocta-pager__card--previous" href="#/air-force-1">
