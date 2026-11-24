@@ -115,3 +115,13 @@ export function makeFixturePair() {
     orange: syntheticSilhouette({ width: 1500, height: 960, tone: 'orange', pad: { left: 0.09, right: 0.05, top: 0.25 } }),
   };
 }
+
+/** TEST-ONLY stand-ins for the four line-up cut-outs (black and white tones, different canvases). */
+export function makeLineupFixtures() {
+  return {
+    'nike-air-force-1-black': syntheticSilhouette({ width: 1400, height: 600, tone: 'black', pad: { left: 0.02, right: 0.02, top: 0.04 } }),
+    'nike-air-force-1-white': syntheticSilhouette({ width: 1300, height: 560, tone: 'white', pad: { left: 0.03, right: 0.02, top: 0.05 } }),
+    'nike-air-max-plus-white': syntheticSilhouette({ width: 1400, height: 620, tone: 'white', pad: { left: 0.02, right: 0.03, top: 0.06 } }),
+    'nike-air-max-plus-black': syntheticSilhouette({ width: 1200, height: 520, tone: 'black', pad: { left: 0.02, right: 0.02, top: 0.04 } }),
+  };
+}

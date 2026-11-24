@@ -313,3 +313,267 @@ body {
     transition: none;
   }
 }
+
+/* ------------------------------------------------------------------ Line-up carousel (scoped) */
+
+.nocta-lineup {
+  --lineup-fg: #ecebe7;
+  --lineup-line: rgba(236, 235, 231, 0.3);
+  --lineup-focus: #f2f1ed;
+  --lineup-gutter: clamp(16px, 3.2vw, 48px);
+
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100vh;
+  height: 100svh; /* reserved before anything loads */
+  min-height: 360px;
+  overflow: hidden;
+  /* Dark charcoal stage: lighter behind the spotlit centre, falling to the page black. */
+  background: radial-gradient(ellipse 72% 62% at 50% 47%, #2f3033 0%, #1d1e20 40%, #0d0d0e 74%, #050505 100%);
+  color: var(--lineup-fg);
+  color-scheme: dark;
+}
+
+.nocta-lineup *,
+.nocta-lineup *::before,
+.nocta-lineup *::after {
+  box-sizing: border-box;
+}
+
+.nocta-lineup [hidden] {
+  display: none !important;
+}
+
+.nocta-lineup:focus {
+  outline: none;
+}
+
+/* No-JS view: the four cut-outs in a simple grid. With JS the list stays available to assistive
+   technology only, and the 3D stage below shows decorative clones of it. */
+.nocta-lineup__items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 3vw, 40px);
+  align-content: center;
+  height: 100%;
+  margin: 0;
+  padding: var(--lineup-gutter);
+  list-style: none;
+}
+
+.nocta-lineup__items img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 38svh;
+  object-fit: contain;
+}
+
+.js .nocta-lineup__items {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  border: 0;
+}
+
+.nocta-lineup__viewport {
+  position: absolute;
+  inset: 0;
+  perspective-origin: 50% 50%;
+  touch-action: pan-y pinch-zoom; /* vertical page panning and zoom stay native; horizontal drags steer */
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+.no-js .nocta-lineup__viewport {
+  display: none;
+}
+
+.nocta-lineup[data-dragging] .nocta-lineup__viewport {
+  cursor: grabbing;
+}
+
+.nocta-lineup__viewport[data-hover='step'] {
+  cursor: pointer;
+}
+
+.nocta-lineup__stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+.nocta-lineup__card {
+  position: absolute;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.nocta-lineup__shoe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.nocta-lineup__controls {
+  position: absolute;
+  left: 50%;
+  bottom: max(var(--lineup-gutter), calc(env(safe-area-inset-bottom) + 12px));
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.nocta-lineup__button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--lineup-line);
+  border-radius: 50%;
+  background: rgba(8, 8, 9, 0.5);
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.nocta-lineup__button svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nocta-lineup__button .nocta-lineup__icon-play {
+  fill: currentColor;
+  stroke-width: 1.2;
+}
+
+.nocta-lineup__button:hover {
+  border-color: rgba(236, 235, 231, 0.7);
+  background: rgba(236, 235, 231, 0.08);
+}
+
+.nocta-lineup__button[aria-pressed='true'] {
+  border-color: var(--lineup-fg);
+  background: rgba(236, 235, 231, 0.14);
+}
+
+.nocta-lineup__icon-play,
+.nocta-lineup__button[aria-pressed='true'] .nocta-lineup__icon-pause {
+  display: none;
+}
+
+.nocta-lineup__button[aria-pressed='true'] .nocta-lineup__icon-play {
+  display: block;
+}
+
+.nocta-lineup__dots {
+  display: flex;
+  align-items: center;
+}
+
+.nocta-lineup__dot {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nocta-lineup__dot::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid rgba(236, 235, 231, 0.6);
+  border-radius: 4px;
+  transition: width 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.nocta-lineup__dot:hover::before {
+  border-color: var(--lineup-fg);
+}
+
+.nocta-lineup__dot[aria-pressed='true']::before {
+  width: 18px;
+  border-color: var(--lineup-fg);
+  background: var(--lineup-fg);
+}
+
+.nocta-lineup__divider {
+  width: 1px;
+  height: 22px;
+  margin: 0 4px;
+  background: var(--lineup-line);
+}
+
+.nocta-lineup__button:focus,
+.nocta-lineup__dot:focus {
+  outline: none;
+}
+
+.nocta-lineup__button:focus-visible,
+.nocta-lineup__dot:focus-visible {
+  outline: 2px solid var(--lineup-focus);
+  outline-offset: 3px;
+}
+
+.nocta-lineup__status {
+  position: absolute;
+  left: var(--lineup-gutter);
+  right: var(--lineup-gutter);
+  bottom: var(--lineup-gutter);
+  margin: 0;
+  font: 400 0.8125rem/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: #b9bbbf;
+  text-align: center;
+}
+
+.nocta-lineup__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nocta-lineup__button,
+  .nocta-lineup__dot::before {
+    transition: none;
+  }
+}

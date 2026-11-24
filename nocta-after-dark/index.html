@@ -7,7 +7,7 @@
     <title>Nike NOCTA · After Dark · unofficial concept</title>
     <meta
       name="description"
-      content="Unofficial design concept: a scroll-driven Nike NOCTA cover followed by an interactive WebGL fluid reveal of the Hot Step 2, black to white. Not affiliated with or endorsed by Nike or NOCTA."
+      content="Unofficial design concept: a scroll-driven Nike NOCTA cover, an interactive WebGL fluid reveal of the Hot Step 2 and a 3D line-up of the Air Force 1 and Air Max Plus. Not affiliated with or endorsed by Nike or NOCTA."
     />
     <link rel="preload" href="assets/fonts/anton.ttf" as="font" type="font/ttf" crossorigin />
     <meta name="color-scheme" content="dark" />
@@ -73,6 +73,48 @@
         <p class="nocta-reveal__sr" id="nocta-reveal-note">
           Unofficial design concept. Not affiliated with, authorised or endorsed by Nike or NOCTA.
         </p>
+      </section>
+      <section
+        class="nocta-lineup"
+        id="line-up"
+        tabindex="-1"
+        aria-roledescription="carousel"
+        aria-label="Nike Air Force 1 and Air Max Plus in black and white"
+        aria-describedby="nocta-lineup-help"
+        data-nocta-lineup
+        data-mode="loading"
+      >
+        <ul class="nocta-lineup__items">
+          <li><img src="assets/nike-air-force-1-black.webp" alt="Nike Air Force 1 in black, side view" decoding="async" /></li>
+          <li><img src="assets/nike-air-force-1-white.webp" alt="Nike Air Force 1 in white, side view" decoding="async" /></li>
+          <li><img src="assets/nike-air-max-plus-white.webp" alt="Nike Air Max Plus in white, side view" decoding="async" /></li>
+          <li><img src="assets/nike-air-max-plus-black.webp" alt="Nike Air Max Plus in black, side view" decoding="async" /></li>
+        </ul>
+        <div class="nocta-lineup__viewport" aria-hidden="true">
+          <div class="nocta-lineup__stage"></div>
+        </div>
+        <div class="nocta-lineup__controls" hidden>
+          <button type="button" class="nocta-lineup__button" data-action="previous" aria-label="Previous shoe">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M14.5 5.5 8 12l6.5 6.5" /></svg>
+          </button>
+          <div class="nocta-lineup__dots" role="group" aria-label="Choose a shoe"></div>
+          <button type="button" class="nocta-lineup__button" data-action="next" aria-label="Next shoe">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M9.5 5.5 16 12l-6.5 6.5" /></svg>
+          </button>
+          <span class="nocta-lineup__divider" aria-hidden="true"></span>
+          <button type="button" class="nocta-lineup__button" data-action="pause" aria-label="Pause animation" aria-pressed="false">
+            <svg class="nocta-lineup__icon-pause" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M9 6v12M15 6v12" /></svg>
+            <svg class="nocta-lineup__icon-play" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M8.5 6.2v11.6L18 12z" /></svg>
+          </button>
+          <button type="button" class="nocta-lineup__button" data-action="replay" aria-label="Replay intro">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5.6 9.2A7 7 0 1 1 5 12.5M5.2 4.8v4.6h4.6" /></svg>
+          </button>
+        </div>
+        <p class="nocta-lineup__sr" id="nocta-lineup-help">
+          Use the left and right arrow keys, the previous and next buttons or the dots to change the shoe.
+        </p>
+        <p class="nocta-lineup__sr nocta-lineup__live" aria-live="polite" aria-atomic="true"></p>
+        <p class="nocta-lineup__status" hidden></p>
       </section>
     </main>
   </body>

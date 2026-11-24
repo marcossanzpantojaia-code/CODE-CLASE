@@ -1,4 +1,4 @@
-// Browser verification for the NOCTA / After Dark fluid reveal.
+// Browser verification for the NOCTA / After Dark page: cover, fluid reveal and line-up carousel.
 //
 //   node nocta-after-dark/tests/verify.mjs [--out <dir>]
 //
@@ -12,7 +12,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { APP_ROOT, startServer } from './serve.mjs';
-import { SILHOUETTE_ASPECT, makeFixturePair, syntheticCampaign } from './fixtures.mjs';
+import { SILHOUETTE_ASPECT, makeFixturePair, makeLineupFixtures, syntheticCampaign } from './fixtures.mjs';
 
 const require = createRequire(import.meta.url);
 let playwright;
@@ -33,7 +33,10 @@ const REAL = {
   white: path.join(APP_ROOT, 'assets/nocta-hot-step-2-white.png'),
 };
 const realAssetsPresent = existsSync(REAL.black) && existsSync(REAL.white);
+const LINEUP_FILES = ['nike-air-force-1-black', 'nike-air-force-1-white', 'nike-air-max-plus-white', 'nike-air-max-plus-black'];
+const lineupAssetsPresent = LINEUP_FILES.every((f) => existsSync(path.join(APP_ROOT, `assets/${f}.webp`)));
 const FIXTURES = makeFixturePair();
+const LINEUP_FIXTURES = makeLineupFixtures();
 const CAMPAIGN_FIXTURE = syntheticCampaign();
 
 const results = [];
@@ -60,7 +63,11 @@ const PASSIVE_PROBE = () => {
   const original = EventTarget.prototype.addEventListener;
   EventTarget.prototype.addEventListener = function (type, fn, opts) {
     if (/^(touch|pointer|wheel|mouse)/.test(type) && this instanceof Element) {
-      window.__listenerLog.push({ type, passive: typeof opts === 'object' && opts !== null && opts.passive === true });
+      window.__listenerLog.push({
+        type,
+        passive: typeof opts === 'object' && opts !== null && opts.passive === true,
+        cls: String(this.className || this.tagName),
+      });
     }
     return original.call(this, type, fn, opts);
   };
@@ -68,10 +75,10 @@ const PASSIVE_PROBE = () => {
 
 async function open(
   contextOptions = {},
-  { fixtures = true, query = '?debug&noidle&lockstep', init = [], scrollToReveal = true } = {},
+  { fixtures = true, query = '?debug&noidle&lockstep', init = [], scrollToReveal = true, routes = [] } = {},
 ) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, ...contextOptions });
-  const log = { pageErrors: [], consoleErrors: [], external: [], failed: [] };
+  const log = { pageErrors: [], consoleErrors: [], warnings: [], external: [], failed: [] };
   if (fixtures) {
     await context.route('**/assets/nocta-hot-step-2-*.png', (route) => {
       const url = route.request().url();
@@ -81,6 +88,11 @@ async function open(
     await context.route('**/assets/nocta-campaign.jpg', (route) =>
       route.fulfill({ status: 200, contentType: 'image/png', body: CAMPAIGN_FIXTURE }),
     );
+    await context.route('**/assets/nike-*.webp', (route) => {
+      const name = new URL(route.request().url()).pathname.split('/').pop().replace('.webp', '');
+      const fx = LINEUP_FIXTURES[name];
+      return fx ? route.fulfill({ status: 200, contentType: 'image/png', body: fx.png }) : route.fulfill({ status: 404, body: 'missing' });
+    });
     // data-align-* registers the real photo pair; it must not be applied to the stand-ins.
     await context.route((url) => url.origin === origin && url.pathname === '/', async (route) => {
       const response = await route.fetch();
@@ -88,10 +100,14 @@ async function open(
       return route.fulfill({ response, body });
     });
   }
+  for (const [pattern, handler] of routes) await context.route(pattern, handler); // registered last: wins
   for (const script of init) await context.addInitScript(script);
   const page = await context.newPage();
   page.on('pageerror', (e) => log.pageErrors.push(String(e)));
-  page.on('console', (m) => m.type() === 'error' && log.consoleErrors.push(m.text()));
+  page.on('console', (m) => {
+    if (m.type() === 'error') log.consoleErrors.push(m.text());
+    if (m.type() === 'warning') log.warnings.push(m.text());
+  });
   page.on('request', (r) => {
     const url = r.url();
     if (!url.startsWith(origin) && !url.startsWith('data:')) log.external.push(url);
@@ -99,7 +115,7 @@ async function open(
   page.on('response', (r) => r.status() >= 400 && log.failed.push(`${r.status()} ${r.url()}`));
   page.on('requestfailed', (r) => log.failed.push(`failed ${r.url()}`));
   await page.goto(`${origin}/${query}`);
-  await page.waitForFunction(() => window.__noctaSweep && window.__noctaReveal, null, { timeout: 30000 });
+  await page.waitForFunction(() => window.__noctaSweep && window.__noctaReveal && window.__noctaLineup, null, { timeout: 30000 });
   if (scrollToReveal) {
     // The fluid reveal sits after the 400svh cover runway: bring it into view so it initialises.
     await page.evaluate(() => document.querySelector('.nocta-reveal').scrollIntoView({ block: 'start' }));
@@ -304,12 +320,12 @@ function sweepPoints(box, product, n, from, to, wobble = 0) {
 function hygiene(log, { allowMissing = false } = {}) {
   check('no uncaught page errors', log.pageErrors.length === 0, log.pageErrors.join(' | '));
   const consoleErrors = allowMissing
-    ? log.consoleErrors.filter((m) => !/Missing product photography|404/.test(m))
+    ? log.consoleErrors.filter((m) => !/Missing product photography|Missing line-up images|404/.test(m))
     : log.consoleErrors;
   check('no console errors', consoleErrors.length === 0, consoleErrors.join(' | '));
   check('no external runtime requests', log.external.length === 0, log.external.join(' | '));
   const failed = allowMissing
-    ? log.failed.filter((f) => !/nocta-hot-step-2-(black|white|orange)\.png|nocta-campaign\.jpg/.test(f))
+    ? log.failed.filter((f) => !/nocta-hot-step-2-(black|white|orange)\.png|nocta-campaign\.jpg|nike-air-[\w-]+\.webp/.test(f))
     : log.failed;
   check('no missing files / failed requests', failed.length === 0, failed.join(' | '));
 }
@@ -320,11 +336,11 @@ async function noOverflow(page) {
     iw: window.innerWidth,
     sh: document.documentElement.scrollHeight,
     ih: window.innerHeight,
-    sections: document.querySelector('.nocta-sweep').offsetHeight + document.querySelector('.nocta-reveal').offsetHeight,
+    sections: ['.nocta-sweep', '.nocta-reveal', '.nocta-lineup'].reduce((sum, sel) => sum + document.querySelector(sel).offsetHeight, 0),
   }));
   check('no horizontal overflow', o.sw <= o.iw, `scrollWidth ${o.sw} / innerWidth ${o.iw}`);
-  check('page height = 400svh cover + 100svh reveal, nothing else', o.sh <= o.sections + 1 && Math.abs(o.sections - 5 * o.ih) <= 2,
-    `scrollHeight ${o.sh} / sections ${o.sections} / 5 x innerHeight ${5 * o.ih}`);
+  check('page height = 400svh cover + 100svh reveal + 100svh line-up, nothing else', o.sh <= o.sections + 1 && Math.abs(o.sections - 6 * o.ih) <= 3,
+    `scrollHeight ${o.sh} / sections ${o.sections} / 6 x innerHeight ${6 * o.ih}`);
 }
 
 async function geometryChecks(page, label, { realPhotos = false } = {}) {
@@ -731,9 +747,15 @@ section('Phone 390x844 (iPhone UA, touch, DPR 3)');
   const st = await geometryChecks(page, 'phone');
   check('pixel ratio capped at 1.5', st.dpr === 1.5, `dpr ${st.dpr}`);
   const listeners = await page.evaluate(() => window.__listenerLog);
-  const active = listeners.filter((l) => !l.passive);
+  // The line-up's wheel listener is the one deliberate exception: it must cancel horizontal wheel steps.
+  const lineupWheel = (l) => l.type === 'wheel' && l.cls.includes('nocta-lineup__viewport');
+  const active = listeners.filter((l) => !l.passive && !lineupWheel(l));
   check('all touch/pointer listeners are passive', listeners.length >= 6 && active.length === 0,
-    `${listeners.length} listeners, non-passive: ${active.map((l) => l.type).join(',') || 'none'}`);
+    `${listeners.length} listeners, non-passive: ${active.map((l) => `${l.type}@${l.cls}`).join(',') || 'none'}`);
+  check('line-up: pointer listeners passive, only its horizontal-wheel listener is not',
+    listeners.filter((l) => l.cls.includes('nocta-lineup') && /^pointer/.test(l.type)).every((l) => l.passive) &&
+      listeners.filter((l) => lineupWheel(l) && !l.passive).length === 1,
+    listeners.filter((l) => l.cls.includes('nocta-lineup')).map((l) => `${l.type}${l.passive ? '' : '!'}`).join(','));
   await noOverflow(page);
 
   const cdp = await context.newCDPSession(page);
@@ -1136,6 +1158,625 @@ section('Resize and unmount');
   });
   check('component can be mounted again after destroy', remount === 'webgl', remount);
   hygiene(log);
+  await context.close();
+}
+
+// =========================================================================== line-up carousel
+
+const lineup = (page) => page.evaluate(() => window.__noctaLineup.debug.getState());
+const p4 = (p) => 1 - (1 - Math.min(Math.max(p, 0), 1)) ** 5;
+const LINEUP_YAW_LIMIT = 0.72; // flat-card adaptation of the spec's yaw (README)
+const LINEUP_AMBIENT = 0.74;
+
+async function openLineup(contextOptions = {}, options = {}) {
+  const r = await open(contextOptions, { scrollToReveal: false, query: '?debug&noidle', ...options });
+  const reserved = await r.page.evaluate(() => ({
+    h: document.querySelector('.nocta-lineup').getBoundingClientRect().height,
+    ih: window.innerHeight,
+  }));
+  await r.page.evaluate(() => document.querySelector('.nocta-lineup').scrollIntoView({ block: 'start' }));
+  await r.page.waitForFunction(() => window.__noctaLineup.debug.getState().mode !== 'loading', null, { timeout: 30000 });
+  return { ...r, reserved };
+}
+
+/** Frozen clock: finishes the opening and any easing deterministically. */
+const lineupAdvance = (page, ms) => page.evaluate((m) => window.__noctaLineup.debug.advance(m), ms);
+const lineupFreeze = (page) => page.evaluate(() => window.__noctaLineup.debug.freeze());
+
+async function lineupGeometry(page, label) {
+  const g = await page.evaluate(() => {
+    const d = window.__noctaLineup.debug;
+    const st = d.getState();
+    const els = document.querySelectorAll('.nocta-lineup__card');
+    let maxErr = 0;
+    let visible = 0;
+    for (const c of st.cards) {
+      if (!c.visible) continue;
+      visible++;
+      const p = d.project(c.index);
+      const r = els[c.index].getBoundingClientRect();
+      maxErr = Math.max(maxErr, Math.abs(r.left - p.left), Math.abs(r.right - p.right), Math.abs(r.top - p.top), Math.abs(r.bottom - p.bottom));
+    }
+    const centre = st.cards.find((c) => Math.abs(c.offset) < 1e-6);
+    return { st, maxErr, visible, centreBox: centre && d.project(centre.index), vw: window.innerWidth, vh: window.innerHeight };
+  });
+  check(`${label}: CSS 3D cards land exactly on the world camera projection (<= 1 px)`, g.visible > 0 && g.maxErr <= 1,
+    `max error ${fmt(g.maxErr, 2)} px over ${g.visible} visible cards`);
+  return g;
+}
+
+function finalWaveChecks(st, label) {
+  const r = st.camera.ratio;
+  let posErr = 0;
+  let rotErr = 0;
+  let yawOk = true;
+  const visible = st.cards.filter((c) => c.visible).sort((a, b) => a.offset - b.offset);
+  for (const c of st.cards) {
+    const x = c.offset;
+    const p = c.pose;
+    posErr = Math.max(posErr, Math.abs(p.x - x), Math.abs(p.y - Math.sin(x * 0.25 * r)), Math.abs(p.z - (-Math.abs(x) - 0.2)));
+    rotErr = Math.max(rotErr, Math.abs(p.pitch + Math.PI / 9), Math.abs(p.roll - Math.PI / 16), Math.abs(p.spin));
+    if (Math.abs(p.yaw) > LINEUP_YAW_LIMIT) yawOk = false; // tanh saturates to exactly 1 far out
+  }
+  for (let i = 1; i < visible.length; i++) if (!(visible[i].pose.yaw > visible[i - 1].pose.yaw)) yawOk = false;
+  const centre = st.cards.find((c) => Math.abs(c.offset) < 1e-6);
+  const offsets = st.cards.map((c) => c.offset);
+  check(`${label}: wave position (x, sin(x .25 ratio), -|x|-.2) and rotation (-PI/9, -, PI/16) exact`, posErr < 1e-9 && rotErr < 1e-9,
+    `position ${posErr.toExponential(1)}, rotation ${rotErr.toExponential(1)}, ratio ${fmt(r)}`);
+  check(`${label}: card yaw = soft-limited spec yaw (centre ${fmt(centre.pose.yaw)}, monotonic, never edge-on)`,
+    yawOk && near(centre.pose.yaw, LINEUP_YAW_LIMIT * Math.tanh(-Math.PI / 9 / LINEUP_YAW_LIMIT), 1e-9));
+  check(`${label}: 24 clones wrap inside [-42, 42) at 3.5 spacing`,
+    offsets.every((o) => o >= -42 && o < 42 && near(o / 3.5, Math.round(o / 3.5), 1e-9)) && new Set(offsets.map((o) => Math.round(o / 3.5))).size === 24);
+}
+
+/** A client point on card `offset` that the alpha-tested raycast attributes to that card (and lies in view). */
+const pickOnCard = (page, offset) =>
+  page.evaluate((off) => {
+    const d = window.__noctaLineup.debug;
+    const st = d.getState();
+    const c = st.cards.find((k) => Math.abs(k.offset - off) < 1e-6);
+    if (!c) return null;
+    for (const v of [0.85, 0.75, 0.9, 0.65]) {
+      for (const u of [0.5, 0.6, 0.4, 0.7, 0.3, 0.8, 0.2, 0.9, 0.1, 0.95, 0.05]) {
+        const p = d.pointAt(c.index, u, v);
+        if (p.x < 2 || p.y < 2 || p.x > window.innerWidth - 2 || p.y > window.innerHeight - 2) continue;
+        const h = d.hitTest(p.x, p.y);
+        if (h && h.index === c.index) return { ...p, index: c.index };
+      }
+    }
+    return null;
+  }, offset);
+
+section('Line-up carousel · desktop 1440x1000');
+{
+  const { context, page, log, reserved } = await openLineup();
+  check('section reserves 100svh before loading', near(reserved.h, reserved.ih, 1), `${reserved.h} / ${reserved.ih}`);
+  let st = await lineup(page);
+  check('ready: 24 clones repeating the 4 shoes in order', st.mode === 'ready' && st.clones === 24 && st.items === 4 &&
+    st.cards.length === 24 && st.cards.every((c, i) => c.item === i % 4), `${st.mode}, ${st.clones} clones`);
+  await page.waitForFunction(() => {
+    const s = window.__noctaLineup.debug.getState();
+    return s.armed && (s.running || s.elapsed > 0);
+  }, null, { timeout: 15000 });
+  check('the opening starts by itself once the section is in view', true);
+  await page.waitForFunction(() => {
+    const s = window.__noctaLineup.debug.getState();
+    return s.elapsed >= 4.5 && !s.running;
+  }, null, { timeout: 90000 });
+  st = await lineup(page);
+  await page.waitForTimeout(400);
+  const idle = await lineup(page);
+  check('opening completes at 4.5 s of animation time, then the loop sleeps', st.elapsed === 4.5 && !idle.running && idle.frames === st.frames,
+    `elapsed ${st.elapsed}, frames ${st.frames} -> ${idle.frames}`);
+  const dom = await page.evaluate(() => ({
+    dots: [...document.querySelectorAll('.nocta-lineup__dot')].map((d) => ({ label: d.getAttribute('aria-label'), pressed: d.getAttribute('aria-pressed') })),
+    buttons: [...document.querySelectorAll('.nocta-lineup__button')].map((b) => b.getAttribute('aria-label')),
+    controlsShown: !document.querySelector('.nocta-lineup__controls').hidden,
+    otherControls: document.querySelectorAll('.nocta-lineup a, .nocta-lineup input, .nocta-lineup select').length,
+    pause: document.querySelector('[data-action=pause]').getAttribute('aria-pressed'),
+    names: [...document.querySelectorAll('.nocta-lineup__items img')].map((i) => i.alt),
+    listClipped: (() => {
+      const r = document.querySelector('.nocta-lineup__items').getBoundingClientRect();
+      return r.width <= 1 && r.height <= 1;
+    })(),
+    decorative: document.querySelector('.nocta-lineup__viewport').getAttribute('aria-hidden') === 'true' &&
+      [...document.querySelectorAll('.nocta-lineup__shoe')].every((i) => i.alt === ''),
+    live: document.querySelector('.nocta-lineup__live').textContent,
+    liveAttr: document.querySelector('.nocta-lineup__live').getAttribute('aria-live'),
+    headings: document.querySelectorAll('.nocta-lineup h1, .nocta-lineup h2, .nocta-lineup h3, .nocta-lineup figcaption').length,
+    role: document.querySelector('.nocta-lineup').getAttribute('aria-roledescription'),
+  }));
+  check('controls: previous, next, 4 dots, pause, replay and nothing else', dom.controlsShown && dom.otherControls === 0 &&
+    dom.buttons.join('|') === 'Previous shoe|Next shoe|Pause animation|Replay intro' && dom.dots.length === 4,
+    dom.buttons.join(', '));
+  check('dots are named after the shoes, the first one pressed; pause not pressed',
+    dom.dots.every((d, i) => d.label === `Show ${dom.names[i]}` && d.pressed === String(i === 0)) && dom.pause === 'false');
+  check('images keep accessible names; 3D clones are decorative; no visible captions or headings',
+    dom.names.length === 4 && dom.names.every((n) => /^Nike Air (Force 1|Max Plus) in (black|white), side view$/.test(n)) &&
+      dom.listClipped && dom.decorative && dom.headings === 0 && dom.role === 'carousel', dom.names.join(' / '));
+  check('polite live region, silent at rest', dom.liveAttr === 'polite' && dom.live === '');
+  await lineupGeometry(page, 'desktop rest');
+  finalWaveChecks(st, 'desktop');
+  const centre = st.cards.find((c) => Math.abs(c.offset) < 1e-6);
+  const others = st.cards.filter((c) => c.visible && c !== centre);
+  check('spotlights: the centre shoe is lit, the rest stay at the ambient level', near(centre.brightness, 1, 0.01) &&
+    others.every((c) => c.brightness >= LINEUP_AMBIENT - 0.002 && c.brightness < centre.brightness),
+    `centre ${fmt(centre.brightness)}, others ${others.map((c) => fmt(c.brightness, 2)).join(' ')}`);
+  await page.screenshot({ path: path.join(OUT, 'lineup-desktop-rest.png') });
+
+  // ---- the opening timeline, frame-exact on a frozen clock
+  await page.evaluate(() => {
+    window.__noReload = 1;
+    window.__noctaLineup.debug.freeze();
+    window.__noctaLineup.replay();
+  });
+  const e0 = await lineup(page);
+  const v0 = e0.cards.filter((c) => c.visible);
+  check('replay resets opening, selection and pointer (no reload)', e0.elapsed === 0 && e0.position === 0 && e0.target === 0 &&
+    e0.selected === 0 && e0.pointer.x === 0 && (await page.evaluate(() => window.__noReload)) === 1);
+  check('t=0: a single shoe (spacing 10), camera z 25, lights at 0 (ambient), entrance spin PI/9',
+    v0.length === 1 && v0[0].offset === 0 && near(e0.camera.z, 25, 1e-9) && e0.entrance.light === 0 &&
+      near(v0[0].brightness, LINEUP_AMBIENT, 0.003) && near(v0[0].pose.spin, Math.PI / 9, 1e-9),
+    `${v0.length} visible, z ${fmt(e0.camera.z)}, b ${fmt(v0[0]?.brightness)}`);
+  await lineupAdvance(page, 2000);
+  const e2 = await lineup(page);
+  check('t=2 s: still a single shoe, camera z = lerp(25, 29, power4Out((t-1)/2.5)), light 30 x power4Out(t/2.5)',
+    e2.cards.filter((c) => c.visible).length === 1 && near(e2.camera.z, 25 + 4 * p4((e2.elapsed - 1) / 2.5), 1e-9) &&
+      near(e2.entrance.light, 30 * p4(e2.elapsed / 2.5), 1e-9), `z ${fmt(e2.camera.z)}, light ${fmt(e2.entrance.light)}`);
+  await page.screenshot({ path: path.join(OUT, 'lineup-opening-2s.png') });
+  await lineupAdvance(page, 1000);
+  const e3 = await lineup(page);
+  {
+    const q = p4((e3.elapsed - 2) / 2.5);
+    const sp = 10 - 9 * q;
+    const c = e3.cards.find((k) => near(k.offset, 3.5, 1e-9));
+    const r = e3.camera.ratio;
+    check('t=3 s: q = power4Out((t-2)/2.5); spacing lerp(10,1,q); wave and rotations scale with q', near(c.pose.x, 3.5 * sp, 1e-9) &&
+      near(c.pose.y, Math.sin(3.5 * sp * 0.25 * r * q), 1e-9) && near(c.pose.z, -3.7 * q, 1e-9) &&
+      near(c.pose.pitch, (-Math.PI / 9) * q, 1e-9) && near(c.pose.roll, (Math.PI / 16) * q, 1e-9) &&
+      near(c.pose.yaw, LINEUP_YAW_LIMIT * Math.tanh(((3.5 * sp * 0.5 - Math.PI / 9) * q) / LINEUP_YAW_LIMIT), 1e-9),
+    `q ${fmt(q)}, spacing ${fmt(sp)}`);
+    check('t=3 s: light -> 50 via q; spot angle PI/4 x (2-q); centre spin PI/9 x (1-q)',
+      near(e3.entrance.light, 30 * p4(e3.elapsed / 2.5) + (50 - 30 * p4(e3.elapsed / 2.5)) * q, 1e-9) &&
+        near(e3.entrance.spotAngle, (Math.PI / 4) * (2 - q), 1e-12) &&
+        near(e3.cards.find((k) => k.offset === 0).pose.spin, (Math.PI / 9) * (1 - q), 1e-9));
+  }
+  await page.screenshot({ path: path.join(OUT, 'lineup-opening-3s.png') });
+  await lineupAdvance(page, 1600);
+  const e45 = await lineup(page);
+  check('t>=4.5 s: final wave, camera z 29, light 50 (25 per spotlight)', e45.elapsed === 4.5 && e45.camera.z === 29 &&
+    e45.entrance.light === 50 && e45.entrance.spotIntensity === 25);
+  finalWaveChecks(e45, 'after replay');
+
+  // ---- selection, damping, announcements
+  await page.evaluate(() => window.__noctaLineup.next());
+  await lineupAdvance(page, 1000 / 60);
+  let s1 = await lineup(page);
+  check('next: target +3.5 and position eases by 1 - exp(-10 dt)', s1.target === 3.5 && near(s1.position, 3.5 * (1 - Math.exp(-10 / 60)), 1e-12),
+    `position ${fmt(s1.position, 5)}`);
+  const dotsPressed = () => page.$$eval('.nocta-lineup__dot', (ds) => ds.map((d) => d.getAttribute('aria-pressed')).join());
+  check('the new shoe is announced once, with its name and position', s1.announcements === 1 &&
+    s1.live === 'Nike Air Force 1 in white, side view. 2 of 4' && (await dotsPressed()) === 'false,true,false,false', s1.live);
+  await lineupAdvance(page, 3000);
+  s1 = await lineup(page);
+  check('easing settles exactly on the target', s1.position === 3.5);
+  await page.click('[data-action=previous]');
+  check('previous button: -3.5', (await lineup(page)).target === 0);
+  await page.click('.nocta-lineup__dot:nth-child(4)');
+  let s2 = await lineup(page);
+  check('dot 4 from shoe 1 takes the short wrapped route (one step back)', s2.target === -3.5 && s2.selected === 3, `target ${s2.target}`);
+  await page.click('.nocta-lineup__dot:nth-child(2)');
+  s2 = await lineup(page);
+  check('dot 2 from shoe 4: two steps forward (tie goes forward)', s2.target === 3.5 && s2.selected === 1, `target ${s2.target}`);
+  const before = s2.announcements;
+  await page.click('.nocta-lineup__dot:nth-child(2)');
+  check('choosing the shoe already selected announces nothing', (await lineup(page)).announcements === before);
+
+  await page.focus('[data-action=next]');
+  await page.keyboard.press('ArrowRight');
+  check('ArrowRight: next', (await lineup(page)).target === 7);
+  await page.keyboard.press('ArrowLeft');
+  await page.keyboard.press('ArrowLeft');
+  check('ArrowLeft: previous', (await lineup(page)).target === 0);
+  await page.keyboard.press('Shift+ArrowRight');
+  check('modified arrows are left alone', (await lineup(page)).target === 0);
+  await page.focus('[data-action=previous]');
+  await page.keyboard.press('Tab');
+  const ring = await page.evaluate(() => {
+    const a = document.activeElement;
+    const cs = getComputedStyle(a);
+    return { cls: a.className, fv: a.matches(':focus-visible'), style: cs.outlineStyle, width: cs.outlineWidth };
+  });
+  check('keyboard focus shows a clear 2 px ring', ring.cls === 'nocta-lineup__dot' && ring.fv && ring.style === 'solid' && ring.width === '2px',
+    JSON.stringify(ring));
+  await page.screenshot({ path: path.join(OUT, 'lineup-focus-ring.png') });
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Enter');
+  check('Enter on a focused dot selects it', (await lineup(page)).selected === 1 && (await lineup(page)).target === 3.5);
+
+  // ---- wheel
+  await lineupAdvance(page, 3000);
+  const vb = await page.locator('.nocta-lineup__viewport').boundingBox();
+  await page.evaluate(() => {
+    window.__wheelLog = [];
+    window.addEventListener('wheel', (e) => window.__wheelLog.push({ dx: e.deltaX, dy: e.deltaY, prevented: e.defaultPrevented }), { passive: true });
+  });
+  await page.mouse.move(vb.x + vb.width / 2, vb.y + vb.height * 0.2);
+  const w0 = (await lineup(page)).target;
+  await page.mouse.wheel(120, 0);
+  await page.mouse.wheel(120, 0);
+  check('horizontal wheel steps once per 280 ms (throttled)', (await lineup(page)).target === w0 + 3.5);
+  await page.waitForTimeout(320);
+  await page.mouse.wheel(-120, 0);
+  check('after 280 ms the wheel steps again', (await lineup(page)).target === w0);
+  const y0 = await page.evaluate(() => window.scrollY);
+  await page.mouse.wheel(0, -300);
+  await page.waitForTimeout(300);
+  const y1 = await page.evaluate(() => window.scrollY);
+  const wl = await page.evaluate(() => window.__wheelLog);
+  check('vertical wheel scrolls the page natively and never steps', (await lineup(page)).target === w0 && y1 < y0 &&
+    wl.filter((w) => w.dy !== 0 && w.dx === 0).every((w) => !w.prevented), `scrollY ${y0} -> ${y1}`);
+  check('horizontal wheel is cancelled (no sideways scroll or swipe-back)', wl.filter((w) => w.dx !== 0).every((w) => w.prevented));
+  const pinch = await page.evaluate(() => {
+    const e = new WheelEvent('wheel', { deltaX: 120, deltaY: 0, ctrlKey: true, bubbles: true, cancelable: true });
+    document.querySelector('.nocta-lineup__viewport').dispatchEvent(e);
+    return e.defaultPrevented;
+  });
+  check('ctrl + wheel (pinch zoom) is left to the browser', !pinch && (await lineup(page)).target === w0);
+  await page.evaluate(() => document.querySelector('.nocta-lineup').scrollIntoView({ block: 'start' }));
+  await waitFrames(page, 2);
+
+  // ---- drag, throw, vertical gesture
+  await lineupAdvance(page, 3000);
+  const cx = vb.x + vb.width / 2;
+  const cy = vb.y + vb.height * 0.5;
+  const t1 = (await lineup(page)).target;
+  await page.mouse.move(cx, cy);
+  await page.mouse.down();
+  for (let i = 1; i <= 8; i++) await page.mouse.move(cx - i * 10, cy);
+  const mid = await lineup(page);
+  for (let i = 9; i <= 17; i++) await page.mouse.move(cx - i * 10, cy);
+  await page.waitForTimeout(160);
+  await page.mouse.up();
+  const slow = await lineup(page);
+  check('drag: target follows the pointer (delta x .02), no snapping mid-drag', near(mid.target, t1 + 1.6, 1e-9), `target ${fmt(mid.target)}`);
+  check('slow release (> 100 ms after the last move): no throw, snaps to the nearest shoe', slow.target === t1 + 3.5, `target ${slow.target}`);
+  await lineupAdvance(page, 3000);
+  const t2 = (await lineup(page)).target;
+  await page.mouse.move(cx, cy);
+  await page.mouse.down();
+  for (let i = 1; i <= 3; i++) await page.mouse.move(cx - i * 20, cy);
+  await page.mouse.up();
+  check('quick flick adds the throw (-lastDelta x .16) before snapping', (await lineup(page)).target === t2 + 3.5,
+    `1.2 dragged + 3.2 thrown -> ${(await lineup(page)).target - t2}`);
+  await lineupAdvance(page, 3000);
+  const t3 = (await lineup(page)).target;
+  await page.mouse.move(cx, cy);
+  await page.mouse.down();
+  for (let i = 1; i <= 6; i++) await page.mouse.move(cx + 2, cy - i * 12);
+  await page.mouse.up();
+  check('a vertical drag is neither a carousel gesture nor a click', (await lineup(page)).target === t3);
+
+  // ---- raycast clicks
+  await lineupAdvance(page, 3000);
+  const t4 = (await lineup(page)).target;
+  let right = await pickOnCard(page, 3.5);
+  await page.mouse.move(right.x, right.y);
+  const hover = await page.$eval('.nocta-lineup__viewport', (v) => [v.dataset.hover, getComputedStyle(v).cursor]);
+  check('hovering a neighbour shows a pointer cursor', hover[0] === 'step' && hover[1] === 'pointer', hover.join(' '));
+  await page.mouse.click(right.x, right.y);
+  check('clicking the right neighbour steps right (raycast)', (await lineup(page)).target === t4 + 3.5);
+  await lineupAdvance(page, 3000);
+  const left = await pickOnCard(page, -3.5);
+  await page.mouse.click(left.x, left.y);
+  check('clicking the left neighbour steps left', (await lineup(page)).target === t4);
+  await lineupAdvance(page, 3000);
+  const mine = await pickOnCard(page, 0);
+  await page.mouse.click(mine.x, mine.y);
+  check('clicking the centre shoe does nothing', (await lineup(page)).target === t4);
+  const gap = await page.evaluate(() => {
+    const d = window.__noctaLineup.debug;
+    const c = d.getState().cards.find((k) => k.offset === 0);
+    const p = d.pointAt(c.index, 0.2, 0.015); // transparent margin above the shoe
+    const h = d.hitTest(p.x, p.y);
+    return { centre: c.index, hit: h && h.index };
+  });
+  check('transparent pixels never hit (alpha-tested raycast)', gap.hit !== gap.centre, JSON.stringify(gap));
+
+  // ---- pause, resume, replay (real clock)
+  await page.evaluate(() => window.__noctaLineup.debug.unfreeze());
+  await page.click('[data-action=replay]');
+  await page.waitForFunction(() => window.__noctaLineup.debug.getState().elapsed > 0.4, null, { timeout: 15000 });
+  await page.click('[data-action=pause]');
+  const pa = await lineup(page);
+  await page.waitForTimeout(500);
+  const pb = await lineup(page);
+  check('pause: pressed state, the whole timeline and clock freeze', pa.paused && !pb.running && pb.elapsed === pa.elapsed &&
+    pb.frames === pa.frames && (await page.getAttribute('[data-action=pause]', 'aria-pressed')) === 'true', `elapsed ${fmt(pa.elapsed)}`);
+  await page.screenshot({ path: path.join(OUT, 'lineup-paused.png') });
+  await page.click('[data-action=next]');
+  const pc = await lineup(page);
+  check('while paused, navigation applies at once and the clock stays put', pc.target === pa.target + 3.5 && pc.position === pc.target &&
+    pc.elapsed === pa.elapsed);
+  await page.click('[data-action=pause]');
+  await page.waitForFunction((e) => window.__noctaLineup.debug.getState().elapsed > e, pa.elapsed, { timeout: 10000 });
+  check('resume continues from the same state', (await page.getAttribute('[data-action=pause]', 'aria-pressed')) === 'false' && !(await lineup(page)).paused);
+  await page.click('[data-action=replay]');
+  const rp = await lineup(page);
+  check('replay restarts the opening and the selection without reloading', rp.elapsed < 1 && rp.target === 0 && rp.selected === 0 &&
+    (await page.evaluate(() => window.__noReload)) === 1);
+
+  // ---- offscreen and hidden tab
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForFunction(() => !window.__noctaLineup.debug.getState().running, null, { timeout: 10000 });
+  const o1 = await lineup(page);
+  await page.waitForTimeout(500);
+  const o2 = await lineup(page);
+  check('offscreen: loop suspended, opening clock frozen', !o2.running && o2.elapsed === o1.elapsed && o2.frames === o1.frames && o1.elapsed < 4.5,
+    `elapsed ${fmt(o1.elapsed)}`);
+  await page.evaluate(() => document.querySelector('.nocta-lineup').scrollIntoView({ block: 'start' }));
+  await page.waitForFunction((e) => window.__noctaLineup.debug.getState().elapsed > e, o1.elapsed, { timeout: 10000 });
+  check('back in view: the opening resumes where it stopped', true);
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => true });
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  const h1 = await lineup(page);
+  check('document hidden: loop suspended', !h1.running && h1.docHidden);
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => false });
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  const h2 = await lineup(page);
+  check('document visible again: loop resumes', h2.running || h2.elapsed === 4.5);
+  await noOverflow(page);
+  hygiene(log);
+  await context.close();
+}
+
+section('Line-up carousel · phone 390x844 (iPhone UA, touch, DPR 3)');
+{
+  const { userAgent } = devices['iPhone 13'];
+  const { context, page, log } = await openLineup({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, userAgent });
+  await lineupFreeze(page);
+  await lineupAdvance(page, 6000);
+  const g = await lineupGeometry(page, 'phone');
+  check('portrait: camera z x 1.08 and ratio = clamp(1440/390, 1, 2.4) = 2.4', g.st.camera.z === 29 * 1.08 && g.st.camera.ratio === 2.4,
+    `z ${fmt(g.st.camera.z)}, ratio ${g.st.camera.ratio}`);
+  finalWaveChecks(g.st, 'phone');
+  check('the centre shoe fits the phone width', g.centreBox.left >= 0 && g.centreBox.right <= g.vw,
+    `${fmt(g.centreBox.left, 1)}..${fmt(g.centreBox.right, 1)} of ${g.vw}`);
+  const ctl = await page.evaluate(() => {
+    const r = document.querySelector('.nocta-lineup__controls').getBoundingClientRect();
+    const sizes = [...document.querySelectorAll('.nocta-lineup__button, .nocta-lineup__dot')].map((b) => {
+      const q = b.getBoundingClientRect();
+      return [q.width, q.height];
+    });
+    return { l: r.left, r: r.right, b: r.bottom, vh: window.innerHeight, sizes };
+  });
+  check('controls fit the screen with touch-sized targets (buttons 44 px, dots 28x44 px)', ctl.l >= 0 && ctl.r <= 390 && ctl.b <= ctl.vh &&
+    ctl.sizes.every(([w, h]) => w >= 28 && h >= 44), `${fmt(ctl.l, 1)}..${fmt(ctl.r, 1)}`);
+  await noOverflow(page);
+  await page.screenshot({ path: path.join(OUT, 'lineup-phone.png') });
+
+  const cdp = await context.newCDPSession(page);
+  const s0 = (await lineup(page)).target;
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 300, y: 420 }] });
+  for (let i = 1; i <= 12; i++) {
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 300 - i * 20, y: 421 }] });
+    await page.waitForTimeout(16);
+  }
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  const sw = await lineup(page);
+  check('horizontal swipe steers the line-up and snaps to a shoe', sw.target > s0 && Number.isInteger(sw.target / 3.5),
+    `target ${s0} -> ${sw.target}`);
+  await lineupAdvance(page, 3000);
+  const yBefore = await page.evaluate(() => window.scrollY);
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 195, y: 260 }] });
+  for (let i = 1; i <= 16; i++) {
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: 196, y: 260 + i * 25 }] });
+    await page.waitForTimeout(16);
+  }
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await page.waitForTimeout(400);
+  const yAfter = await page.evaluate(() => window.scrollY);
+  check('vertical swipe keeps native page scrolling and does not steer', yBefore - yAfter > 150 && (await lineup(page)).target === sw.target,
+    `scrolled ${yBefore - yAfter}px`);
+  await page.evaluate(() => document.querySelector('.nocta-lineup').scrollIntoView({ block: 'start' }));
+  await waitFrames(page, 2);
+  await lineupAdvance(page, 100);
+  const tap = await pickOnCard(page, 3.5);
+  check('a neighbour is visible and hittable at the phone edge', Boolean(tap));
+  if (tap) {
+    await page.touchscreen.tap(tap.x, tap.y);
+    check('tapping the neighbour steps towards it', (await lineup(page)).target === sw.target + 3.5);
+  }
+  hygiene(log);
+  await context.close();
+}
+
+section('Line-up carousel · tablet 820x1180 (iPad UA, touch, DPR 2)');
+{
+  const { userAgent } = devices['iPad Pro 11'];
+  const { context, page, log } = await openLineup({ viewport: { width: 820, height: 1180 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, userAgent });
+  await lineupFreeze(page);
+  await lineupAdvance(page, 6000);
+  const g = await lineupGeometry(page, 'tablet');
+  check('aspect .69 < .8: camera z x 1.08; ratio = 1440/820', g.st.camera.z === 29 * 1.08 && near(g.st.camera.ratio, 1440 / 820, 1e-12));
+  finalWaveChecks(g.st, 'tablet');
+  await noOverflow(page);
+  const tap = await pickOnCard(page, -3.5);
+  await page.touchscreen.tap(tap.x, tap.y);
+  check('tapping the left neighbour steps left', (await lineup(page)).target === -3.5);
+  await lineupAdvance(page, 3000);
+  await page.screenshot({ path: path.join(OUT, 'lineup-tablet.png') });
+  hygiene(log);
+  await context.close();
+}
+
+section('Line-up carousel · reduced motion (live)');
+{
+  const { context, page, log } = await openLineup({ reducedMotion: 'reduce' });
+  let st = await lineup(page);
+  check('the opening is skipped and nothing animates', st.elapsed === 4.5 && !st.running && st.position === 0, `elapsed ${st.elapsed}`);
+  await page.click('[data-action=next]');
+  st = await lineup(page);
+  check('selection applies immediately', st.target === 3.5 && st.position === 3.5 && !st.running && st.announcements === 1);
+  const vb = await page.locator('.nocta-lineup__viewport').boundingBox();
+  await page.mouse.move(vb.x + vb.width * 0.8, vb.y + vb.height * 0.3);
+  await page.waitForTimeout(200);
+  st = await lineup(page);
+  check('no pointer tilt under reduced motion', st.pointer.x === 0 && st.pointer.tx === 0 && !st.running);
+  await page.mouse.move(vb.x + vb.width / 2, vb.y + vb.height / 2);
+  await page.mouse.down();
+  for (let i = 1; i <= 5; i++) await page.mouse.move(vb.x + vb.width / 2 - i * 20, vb.y + vb.height / 2);
+  const dr = await lineup(page);
+  await page.waitForTimeout(150);
+  await page.mouse.up();
+  const du = await lineup(page);
+  check('dragging still works and follows the finger directly; release snaps at once', near(dr.position, 5.5, 1e-9) && dr.position === dr.target &&
+    du.target === 7 && du.position === 7, `drag ${fmt(dr.position)}, release ${du.position}`);
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.click('[data-action=replay]');
+  await page.waitForFunction(() => {
+    const s = window.__noctaLineup.debug.getState();
+    return s.running && s.elapsed > 0.2 && s.elapsed < 4.5;
+  }, null, { timeout: 10000 });
+  check('motion returns when the preference changes', true);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.waitForFunction(() => !window.__noctaLineup.debug.getState().running, null, { timeout: 10000 });
+  st = await lineup(page);
+  check('turning reduced motion on mid-opening jumps to the end at once', st.elapsed === 4.5 && st.position === st.target);
+  hygiene(log);
+  await context.close();
+}
+
+section('Line-up carousel · a missing image is reported, never substituted');
+{
+  const { context, page, log } = await openLineup({}, {
+    routes: [['**/assets/nike-air-max-plus-white.webp', (route) => route.fulfill({ status: 404, body: 'missing' })]],
+  });
+  const st = await lineup(page);
+  const ui = await page.evaluate(() => ({
+    status: document.querySelector('.nocta-lineup__status').textContent,
+    statusShown: !document.querySelector('.nocta-lineup__status').hidden,
+    controls: document.querySelector('.nocta-lineup__controls').hidden,
+    cards: document.querySelectorAll('.nocta-lineup__card').length,
+    h: document.querySelector('.nocta-lineup').getBoundingClientRect().height,
+    ih: window.innerHeight,
+  }));
+  check('missing state names the exact URL', st.mode === 'missing' && st.missing.join() === 'assets/nike-air-max-plus-white.webp' &&
+    ui.statusShown && ui.status.includes('assets/nike-air-max-plus-white.webp'), ui.status);
+  check('no carousel, no controls, space still reserved', ui.controls && ui.cards === 0 && near(ui.h, ui.ih, 1));
+  check('a console warning names the missing file', log.warnings.some((w) => w.includes('assets/nike-air-max-plus-white.webp')));
+  await page.screenshot({ path: path.join(OUT, 'lineup-missing.png') });
+  hygiene(log, { allowMissing: true });
+  await context.close();
+}
+
+section('Line-up carousel · unmount and remount');
+{
+  const { context, page, log } = await openLineup();
+  await page.waitForFunction(() => window.__noctaLineup.debug.getState().elapsed > 0.2, null, { timeout: 15000 });
+  const un = await page.evaluate(async () => {
+    const raf2 = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const api = window.__noctaLineup;
+    api.destroy();
+    const f0 = api.debug.getState().frames;
+    const vp = document.querySelector('.nocta-lineup__viewport');
+    vp.dispatchEvent(new WheelEvent('wheel', { deltaX: 200, bubbles: true, cancelable: true }));
+    vp.dispatchEvent(new PointerEvent('pointermove', { clientX: 100, clientY: 100, bubbles: true }));
+    document.querySelector('.nocta-lineup').dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+    await raf2();
+    await raf2();
+    const st = api.debug.getState();
+    const root = document.querySelector('.nocta-lineup');
+    return {
+      frames: st.frames - f0,
+      running: st.running,
+      destroyed: st.destroyed,
+      cards: root.querySelectorAll('.nocta-lineup__card').length,
+      dots: root.querySelectorAll('.nocta-lineup__dot').length,
+      controlsHidden: root.querySelector('.nocta-lineup__controls').hidden,
+      mode: root.dataset.mode,
+      perspective: vp.style.perspective,
+      items: root.querySelectorAll('.nocta-lineup__items img').length,
+    };
+  });
+  check('destroy stops the loop and removes listeners and observers', un.frames === 0 && !un.running && un.destroyed, JSON.stringify(un));
+  check('destroy removes the clones, dots and controls and restores the markup', un.cards === 0 && un.dots === 0 && un.controlsHidden &&
+    un.mode === undefined && un.perspective === '' && un.items === 4);
+  const remount = await page.evaluate(async () => {
+    const { mountShoeCarousel } = await import(new URL('src/nocta-shoe-carousel.js', document.baseURI).href);
+    const api = mountShoeCarousel(document.querySelector('[data-nocta-lineup]'), { debug: true });
+    const t0 = performance.now();
+    await new Promise((r) => {
+      const t = () => (api.debug.getState().mode === 'loading' && performance.now() - t0 < 20000 ? requestAnimationFrame(t) : r());
+      t();
+    });
+    const st = api.debug.getState();
+    api.destroy();
+    return { mode: st.mode, cards: st.cards.length, dots: st.items };
+  });
+  check('the carousel can be mounted again after destroy', remount.mode === 'ready' && remount.cards === 24, JSON.stringify(remount));
+  hygiene(log);
+  await context.close();
+}
+
+section(lineupAssetsPresent ? 'Real line-up cut-outs' : 'Real line-up cut-outs (missing)');
+{
+  const { context, page, log } = await openLineup({}, { fixtures: false });
+  const st = await lineup(page);
+  if (!lineupAssetsPresent) {
+    const status = await page.textContent('.nocta-lineup__status');
+    check('missing cut-outs are reported, not substituted', st.mode === 'missing' && LINEUP_FILES.every((f) => status.includes(`assets/${f}.webp`)), status);
+    hygiene(log, { allowMissing: true });
+  } else {
+    check('the four cut-outs load', st.mode === 'ready', st.mode);
+    const probe = await page.evaluate(async () => {
+      const out = [];
+      for (const img of document.querySelectorAll('.nocta-lineup__items img')) {
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth;
+        c.height = img.naturalHeight;
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const d = ctx.getImageData(0, 0, c.width, c.height).data;
+        let transparent = 0;
+        for (let i = 3; i < d.length; i += 4) if (d[i] < 8) transparent++;
+        const corner = (x, y) => d[(y * c.width + x) * 4 + 3];
+        out.push({
+          src: img.getAttribute('src'),
+          w: img.naturalWidth,
+          h: img.naturalHeight,
+          transparent: transparent / (d.length / 4),
+          corners: [corner(0, 0), corner(c.width - 1, 0), corner(0, c.height - 1), corner(c.width - 1, c.height - 1)],
+        });
+      }
+      return out;
+    });
+    for (const p of probe) {
+      check(`${p.src}: transparent background (no grey), ${p.w}x${p.h}`, p.transparent > 0.15 && p.corners.every((a) => a === 0),
+        `${fmt(p.transparent * 100, 1)} % transparent`);
+    }
+    check('every card keeps its image aspect (rigid, undeformed)', st.cards.every((c) => near(c.aspect, probe[c.item].w / probe[c.item].h, 1e-9)));
+    await lineupFreeze(page);
+    await page.evaluate(() => window.__noctaLineup.replay());
+    for (const [ms, name] of [[2600, 'real-lineup-opening-2.6s'], [700, 'real-lineup-opening-3.3s'], [3000, 'real-lineup-rest']]) {
+      await lineupAdvance(page, ms);
+      await waitFrames(page, 2);
+      await page.screenshot({ path: path.join(OUT, `${name}.png`) });
+    }
+    await lineupGeometry(page, 'real cut-outs');
+    for (const i of [1, 2, 3]) {
+      await page.click(`.nocta-lineup__dot:nth-child(${i + 1})`);
+      await lineupAdvance(page, 3000);
+      await waitFrames(page, 2);
+      await page.screenshot({ path: path.join(OUT, `real-lineup-shoe-${i + 1}.png`) });
+    }
+    check('visual quality of the real cut-outs', true, 'requires human review of real-lineup-*.png');
+    hygiene(log);
+  }
   await context.close();
 }
 

@@ -1,5 +1,6 @@
 import { mountNoctaFluidReveal } from './nocta-fluid-reveal.js';
 import { mountScrollHeadline } from './nocta-scroll-headline.js';
+import { mountShoeCarousel } from './nocta-shoe-carousel.js';
 
 const params = new URLSearchParams(window.location.search);
 const debug = params.has('debug');
@@ -19,4 +20,10 @@ if (frame) {
     idle: params.has('noidle') ? false : undefined,
   });
   if (debug) window.__noctaReveal = instance;
+}
+
+const lineup = document.querySelector('[data-nocta-lineup]');
+if (lineup) {
+  const instance = mountShoeCarousel(lineup, { debug });
+  if (debug) window.__noctaLineup = instance;
 }
