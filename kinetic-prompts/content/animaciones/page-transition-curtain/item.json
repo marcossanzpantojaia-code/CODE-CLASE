@@ -1,0 +1,69 @@
+{
+  "section": "animaciones",
+  "slug": "page-transition-curtain",
+  "title": "Cortina con borde curvo",
+  "summary": "Una cortina sube desde abajo con el borde curvo, que se endereza al tapar la página, y sale por arriba dejando otra curva.",
+  "category": "transiciones",
+  "tech": [
+    "JavaScript",
+    "Web Animations",
+    "CSS"
+  ],
+  "difficulty": 2,
+  "performance": "ligero",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/transitions/MENU-001-menu-curvo-svg.md",
+    "knowledge/transitions/PT-001-transiciones-de-pagina-paralelas.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md",
+    "knowledge/ux/UX-001-duracion-y-easing.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "color",
+      "label": "Color de la cortina",
+      "type": "color",
+      "default": "#1c1b19"
+    },
+    {
+      "id": "duration",
+      "label": "Duración de cada fase",
+      "type": "range",
+      "min": 0.4,
+      "max": 1.4,
+      "step": 0.05,
+      "default": 0.7,
+      "unit": "s"
+    },
+    {
+      "id": "curve",
+      "label": "Altura de la curva",
+      "type": "range",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 18,
+      "unit": "% de la pantalla"
+    },
+    {
+      "id": "label",
+      "label": "Texto en la cortina",
+      "type": "text",
+      "default": "alba"
+    }
+  ],
+  "tips": [
+    "Haz la curva con coordenadas relativas o con un lóbulo que se escala: así no hay que medir la ventana y no se rompe al cambiar de tamaño.",
+    "Solapa la curva 1 px con el panel: si no, entre los dos asoma una línea de la página de debajo.",
+    "Con una curvatura entre el 10 y el 20 % de la altura se lee bien sin parecer un globo.",
+    "Pon el texto de la cortina en blanco o en negro según el contraste con su color (mínimo 4,5:1).",
+    "Con movimiento reducido no muevas la cortina: un fundido de 150 ms de la página nueva."
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-26"
+}

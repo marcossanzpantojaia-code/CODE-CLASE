@@ -66,8 +66,6 @@ export type AnimationItem = {
   promptTemplate: string;
 };
 
-const CONTENT_DIR = join(process.cwd(), "content", "animaciones");
-
 class ContentError extends Error {
   constructor(file: string, message: string) {
     super(`${file}: ${message}`);
@@ -168,28 +166,29 @@ export function parseAnimation(raw: unknown, promptTemplate: string, file: strin
   };
 }
 
-/** Todos los elementos, de más nuevo a más antiguo. */
-export function getAnimations(dir: string = CONTENT_DIR): AnimationItem[] {
-  if (!existsSync(dir)) return [];
-  const items = readdirSync(dir, { withFileTypes: true })
+/** Todos los elementos, de más nuevo a más antiguo. Las rutas están fijas en content/animaciones
+ * para que el empaquetador no rastree todo el proyecto. */
+export function getAnimations(): AnimationItem[] {
+  if (!existsSync(join(process.cwd(), "content", "animaciones"))) return [];
+  const items = readdirSync(join(process.cwd(), "content", "animaciones"), { withFileTypes: true })
     .filter((entry) => entry.isDirectory() && !entry.name.startsWith("_"))
     .map((entry) => {
-      const folder = join(dir, entry.name);
-      const file = join("content", "animaciones", entry.name, "item.json");
+      const slug = entry.name;
+      const file = `content/animaciones/${slug}/item.json`;
       const item = parseAnimation(
-        JSON.parse(readFileSync(join(folder, "item.json"), "utf8")),
-        readFileSync(join(folder, "prompt.md"), "utf8"),
+        JSON.parse(readFileSync(join(process.cwd(), "content", "animaciones", slug, "item.json"), "utf8")),
+        readFileSync(join(process.cwd(), "content", "animaciones", slug, "prompt.md"), "utf8"),
         file,
       );
-      if (item.slug !== entry.name) fail(file, `el slug (${item.slug}) no coincide con la carpeta`);
+      if (item.slug !== slug) fail(file, `el slug (${item.slug}) no coincide con la carpeta`);
       return item;
     });
   return items.sort((a, b) => b.createdAt.localeCompare(a.createdAt) || a.title.localeCompare(b.title, "es"));
 }
 
 /** Solo lo publicable: VALIDADO y que no sea de ejemplo (docs/PLAN.md, «Publicación»). */
-export function getPublishedAnimations(dir?: string): AnimationItem[] {
-  return getAnimations(dir).filter((item) => item.status === "VALIDADO" && !item.demo);
+export function getPublishedAnimations(): AnimationItem[] {
+  return getAnimations().filter((item) => item.status === "VALIDADO" && !item.demo);
 }
 
 export function defaultValues(item: Pick<AnimationItem, "params" | "title">): Record<string, ParamValue> {
@@ -207,7 +206,9 @@ type Manifest = { columnas: string[]; fichas: string[][] };
 export function knowledgeTitles(refs: string[]): string[] {
   const path = join(process.cwd(), "knowledge", "integration", "LIBRARY_MANIFEST.json");
   if (!existsSync(path)) return [];
-  const manifest = JSON.parse(readFileSync(path, "utf8")) as Manifest;
+  const manifest = JSON.parse(
+    readFileSync(join(process.cwd(), "knowledge", "integration", "LIBRARY_MANIFEST.json"), "utf8"),
+  ) as Manifest;
   const ruta = manifest.columnas.indexOf("ruta");
   const titulo = manifest.columnas.indexOf("titulo");
   const byPath = new Map(manifest.fichas.map((f) => [`knowledge/${f[ruta]}`, f[titulo]!]));

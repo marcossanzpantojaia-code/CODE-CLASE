@@ -879,3 +879,4 @@ IMG-001 (imágenes responsive), CSS-004 (container queries), TYPE-001 (tipograf�
 |---|---|---|---|---|---|---|---|
 | 2026-11-26 | animaciones | page-transition-blinds | MASK-002 (+ PT-001, A11Y-001, UX-001) | VALIDADO (Chromium) | WebM 336 KB · MP4 251 KB | 18 KB | Safari y Firefox sin probar; adaptación con `transform` en vez de máscara SVG |
 | 2026-11-26 | animaciones | page-transition-fade | CSS-002 (+ A11Y-001, UX-001) | VALIDADO (Chromium) | WebM 252 KB · MP4 224 KB | 11 KB | Safari y Firefox sin probar |
+| 2026-11-26 | animaciones | page-transition-curtain | MENU-001 (+ PT-001, A11Y-001, UX-001) | VALIDADO (Chromium) | WebM 85 KB · MP4 92 KB | 6 KB | Safari y Firefox sin probar; lóbulo escalado en vez de animar `d` |
