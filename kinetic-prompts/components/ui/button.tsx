@@ -24,15 +24,26 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: ReactNode;
 };
 
-const variants: Record<ButtonVariant, string> = {
-  primario: "bg-accent text-on-accent kp-hover:bg-accent-hover kp-active:bg-accent-press",
+/** Base común de Button y CopyButton. El borde de 1 px existe en todas las variantes para que
+ * cambiar de variante o de estado (p. ej. a «Copiado») no mueva el ancho. */
+export const buttonBase = cn(
+  "inline-flex items-center justify-center rounded-control border font-medium whitespace-nowrap select-none",
+  stateTransition,
+  focusRing,
+  disabledState,
+  loadingState,
+  pressState,
+);
+
+export const buttonVariants: Record<ButtonVariant, string> = {
+  primario: "border-transparent bg-accent text-on-accent kp-hover:bg-accent-hover kp-active:bg-accent-press",
   secundario:
-    "border border-border bg-surface-2 text-text kp-hover:border-border-strong kp-active:border-border-strong kp-active:bg-surface",
+    "border-border bg-surface-2 text-text kp-hover:border-border-strong kp-active:border-border-strong kp-active:bg-surface",
   fantasma:
-    "bg-transparent text-text-muted kp-hover:bg-surface-2 kp-hover:text-text kp-active:bg-surface-2 kp-active:text-text",
+    "border-transparent bg-transparent text-text-muted kp-hover:bg-surface-2 kp-hover:text-text kp-active:bg-surface-2 kp-active:text-text",
 };
 
-const sizes: Record<ButtonSize, string> = {
+export const buttonSizes: Record<ButtonSize, string> = {
   md: "h-10 gap-2 px-4 text-14",
   lg: "h-12 gap-2 px-6 text-16",
 };
@@ -62,17 +73,7 @@ export function Button({
   return (
     <Component
       type={asChild ? undefined : (type ?? "button")}
-      className={cn(
-        "inline-flex items-center justify-center rounded-control font-medium whitespace-nowrap select-none",
-        stateTransition,
-        focusRing,
-        disabledState,
-        loadingState,
-        pressState,
-        variants[variant],
-        sizes[size],
-        className,
-      )}
+      className={cn(buttonBase, buttonVariants[variant], buttonSizes[size], className)}
       aria-busy={loading || undefined}
       data-loading={loading || undefined}
       onClick={handleClick}

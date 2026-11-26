@@ -2,14 +2,17 @@
 
 import type { ReactNode } from "react";
 
+import { CopyProvider } from "./copy-provider";
 import { ToastProvider } from "./toast";
 import { TooltipProvider } from "./tooltip";
 
-/** Proveedores de la interfaz: tooltips y avisos para toda la app. */
+/** Proveedores de la interfaz: tooltips, avisos y botones de copia para toda la app. */
 export function UIProviders({ children }: { children: ReactNode }) {
   return (
     <TooltipProvider>
-      <ToastProvider>{children}</ToastProvider>
+      <ToastProvider>
+        <CopyProvider>{children}</CopyProvider>
+      </ToastProvider>
     </TooltipProvider>
   );
 }

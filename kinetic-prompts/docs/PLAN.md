@@ -27,11 +27,28 @@ Kinetic Prompts es una biblioteca de prompts para desarrollar nuestras webs y an
 - Explora una galería de efectos en movimiento sin necesidad de cuenta.
 - Abre un efecto y lo ve en grande, en escritorio y en móvil.
 - Ajusta parámetros (duración, easing, colores) y el prompt se reescribe solo.
-- Inicia sesión con Google y copia el prompt.
+- Copia el prompt de cualquier efecto con un clic, desde la tarjeta o desde la ficha (con sesión de Google a partir de la fase 6).
 - Guarda favoritos y colecciones.
 - Con plan de pago, aumenta su límite mensual de copias.
 
 **Qué nos diferencia:** cada prompt sale de una ficha con estado VALIDADO en la WEB_ENGINEERING_KNOWLEDGE_LIBRARY. Solo se publican efectos que Claude Code ha implementado y probado.
+
+### Principio rector: el botón de copia
+
+Toda la app se construye sobre un mismo botón. Cada efecto, cada web y cada sección de una web tiene un botón que copia su prompt con un solo clic. La galería, la ficha y los parámetros existen para elegir qué copiar y con qué valores. *(Decisión del 2026-11-26.)*
+
+- **Un clic, copiado.** El botón pasa a «Copiado ✓» durante 2 s y el prompt ya está en el portapapeles. No hay que abrir nada ni seleccionar texto. La ficha con vista previa y parámetros se mantiene para quien quiera verlo antes.
+- **En todas partes donde hay un prompt:**
+  - Tarjeta de la galería y de las novedades del inicio: variante secundaria, «Copiar», con los valores por defecto.
+  - Ficha: primario grande, fijo al hacer scroll, con los parámetros elegidos.
+  - Prompt maestro y cada sección de una web.
+  - Relacionados, favoritos y resultados de búsqueda, porque usan la misma tarjeta.
+- **Un solo componente:** `CopyButton` (`components/ui/copy-button.tsx`) con un único `CopyProvider`. Nadie escribe otro código de portapapeles.
+- **Estados:** reposo, hover, foco, activo, deshabilitado, copiando, copiado y error. El error muestra «Reintentar» y un aviso que dice qué falló. Una región aria-live anuncia «Prompt de … copiado al portapapeles».
+- **Sesión y límite (fase 6):** explorar es libre.
+  - El primer clic sin sesión abre el panel «Inicia sesión con Google para copiar», sin salir de la página, y tras el login la copia se completa sola.
+  - Cada copia, también la de una tarjeta, cuenta para el límite mensual (10 en el plan gratuito).
+- **El prompt puede llegar del servidor sin perder el clic.** `lib/clipboard.ts` usa `ClipboardItem` con una promesa mientras responde POST /api/copy, y tiene `writeText` y `execCommand` como respaldo.
 
 ### Los dos apartados
 
@@ -59,7 +76,8 @@ La app se divide en dos apartados con su propia galería, sus filtros y su plant
 | Heros | Tipografía animada, vídeo enmascarado, objeto 3D |
 | Texto | Split text, revelado por líneas, scramble |
 | Microinteracciones | Botón magnético, cursor personalizado, hover con imagen |
-| 3D / WebGL | Escena de producto, shader de fondo, configurador |
+| 3D / WebGL | Escena de producto, foto con volumen, configurador |
+| Fondos | Shader de fondo, ruido, partículas, color en movimiento |
 
 Los dos apartados están conectados. Cada web enumera las animaciones que usa, con un enlace a su ficha en Animaciones, y cada animación muestra en qué webs aparece.
 
@@ -165,11 +183,12 @@ La app tiene un inicio que presenta los dos apartados y, dentro de cada uno, la 
 - **Pie de la tarjeta:**
   - Nombre del efecto.
   - Chips de tecnología (máximo 3).
+  - Botón **Copiar** (`CopyButton`, variante secundaria): copia el prompt con los valores por defecto sin abrir la ficha.
   - Botón de favorito con forma de corazón.
 - Etiqueta «Nuevo» durante 14 días.
 - Estados: reposo, hover, foco de teclado (anillo de 2 px en `--accent`) y cargando (shimmer sobre `--surface-2`).
 
-En Webs hay dos diferencias: el vídeo de la tarjeta es un recorrido de scroll por la home, y el pie muestra sector y nivel en lugar de tecnologías.
+En Webs hay tres diferencias: el vídeo de la tarjeta es un recorrido de scroll por la home, el pie muestra sector y nivel en lugar de tecnologías, y su botón Copiar copia el prompt maestro.
 
 ### 4. Ficha de animación
 
@@ -187,7 +206,7 @@ Es la pantalla más importante. En escritorio se divide en dos columnas: 60 % vi
 - **Bloque del prompt:**
   - Fondo `--surface-2` y JetBrains Mono.
   - Pestañas «Prompt», «Qué incluye» y «Cómo usarlo».
-  - Botón grande **Copiar prompt**, fijo al hacer scroll.
+  - Botón grande **Copiar prompt** (`CopyButton` primario), fijo al hacer scroll.
 - Contador visible: «12 de 30 copias este mes».
 - Efectos relacionados (4 tarjetas).
 - **En móvil:**
@@ -235,6 +254,7 @@ Tiene la misma estructura de dos columnas, con estos cambios:
 |---|---|
 | Sin resultados de búsqueda | Mensaje con la palabra buscada y 3 categorías sugeridas |
 | Copiar sin sesión | Panel lateral «Inicia sesión con Google para copiar», sin perder la ficha |
+| Copia fallida | El botón pasa a «Reintentar» y un aviso dice qué falló (portapapeles bloqueado o red) y cómo seguir |
 | Límite alcanzado | Aviso en `--warning` con la fecha de renovación y el botón de plan |
 | Error de carga | Mensaje que explica qué falló y botón Reintentar |
 | Sin JavaScript | Pósteres estáticos y texto informativo legible |
@@ -563,6 +583,14 @@ Criterios de cierre:
 
 **Notas de implementación (2026-11-26)** · Tailwind 4 no usa `tailwind.config`: los tokens de `styles/tokens.css` se conectan a las clases con `@theme` en `app/globals.css`, que además vacía los valores por defecto de Tailwind. Las clases y las variantes de estado (`kp-hover`, `kp-focus`, `kp-active`) están documentadas en la Skill `kp-design-system`. `styles/guardia.test.ts` comprueba la lista «Prohibido» en cada `npm run test`.
 
+**Ampliación (2026-11-26): el botón de copia como cimiento.** Ver «Principio rector: el botón de copia».
+
+- `components/ui/copy-button.tsx` (`CopyButton`), `components/ui/copy-provider.tsx` (`CopyProvider`, dentro de `UIProviders`) y `lib/clipboard.ts`.
+- `/design` abre con la sección «Botón de copia». Contiene:
+  - Las matrices de los dos usos, tarjeta y ficha, con sus ocho estados.
+  - Una botonera de prueba con un botón por categoría, Fondos incluida.
+  - Un selector para simular cómo llega el prompt: directo, servidor, sin sesión, límite y fallo de red.
+
 ### Fase 2: Inicio y galerías de Webs y Animaciones
 
 ```text
@@ -584,25 +612,31 @@ Usa kp-design-system. Construye el Inicio y las dos galerías (pantallas 1, 2 y 
    - Chips de sector y filtro de nivel (Comercial / Cinematográfica).
    - Rejilla de 3 columnas en escritorio, 2 en tablet y 1 en móvil.
 4. /animaciones:
-   - Chips de tipo y filtro de tecnología.
+   - Chips de tipo (las 7 categorías, Fondos incluida) y filtro de tecnología.
    - Rejilla de 4, 3, 2 y 1 columnas según los cortes del plan.
 5. Los filtros se reflejan en la URL (?cat=&nivel=&tech=&sort=).
 6. ItemCard, un solo componente con variante "web" y "animacion":
    - Vista previa 16:10 con vídeo en bucle que se reproduce solo cuando es visible
      (IntersectionObserver) o con hover en escritorio. Si no, muestra el póster.
-   - Pie con el nombre, hasta 3 chips (tecnología en animaciones, sector y nivel en webs)
-     y el corazón de favorito.
+   - Pie con el nombre, hasta 3 chips (tecnología en animaciones, sector y nivel en webs),
+     el botón Copiar y el corazón de favorito.
+   - Botón Copiar: CopyButton de components/ui, variante secundaria, label "Copiar".
+     Un clic copia el prompt con los valores por defecto (en webs, el prompt maestro)
+     y muestra "Copiado ✓" 2 s, sin abrir la ficha. Por ahora copia sin login.
    - Etiqueta "Nuevo" durante 14 días.
    - Todas las tarjetas de una rejilla tienen la misma altura.
 7. lib/content.ts lee content/webs/*/item.json y content/animaciones/*/item.json
    y muestra solo los elementos con status VALIDADO.
-   Crea 4 webs y 6 animaciones de ejemplo, con "demo": true y pósteres de color sólido,
-   para poder diseñar. Se borrarán en las fases 4 y 5.
+   Crea 4 webs y 6 animaciones de ejemplo, con "demo": true, pósteres de color sólido
+   y un prompt.md de prueba para que el botón Copiar copie algo real.
+   Se borrarán en las fases 4 y 5.
 8. Diseña los estados sin resultados, cargando (skeleton) y error.
 
 Criterios de cierre:
 - Con 30 tarjetas, el scroll va a 60 fps (graba una traza de rendimiento en Playwright).
 - Nunca hay más de 6 vídeos reproduciéndose a la vez.
+- Test e2e: un clic en Copiar de una tarjeta deja su prompt en el portapapeles, muestra
+  "Copiado ✓" y no navega a la ficha.
 - Capturas del inicio y de las dos galerías a 375, 768, 1280 y 1440 px,
   revisadas con kp-revision-visual.
 ```
@@ -619,8 +653,9 @@ Parte común:
 3. lib/prompt-render.ts sustituye las {{variables}} con los valores de los parámetros.
    Al cambiar un parámetro, el texto cambiado parpadea en --accent durante 600 ms.
    Los parámetros también se envían a la demo con postMessage para que se actualice.
-4. Botón Copiar grande, fijo al hacer scroll (en móvil, abajo con safe-area).
-   Al copiar, cambia a "Copiado ✓" durante 2 s. Por ahora copia sin login; el límite llega en la fase 6.
+4. Botón Copiar grande (CopyButton primario, size "lg"), fijo al hacer scroll (en móvil, abajo con safe-area).
+   Copia el prompt con los parámetros elegidos y cambia a "Copiado ✓" durante 2 s.
+   Por ahora copia sin login; el límite llega en la fase 6.
 5. Relacionados: 4 tarjetas del mismo apartado.
 6. Metadatos SEO por ficha: title, description, Open Graph con el póster.
 
@@ -697,6 +732,10 @@ Criterios de cierre:
 - «Contador» no forma parte de las animaciones de texto.
 - Las demos de `preview/` se implementan desde cero a partir del procedimiento de la ficha, sin copiar código de la fuente, aunque tenga licencia MIT; con las fuentes sin licencia, ni fragmentos.
 - La consulta de cada ficha sigue `docs/BIBLIOTECA_CONSULTA.md`.
+- **Fondos, categoría nueva (2026-11-26).** Necesita un hueco en la lista del paso 2.
+  - La biblioteca solo tiene apoyos parciales: TSL-003 (superficie procedural en shader), GL-004 (imagen ondulada con el scroll) e INST-002 (partículas por instancing). Ninguna es un fondo listo para usar.
+  - Antes del paso 2 hay que investigar fichas de fondos: ruido en shader, color en movimiento y partículas ligeras en canvas 2D. Como `knowledge/` es de solo lectura, añadirlas requiere tu permiso.
+  - Con Fondos, la lista propone 11 animaciones (1 fondo). Si prefieres 10, se quita una transición. Se decide al aprobar la lista.
 
 ### Fase 5: Las primeras 4 webs
 
@@ -752,8 +791,11 @@ Implementa la autenticación y los datos de usuario según "Stack y arquitectura
    nunca en la URL ni en el hash. Escribe un test que lo compruebe.
 2. Crea las tablas profiles, favorites, copies y subscriptions con migraciones SQL y Row Level Security:
    cada usuario solo lee y escribe sus filas.
-3. Explorar no requiere cuenta. Al pulsar Copiar sin sesión, se abre un panel lateral
-   "Inicia sesión con Google para copiar" sin salir de la ficha; tras el login, la copia se completa sola.
+3. Explorar no requiere cuenta. Al pulsar Copiar sin sesión (en la ficha o en una tarjeta), se abre un panel
+   lateral "Inicia sesión con Google para copiar" sin salir de la página; tras el login, la copia se completa sola.
+   Si el navegador exige un clic nuevo al volver del login (Safari, Firefox), el botón queda resaltado
+   y un clic termina la copia. El panel se conecta a CopyProvider (onBlocked + retry): /api/copy
+   responde 401 sin sesión y 429 con renewsAt al llegar al límite, y CopyButton los recibe como CopyBlockedError.
 4. Ruta de API POST /api/copy: comprueba sesión y límite del mes, registra la copia y devuelve
    el prompt renderizado. El texto completo del prompt no se envía al navegador antes de esa llamada;
    la ficha muestra las primeras 12 líneas y un degradado de --surface-2 sobre el resto.
@@ -861,6 +903,7 @@ Claude Code pasa esta lista al cerrar cada fase con `kp-revision-visual`, y tú 
 **Interacción**
 
 - [ ] Todo se puede usar con teclado y el foco siempre es visible.
+- [ ] Cada efecto, cada web y cada sección de una web tiene su botón de copia de un clic, y todos usan `CopyButton`.
 - [ ] Copiar muestra «Copiado ✓» y el texto copiado coincide con el mostrado.
 - [ ] Los estados vacío, cargando, error, sin sesión y límite alcanzado están diseñados.
 - [ ] Los mensajes de error dicen qué falló y cómo solucionarlo.

@@ -1,11 +1,12 @@
 "use client";
 
-import { Copy, Heart, Info, Share2, Sparkles } from "lucide-react";
+import { Heart, Info, Share2, Sparkles } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { ColorPicker } from "@/components/ui/color-picker";
+import { CopyButton } from "@/components/ui/copy-button";
 import { IconButton } from "@/components/ui/icon-button";
 import { Input } from "@/components/ui/input";
 import { SearchField } from "@/components/ui/search-field";
@@ -32,7 +33,9 @@ export function ComponentsSection() {
   const [chips, setChips] = useState<string[]>(["transiciones"]);
   const [duration, setDuration] = useState(0.9);
   const [color, setColor] = useState(SAMPLE_COLOR);
-  const [copied, setCopied] = useState(false);
+
+  // Lo copiado es exactamente lo que se ve (criterio de la fase 3).
+  const promptText = `## 4. Comportamiento paso a paso\n2. Secuencia: duración ${duration.toLocaleString("es-ES")} s, color ${color}.`;
 
   function toggleChip(id: string) {
     setChips((current) => (current.includes(id) ? current.filter((c) => c !== id) : [...current, id]));
@@ -216,24 +219,10 @@ export function ComponentsSection() {
           </TabsList>
           <TabsContent value="prompt">
             <pre className="overflow-x-auto rounded-card border border-border bg-surface-2 p-4 font-mono text-14 leading-mono whitespace-pre-wrap">
-              {`## 4. Comportamiento paso a paso\n2. Secuencia: duración ${duration.toLocaleString("es-ES")} s, color ${color}.`}
+              {promptText}
             </pre>
             <div className="mt-4 flex flex-wrap gap-2">
-              <Button
-                size="lg"
-                icon={Copy}
-                onClick={() => {
-                  setCopied(true);
-                  toast({
-                    title: "Copiado ✓",
-                    description: "El prompt está en tu portapapeles.",
-                    tone: "exito",
-                  });
-                  window.setTimeout(() => setCopied(false), 2000);
-                }}
-              >
-                {copied ? "Copiado ✓" : "Copiar prompt"}
-              </Button>
+              <CopyButton size="lg" source={promptText} what="Prompt de Cortina con borde curvo" />
               <Tooltip content="Vuelve a reproducir la demo">
                 <Button variant="secundario">Repetir</Button>
               </Tooltip>

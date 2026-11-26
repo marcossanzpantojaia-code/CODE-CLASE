@@ -1,4 +1,10 @@
 import { type Page, expect, test } from "@playwright/test";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+const BOTONERA = JSON.parse(
+  readFileSync(join(process.cwd(), "app/design/_components/botonera.json"), "utf8"),
+) as Array<{ titulo: string; prompt: string }>;
 
 /** Recoge errores y avisos de consola, y errores no capturados. */
 function watchConsole(page: Page) {
@@ -44,6 +50,65 @@ test.describe("/design", () => {
       els.map((el) => Number(el.getAttribute("data-contraste"))),
     );
     for (const ratio of ratios) expect(ratio).toBeGreaterThanOrEqual(4.5);
+  });
+
+  test("la botonera copia el prompt con un clic y vuelve a reposo a los 2 s", async ({ page, context }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    const messages = watchConsole(page);
+    await page.goto("/design");
+    const botonera = page.locator("[data-botonera]");
+    await expect(botonera.getByRole("button")).toHaveCount(BOTONERA.length);
+
+    const fondo = BOTONERA[0]!;
+    const tile = botonera.locator("li", { hasText: fondo.titulo });
+    const button = tile.getByRole("button");
+    await expect(button).toHaveAccessibleName("Copiar prompt");
+    const before = await button.boundingBox();
+
+    await button.click();
+    await expect(button).toHaveAccessibleName("Copiado");
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(fondo.prompt);
+    await expect(page.locator("[data-kp-copia-aviso]")).toHaveText(
+      `Prompt de ${fondo.titulo} copiado al portapapeles.`,
+    );
+    // El ancho no cambia al pasar a «Copiado».
+    expect((await button.boundingBox())?.width).toBe(before?.width);
+
+    await expect(button).toHaveAccessibleName("Copiar prompt", { timeout: 3000 });
+    expect(messages).toEqual([]);
+  });
+
+  test("copia también con el prompt servido de forma asíncrona (como /api/copy)", async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto("/design");
+    await page
+      .getByRole("group", { name: "Origen del prompt" })
+      .getByRole("button", { name: "Servidor" })
+      .click();
+    const item = BOTONERA[3]!;
+    const button = page.locator("[data-botonera] li", { hasText: item.titulo }).getByRole("button");
+    await button.click();
+    await expect(button).toHaveAccessibleName("Copiando…");
+    await expect(button).toHaveAccessibleName("Copiado");
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(item.prompt);
+  });
+
+  test("sin sesión: no copia y avisa", async ({ page, context }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto("/design");
+    await page.evaluate(() => navigator.clipboard.writeText("antes"));
+    await page
+      .getByRole("group", { name: "Origen del prompt" })
+      .getByRole("button", { name: "Sin sesión" })
+      .click();
+    await page.locator("[data-botonera] li").first().getByRole("button").click();
+    await expect(
+      page.getByRole("status").filter({ hasText: "Inicia sesión con Google para copiar" }).first(),
+    ).toBeAttached();
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe("antes");
   });
 
   test("el foco de teclado se ve: anillo de 2 px en --accent", async ({ page, isMobile }) => {

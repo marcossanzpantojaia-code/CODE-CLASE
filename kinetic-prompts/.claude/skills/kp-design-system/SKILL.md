@@ -128,6 +128,23 @@ en `--accent`), activo, deshabilitado y cargando (shimmer sobre `--surface-2`).
 - **Catálogo vivo:** `/design` (solo en desarrollo). Cada componente nuevo se añade allí
   con su matriz de estados.
 
+## Botón de copia: el cimiento de la app
+
+Cada efecto, cada web y cada sección de una web se copia con un clic. Ver «Principio rector:
+el botón de copia» en `docs/PLAN.md`.
+
+- Usa siempre `CopyButton` (`components/ui/copy-button.tsx`). No escribas otro código de
+  portapapeles ni otro estado «Copiado»: `CopyProvider` (dentro de `UIProviders`) lleva la
+  región aria-live y decide qué pasa sin sesión o con el límite alcanzado.
+- `source`: el texto del prompt o, desde la fase 6, una función que lo pide a POST /api/copy.
+  Si devuelve 401 o 429, lanza `CopyBlockedError` (`lib/clipboard.ts`).
+- Tarjetas: `variant="secundario"` y `label="Copiar"`. En la ficha: primario y `size="lg"`, fijo al hacer scroll.
+  En las secciones de una web: secundario. Pasa `what` («Prompt de …») para el aviso.
+- Estados: los seis comunes más copiando, copiado (`--success` sobre `--surface-2`, 2 s =
+  `--dur-copied`) y error («Reintentar» en `--danger` y un aviso que explica qué falló). El ancho
+  no cambia entre estados.
+- Lo copiado es exactamente lo que se muestra: pasa a `source` el mismo texto que se renderiza.
+
 ## Al terminar
 
 Comprueba el componente con teclado, con `prefers-reduced-motion` y a 375 y 1440 px.

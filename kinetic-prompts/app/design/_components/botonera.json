@@ -1,0 +1,37 @@
+[
+  {
+    "categoria": "Fondos",
+    "titulo": "Ruido orgánico en movimiento",
+    "prompt": "[Prompt de prueba de /design. El real llega en la fase 4.]\n# Ruido orgánico en movimiento\n\n## 1. Objetivo visual\nFondo a pantalla completa con un campo de ruido que se desplaza despacio, en dos tonos de la marca.\n\n## 2. Stack\nThree.js (WebGL) con un shader de fragmento; sin dependencias extra.\n\n## 4. Comportamiento paso a paso\n1. Plano a pantalla completa detrás del contenido (z-index por debajo de todo).\n2. Ruido simplex 3D con el tiempo como tercera coordenada; velocidad 0.05 por segundo.\n\n## 7. Accesibilidad\nCon prefers-reduced-motion, un fotograma fijo."
+  },
+  {
+    "categoria": "Transiciones de página",
+    "titulo": "Cortina con borde curvo",
+    "prompt": "[Prompt de prueba de /design. El real llega en la fase 4.]\n# Cortina con borde curvo\n\n## 1. Objetivo visual\nAl cambiar de página, una cortina de color sube desde abajo con el borde superior curvado y deja ver la página nueva.\n\n## 2. Stack\nGSAP 3 y un path SVG; sin librerías de enrutado.\n\n## 4. Comportamiento paso a paso\n1. La cortina sube en 0,9 s con power3.inOut.\n2. El borde pasa de curvo a recto al llegar arriba.\n\n## 7. Accesibilidad\nCon prefers-reduced-motion, fundido de 100 ms."
+  },
+  {
+    "categoria": "Scroll",
+    "titulo": "Pin con barra de progreso",
+    "prompt": "[Prompt de prueba de /design. El real llega en la fase 4.]\n# Pin con barra de progreso\n\n## 1. Objetivo visual\nUna sección se queda fija mientras su contenido avanza por pasos y una barra muestra el progreso.\n\n## 2. Stack\nGSAP 3 con ScrollTrigger y Lenis para el scroll suave.\n\n## 4. Comportamiento paso a paso\n1. Pin de la sección durante 300 % del alto de la ventana.\n2. La barra escala en X de 0 a 1 enlazada al scroll (scrub: true).\n\n## 7. Accesibilidad\nSin pin con prefers-reduced-motion: los pasos se apilan."
+  },
+  {
+    "categoria": "Heros",
+    "titulo": "Titular con vídeo enmascarado",
+    "prompt": "[Prompt de prueba de /design. El real llega en la fase 4.]\n# Titular con vídeo enmascarado\n\n## 1. Objetivo visual\nUn titular enorme cuyas letras dejan ver un vídeo en bucle por dentro.\n\n## 2. Stack\nCSS (mask-image o background-clip: text) y un <video> sin sonido.\n\n## 4. Comportamiento paso a paso\n1. El vídeo se reproduce solo cuando el hero es visible.\n2. Al hacer scroll, el titular escala de 1 a 1,2.\n\n## 7. Accesibilidad\nEl titular sigue siendo texto real y legible sin vídeo."
+  },
+  {
+    "categoria": "Texto",
+    "titulo": "Revelado por líneas",
+    "prompt": "[Prompt de prueba de /design. El real llega en la fase 4.]\n# Revelado por líneas\n\n## 1. Objetivo visual\nUn párrafo aparece línea a línea, cada una subiendo desde detrás de una máscara.\n\n## 2. Stack\nGSAP 3 con SplitText (gratuito desde la 3.13).\n\n## 4. Comportamiento paso a paso\n1. Divide en líneas y envuelve cada una en un contenedor con overflow: hidden.\n2. Cada línea sube del 100 % al 0 % en 0,8 s, con 0,08 s entre líneas.\n\n## 7. Accesibilidad\nEl texto se lee entero aunque falle JavaScript."
+  },
+  {
+    "categoria": "Microinteracciones",
+    "titulo": "Botón magnético",
+    "prompt": "[Prompt de prueba de /design. El real llega en la fase 4.]\n# Botón magnético\n\n## 1. Objetivo visual\nEl botón se desplaza un poco hacia el cursor cuando este se acerca y vuelve a su sitio al salir.\n\n## 2. Stack\nGSAP 3 con quickTo; sin librerías extra.\n\n## 4. Comportamiento paso a paso\n1. Radio de atracción de 80 px; desplazamiento máximo de 12 px.\n2. Vuelta al centro en 0,6 s con elastic.out(1, 0.4).\n\n## 7. Accesibilidad\nSolo con puntero fino (hover: hover); el foco de teclado no mueve nada."
+  },
+  {
+    "categoria": "3D / WebGL",
+    "titulo": "Foto con volumen",
+    "prompt": "[Prompt de prueba de /design. El real llega en la fase 4.]\n# Foto con volumen\n\n## 1. Objetivo visual\nUna foto plana que gana profundidad y se inclina siguiendo el ratón, como si tuviera relieve.\n\n## 2. Stack\nThree.js con un mapa de profundidad en escala de grises.\n\n## 4. Comportamiento paso a paso\n1. Plano con la foto y desplazamiento según el mapa de profundidad.\n2. Inclinación máxima de 6 grados, suavizada en 0,4 s.\n\n## 7. Accesibilidad\nCon prefers-reduced-motion, la foto queda quieta."
+  }
+]

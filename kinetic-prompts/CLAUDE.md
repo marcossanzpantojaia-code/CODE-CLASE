@@ -6,6 +6,8 @@
 - Biblioteca: knowledge/. Empieza siempre por knowledge/KNOWLEDGE_INDEX.md.
   No la cargues entera. Es de solo lectura: no la modifiques salvo RESEARCH_PROGRESS.md.
 - Diseño: usa solo los tokens de styles/tokens.css. Prohibido escribir colores o tamaños sueltos.
+- Cimiento: todo prompt se copia con un clic con CopyButton (components/ui/copy-button.tsx),
+  en tarjetas, fichas y secciones de web. No escribas otro código de portapapeles.
 - Publicación: solo los elementos con status VALIDADO aparecen en las galerías.
 - Antes de dar algo por terminado: npm run lint, npm run test y npm run test:e2e en verde,
   y revisa las capturas de Playwright.

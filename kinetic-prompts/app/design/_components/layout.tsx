@@ -56,18 +56,22 @@ export function stateProps(state: StateName): {
 }
 
 /** Fila de estados de un componente: reposo, hover, foco, activo, deshabilitado y cargando. */
-export function StateMatrix({
+export function StateMatrix<S extends string = StateName>({
   title,
   description,
   render,
+  states,
   wide = false,
 }: {
   title: string;
   description?: string;
-  render: (state: StateName) => ReactNode;
-  /** Celdas anchas para campos de formulario. */
+  render: (state: S) => ReactNode;
+  /** Estados propios (p. ej. CopyButton añade «Copiado» y «Error»). Por defecto, STATES. */
+  states?: readonly S[];
+  /** Celdas anchas para campos de formulario y botones grandes. */
   wide?: boolean;
 }) {
+  const list = states ?? (STATES as unknown as readonly S[]);
   return (
     <div className="flex flex-col gap-3" data-matriz={title}>
       <div className="flex flex-col gap-1">
@@ -77,10 +81,16 @@ export function StateMatrix({
       <ul
         className={cn(
           "grid gap-4 rounded-card border border-border bg-surface p-4",
-          wide ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" : "grid-cols-2 sm:grid-cols-3 xl:grid-cols-6",
+          wide
+            ? list.length > 6
+              ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-4"
+              : "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
+            : list.length > 6
+              ? "grid-cols-2 sm:grid-cols-4"
+              : "grid-cols-2 sm:grid-cols-3 xl:grid-cols-6",
         )}
       >
-        {STATES.map((state) => (
+        {list.map((state) => (
           <li key={state} className="flex min-w-0 flex-col items-start gap-2">
             <span className="text-12 text-text-muted">{state}</span>
             {render(state)}

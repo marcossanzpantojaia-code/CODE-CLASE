@@ -1,9 +1,11 @@
 "use client";
 
 import { ComponentsSection } from "./components-section";
+import { CopySection } from "./copy-section";
 import { Contrast, Motion, Palette, SpacingAndShape, Typography } from "./foundations";
 
 const NAV = [
+  { href: "#copia", label: "Botón de copia" },
   { href: "#paleta", label: "Paleta" },
   { href: "#contraste", label: "Contraste" },
   { href: "#tipografia", label: "Tipografía" },
@@ -12,7 +14,7 @@ const NAV = [
   { href: "#componentes", label: "Componentes" },
 ];
 
-/** Página /design: paleta, escala tipográfica, movimiento y todos los componentes con sus estados. */
+/** Página /design: el botón de copia (cimiento), paleta, tipografía, movimiento y todos los componentes. */
 export function DesignShowcase() {
   return (
     <main className="mx-auto flex max-w-page flex-col gap-16 px-4 py-12 md:px-6">
@@ -38,6 +40,7 @@ export function DesignShowcase() {
           </ul>
         </nav>
       </header>
+      <CopySection />
       <Palette />
       <Contrast />
       <Typography />

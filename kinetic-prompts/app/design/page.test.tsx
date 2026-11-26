@@ -14,13 +14,14 @@ describe("/design", () => {
     expect(() => DesignPage()).toThrow();
   });
 
-  test("muestra todas las secciones y los 12 componentes del plan", () => {
+  test("muestra todas las secciones, el botón de copia y los 12 componentes del plan", () => {
     render(
       <UIProviders>
         <DesignShowcase />
       </UIProviders>,
     );
     for (const name of [
+      "Botón de copia",
       "Paleta",
       "Contraste",
       "Tipografía",
@@ -34,6 +35,8 @@ describe("/design", () => {
       el.getAttribute("data-matriz"),
     );
     for (const component of [
+      "CopyButton · tarjeta",
+      "CopyButton · ficha",
       "Button · primario",
       "Button · secundario",
       "Button · fantasma",
@@ -49,7 +52,11 @@ describe("/design", () => {
     ]) {
       expect(matrices).toContain(component);
     }
-    for (const name of ["Avisos (Toast)", "Tooltip", "Skeleton (cargando)"]) {
+    // Un botón de copia por cada categoría de Animaciones, Fondos incluida.
+    const botonera = document.querySelector("[data-botonera]");
+    expect(botonera?.querySelectorAll("button")).toHaveLength(7);
+    expect(botonera?.textContent).toContain("Fondos");
+    for (const name of ["Botonera de prueba", "Avisos (Toast)", "Tooltip", "Skeleton (cargando)"]) {
       expect(screen.getByRole("heading", { level: 3, name })).toBeDefined();
     }
   });
