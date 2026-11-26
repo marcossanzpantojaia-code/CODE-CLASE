@@ -1,7 +1,7 @@
 // Comprobaciones propias de «Fundido nativo entre páginas» para scripts/validar-animacion.mjs.
 export const config = {
-  freezeAt: 175, // a mitad del fundido de 0,35 s
-  poster: { at: 175 },
+  freezeAt: 260, // la página nueva apareciendo desde el color
+  poster: { at: 230 }, // el color y la página nueva entrando
   // Desde la carga: dos idas y vueltas (reposo 1,2 s + 0,35 s, cuatro veces). Empieza y acaba en reposo.
   video: { start: 0.6, seconds: 6.2 },
 };

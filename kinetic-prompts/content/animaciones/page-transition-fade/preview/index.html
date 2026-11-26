@@ -55,10 +55,20 @@
       /* Fundido nativo: View Transitions API. Parámetros como variables CSS. */
       :root { --dur: 350ms; --shift: 16px; --ease-vt: ease-out; }
       ::view-transition-group(root) { animation: none; }
+      /* Se funde a través de un color: la vieja se va en la primera mitad, el color queda a la vista
+         y la nueva llega en la segunda mitad. */
+      :root { --tinte: #f3eee6; }
+      ::view-transition { background: var(--tinte); }
       ::view-transition-old(root) { animation: var(--dur) var(--ease-vt) both kp-salida; }
       ::view-transition-new(root) { animation: var(--dur) var(--ease-vt) both kp-entrada; }
-      @keyframes kp-salida { to { opacity: 0; transform: translateY(calc(var(--shift) * -0.5)); } }
-      @keyframes kp-entrada { from { opacity: 0; transform: translateY(var(--shift)); } }
+      @keyframes kp-salida {
+        0% { opacity: 1; transform: none; }
+        50%, 100% { opacity: 0; transform: translateY(calc(var(--shift) * -0.5)); }
+      }
+      @keyframes kp-entrada {
+        0%, 50% { opacity: 0; transform: translateY(var(--shift)); }
+        100% { opacity: 1; transform: none; }
+      }
       /* Movimiento reducido: solo opacidad, 150 ms. */
       @keyframes kp-solo-opacidad { from { opacity: 0; } }
       @media (prefers-reduced-motion: reduce) {
@@ -111,7 +121,7 @@
       (() => {
         "use strict";
 
-        const params = { duration: 0.35, shift: 16, ease: "ease-out" };
+        const params = { duration: 0.35, shift: 16, ease: "ease-out", tint: "#f3eee6" };
         const LIMITS = { duration: [0.15, 0.8], shift: [0, 48] };
         const EASES = ["ease-out", "ease-in-out", "linear"];
         const IDLE_MS = 1200;
@@ -132,6 +142,7 @@
           root.style.setProperty("--dur", `${Math.round(params.duration * 1000)}ms`);
           root.style.setProperty("--shift", `${params.shift}px`);
           root.style.setProperty("--ease-vt", params.ease);
+          root.style.setProperty("--tinte", params.tint);
           // Con movimiento reducido manda la media query: fundido de 150 ms sin desplazamiento.
           if (reduced.matches) root.style.removeProperty("--dur");
         }
@@ -186,6 +197,7 @@
             }
           }
           if (typeof next.ease === "string" && EASES.includes(next.ease)) params.ease = next.ease;
+          if (typeof next.tint === "string" && /^#[0-9a-f]{6}$/i.test(next.tint)) params.tint = next.tint;
           applyCss();
         }
 

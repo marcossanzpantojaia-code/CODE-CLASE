@@ -2,7 +2,7 @@
   "section": "animaciones",
   "slug": "page-transition-fade",
   "title": "Fundido nativo entre páginas",
-  "summary": "La página vieja se desvanece y la nueva aparece subiendo un poco. Lo hace el navegador, casi sin código.",
+  "summary": "La página vieja se funde en un color y la nueva aparece desde él, subiendo un poco. Lo hace el navegador, casi sin código.",
   "category": "transiciones",
   "tech": [
     "CSS",
@@ -48,6 +48,12 @@
         "linear"
       ],
       "default": "ease-out"
+    },
+    {
+      "id": "tint",
+      "label": "Color del fundido",
+      "type": "color",
+      "default": "#f3eee6"
     }
   ],
   "tips": [
@@ -55,7 +61,8 @@
     "En Next.js, envuelve cada página y no el layout: el layout no se desmonta al navegar y no se animaría.",
     "No repitas un mismo view-transition-name en una página: el navegador cancela la transición.",
     "Entre 200 y 400 ms con ease-out se nota sin hacer esperar.",
-    "Las capturas de la transición ocupan memoria: mantenla corta."
+    "Las capturas de la transición ocupan memoria: mantenla corta.",
+    "Para fundir a través de un color, da fondo al pseudoelemento ::view-transition y reparte la duración: la vieja se va en la primera mitad y la nueva llega en la segunda."
   ],
   "media": {
     "video": "media/loop.webm",

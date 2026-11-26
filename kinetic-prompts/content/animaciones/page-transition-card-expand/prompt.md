@@ -4,7 +4,7 @@ Transición de página de nivel avanzado. Pégalo en tu IA (Claude Code, Cursor�
 
 ## 1. Objetivo visual
 
-Al abrir un elemento de un listado (un proyecto, un producto, un artículo), su imagen viaja desde la tarjeta y crece hasta convertirse en la portada de su página, en {{duration}} s. El fondo de la página nueva aparece mientras tanto y el texto entra después, subiendo y escalonado {{stagger}} s. Al volver al listado, la portada se encoge hasta su tarjeta. Se siente como abrir la tarjeta, no como cambiar de página.
+Al abrir un elemento de un listado (un proyecto, un producto, un artículo), su imagen viaja desde la tarjeta y crece hasta convertirse en la portada de su página, en {{duration}} s. El fondo de la página nueva, de color {{background}}, aparece mientras tanto y el texto entra después, subiendo y escalonado {{stagger}} s. Al volver al listado, la portada se encoge hasta su tarjeta. Se siente como abrir la tarjeta, no como cambiar de página.
 
 ## 2. Stack
 
@@ -33,7 +33,7 @@ Antes de escribir código, mira el proyecto: si el detalle es una página aparte
 ## 4. Comportamiento paso a paso
 
 1. **Viaje de la imagen:** {{duration}} s con easing `{{ease}}`, desde la posición y el tamaño de la tarjeta hasta la portada.
-2. **Fondo de la página nueva:** de opacidad 0 a 1 en el 60 % de esa duración.
+2. **Fondo de la página nueva ({{background}}):** de opacidad 0 a 1 en el 60 % de esa duración. El texto del detalle va en blanco o en negro, el que tenga más contraste con {{background}} (mínimo 4,5:1).
 3. **Texto:** cada línea (enlace de volver, título y párrafo) entra de `opacity: 0` y `translateY(16px)` a su sitio. Empieza a mitad del viaje y se escalona {{stagger}} s.
 4. **Volver:** el mismo viaje al revés; el texto se funde en el 30 % del tiempo y el fondo desaparece al final.
 5. Mientras dura un viaje, ignora otros clics. No empieces el siguiente hasta que acabe el actual.
@@ -44,6 +44,7 @@ Antes de escribir código, mira el proyecto: si el detalle es una página aparte
 - Duración del viaje: {{duration}} s.
 - Escalonado del texto: {{stagger}} s.
 - Easing: `{{ease}}`.
+- Color de la página de detalle: {{background}}.
 
 <!-- solo: nextjs -->
 En Next.js, define en los estilos globales `::view-transition-group(.morph)` con esa duración y ese easing, y la animación de entrada `kp-texto` para `::view-transition-new(.kp-texto)`.

@@ -50,6 +50,12 @@
         "ease-out"
       ],
       "default": "cubic-bezier(0.76, 0, 0.24, 1)"
+    },
+    {
+      "id": "background",
+      "label": "Color de la página de detalle",
+      "type": "color",
+      "default": "#f3eee6"
     }
   ],
   "tips": [
@@ -58,7 +64,8 @@
     "Si el ancho y el alto escalan distinto, el contenido se deforma: haz viajar un bloque de imagen sin texto dentro y que el texto entre aparte.",
     "No empieces otra transición hasta que acabe la actual: los clics rápidos rompen el viaje.",
     "El orden del DOM tiene que coincidir con el orden visual final, por el teclado y los lectores de pantalla.",
-    "Con movimiento reducido: un fundido corto, sin viaje."
+    "Con movimiento reducido: un fundido corto, sin viaje.",
+    "Si cambias el color de la página de detalle, pon el texto en blanco o en negro según el contraste (mínimo 4,5:1)."
   ],
   "media": {
     "video": "media/loop.webm",

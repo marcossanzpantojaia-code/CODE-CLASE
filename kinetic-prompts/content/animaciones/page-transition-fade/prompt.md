@@ -4,7 +4,7 @@ Transición de página de nivel básico. Pégalo en tu IA (Claude Code, Cursor�
 
 ## 1. Objetivo visual
 
-Al cambiar de página, la página vieja se desvanece mientras sube un poco y la nueva aparece desde {{shift}} px más abajo, en {{duration}} s. Es un cambio suave y discreto, sin pantallazo en blanco, que hace el propio navegador con la View Transitions API.
+Al cambiar de página, la página vieja se funde en el color {{tint}} mientras sube un poco, y la nueva aparece desde ese color y desde {{shift}} px más abajo, en {{duration}} s en total. Es un cambio suave y discreto, sin pantallazo en blanco, que hace el propio navegador con la View Transitions API.
 
 ## 2. Stack
 
@@ -31,9 +31,9 @@ Antes de escribir código, mira el proyecto: qué framework usa y dónde están 
 
 ## 4. Comportamiento paso a paso
 
-1. Quita la animación del grupo raíz (`::view-transition-group(root) { animation: none; }`): la página no tiene que moverse de sitio, solo fundirse.
-2. **Página vieja:** de `opacity: 1` a `0` y de `translateY(0)` a `translateY(−{{shift}} px / 2)`, en {{duration}} s con easing `{{ease}}`.
-3. **Página nueva:** de `opacity: 0` y `translateY({{shift}} px)` a `opacity: 1` y `translateY(0)`, a la vez y con la misma duración y easing.
+1. Quita la animación del grupo raíz (`::view-transition-group(root) { animation: none; }`): la página no tiene que moverse de sitio, solo fundirse. Da a `::view-transition` el fondo {{tint}}: es el color que se ve entre una página y otra.
+2. **Página vieja:** en la primera mitad de {{duration}} s, de `opacity: 1` a `0` y de `translateY(0)` a `translateY(−{{shift}} px / 2)`. Easing `{{ease}}`.
+3. **Página nueva:** en la segunda mitad, de `opacity: 0` y `translateY({{shift}} px)` a `opacity: 1` y `translateY(0)`. Usa una sola animación de {{duration}} s por página con pasos al 50 % (`0%, 50%` y `100%`) para que las dos queden sincronizadas.
 4. Si llega una navegación nueva en mitad de una transición, deja que el navegador la salte (es su comportamiento por defecto): no encoles transiciones.
 5. No le pongas `view-transition-name` a nada más, salvo que quieras que un elemento concreto viaje entre páginas. Los nombres repetidos en una misma página cancelan la transición.
 
@@ -42,8 +42,9 @@ Antes de escribir código, mira el proyecto: qué framework usa y dónde están 
 - Duración: {{duration}} s (entre 0,15 y 0,8 s).
 - Desplazamiento de la página nueva: {{shift}} px.
 - Easing: {{ease}}.
+- Color del fundido: {{tint}}. Con el color de fondo de la web queda sutil; con uno de marca, más llamativo.
 
-Guárdalos como variables CSS en `:root` (`--vt-duracion`, `--vt-desplazamiento`, `--vt-easing`) y úsalos en las animaciones.
+Guárdalos como variables CSS en `:root` (`--vt-duracion`, `--vt-desplazamiento`, `--vt-easing`, `--vt-color`) y úsalos en las animaciones.
 
 ## 6. Responsive
 
@@ -64,7 +65,7 @@ Guárdalos como variables CSS en `:root` (`--vt-duracion`, `--vt-desplazamiento`
 
 ## 9. Criterios de validación
 
-- Al navegar, la página vieja se funde y la nueva aparece subiendo {{shift}} px en {{duration}} s, sin pantallazo en blanco.
+- Al navegar, la página vieja se funde en {{tint}} y la nueva aparece desde ese color subiendo {{shift}} px, en {{duration}} s en total, sin pantallazo en blanco.
 - En un navegador sin View Transitions (desactívalas o prueba en uno antiguo), la página cambia igual y sin errores.
 - Con movimiento reducido solo hay un fundido de 150 ms.
 - Atrás y Adelante funcionan y la consola no muestra errores ni avisos.
