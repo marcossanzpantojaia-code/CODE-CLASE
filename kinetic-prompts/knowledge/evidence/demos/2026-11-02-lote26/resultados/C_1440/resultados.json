@@ -1,0 +1,700 @@
+{
+ "url": "http://127.0.0.1:8791/receta_c.html",
+ "ancho": 1440,
+ "alto": 900,
+ "fecha": "2026-11-02T15:06:46.600Z",
+ "errores": {
+  "nativo": [],
+  "gsap": [],
+  "gsap_pin": [],
+  "pin_chk": [],
+  "scrub_gsap": [],
+  "scrub_nativo": [],
+  "rev_gsap": [],
+  "rev_gsap_pin": [],
+  "rev_nativo": [],
+  "resize": [],
+  "resize_ref": [],
+  "rm_gsap": [],
+  "rm_nativo": [],
+  "rm_caliente": [],
+  "destruir": [],
+  "perf_gsap": [],
+  "perf_nativo": [],
+  "perf_gsap_pin": []
+ },
+ "nativo": {
+  "opciones": {
+   "motor": "nativo"
+  },
+  "estados": [
+   {
+    "q": 0,
+    "archivo": "nativo_0.png",
+    "motor": "nativo",
+    "solape_linea2": 0.064,
+    "escena": 0,
+    "producto": [
+     572,
+     76,
+     820
+    ],
+    "ingredientes": 0,
+    "p": 0,
+    "objetivo": 0
+   },
+   {
+    "q": 0.25,
+    "archivo": "nativo_1.png",
+    "motor": "nativo",
+    "solape_linea2": 0.061,
+    "escena": 0,
+    "producto": [
+     566,
+     70,
+     832
+    ],
+    "ingredientes": 0,
+    "p": 0.25,
+    "objetivo": 0.25
+   },
+   {
+    "q": 0.5,
+    "archivo": "nativo_2.png",
+    "motor": "nativo",
+    "solape_linea2": 0.003,
+    "escena": 1,
+    "producto": [
+     560,
+     64,
+     845
+    ],
+    "ingredientes": 1,
+    "p": 0.5,
+    "objetivo": 0.5
+   },
+   {
+    "q": 0.75,
+    "archivo": "nativo_3.png",
+    "motor": "nativo",
+    "solape_linea2": 0.024,
+    "escena": 2,
+    "producto": [
+     554,
+     58,
+     857
+    ],
+    "ingredientes": 0.108,
+    "p": 0.75,
+    "objetivo": 0.75
+   },
+   {
+    "q": 1,
+    "archivo": "nativo_4.png",
+    "motor": "nativo",
+    "solape_linea2": 0.023,
+    "escena": 2,
+    "producto": [
+     548,
+     51,
+     869
+    ],
+    "ingredientes": 0,
+    "p": 1,
+    "objetivo": 1
+   }
+  ],
+  "motor": {
+   "nombre": "nativo",
+   "gsap": null,
+   "scrollTrigger": null,
+   "triggers": null,
+   "st": null,
+   "alto_documento": 4860
+  },
+  "red_gsap": []
+ },
+ "gsap": {
+  "opciones": {
+   "motor": "gsap"
+  },
+  "estados": [
+   {
+    "q": 0,
+    "archivo": "gsap_0.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.064,
+    "escena": 0,
+    "producto": [
+     572,
+     76,
+     820
+    ],
+    "ingredientes": 0,
+    "p": 0,
+    "objetivo": 0
+   },
+   {
+    "q": 0.25,
+    "archivo": "gsap_1.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.061,
+    "escena": 0,
+    "producto": [
+     566,
+     70,
+     832
+    ],
+    "ingredientes": 0,
+    "p": 0.25,
+    "objetivo": 0.25
+   },
+   {
+    "q": 0.5,
+    "archivo": "gsap_2.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.003,
+    "escena": 1,
+    "producto": [
+     560,
+     64,
+     845
+    ],
+    "ingredientes": 1,
+    "p": 0.5,
+    "objetivo": 0.5
+   },
+   {
+    "q": 0.75,
+    "archivo": "gsap_3.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.024,
+    "escena": 2,
+    "producto": [
+     554,
+     58,
+     857
+    ],
+    "ingredientes": 0.108,
+    "p": 0.75,
+    "objetivo": 0.75
+   },
+   {
+    "q": 1,
+    "archivo": "gsap_4.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.023,
+    "escena": 2,
+    "producto": [
+     548,
+     51,
+     869
+    ],
+    "ingredientes": 0,
+    "p": 1,
+    "objetivo": 1
+   }
+  ],
+  "motor": {
+   "nombre": "gsap",
+   "gsap": "3.15.0",
+   "scrollTrigger": "3.15.0",
+   "triggers": 1,
+   "st": {
+    "start": 540,
+    "end": 3420,
+    "pin": false
+   },
+   "alto_documento": 4860
+  },
+  "red_gsap": [
+   {
+    "url": "http://127.0.0.1:8791/receta_c.html?motor=gsap",
+    "estado": 200,
+    "bytes": 10125,
+    "sha256": "c286dcc90ca3d92e531f2c317f514500ebe9509e9da0b437df5be48636f3386c"
+   },
+   {
+    "url": "http://127.0.0.1:8791/node_modules/gsap/dist/gsap.min.js",
+    "estado": 200,
+    "bytes": 72927,
+    "sha256": "92bb9a96476f983d212a2bc4f54c889039c1696dd4461d40a736860938570fbb"
+   },
+   {
+    "url": "http://127.0.0.1:8791/node_modules/gsap/dist/ScrollTrigger.min.js",
+    "estado": 200,
+    "bytes": 44575,
+    "sha256": "b0b14d67b55b0c43c756ac0b106cfcb09d0879945f6ead64451065b0672916a2"
+   },
+   {
+    "url": "http://127.0.0.1:8791/motor_gsap.js",
+    "estado": 200,
+    "bytes": 7789,
+    "sha256": "d1b296303c31a13881838878bebbb79e2b2a2a165a2a135793c424827a1f50c5"
+   }
+  ]
+ },
+ "gsap_pin": {
+  "opciones": {
+   "motor": "gsap",
+   "pin": 1
+  },
+  "estados": [
+   {
+    "q": 0,
+    "archivo": "gsap_pin_0.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.064,
+    "escena": 0,
+    "producto": [
+     572,
+     76,
+     820
+    ],
+    "ingredientes": 0,
+    "p": 0,
+    "objetivo": 0
+   },
+   {
+    "q": 0.25,
+    "archivo": "gsap_pin_1.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.061,
+    "escena": 0,
+    "producto": [
+     566,
+     70,
+     832
+    ],
+    "ingredientes": 0,
+    "p": 0.25,
+    "objetivo": 0.25
+   },
+   {
+    "q": 0.5,
+    "archivo": "gsap_pin_2.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.003,
+    "escena": 1,
+    "producto": [
+     560,
+     64,
+     845
+    ],
+    "ingredientes": 1,
+    "p": 0.5,
+    "objetivo": 0.5
+   },
+   {
+    "q": 0.75,
+    "archivo": "gsap_pin_3.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.024,
+    "escena": 2,
+    "producto": [
+     554,
+     58,
+     857
+    ],
+    "ingredientes": 0.108,
+    "p": 0.75,
+    "objetivo": 0.75
+   },
+   {
+    "q": 1,
+    "archivo": "gsap_pin_4.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "solape_linea2": 0.023,
+    "escena": 2,
+    "producto": [
+     548,
+     51,
+     869
+    ],
+    "ingredientes": 0,
+    "p": 1,
+    "objetivo": 1
+   }
+  ],
+  "motor": {
+   "nombre": "gsap",
+   "gsap": "3.15.0",
+   "scrollTrigger": "3.15.0",
+   "triggers": 1,
+   "st": {
+    "start": 540,
+    "end": 3420,
+    "pin": true
+   },
+   "alto_documento": 4860
+  },
+  "red_gsap": [
+   {
+    "url": "http://127.0.0.1:8791/receta_c.html?motor=gsap&pin=1",
+    "estado": 200,
+    "bytes": 10125,
+    "sha256": "c286dcc90ca3d92e531f2c317f514500ebe9509e9da0b437df5be48636f3386c"
+   },
+   {
+    "url": "http://127.0.0.1:8791/node_modules/gsap/dist/gsap.min.js",
+    "estado": 200,
+    "bytes": 72927,
+    "sha256": "92bb9a96476f983d212a2bc4f54c889039c1696dd4461d40a736860938570fbb"
+   },
+   {
+    "url": "http://127.0.0.1:8791/node_modules/gsap/dist/ScrollTrigger.min.js",
+    "estado": 200,
+    "bytes": 44575,
+    "sha256": "b0b14d67b55b0c43c756ac0b106cfcb09d0879945f6ead64451065b0672916a2"
+   },
+   {
+    "url": "http://127.0.0.1:8791/motor_gsap.js",
+    "estado": 200,
+    "bytes": 7789,
+    "sha256": "d1b296303c31a13881838878bebbb79e2b2a2a165a2a135793c424827a1f50c5"
+   }
+  ]
+ },
+ "pin": {
+  "muestras": [
+   {
+    "q": 0.02,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   },
+   {
+    "q": 0.2,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   },
+   {
+    "q": 0.5,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   },
+   {
+    "q": 0.8,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   },
+   {
+    "q": 0.98,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   }
+  ],
+  "recorrido_px": 2880,
+  "alto_doc_pin": 4860
+ },
+ "scrub": {
+  "gsap": [
+   {
+    "ms": 60,
+    "p": 0.1238
+   },
+   {
+    "ms": 158,
+    "p": 0.3611
+   },
+   {
+    "ms": 302,
+    "p": 0.462
+   },
+   {
+    "ms": 501,
+    "p": 0.4971
+   },
+   {
+    "ms": 801,
+    "p": 0.5
+   },
+   {
+    "ms": 1201,
+    "p": 0.5
+   },
+   {
+    "ms": 2002,
+    "p": 0.5
+   }
+  ],
+  "nativo": [
+   {
+    "ms": 51,
+    "p": 0.0855
+   },
+   {
+    "ms": 151,
+    "p": 0.1967
+   },
+   {
+    "ms": 301,
+    "p": 0.3272
+   },
+   {
+    "ms": 501,
+    "p": 0.4184
+   },
+   {
+    "ms": 800,
+    "p": 0.4751
+   },
+   {
+    "ms": 1201,
+    "p": 0.4944
+   },
+   {
+    "ms": 2001,
+    "p": 0.4997
+   }
+  ]
+ },
+ "reversibilidad": {
+  "gsap": {
+   "diferencia_max_valores": 0,
+   "por_paso": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "gsap_pin": {
+   "diferencia_max_valores": 0,
+   "por_paso": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "nativo": {
+   "diferencia_max_valores": 0,
+   "por_paso": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ "resize": {
+  "serie": [
+   {
+    "w": 1400,
+    "h": 900,
+    "triggers": 1,
+    "construcciones": 1,
+    "p": 0.7
+   },
+   {
+    "w": 375,
+    "h": 900,
+    "triggers": 1,
+    "construcciones": 2,
+    "p": 0.7
+   },
+   {
+    "w": 1440,
+    "h": 900,
+    "triggers": 1,
+    "construcciones": 3,
+    "p": 0.7
+   },
+   {
+    "w": 1400,
+    "h": 840,
+    "triggers": 1,
+    "construcciones": 3,
+    "p": 0.7001
+   },
+   {
+    "w": 1440,
+    "h": 900,
+    "triggers": 1,
+    "construcciones": 3,
+    "p": 0.641
+   }
+  ],
+  "scrollY_tras_serie": 2386,
+  "p_tras_serie": 0.641,
+  "p_referencia_nativa": 0.641
+ },
+ "reduced_motion": {
+  "gsap": {
+   "rm": true,
+   "triggers": 0,
+   "alto": 1980
+  },
+  "nativo": {
+   "rm": true,
+   "triggers": null,
+   "alto": 1980
+  },
+  "cambio_en_caliente": [
+   {
+    "fase": "inicio",
+    "rm": false,
+    "triggers": 1,
+    "construcciones": 1
+   },
+   {
+    "fase": "reduce",
+    "rm": true,
+    "triggers": 0,
+    "construcciones": 2
+   },
+   {
+    "fase": "no-preference",
+    "rm": false,
+    "triggers": 1,
+    "construcciones": 3
+   }
+  ]
+ },
+ "destruir": {
+  "antes": {
+   "triggers": 1,
+   "dt": 53,
+   "spacer": true,
+   "clase": "modo-pin"
+  },
+  "despues": {
+   "triggers": 0,
+   "spacer": false,
+   "clase": "",
+   "estilos_en_linea": [],
+   "ticker_sigue": false
+  }
+ },
+ "rendimiento": {
+  "gsap": {
+   "duracion_s": 5.47,
+   "script_ms": 71.8,
+   "estilo_ms": 22.5,
+   "layout_ms": 1.1,
+   "tareas_ms": 467.1,
+   "otros_ms_pintado_composicion_gc": 371.7,
+   "actualizar_receta_ms": {
+    "p50": 0.3,
+    "p95": 0.7,
+    "max": 3.5
+   },
+   "fotogramas": {
+    "n": 219,
+    "p50": 16.7,
+    "p95": 33.4,
+    "max": 66.7,
+    "mayores_33ms": 30,
+    "mayores_50ms": 4
+   }
+  },
+  "nativo": {
+   "duracion_s": 5.37,
+   "script_ms": 103.9,
+   "estilo_ms": 23.4,
+   "layout_ms": 1.5,
+   "tareas_ms": 398.8,
+   "otros_ms_pintado_composicion_gc": 270,
+   "actualizar_receta_ms": {
+    "p50": 0.3,
+    "p95": 1.1,
+    "max": 4.1
+   },
+   "fotogramas": {
+    "n": 219,
+    "p50": 16.7,
+    "p95": 33.4,
+    "max": 50.1,
+    "mayores_33ms": 26,
+    "mayores_50ms": 2
+   }
+  },
+  "gsap_pin": {
+   "duracion_s": 5.48,
+   "script_ms": 75.7,
+   "estilo_ms": 27.5,
+   "layout_ms": 1.8,
+   "tareas_ms": 502.1,
+   "otros_ms_pintado_composicion_gc": 397.1,
+   "actualizar_receta_ms": {
+    "p50": 0.3,
+    "p95": 0.9,
+    "max": 4.3
+   },
+   "fotogramas": {
+    "n": 218,
+    "p50": 16.8,
+    "p95": 33.4,
+    "max": 50,
+    "mayores_33ms": 32,
+    "mayores_50ms": 0
+   }
+  }
+ }
+}

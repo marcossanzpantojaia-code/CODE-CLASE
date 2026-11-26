@@ -1,0 +1,362 @@
+{
+ "viewport": [
+  375,
+  812
+ ],
+ "estrategias": {
+  "A": {
+   "lento": {
+    "fotogramas": 1341,
+    "relevos": 1,
+    "salto_visible_relevo_px": [
+     7.7
+    ],
+    "desplazamiento_en_relevo_px": [
+     5.2
+    ],
+    "max_cambio_opacidad_por_fotograma": 1,
+    "espaciado_max_visible_px": 12.9,
+    "doble_imagen_fotogramas": 0,
+    "max_separacion_semitransparente_px": null,
+    "tweens_activos_max": 0,
+    "blur_px_max": 0
+   },
+   "rapido": {
+    "fotogramas": 156,
+    "relevos": 1,
+    "salto_visible_relevo_px": [
+     170.8
+    ],
+    "desplazamiento_en_relevo_px": [
+     154.8
+    ],
+    "max_cambio_opacidad_por_fotograma": 1,
+    "espaciado_max_visible_px": 22.4,
+    "doble_imagen_fotogramas": 0,
+    "max_separacion_semitransparente_px": null,
+    "tweens_activos_max": 0,
+    "blur_px_max": 0
+   },
+   "zigzag": {
+    "fotogramas": 148,
+    "relevos": 5,
+    "salto_visible_relevo_px": [
+     186.5,
+     22.8,
+     22.8,
+     22.8,
+     22.8
+    ],
+    "desplazamiento_en_relevo_px": [
+     169.9,
+     5.2,
+     5.2,
+     5.2,
+     5.2
+    ],
+    "max_cambio_opacidad_por_fotograma": 1,
+    "espaciado_max_visible_px": 0,
+    "doble_imagen_fotogramas": 0,
+    "max_separacion_semitransparente_px": null,
+    "tweens_activos_max": 0,
+    "blur_px_max": 0,
+    "estado_final": {
+     "tl": 0.5,
+     "op": 0
+    }
+   },
+   "saltos": [
+    {
+     "nombre": "fin",
+     "tl": 1,
+     "op": 0,
+     "sep": 0
+    },
+    {
+     "nombre": "inicio",
+     "tl": 0,
+     "op": 1,
+     "sep": 740.28
+    },
+    {
+     "nombre": "mitad",
+     "tl": 0.5051,
+     "op": 0,
+     "sep": 17.82
+    },
+    {
+     "nombre": "inicio2",
+     "tl": 0,
+     "op": 1,
+     "sep": 740.28
+    }
+   ],
+   "resize": {
+    "op": 0,
+    "lienzo": [
+     263,
+     731
+    ],
+    "viewport": [
+     263,
+     731
+    ],
+    "tl": 1
+   },
+   "desmontaje": {
+    "transform_residual": [],
+    "lienzo_pintado": false,
+    "triggers": 0,
+    "tweens_activos": 0
+   },
+   "errores_consola": [],
+   "reduced_motion": {
+    "antes": {
+     "tl": 0,
+     "op": 1,
+     "blur": 0
+    },
+    "despues": {
+     "tl": 1,
+     "op": 0,
+     "blur": 0
+    },
+    "errores": []
+   },
+   "recursos_retrasados": {
+    "listo_antes_de_desplazar": true,
+    "tl": 1,
+    "op": 0,
+    "errores": []
+   }
+  },
+  "B": {
+   "lento": {
+    "fotogramas": 1390,
+    "relevos": 1,
+    "salto_visible_relevo_px": [
+     0.5
+    ],
+    "desplazamiento_en_relevo_px": [
+     0.5
+    ],
+    "max_cambio_opacidad_por_fotograma": 0.084,
+    "espaciado_max_visible_px": 4.2,
+    "doble_imagen_fotogramas": 0,
+    "max_separacion_semitransparente_px": 0,
+    "tweens_activos_max": 2,
+    "blur_px_max": 5.2
+   },
+   "rapido": {
+    "fotogramas": 161,
+    "relevos": 1,
+    "salto_visible_relevo_px": [
+     144.3
+    ],
+    "desplazamiento_en_relevo_px": [
+     144.3
+    ],
+    "max_cambio_opacidad_por_fotograma": 1,
+    "espaciado_max_visible_px": 0.9,
+    "doble_imagen_fotogramas": 0,
+    "max_separacion_semitransparente_px": null,
+    "tweens_activos_max": 2,
+    "blur_px_max": 0.5
+   },
+   "zigzag": {
+    "fotogramas": 155,
+    "relevos": 0,
+    "salto_visible_relevo_px": [],
+    "desplazamiento_en_relevo_px": [],
+    "max_cambio_opacidad_por_fotograma": 0,
+    "espaciado_max_visible_px": 0,
+    "doble_imagen_fotogramas": 0,
+    "max_separacion_semitransparente_px": null,
+    "tweens_activos_max": 2,
+    "blur_px_max": 0,
+    "estado_final": {
+     "tl": 1,
+     "op": 0
+    }
+   },
+   "saltos": [
+    {
+     "nombre": "fin",
+     "tl": 1,
+     "op": 0,
+     "sep": 0
+    },
+    {
+     "nombre": "inicio",
+     "tl": 0,
+     "op": 1,
+     "sep": 727.37
+    },
+    {
+     "nombre": "mitad",
+     "tl": 0.56,
+     "op": 0.547,
+     "sep": 0
+    },
+    {
+     "nombre": "inicio2",
+     "tl": 0,
+     "op": 1,
+     "sep": 727.37
+    }
+   ],
+   "resize": {
+    "op": 0,
+    "lienzo": [
+     263,
+     731
+    ],
+    "viewport": [
+     263,
+     731
+    ],
+    "tl": 1
+   },
+   "desmontaje": {
+    "transform_residual": [],
+    "lienzo_pintado": false,
+    "triggers": 0,
+    "tweens_activos": 0
+   },
+   "errores_consola": [],
+   "reduced_motion": {
+    "antes": {
+     "tl": 0,
+     "op": 1,
+     "blur": 0
+    },
+    "despues": {
+     "tl": 1,
+     "op": 0,
+     "blur": 0
+    },
+    "errores": []
+   },
+   "recursos_retrasados": {
+    "listo_antes_de_desplazar": true,
+    "tl": 1,
+    "op": 0,
+    "errores": []
+   }
+  },
+  "C": {
+   "lento": {
+    "fotogramas": 1341,
+    "relevos": 1,
+    "salto_visible_relevo_px": [
+     0.3
+    ],
+    "desplazamiento_en_relevo_px": [
+     0.3
+    ],
+    "max_cambio_opacidad_por_fotograma": 0.048,
+    "espaciado_max_visible_px": 2.4,
+    "doble_imagen_fotogramas": 0,
+    "max_separacion_semitransparente_px": 0,
+    "tweens_activos_max": 0,
+    "blur_px_max": 3
+   },
+   "rapido": {
+    "fotogramas": 155,
+    "relevos": 1,
+    "salto_visible_relevo_px": [
+     16.8
+    ],
+    "desplazamiento_en_relevo_px": [
+     16.8
+    ],
+    "max_cambio_opacidad_por_fotograma": 0.83,
+    "espaciado_max_visible_px": 64.6,
+    "doble_imagen_fotogramas": 0,
+    "max_separacion_semitransparente_px": 0,
+    "tweens_activos_max": 0,
+    "blur_px_max": 24
+   },
+   "zigzag": {
+    "fotogramas": 148,
+    "relevos": 0,
+    "salto_visible_relevo_px": [],
+    "desplazamiento_en_relevo_px": [],
+    "max_cambio_opacidad_por_fotograma": 0,
+    "espaciado_max_visible_px": 99.8,
+    "doble_imagen_fotogramas": 0,
+    "max_separacion_semitransparente_px": null,
+    "tweens_activos_max": 0,
+    "blur_px_max": 18.8,
+    "estado_final": {
+     "tl": 0.5,
+     "op": 1
+    }
+   },
+   "saltos": [
+    {
+     "nombre": "fin",
+     "tl": 1,
+     "op": 0,
+     "sep": 0
+    },
+    {
+     "nombre": "inicio",
+     "tl": 0,
+     "op": 1,
+     "sep": 727.37
+    },
+    {
+     "nombre": "mitad",
+     "tl": 0.5051,
+     "op": 0.995,
+     "sep": 0
+    },
+    {
+     "nombre": "inicio2",
+     "tl": 0,
+     "op": 1,
+     "sep": 727.37
+    }
+   ],
+   "resize": {
+    "op": 0,
+    "lienzo": [
+     263,
+     731
+    ],
+    "viewport": [
+     263,
+     731
+    ],
+    "tl": 1
+   },
+   "desmontaje": {
+    "transform_residual": [],
+    "lienzo_pintado": false,
+    "triggers": 0,
+    "tweens_activos": 0
+   },
+   "errores_consola": [],
+   "reduced_motion": {
+    "antes": {
+     "tl": 0,
+     "op": 1,
+     "blur": 0
+    },
+    "despues": {
+     "tl": 1,
+     "op": 0,
+     "blur": 0
+    },
+    "errores": []
+   },
+   "recursos_retrasados": {
+    "listo_antes_de_desplazar": true,
+    "tl": 1,
+    "op": 0,
+    "errores": []
+   }
+  }
+ }
+}

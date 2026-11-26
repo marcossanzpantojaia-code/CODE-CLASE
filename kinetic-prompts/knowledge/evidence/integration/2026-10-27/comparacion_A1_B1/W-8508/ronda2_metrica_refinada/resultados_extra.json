@@ -1,0 +1,78 @@
+{
+ "url": "http://127.0.0.1:8765/W-8508/",
+ "fecha": "2026-10-27T12:08:05.632Z",
+ "resultados": {
+  "ancho_320": {
+   "scrollWidth": 320,
+   "clientWidth": 320,
+   "desborda": false,
+   "cabecera": {
+    "alto": 84,
+    "elementos_visibles": 3,
+    "filas_distintas": 2,
+    "detalle": [
+     "a.brand \"BARBERÍA\nCASTELLANA\" x20-181 y66-96",
+     "a.btn \"RESERVAR CITA\" x20-167 y106-150",
+     "button.nav-toggle \"Menú\" x176-220 y106-150"
+    ]
+   }
+  },
+  "ancho_375": {
+   "scrollWidth": 375,
+   "clientWidth": 375,
+   "desborda": false,
+   "cabecera": {
+    "alto": 98,
+    "elementos_visibles": 3,
+    "filas_distintas": 2,
+    "detalle": [
+     "a.brand \"BARBERÍA\nCASTELLANA\" x20-181 y55-86",
+     "a.btn \"RESERVAR CITA\" x208-355 y48-92",
+     "button.nav-toggle \"Menú\" x20-64 y102-146"
+    ]
+   }
+  },
+  "ancho_768": {
+   "scrollWidth": 768,
+   "clientWidth": 768,
+   "desborda": false,
+   "cabecera": {
+    "alto": 68,
+    "elementos_visibles": 3,
+    "filas_distintas": 1,
+    "detalle": [
+     "a.brand \"BARBERÍA\nCASTELLANA\" x20-181 y50-81",
+     "a.btn \"RESERVAR CITA\" x542-694 y43-87",
+     "button.nav-toggle \"Menú\" x704-748 y43-87"
+    ]
+   }
+  },
+  "ancho_1440": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "desborda": false,
+   "cabecera": {
+    "alto": 68,
+    "elementos_visibles": 6,
+    "filas_distintas": 1,
+    "detalle": [
+     "a.brand \"BARBERÍA\nCASTELLANA\" x144-305 y51-82",
+     "a \"SERVICIOS\" x648-762 y45-89",
+     "a \"TRABAJOS\" x766-881 y45-89",
+     "a \"OPINIONES\" x885-1003 y45-89",
+     "a \"CONTACTO\" x1007-1126 y45-89",
+     "a.btn \"RESERVAR CITA\" x1135-1296 y45-89"
+    ]
+   }
+  },
+  "sin_js": {
+   "elementos": 209,
+   "ocultos": 2,
+   "ocultos_con_contenido": 0,
+   "muestra": [
+    "div.hero__light",
+    "div.hero__art"
+   ]
+  }
+ }
+}

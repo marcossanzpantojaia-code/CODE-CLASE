@@ -1,0 +1,2 @@
+Fichas: 157 · TUT: 43 · VR: 222 · errores: 0 · avisos: 0
+Manifiesto escrito: integration/LIBRARY_MANIFEST.json

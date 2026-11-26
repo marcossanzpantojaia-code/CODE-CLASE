@@ -1,0 +1,3 @@
+Copia aislada de v0.17.0 (308 archivos): sha256 antes y después idénticos
+3bd4c3273abcb63a36d4e865e0c962f684d4e3923da228bce82f8205925ab19b  lib_before.sha
+3bd4c3273abcb63a36d4e865e0c962f684d4e3923da228bce82f8205925ab19b  lib_after.sha

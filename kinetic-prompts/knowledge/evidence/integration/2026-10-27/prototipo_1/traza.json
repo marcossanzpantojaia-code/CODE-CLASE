@@ -1,0 +1,253 @@
+{
+ "generado_por": "integration/tools/make_trace.py",
+ "version_biblioteca": "0.17.0",
+ "zip": "WEB_ENGINEERING_KNOWLEDGE_LIBRARY_v0.17.0.zip",
+ "zip_sha256": "dfeec4611ef16dcdf5fcbb1f4a5707b01a144e4204b22d380389ca265374c6b5",
+ "manifiesto_sha256": "d6b43d9830fe513c8f37a2e55345569701249682968f1ed0f273f8b85cd18895",
+ "evidencia_sha256": "ebdcdaf5895c6bfd93dfa80ec32234773fd7602a08fcd8de3d7ceaa8ff59fc0b",
+ "raiz_original": "/tmp/claude-0/-home-claude/4163556f-e6b7-5519-9643-7a71e30aadce/scratchpad/build1/lib/WEB_ENGINEERING_KNOWLEDGE_LIBRARY",
+ "init": {
+  "claude_code_version": "2.1.311",
+  "model": "claude-sonnet-5-5",
+  "permissionMode": "acceptEdits",
+  "tools": [
+   "Edit",
+   "Glob",
+   "Grep",
+   "Read",
+   "Skill",
+   "Write"
+  ],
+  "skills": [
+   "web-cinematic-site",
+   "web-commercial-site",
+   "web-library-router",
+   "web-qa-validation",
+   "deep-research",
+   "design",
+   "slides",
+   "design-sync",
+   "dataviz",
+   "artifact-diagramming",
+   "artifact-capabilities",
+   "update-config",
+   "verify",
+   "debug",
+   "code-review",
+   "simplify",
+   "batch",
+   "fewer-permission-prompts",
+   "doctor",
+   "explain-usage",
+   "setup-claude",
+   "loop",
+   "claude-api",
+   "workflow-authoring",
+   "run",
+   "run-skill-generator",
+   "plugin-authoring"
+  ]
+ },
+ "resultado": {
+  "subtype": "success",
+  "is_error": false,
+  "num_turns": 26,
+  "duration_ms": 319036,
+  "permission_denials": [],
+  "result_sha256": "f0383e1304befed3bf89489b90f705921babd66ba4f09ed8098b7c1ec3f87af2"
+ },
+ "llamadas": [
+  {
+   "orden": 1,
+   "herramienta": "Skill",
+   "skill": "web-library-router",
+   "error": false
+  },
+  {
+   "orden": 2,
+   "herramienta": "Skill",
+   "skill": "web-commercial-site",
+   "error": false
+  },
+  {
+   "orden": 3,
+   "herramienta": "Read",
+   "ruta_rel": "KNOWLEDGE_INDEX.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "0347f2db5f922649b1f88d5323b5865970157688c162507d0995b65973d2be6a",
+   "lineas": 327,
+   "id_ficha": null,
+   "error": false
+  },
+  {
+   "orden": 4,
+   "herramienta": "Read",
+   "ruta_rel": "integration/LIBRARY_MANIFEST.json",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "d6b43d9830fe513c8f37a2e55345569701249682968f1ed0f273f8b85cd18895",
+   "lineas": 142,
+   "id_ficha": null,
+   "error": false
+  },
+  {
+   "orden": 5,
+   "herramienta": "Glob",
+   "patron": "**/*",
+   "ruta_rel": null,
+   "fuera_de_la_biblioteca": true,
+   "error": false
+  },
+  {
+   "orden": 6,
+   "herramienta": "Read",
+   "ruta_rel": "architecture/ARCH-001-receta-pagina-completa.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "261b5f2f2bc1aec905f0ee09f886b158bf60804a0d5f3c0794cd4d97a856c643",
+   "lineas": 57,
+   "id_ficha": "ARCH-001",
+   "error": false
+  },
+  {
+   "orden": 7,
+   "herramienta": "Read",
+   "ruta_rel": "ux/UX-002-pagina-de-inicio-de-negocio.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "02c5aa89a033be272073991cc5a0f00da1fc01596549e8d2824067ad3f0f1c65",
+   "lineas": 34,
+   "id_ficha": "UX-002",
+   "error": false
+  },
+  {
+   "orden": 8,
+   "herramienta": "Read",
+   "ruta_rel": "accessibility/A11Y-001-reduced-motion.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "6877d3ac65833b3fbccdf5f332ee6e2e396b5096dc0fcec83386be47a2e9fe39",
+   "lineas": 48,
+   "id_ficha": "A11Y-001",
+   "error": false
+  },
+  {
+   "orden": 9,
+   "herramienta": "Read",
+   "ruta_rel": "css/CSS-001-scroll-driven-animations.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "621bca80f05a8e67b0b9f9e5a0bf71234f72e70d715905c1562f1c9d8de8a03c",
+   "lineas": 28,
+   "id_ficha": "CSS-001",
+   "error": false
+  },
+  {
+   "orden": 10,
+   "herramienta": "Read",
+   "ruta_rel": "frontend/FORM-001-formularios-validacion.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "cdd9b1a0bf7fe566fad73637b1c34dd87922e5cdbca5d173e254ca415e2ac310",
+   "lineas": 46,
+   "id_ficha": "FORM-001",
+   "error": false
+  },
+  {
+   "orden": 11,
+   "herramienta": "Read",
+   "ruta_rel": "seo/SEO-001-seo-tecnico-basico.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "4f2bf874e602d6624d97890fcfb91b40e6d0c3e43829d8cb697aea3b88072936",
+   "lineas": 36,
+   "id_ficha": "SEO-001",
+   "error": false
+  },
+  {
+   "orden": 12,
+   "herramienta": "Read",
+   "ruta_rel": "performance/PERF-001-core-web-vitals-y-animacion.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "5de716032347eda100a828492a5a78447254528ff6f6835fb13fadb3fde45f13",
+   "lineas": 43,
+   "id_ficha": "PERF-001",
+   "error": false
+  },
+  {
+   "orden": 13,
+   "herramienta": "Read",
+   "ruta_rel": "threejs/WGPU-001-webgpu-vs-webgl-y-degradacion.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "c2b18b8e34489a9694802a72f53484a679244c7c01d539fa6789668ff38dcc6e",
+   "lineas": 44,
+   "id_ficha": "WGPU-001",
+   "error": false
+  },
+  {
+   "orden": 14,
+   "herramienta": "Read",
+   "ruta_rel": "scrolltrigger/ST-001-fundamentos-scrolltrigger.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "b279eda7da3ee9eba741977e0793a11d42a0fa22381e0637de5bda9458d45693",
+   "lineas": 38,
+   "id_ficha": "ST-001",
+   "error": false
+  },
+  {
+   "orden": 15,
+   "herramienta": "Read",
+   "ruta_rel": "ux/UI-002-jerarquia-cta-y-color.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "482a493f430c0989f5d4acb7b76b2950296caa436b2f76178781ac4bc12147e4",
+   "lineas": 60,
+   "id_ficha": "UI-002",
+   "error": false
+  },
+  {
+   "orden": 16,
+   "herramienta": "Read",
+   "ruta_rel": "accessibility/A11Y-007-carrusel-accesible.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "b9bc017c7ebe08b5e79594311f618015fd13d84f453e8768510e872e233765ee",
+   "lineas": 48,
+   "id_ficha": "A11Y-007",
+   "error": false
+  },
+  {
+   "orden": 17,
+   "herramienta": "Write",
+   "ruta_rel": null,
+   "fuera_de_la_biblioteca": true,
+   "error": false
+  },
+  {
+   "orden": 18,
+   "herramienta": "Write",
+   "ruta_rel": null,
+   "fuera_de_la_biblioteca": true,
+   "error": false
+  },
+  {
+   "orden": 19,
+   "herramienta": "Edit",
+   "ruta_rel": null,
+   "fuera_de_la_biblioteca": true,
+   "error": false
+  },
+  {
+   "orden": 20,
+   "herramienta": "Edit",
+   "ruta_rel": null,
+   "fuera_de_la_biblioteca": true,
+   "error": false
+  },
+  {
+   "orden": 21,
+   "herramienta": "Write",
+   "ruta_rel": null,
+   "fuera_de_la_biblioteca": true,
+   "error": false
+  },
+  {
+   "orden": 22,
+   "herramienta": "Skill",
+   "skill": "web-qa-validation",
+   "error": false
+  }
+ ],
+ "nota": "Para re-verificar: descomprimir el mismo ZIP (mismo sha256) y usar verify_test_evidence.py --remap <raiz_original>=<nueva_raiz>."
+}

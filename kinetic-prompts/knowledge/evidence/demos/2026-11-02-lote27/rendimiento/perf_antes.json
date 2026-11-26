@@ -1,0 +1,133 @@
+{
+ "url": "http://127.0.0.1:8791/receta_c.html?motor=gsap",
+ "W": "1440",
+ "H": "900",
+ "R": {
+  "base": [
+   {
+    "tareas": 554,
+    "script": 104,
+    "estilo_layout": 24,
+    "p95": 33.4,
+    "mayores33": 26,
+    "n": 250
+   },
+   {
+    "tareas": 553,
+    "script": 68,
+    "estilo_layout": 21,
+    "p95": 49.9,
+    "mayores33": 38,
+    "n": 249
+   }
+  ],
+  "sin_filtros_ingredientes": [
+   {
+    "tareas": 499,
+    "script": 76,
+    "estilo_layout": 23,
+    "p95": 33.4,
+    "mayores33": 37,
+    "n": 246
+   },
+   {
+    "tareas": 481,
+    "script": 66,
+    "estilo_layout": 22,
+    "p95": 33.4,
+    "mayores33": 25,
+    "n": 246
+   }
+  ],
+  "sin_blur_sombra": [
+   {
+    "tareas": 470,
+    "script": 88,
+    "estilo_layout": 22,
+    "p95": 33.4,
+    "mayores33": 27,
+    "n": 248
+   },
+   {
+    "tareas": 502,
+    "script": 75,
+    "estilo_layout": 27,
+    "p95": 33.4,
+    "mayores33": 32,
+    "n": 246
+   }
+  ],
+  "sin_multiply": [
+   {
+    "tareas": 369,
+    "script": 75,
+    "estilo_layout": 19,
+    "p95": 16.7,
+    "mayores33": 1,
+    "n": 262
+   },
+   {
+    "tareas": 329,
+    "script": 61,
+    "estilo_layout": 21,
+    "p95": 16.8,
+    "mayores33": 0,
+    "n": 262
+   }
+  ],
+  "sin_ingredientes": [
+   {
+    "tareas": 488,
+    "script": 71,
+    "estilo_layout": 21,
+    "p95": 33.4,
+    "mayores33": 23,
+    "n": 261
+   },
+   {
+    "tareas": 460,
+    "script": 79,
+    "estilo_layout": 20,
+    "p95": 33.4,
+    "mayores33": 19,
+    "n": 260
+   }
+  ],
+  "sin_fantasma": [
+   {
+    "tareas": 465,
+    "script": 85,
+    "estilo_layout": 19,
+    "p95": 33.4,
+    "mayores33": 26,
+    "n": 247
+   },
+   {
+    "tareas": 495,
+    "script": 98,
+    "estilo_layout": 21,
+    "p95": 33.4,
+    "mayores33": 26,
+    "n": 249
+   }
+  ],
+  "todo_lo_anterior": [
+   {
+    "tareas": 237,
+    "script": 55,
+    "estilo_layout": 21,
+    "p95": 16.7,
+    "mayores33": 0,
+    "n": 263
+   },
+   {
+    "tareas": 231,
+    "script": 54,
+    "estilo_layout": 21,
+    "p95": 16.7,
+    "mayores33": 0,
+    "n": 263
+   }
+  ]
+ }
+}

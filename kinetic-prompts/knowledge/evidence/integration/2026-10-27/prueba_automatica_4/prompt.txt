@@ -1,0 +1,1 @@
+Diseña el enfoque técnico para una página web premium de una barbería, con animaciones cinematográficas, scroll interactivo, reservas, SEO local y buena accesibilidad. Explica qué técnicas aplicarías y por qué. No escribas código ni archivos todavía.

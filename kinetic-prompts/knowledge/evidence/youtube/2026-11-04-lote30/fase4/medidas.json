@@ -1,0 +1,37 @@
+{
+ "base": {
+  "fotogramas": 70,
+  "relevo_fotograma": 46,
+  "pico_velocidad_heroe_fotograma": 30,
+  "pico_px_s": 518,
+  "vel_heroe_antes_relevo_px_s": 22,
+  "vel_plato_tras_relevo_px_s": -146,
+  "vel_plato_antes_relevo_px_s": -305,
+  "anticipacion_vel_min_px_s": 0,
+  "fotogramas_doble_imagen": 11,
+  "separacion_nidos_en_doble_px": [
+   115.3,
+   86.6,
+   63.1,
+   44.4,
+   29.7,
+   18.7,
+   10.8,
+   5.5
+  ],
+  "desajuste_nidos_al_relevo_px": 10.8
+ },
+ "cine": {
+  "fotogramas": 76,
+  "relevo_fotograma": 33,
+  "pico_velocidad_heroe_fotograma": 32,
+  "pico_px_s": 1607,
+  "vel_heroe_antes_relevo_px_s": 770,
+  "vel_plato_tras_relevo_px_s": 296,
+  "vel_plato_antes_relevo_px_s": -3,
+  "anticipacion_vel_min_px_s": -134,
+  "fotogramas_doble_imagen": 0,
+  "separacion_nidos_en_doble_px": [],
+  "desajuste_nidos_al_relevo_px": 0.0
+ }
+}

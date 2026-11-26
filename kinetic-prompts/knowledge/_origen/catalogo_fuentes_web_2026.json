@@ -1,0 +1,293 @@
+{
+  "project": "WEB_MOTION_KNOWLEDGE_LIBRARY",
+  "scope": "Investigación de fuentes, no evidencias de haber estudiado sus vídeos",
+  "date": "2026-10-26",
+  "sources": [
+    {
+      "name": "GreenSock (canal oficial)",
+      "topics": "GSAP, ScrollTrigger, Flip, SplitText, MorphSVG, timelines",
+      "notes": "Prioridad máxima; contrastar con docs oficiales",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Creative Coding Club (Carl Schooff)",
+      "topics": "Fundamentos GSAP, easing, timelines, stagger",
+      "notes": "Prioridad alta",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Codegrid",
+      "topics": "Sitios de estilo agencia, pinning, revelados, menús, transiciones",
+      "notes": "Prioridad alta",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Olivier Larose",
+      "topics": "React / Next.js, GSAP, ScrollTrigger, Lenis, parallax",
+      "notes": "Prioridad alta",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Hyperplexed",
+      "topics": "Hovers, interacciones, efectos UI, texto",
+      "notes": "Prioridad media",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "DesignCourse (Gary Simon)",
+      "topics": "UI/UX, landing pages y GSAP",
+      "notes": "Prioridad media",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Cassie Evans",
+      "topics": "SVG, GSAP, técnicas avanzadas",
+      "notes": "Identificar charlas y material fuente",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Wael Yasmina",
+      "topics": "Three.js, GSAP, cámaras y scroll 3D",
+      "notes": "Prioridad alta para 3D",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Wawa Sensei",
+      "topics": "React Three Fiber, interacciones y escenas 3D",
+      "notes": "Prioridad alta para 3D",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "JavaScript Mastery",
+      "topics": "Landings completas, Three.js, React, GSAP",
+      "notes": "Evaluar vigencia del código",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "The Code Creative",
+      "topics": "GSAP, Flip, ScrollTrigger",
+      "notes": "Prioridad media",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Ihatetomatoes (Petr Tichy)",
+      "topics": "GSAP / ScrollTrigger",
+      "notes": "Comprobar versiones históricas",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Rajacharles SRD",
+      "topics": "Landings, sliders, menús, ScrollTrigger",
+      "notes": "Prioridad media",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Motion Tricks",
+      "topics": "Animaciones web con GSAP",
+      "notes": "Confirmar identidad/ubicación del material",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Kevin Powell",
+      "topics": "CSS, transiciones de vistas, accesibilidad",
+      "notes": "Prioridad alta para soluciones sin JS",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Yuri Artiukh (akella)",
+      "topics": "WebGL, shaders, distorsiones, efectos avanzados",
+      "notes": "Prioridad alta para WebGL",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Frontend Horse (Alex Trost)",
+      "topics": "Entrevistas y técnicas de creative coding",
+      "notes": "Mayormente fuente secundaria",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "The Coding Train",
+      "topics": "Creative coding, principios de movimiento",
+      "notes": "Fundamentos, no necesariamente GSAP",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Codrops",
+      "topics": "Publicaciones, demos y experimentos",
+      "notes": "Investigación de efectos y fuentes de código",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Osmo",
+      "topics": "Biblioteca/comunidad/cursos de desarrollo creativo",
+      "notes": "Transiciones y componentes; distinguir contenido público de pago",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Mastering Web Animation",
+      "topics": "Curso / formación",
+      "notes": "Principios de motion design; acceso autorizado únicamente",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Awwwards",
+      "topics": "Galería de webs premiadas y ejemplos",
+      "notes": "Referencias visuales, no prueba de implementación",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Three.js Journey (Bruno Simon)",
+      "topics": "Curso de pago",
+      "notes": "Fundamentos avanzados de Three.js; no eludir acceso",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Fireship",
+      "topics": "Ecosistema web, herramientas, tendencias y resúmenes",
+      "notes": "Radar de tecnologías, **no** guía definitiva de implementación",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Web Dev Simplified",
+      "topics": "JavaScript, DOM, React y fundamentos",
+      "notes": "Conceptos e implementación desde la base",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "freeCodeCamp",
+      "topics": "Formación de programación y proyectos completos",
+      "notes": "Cursos estructurados y ejemplos integrales",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Theo Browne / t3.gg",
+      "topics": "Arquitectura y ecosistema JavaScript/TypeScript",
+      "notes": "Decisiones de stack; contrastar opiniones con fuentes primarias",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "The Net Ninja",
+      "topics": "Series de React, Next.js y tecnologías web",
+      "notes": "Rutas de aprendizaje y proyectos",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Traversy Media",
+      "topics": "Aplicaciones web y proyectos prácticos",
+      "notes": "Flujos completos, integración frontend/backend",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Jack Herrington",
+      "topics": "React, Next.js y prácticas de ingeniería frontend",
+      "notes": "Patrones avanzados y mantenibilidad",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "ByteGrad",
+      "topics": "Next.js, TypeScript y proyectos",
+      "notes": "Flujos profesionales y aplicaciones modernas",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Matt Pocock",
+      "topics": "TypeScript y diseño de tipos",
+      "notes": "Código seguro, APIs y patrones de tipos",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Coding in Public",
+      "topics": "Astro y frontend",
+      "notes": "Sitios rápidos, arquitectura de contenido",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "ThePrimeagen",
+      "topics": "Desarrollo y criterios de ingeniería",
+      "notes": "Debate técnico, rendimiento, herramientas; verificar pertinencia web",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Flux Academy",
+      "topics": "Diseño web, Webflow y negocio de servicios",
+      "notes": "Diseño centrado en clientes y entregables comerciales",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "midudev",
+      "topics": "JavaScript, React y desarrollo web en español",
+      "notes": "Proyectos y contexto del ecosistema",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "MoureDev",
+      "topics": "Enseñanza de programación y proyectos",
+      "notes": "Explicaciones y aprendizaje estructurado",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Soy Dalto",
+      "topics": "Fundamentos web y programación en español",
+      "notes": "Nivel introductorio; contrastar prácticas y actualidad",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Fazt",
+      "topics": "Desarrollo web y programación práctica",
+      "notes": "Proyectos full stack",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "FalconMasters",
+      "topics": "HTML, CSS, JavaScript y diseño web",
+      "notes": "Fundamentos y ejemplos; auditar vigencia",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    },
+    {
+      "name": "Carlos Azaustre",
+      "topics": "JavaScript, Node.js y React",
+      "notes": "Prácticas del ecosistema JS y frontend",
+      "research_status": "PENDIENTE_DE_VERIFICACION"
+    }
+  ],
+  "already_included_with_expanded_scope": [
+    "Kevin Powell",
+    "DesignCourse (Gary Simon)",
+    "JavaScript Mastery"
+  ],
+  "new_contributor_sources": [
+    "Fireship",
+    "Web Dev Simplified",
+    "freeCodeCamp",
+    "Theo Browne / t3.gg",
+    "The Net Ninja",
+    "Traversy Media",
+    "Jack Herrington",
+    "ByteGrad",
+    "Matt Pocock",
+    "Coding in Public",
+    "ThePrimeagen",
+    "Flux Academy",
+    "midudev",
+    "MoureDev",
+    "Soy Dalto",
+    "Fazt",
+    "FalconMasters",
+    "Carlos Azaustre"
+  ],
+  "provenance": "Listado aportado por el usuario. Especialidades y rankings pendientes de verificación.",
+  "profiles": [
+    "web comercial",
+    "web creativa premium",
+    "experiencia inmersiva para PC"
+  ],
+  "evidence_states": [
+    "SOLO_REFERENCIA",
+    "METADATOS_VERIFICADOS",
+    "TRANSCRIPCION_ANALIZADA",
+    "VIDEO_INSPECCIONADO",
+    "CODIGO_INSPECCIONADO",
+    "IMPLEMENTADO",
+    "VALIDADO"
+  ]
+}

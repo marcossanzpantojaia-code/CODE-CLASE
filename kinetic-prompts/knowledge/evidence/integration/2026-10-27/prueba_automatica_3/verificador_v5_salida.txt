@@ -1,0 +1,16 @@
+OK    Skill web-library-router registrada en la sesión (evento init) 
+OK    Skill web-library-router invocada con éxito 
+OK    KNOWLEDGE_INDEX.md leído 
+FALLA LIBRARY_MANIFEST.json leído 
+OK    >= 5 fichas del manifiesto leídas — A11Y-001, ARCH-001, ASTRO-002, LN-001, PERF-001, SEO-002, SEO-003
+OK    Rutas leídas existen 
+OK    Ninguna ruta con prefijo engañoso 
+OK    Sin herramientas de escritura/ejecución 
+OK    Respuesta cita la versión 0.14.1 
+FALLA Respuesta cita la ruta absoluta real de la biblioteca 
+OK    Respuesta cita los IDs leídos — 7/7
+OK    Encargo sin mencionar Skill/Skills/biblioteca 
+OK    Skill invocada antes de la primera lectura de la biblioteca 
+MODO DE INVOCACIÓN: AUTOMÁTICA (encargo limpio; Claude Code invocó la Skill por iniciativa propia)
+INFO IDs citados sin haberse leído en la sesión: 46 — A11Y-002, A11Y-003, A11Y-004, A11Y-005, ASTRO-001, ASTRO-004, CARD-001, CI-002, CLIENT-001, CLIP-001, COPY-001, CSS-001, CSS-002, DEPLOY-001, DRAG-001, DS-001, FLIP-001, FLIP-002, FORM-001, HOV-001, HOV-004, I18N-001, IMG-001, LEGAL-001, MASK-001, NEXT-002, NEXT-003, PERF-002, PX-001, SEC-001, SEC-002, SEO-001, ST-002, ST-004, ST-005, ST-006, T3-001, TEST-001, TEST-002, TS-001, TXT-001, TYPE-001, TYPE-002, UX-001, UX-002, UX-003
+VEREDICTO: NO SUPERA

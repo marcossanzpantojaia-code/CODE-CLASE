@@ -1,0 +1,562 @@
+{
+ "url": "http://127.0.0.1:8790/receta_c_producto_fijo.html",
+ "ancho": 375,
+ "fecha": "2026-11-01T13:37:14.797Z",
+ "navegador": "153.0.8010.12",
+ "reversibilidad": {
+  "pasos": 41,
+  "diferencia_maxima": 0,
+  "campo": "",
+  "nota": "mismas posiciones de scroll, bajando y subiendo"
+ },
+ "barrido": [
+  {
+   "p": 0,
+   "objetivo": 0,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    8,
+    307,
+    360
+   ],
+   "escala": 1,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.0249,
+   "objetivo": 0.0249,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    7,
+    307,
+    361
+   ],
+   "escala": 1.0015,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.05,
+   "objetivo": 0.05,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    7,
+    307,
+    361
+   ],
+   "escala": 1.003,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.075,
+   "objetivo": 0.075,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    7,
+    306,
+    362
+   ],
+   "escala": 1.0045,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.1,
+   "objetivo": 0.1,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    6,
+    306,
+    362
+   ],
+   "escala": 1.006,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.125,
+   "objetivo": 0.125,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    6,
+    306,
+    363
+   ],
+   "escala": 1.0075,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.15,
+   "objetivo": 0.15,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    6,
+    306,
+    363
+   ],
+   "escala": 1.009,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.1751,
+   "objetivo": 0.1751,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    6,
+    305,
+    364
+   ],
+   "escala": 1.0105,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.2001,
+   "objetivo": 0.2001,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    5,
+    305,
+    364
+   ],
+   "escala": 1.012,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.2251,
+   "objetivo": 0.2251,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    5,
+    305,
+    365
+   ],
+   "escala": 1.0135,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.2501,
+   "objetivo": 0.2501,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    5,
+    304,
+    365
+   ],
+   "escala": 1.015,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.2748,
+   "objetivo": 0.2748,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    5,
+    304,
+    366
+   ],
+   "escala": 1.0165,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.2998,
+   "objetivo": 0.2998,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    4,
+    304,
+    366
+   ],
+   "escala": 1.018,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.3248,
+   "objetivo": 0.3248,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    4,
+    304,
+    367
+   ],
+   "escala": 1.0195,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.3498,
+   "objetivo": 0.3498,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    4,
+    303,
+    368
+   ],
+   "escala": 1.021,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.3748,
+   "objetivo": 0.3748,
+   "solape_linea2": 0,
+   "escena": 0,
+   "producto": [
+    3,
+    303,
+    368
+   ],
+   "escala": 1.0225,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.3999,
+   "objetivo": 0.3999,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    3,
+    303,
+    369
+   ],
+   "escala": 1.024,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.4249,
+   "objetivo": 0.4249,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    3,
+    303,
+    369
+   ],
+   "escala": 1.0255,
+   "ingredientes": 0.062
+  },
+  {
+   "p": 0.4499,
+   "objetivo": 0.4499,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    3,
+    302,
+    370
+   ],
+   "escala": 1.027,
+   "ingredientes": 0.497
+  },
+  {
+   "p": 0.4749,
+   "objetivo": 0.4749,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    2,
+    302,
+    370
+   ],
+   "escala": 1.0285,
+   "ingredientes": 0.937
+  },
+  {
+   "p": 0.4999,
+   "objetivo": 0.4999,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    2,
+    302,
+    371
+   ],
+   "escala": 1.03,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.5249,
+   "objetivo": 0.5249,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    2,
+    302,
+    371
+   ],
+   "escala": 1.0315,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.55,
+   "objetivo": 0.55,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    2,
+    301,
+    372
+   ],
+   "escala": 1.033,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.575,
+   "objetivo": 0.575,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    1,
+    301,
+    372
+   ],
+   "escala": 1.0345,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.6,
+   "objetivo": 0.6,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    1,
+    301,
+    373
+   ],
+   "escala": 1.036,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.625,
+   "objetivo": 0.625,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    1,
+    300,
+    374
+   ],
+   "escala": 1.0375,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.65,
+   "objetivo": 0.65,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    0,
+    300,
+    374
+   ],
+   "escala": 1.039,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.6751,
+   "objetivo": 0.6751,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    0,
+    300,
+    375
+   ],
+   "escala": 1.0405,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.7001,
+   "objetivo": 0.7001,
+   "solape_linea2": 0,
+   "escena": 1,
+   "producto": [
+    0,
+    300,
+    375
+   ],
+   "escala": 1.042,
+   "ingredientes": 0.968
+  },
+  {
+   "p": 0.7251,
+   "objetivo": 0.7251,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    0,
+    299,
+    376
+   ],
+   "escala": 1.0435,
+   "ingredientes": 0.633
+  },
+  {
+   "p": 0.7501,
+   "objetivo": 0.7501,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -1,
+    299,
+    376
+   ],
+   "escala": 1.045,
+   "ingredientes": 0.107
+  },
+  {
+   "p": 0.7748,
+   "objetivo": 0.7748,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -1,
+    299,
+    377
+   ],
+   "escala": 1.0465,
+   "ingredientes": 0.001
+  },
+  {
+   "p": 0.7998,
+   "objetivo": 0.7998,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -1,
+    299,
+    377
+   ],
+   "escala": 1.048,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.8248,
+   "objetivo": 0.8248,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -1,
+    298,
+    378
+   ],
+   "escala": 1.0495,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.8498,
+   "objetivo": 0.8498,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -2,
+    298,
+    378
+   ],
+   "escala": 1.051,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.8748,
+   "objetivo": 0.8748,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -2,
+    298,
+    379
+   ],
+   "escala": 1.0525,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.8999,
+   "objetivo": 0.8999,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -2,
+    297,
+    379
+   ],
+   "escala": 1.054,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.9249,
+   "objetivo": 0.9249,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -2,
+    297,
+    380
+   ],
+   "escala": 1.0555,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.9499,
+   "objetivo": 0.9499,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -3,
+    297,
+    381
+   ],
+   "escala": 1.057,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.9749,
+   "objetivo": 0.9749,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -3,
+    297,
+    381
+   ],
+   "escala": 1.0585,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.9999,
+   "objetivo": 0.9999,
+   "solape_linea2": 0,
+   "escena": 2,
+   "producto": [
+    -3,
+    296,
+    382
+   ],
+   "escala": 1.06,
+   "ingredientes": 0
+  }
+ ],
+ "fotogramas": {
+  "n": 159,
+  "p50_ms": 16.7,
+  "p95_ms": 16.8,
+  "max_ms": 33.4,
+  "sobre_33ms": 0,
+  "nota": "contenedor sin GPU, 2 núcleos, Chromium headless: orientativo"
+ },
+ "errores": [],
+ "reduced_motion": {
+  "marcado": true,
+  "claseRm": true,
+  "sticky": "relative",
+  "alto_pagina": 1786
+ }
+}

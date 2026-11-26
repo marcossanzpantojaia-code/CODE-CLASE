@@ -1,0 +1,22 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba aislada: feTurbulence + feDisplacementMap con scrub (lote 28)</title>
+<!-- Técnica de Hyperplexed (vídeo z1wZp4jV4cQ, CodePen MWqNroM) llevada a scroll: GSAP anima los ATRIBUTOS scale y seed del filtro.
+     ?filtro=0 desactiva el filtro para comparar el coste. ?tam=pantalla|tarjeta tamaño de la capa filtrada. Imagen: FIXTURE. -->
+<style>*{margin:0;box-sizing:border-box} body{background:#efe6d6} .intro,.fin{height:60vh} #acto{height:300vh;position:relative}
+.escenario{position:sticky;top:0;height:100vh;overflow:hidden;display:grid;place-items:center}
+.capa{width:100vw;height:100vh} .tarjeta .capa{width:40vw;height:60vh} .capa img{width:100%;height:100%;object-fit:cover;display:block}
+.con-filtro .capa img{filter:url(#ruido)}</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs><filter id="ruido" x="0" y="0" width="100%" height="100%">
+<feTurbulence id="turb" type="fractalNoise" baseFrequency="0.7 0.8" seed="0" result="estatica"/>
+<feDisplacementMap id="desp" in="SourceGraphic" in2="estatica" scale="0"/></filter></defs></svg>
+<div class="intro"></div><section id="acto"><div class="escenario"><div class="capa"><img src="recursos/producto-709.avif" alt=""></div></div></section><div class="fin"></div>
+<script src="node_modules/gsap/dist/gsap.min.js"></script><script src="node_modules/gsap/dist/ScrollTrigger.min.js"></script>
+<script>
+const q=new URLSearchParams(location.search); if(q.get('filtro')!=='0') document.body.classList.add('con-filtro'); if(q.get('tam')==='tarjeta') document.body.classList.add('tarjeta');
+gsap.registerPlugin(ScrollTrigger);
+const st={p:0};
+gsap.timeline({scrollTrigger:{trigger:'#acto',start:'top top',end:'bottom bottom',scrub:true}})
+  .to('#desp',{attr:{scale:40},duration:.5,ease:'power2.in'}).to('#desp',{attr:{scale:0},duration:.5,ease:'power2.out'})
+  .to('#turb',{attr:{seed:100},duration:1,ease:'none',modifiers:{attr:{}},snap:{'attr.seed':1}},0);
+window.__motor={st:()=>{const s=ScrollTrigger.getAll()[0];return {start:s.start,end:s.end}}};
+</script></body></html>

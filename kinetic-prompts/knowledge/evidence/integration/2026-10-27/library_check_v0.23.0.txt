@@ -1,0 +1,2 @@
+Baseline /tmp/claude-0/-home-claude/4163556f-e6b7-5519-9643-7a71e30aadce/scratchpad/base022/WEB_ENGINEERING_KNOWLEDGE_LIBRARY: 143 fichas, 200 VR comprobados
+Fichas: 144 · TUT: 43 · VR: 203 · errores: 0 · avisos: 0

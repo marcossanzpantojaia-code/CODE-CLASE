@@ -1,0 +1,8 @@
+PRUEBA DE RECUPERACIÓN DE SOLO LECTURA. No escribas ni modifiques ningún archivo.
+Encargo: quiero una web profesional para una barbería de Madrid (reservas, SEO local, cookies conformes en España) con animaciones cinematográficas (GSAP, ScrollTrigger y una escena Three.js en el héroe). Todavía NO construyas nada: solo prepara el conocimiento.
+1. Antes de nada, comprueba qué Skills relacionadas con la creación de webs tienes disponibles, invoca la que corresponda y di desde qué carpeta real se cargó (valor resuelto de CLAUDE_SKILL_DIR).
+2. Siguiendo esa Skill, resuelve la raíz de la biblioteca, lee su KNOWLEDGE_INDEX.md y copia literalmente su línea "Versión ...".
+3. Usando el manifiesto de la biblioteca (integration/LIBRARY_MANIFEST.json), elige EXACTAMENTE 5 fichas para este encargo (al menos 2 para la parte comercial y al menos 2 para la parte cinematográfica).
+4. Lee cada ficha con la herramienta Read y muestra: ID, ruta absoluta exacta, estado y la línea ultima_revision.
+5. Para cada ficha, explica 1–2 decisiones técnicas que aplicarías, citando el número de campo de la ficha del que salen, y distingue lo documentado de lo no probado.
+6. Termina con un registro en el formato de integration/CONSULTA_BIBLIOTECA_TEMPLATE.md (secciones 1–4) dentro de tu respuesta.

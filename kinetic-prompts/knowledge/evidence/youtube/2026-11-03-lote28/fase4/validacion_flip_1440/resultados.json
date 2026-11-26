@@ -1,0 +1,746 @@
+{
+ "url": "http://127.0.0.1:8793/index_flip.html",
+ "ancho": 1440,
+ "alto": 900,
+ "fecha": "2026-11-03T20:26:10.391Z",
+ "errores": {
+  "nativo": [],
+  "gsap": [],
+  "gsap_pin": [],
+  "pin_chk": [],
+  "scrub_gsap": [],
+  "scrub_nativo": [],
+  "rev_gsap": [],
+  "rev_gsap_pin": [],
+  "rev_nativo": [],
+  "resize": [],
+  "resize_ref": [],
+  "rm_gsap": [],
+  "rm_nativo": [],
+  "rm_caliente": [],
+  "destruir": [],
+  "perf_gsap": [],
+  "perf_nativo": [],
+  "perf_gsap_pin": []
+ },
+ "nativo": {
+  "opciones": {
+   "motor": "nativo"
+  },
+  "estados": [
+   {
+    "q": 0,
+    "archivo": "nativo_0.png",
+    "motor": "nativo",
+    "escena": 0,
+    "heroe": [
+     801,
+     72,
+     357
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0,
+    "p": 0,
+    "objetivo": 0
+   },
+   {
+    "q": 0.25,
+    "archivo": "nativo_1.png",
+    "motor": "nativo",
+    "escena": 0,
+    "heroe": [
+     800,
+     68,
+     359
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0,
+    "p": 0.25,
+    "objetivo": 0.25
+   },
+   {
+    "q": 0.5,
+    "archivo": "nativo_2.png",
+    "motor": "nativo",
+    "escena": 1,
+    "heroe": [
+     794,
+     52,
+     369
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 1,
+    "p": 0.5,
+    "objetivo": 0.5
+   },
+   {
+    "q": 0.75,
+    "archivo": "nativo_3.png",
+    "motor": "nativo",
+    "escena": 2,
+    "heroe": [
+     791,
+     33,
+     377
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0.108,
+    "p": 0.75,
+    "objetivo": 0.75
+   },
+   {
+    "q": 1,
+    "archivo": "nativo_4.png",
+    "motor": "nativo",
+    "escena": 2,
+    "heroe": [
+     733,
+     -344,
+     507
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0,
+    "p": 1,
+    "objetivo": 1
+   }
+  ],
+  "motor": {
+   "nombre": "nativo",
+   "gsap": "3.15.0",
+   "scrollTrigger": null,
+   "triggers": null,
+   "st": null,
+   "alto_documento": 4860
+  },
+  "red_gsap": [
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/gsap.min.js",
+    "estado": 200,
+    "bytes": 72927,
+    "sha256": "92bb9a96476f983d212a2bc4f54c889039c1696dd4461d40a736860938570fbb"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/Flip.min.js",
+    "estado": 200,
+    "bytes": 25534,
+    "sha256": "cbe3ca726350f8d230da38a14ce2384e7772e05a45cee6144dd7fe6dde868c2f"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/EasePack.min.js",
+    "estado": 200,
+    "bytes": 2424,
+    "sha256": "2505b29f402a33a0978836bf9a640f86505b1cc542f91a1fe733d9437ad123c8"
+   }
+  ]
+ },
+ "gsap": {
+  "opciones": {
+   "motor": "gsap"
+  },
+  "estados": [
+   {
+    "q": 0,
+    "archivo": "gsap_0.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 0,
+    "heroe": [
+     801,
+     72,
+     357
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0,
+    "p": 0,
+    "objetivo": 0
+   },
+   {
+    "q": 0.25,
+    "archivo": "gsap_1.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 0,
+    "heroe": [
+     800,
+     68,
+     359
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0,
+    "p": 0.25,
+    "objetivo": 0.25
+   },
+   {
+    "q": 0.5,
+    "archivo": "gsap_2.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 1,
+    "heroe": [
+     794,
+     52,
+     369
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 1,
+    "p": 0.5,
+    "objetivo": 0.5
+   },
+   {
+    "q": 0.75,
+    "archivo": "gsap_3.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 2,
+    "heroe": [
+     792,
+     34,
+     376
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0.108,
+    "p": 0.75,
+    "objetivo": 0.75
+   },
+   {
+    "q": 1,
+    "archivo": "gsap_4.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 2,
+    "heroe": [
+     733,
+     -344,
+     507
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0,
+    "p": 1,
+    "objetivo": 1
+   }
+  ],
+  "motor": {
+   "nombre": "gsap",
+   "gsap": "3.15.0",
+   "scrollTrigger": "3.15.0",
+   "triggers": 1,
+   "st": {
+    "start": 540,
+    "end": 3420,
+    "pin": false
+   },
+   "alto_documento": 4860
+  },
+  "red_gsap": [
+   {
+    "url": "http://127.0.0.1:8793/index_flip.html?motor=gsap",
+    "estado": 200,
+    "bytes": 17456,
+    "sha256": "d930a4f3c7b20ce791e045e3e1f5fbfe31c5536fae1e1c17171ea022d5eb9bd6"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/gsap.min.js",
+    "estado": 200,
+    "bytes": 72927,
+    "sha256": "92bb9a96476f983d212a2bc4f54c889039c1696dd4461d40a736860938570fbb"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/Flip.min.js",
+    "estado": 200,
+    "bytes": 25534,
+    "sha256": "cbe3ca726350f8d230da38a14ce2384e7772e05a45cee6144dd7fe6dde868c2f"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/EasePack.min.js",
+    "estado": 200,
+    "bytes": 2424,
+    "sha256": "2505b29f402a33a0978836bf9a640f86505b1cc542f91a1fe733d9437ad123c8"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/ScrollTrigger.min.js",
+    "estado": 200,
+    "bytes": 44575,
+    "sha256": "b0b14d67b55b0c43c756ac0b106cfcb09d0879945f6ead64451065b0672916a2"
+   },
+   {
+    "url": "http://127.0.0.1:8793/motor_gsap.js",
+    "estado": 200,
+    "bytes": 7803,
+    "sha256": "ea363359fbef0c05304d16e9bc96b726fa1acf03b2fbe5b0f7c900963287c67d"
+   }
+  ]
+ },
+ "gsap_pin": {
+  "opciones": {
+   "motor": "gsap",
+   "pin": 1
+  },
+  "estados": [
+   {
+    "q": 0,
+    "archivo": "gsap_pin_0.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 0,
+    "heroe": [
+     801,
+     72,
+     357
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0,
+    "p": 0,
+    "objetivo": 0
+   },
+   {
+    "q": 0.25,
+    "archivo": "gsap_pin_1.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 0,
+    "heroe": [
+     800,
+     68,
+     359
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0,
+    "p": 0.25,
+    "objetivo": 0.25
+   },
+   {
+    "q": 0.5,
+    "archivo": "gsap_pin_2.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 1,
+    "heroe": [
+     794,
+     52,
+     369
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 1,
+    "p": 0.5,
+    "objetivo": 0.5
+   },
+   {
+    "q": 0.75,
+    "archivo": "gsap_pin_3.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 2,
+    "heroe": [
+     792,
+     34,
+     376
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0.108,
+    "p": 0.75,
+    "objetivo": 0.75
+   },
+   {
+    "q": 1,
+    "archivo": "gsap_pin_4.png",
+    "motor": "gsap",
+    "construcciones": 1,
+    "escena": 2,
+    "heroe": [
+     733,
+     -344,
+     507
+    ],
+    "heroe_opacidad": 1,
+    "ingredientes": 0,
+    "p": 1,
+    "objetivo": 1
+   }
+  ],
+  "motor": {
+   "nombre": "gsap",
+   "gsap": "3.15.0",
+   "scrollTrigger": "3.15.0",
+   "triggers": 1,
+   "st": {
+    "start": 540,
+    "end": 3420,
+    "pin": true
+   },
+   "alto_documento": 4860
+  },
+  "red_gsap": [
+   {
+    "url": "http://127.0.0.1:8793/index_flip.html?motor=gsap&pin=1",
+    "estado": 200,
+    "bytes": 17456,
+    "sha256": "d930a4f3c7b20ce791e045e3e1f5fbfe31c5536fae1e1c17171ea022d5eb9bd6"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/gsap.min.js",
+    "estado": 200,
+    "bytes": 72927,
+    "sha256": "92bb9a96476f983d212a2bc4f54c889039c1696dd4461d40a736860938570fbb"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/Flip.min.js",
+    "estado": 200,
+    "bytes": 25534,
+    "sha256": "cbe3ca726350f8d230da38a14ce2384e7772e05a45cee6144dd7fe6dde868c2f"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/EasePack.min.js",
+    "estado": 200,
+    "bytes": 2424,
+    "sha256": "2505b29f402a33a0978836bf9a640f86505b1cc542f91a1fe733d9437ad123c8"
+   },
+   {
+    "url": "http://127.0.0.1:8793/node_modules/gsap/dist/ScrollTrigger.min.js",
+    "estado": 200,
+    "bytes": 44575,
+    "sha256": "b0b14d67b55b0c43c756ac0b106cfcb09d0879945f6ead64451065b0672916a2"
+   },
+   {
+    "url": "http://127.0.0.1:8793/motor_gsap.js",
+    "estado": 200,
+    "bytes": 7803,
+    "sha256": "ea363359fbef0c05304d16e9bc96b726fa1acf03b2fbe5b0f7c900963287c67d"
+   }
+  ]
+ },
+ "pin": {
+  "muestras": [
+   {
+    "q": 0.02,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   },
+   {
+    "q": 0.2,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   },
+   {
+    "q": 0.5,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   },
+   {
+    "q": 0.8,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   },
+   {
+    "q": 0.98,
+    "top": 0,
+    "position": "fixed",
+    "spacer": true
+   }
+  ],
+  "recorrido_px": 2880,
+  "alto_doc_pin": 4860
+ },
+ "scrub": {
+  "gsap": [
+   {
+    "ms": 51,
+    "p": 0.172
+   },
+   {
+    "ms": 151,
+    "p": 0.3611
+   },
+   {
+    "ms": 300,
+    "p": 0.4653
+   },
+   {
+    "ms": 505,
+    "p": 0.4966
+   },
+   {
+    "ms": 802,
+    "p": 0.5
+   },
+   {
+    "ms": 1202,
+    "p": 0.5
+   },
+   {
+    "ms": 2001,
+    "p": 0.5
+   }
+  ],
+  "nativo": [
+   {
+    "ms": 51,
+    "p": 0.0855
+   },
+   {
+    "ms": 150,
+    "p": 0.2152
+   },
+   {
+    "ms": 304,
+    "p": 0.3476
+   },
+   {
+    "ms": 500,
+    "p": 0.4234
+   },
+   {
+    "ms": 806,
+    "p": 0.4766
+   },
+   {
+    "ms": 1201,
+    "p": 0.4948
+   },
+   {
+    "ms": 2001,
+    "p": 0.4997
+   }
+  ]
+ },
+ "reversibilidad": {
+  "gsap": {
+   "diferencia_max_valores": 0,
+   "por_paso": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "gsap_pin": {
+   "diferencia_max_valores": 0,
+   "por_paso": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "nativo": {
+   "diferencia_max_valores": 0,
+   "por_paso": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ },
+ "resize": {
+  "serie": [
+   {
+    "w": 1400,
+    "h": 900,
+    "triggers": 1,
+    "construcciones": 1,
+    "p": 0.7
+   },
+   {
+    "w": 375,
+    "h": 900,
+    "triggers": 1,
+    "construcciones": 2,
+    "p": 0.7
+   },
+   {
+    "w": 1440,
+    "h": 900,
+    "triggers": 1,
+    "construcciones": 3,
+    "p": 0.7
+   },
+   {
+    "w": 1400,
+    "h": 840,
+    "triggers": 1,
+    "construcciones": 3,
+    "p": 0.7001
+   },
+   {
+    "w": 1440,
+    "h": 900,
+    "triggers": 1,
+    "construcciones": 3,
+    "p": 0.641
+   }
+  ],
+  "scrollY_tras_serie": 2386,
+  "p_tras_serie": 0.641,
+  "p_referencia_nativa": 0.641
+ },
+ "reduced_motion": {
+  "gsap": {
+   "rm": true,
+   "triggers": 0,
+   "alto": 1980
+  },
+  "nativo": {
+   "rm": true,
+   "triggers": null,
+   "alto": 1980
+  },
+  "cambio_en_caliente": [
+   {
+    "fase": "inicio",
+    "rm": false,
+    "triggers": 1,
+    "construcciones": 1
+   },
+   {
+    "fase": "reduce",
+    "rm": true,
+    "triggers": 0,
+    "construcciones": 2
+   },
+   {
+    "fase": "no-preference",
+    "rm": false,
+    "triggers": 1,
+    "construcciones": 3
+   }
+  ]
+ },
+ "destruir": {
+  "antes": {
+   "triggers": 1,
+   "dt": 49,
+   "spacer": true,
+   "clase": "modo-pin"
+  },
+  "despues": {
+   "triggers": 0,
+   "spacer": false,
+   "clase": "",
+   "estilos_en_linea": [
+    "nidoP: left: 31.1%; top: 47%; width: 37.8%; margin-top: -18.9%; translate: none; rotate: none; scale: none;",
+    "nidoH: left: 19%; top: 76%; width: 62%; margin-top: -31%; translate: none; rotate: none; scale: none;"
+   ],
+   "ticker_sigue": false
+  }
+ },
+ "rendimiento": {
+  "gsap": {
+   "duracion_s": 3.77,
+   "script_ms": 53.8,
+   "estilo_ms": 18.8,
+   "layout_ms": 3.9,
+   "tareas_ms": 217.6,
+   "otros_ms_pintado_composicion_gc": 141.1,
+   "actualizar_receta_ms": {
+    "p50": 0.3,
+    "p95": 0.7,
+    "max": 1.1
+   },
+   "fotogramas": {
+    "n": 227,
+    "p50": 16.7,
+    "p95": 16.7,
+    "max": 16.8,
+    "mayores_33ms": 0,
+    "mayores_50ms": 0
+   }
+  },
+  "nativo": {
+   "duracion_s": 3.79,
+   "script_ms": 293.3,
+   "estilo_ms": 94.9,
+   "layout_ms": 271.8,
+   "tareas_ms": 811.7,
+   "otros_ms_pintado_composicion_gc": 151.7,
+   "actualizar_receta_ms": {
+    "p50": 2.5,
+    "p95": 5,
+    "max": 13.4
+   },
+   "fotogramas": {
+    "n": 227,
+    "p50": 16.7,
+    "p95": 16.8,
+    "max": 16.8,
+    "mayores_33ms": 0,
+    "mayores_50ms": 0
+   }
+  },
+  "gsap_pin": {
+   "duracion_s": 3.77,
+   "script_ms": 50.8,
+   "estilo_ms": 20.2,
+   "layout_ms": 4.2,
+   "tareas_ms": 208.3,
+   "otros_ms_pintado_composicion_gc": 133.1,
+   "actualizar_receta_ms": {
+    "p50": 0.3,
+    "p95": 0.5,
+    "max": 0.6
+   },
+   "fotogramas": {
+    "n": 226,
+    "p50": 16.7,
+    "p95": 16.7,
+    "max": 16.8,
+    "mayores_33ms": 0,
+    "mayores_50ms": 0
+   }
+  }
+ }
+}

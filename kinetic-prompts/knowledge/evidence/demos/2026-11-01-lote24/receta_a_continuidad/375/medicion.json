@@ -1,0 +1,685 @@
+{
+ "url": "http://127.0.0.1:8790/receta_a_continuidad.html",
+ "ancho": 375,
+ "fecha": "2026-11-01T13:34:19.652Z",
+ "navegador": "153.0.8010.12",
+ "reversibilidad": {
+  "pasos": 41,
+  "diferencia_maxima": 0,
+  "campo": "",
+  "nota": "mismas posiciones de scroll, bajando y subiendo"
+ },
+ "barrido": [
+  {
+   "p": 0,
+   "objetivo": 0,
+   "jarra": [
+    40,
+    40,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    188,
+    355
+   ]
+  },
+  {
+   "p": 0.025,
+   "objetivo": 0.025,
+   "jarra": [
+    40,
+    40,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    188,
+    355
+   ]
+  },
+  {
+   "p": 0.05,
+   "objetivo": 0.05,
+   "jarra": [
+    40,
+    40,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    188,
+    355
+   ]
+  },
+  {
+   "p": 0.075,
+   "objetivo": 0.075,
+   "jarra": [
+    40,
+    40,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    188,
+    355
+   ]
+  },
+  {
+   "p": 0.1001,
+   "objetivo": 0.1001,
+   "jarra": [
+    40,
+    40,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    188,
+    355
+   ]
+  },
+  {
+   "p": 0.1251,
+   "objetivo": 0.1251,
+   "jarra": [
+    40,
+    40,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    188,
+    355
+   ]
+  },
+  {
+   "p": 0.1498,
+   "objetivo": 0.1498,
+   "jarra": [
+    40,
+    40,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    188,
+    355
+   ]
+  },
+  {
+   "p": 0.1748,
+   "objetivo": 0.1748,
+   "jarra": [
+    39.98,
+    39.98,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    188,
+    355
+   ]
+  },
+  {
+   "p": 0.1998,
+   "objetivo": 0.1998,
+   "jarra": [
+    39.82,
+    39.82,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    187,
+    354
+   ]
+  },
+  {
+   "p": 0.2249,
+   "objetivo": 0.2249,
+   "jarra": [
+    39.38,
+    39.38,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    186,
+    350
+   ]
+  },
+  {
+   "p": 0.2499,
+   "objetivo": 0.2499,
+   "jarra": [
+    38.52,
+    38.52,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    182,
+    343
+   ]
+  },
+  {
+   "p": 0.275,
+   "objetivo": 0.275,
+   "jarra": [
+    37.11,
+    37.11,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    177,
+    332
+   ]
+  },
+  {
+   "p": 0.3,
+   "objetivo": 0.3,
+   "jarra": [
+    35,
+    35,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    169,
+    314
+   ]
+  },
+  {
+   "p": 0.325,
+   "objetivo": 0.325,
+   "jarra": [
+    32.89,
+    32.89,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    161,
+    297
+   ]
+  },
+  {
+   "p": 0.3501,
+   "objetivo": 0.3501,
+   "jarra": [
+    31.48,
+    31.48,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    156,
+    286
+   ]
+  },
+  {
+   "p": 0.3751,
+   "objetivo": 0.3751,
+   "jarra": [
+    30.62,
+    30.62,
+    0
+   ],
+   "taza": 119.05,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    153,
+    279
+   ]
+  },
+  {
+   "p": 0.3998,
+   "objetivo": 0.3998,
+   "jarra": [
+    30.19,
+    30.19,
+    0
+   ],
+   "taza": 112.61,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    151,
+    275
+   ]
+  },
+  {
+   "p": 0.4248,
+   "objetivo": 0.4248,
+   "jarra": [
+    30.02,
+    30.02,
+    0
+   ],
+   "taza": 94.89,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    151,
+    274
+   ]
+  },
+  {
+   "p": 0.4498,
+   "objetivo": 0.4498,
+   "jarra": [
+    30,
+    30,
+    0
+   ],
+   "taza": 60.29,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    151,
+    274
+   ]
+  },
+  {
+   "p": 0.4749,
+   "objetivo": 0.4749,
+   "jarra": [
+    30,
+    30,
+    -1.07
+   ],
+   "taza": 25.43,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    150,
+    274
+   ]
+  },
+  {
+   "p": 0.4999,
+   "objetivo": 0.4999,
+   "jarra": [
+    30,
+    30,
+    -8.61
+   ],
+   "taza": 7.53,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    149,
+    277
+   ]
+  },
+  {
+   "p": 0.525,
+   "objetivo": 0.525,
+   "jarra": [
+    30,
+    30,
+    -26.47
+   ],
+   "taza": 0.94,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    147,
+    283
+   ]
+  },
+  {
+   "p": 0.55,
+   "objetivo": 0.55,
+   "jarra": [
+    30,
+    30,
+    -36.13
+   ],
+   "taza": 0,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    147,
+    287
+   ]
+  },
+  {
+   "p": 0.575,
+   "objetivo": 0.575,
+   "jarra": [
+    30,
+    30,
+    -37.99
+   ],
+   "taza": 0,
+   "chorro": 0.15,
+   "panel": 100,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.6001,
+   "objetivo": 0.6001,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 0.401,
+   "panel": 100,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.6251,
+   "objetivo": 0.6251,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 0.651,
+   "panel": 99.21,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.6498,
+   "objetivo": 0.6498,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 0.898,
+   "panel": 93.84,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.6748,
+   "objetivo": 0.6748,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 79.07,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.6998,
+   "objetivo": 0.6998,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 50.24,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.7249,
+   "objetivo": 0.7249,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 21.19,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.7499,
+   "objetivo": 0.7499,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 6.28,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.775,
+   "objetivo": 0.775,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 0.78,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.8,
+   "objetivo": 0.8,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 0,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.825,
+   "objetivo": 0.825,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 0,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.8501,
+   "objetivo": 0.8501,
+   "jarra": [
+    30,
+    30,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 0,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.8751,
+   "objetivo": 0.8751,
+   "jarra": [
+    30,
+    30,
+    -37.51
+   ],
+   "taza": 0,
+   "chorro": 0.874,
+   "panel": 0,
+   "pico": [
+    147,
+    288
+   ]
+  },
+  {
+   "p": 0.8998,
+   "objetivo": 0.8998,
+   "jarra": [
+    30,
+    30,
+    -34.2
+   ],
+   "taza": 0,
+   "chorro": 0.669,
+   "panel": 0,
+   "pico": [
+    147,
+    286
+   ]
+  },
+  {
+   "p": 0.9248,
+   "objetivo": 0.9248,
+   "jarra": [
+    30,
+    30,
+    -25.1
+   ],
+   "taza": 0,
+   "chorro": 0.46,
+   "panel": 0,
+   "pico": [
+    147,
+    283
+   ]
+  },
+  {
+   "p": 0.9498,
+   "objetivo": 0.9498,
+   "jarra": [
+    30,
+    30,
+    -15.89
+   ],
+   "taza": 0,
+   "chorro": 0.251,
+   "panel": 0,
+   "pico": [
+    148,
+    279
+   ]
+  },
+  {
+   "p": 0.9749,
+   "objetivo": 0.9749,
+   "jarra": [
+    30,
+    30,
+    -12.49
+   ],
+   "taza": 0,
+   "chorro": 0.043,
+   "panel": 0,
+   "pico": [
+    148,
+    278
+   ]
+  },
+  {
+   "p": 0.9999,
+   "objetivo": 0.9999,
+   "jarra": [
+    30,
+    30,
+    -12
+   ],
+   "taza": 0,
+   "chorro": 0,
+   "panel": 0,
+   "pico": [
+    148,
+    278
+   ]
+  }
+ ],
+ "fotogramas": {
+  "n": 198,
+  "p50_ms": 16.7,
+  "p95_ms": 16.8,
+  "max_ms": 50,
+  "sobre_33ms": 1,
+  "nota": "contenedor sin GPU, 2 núcleos, Chromium headless: orientativo"
+ },
+ "errores": [],
+ "reduced_motion": {
+  "marcado": true,
+  "claseRm": true,
+  "sticky": "relative",
+  "alto_pagina": 1786
+ }
+}

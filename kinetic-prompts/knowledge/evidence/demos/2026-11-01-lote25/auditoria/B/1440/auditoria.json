@@ -1,0 +1,284 @@
+{
+ "url": "http://127.0.0.1:8790/receta_b_particulas.html",
+ "ancho": 1440,
+ "pasos": 21,
+ "cfg": {
+  "protagonista": "canvas",
+  "textos": [
+   ".titulo h2"
+  ],
+  "lienzo": "canvas"
+ },
+ "resumen": {
+  "protagonista_ancho_min": 1,
+  "protagonista_ancho_max": 1,
+  "pasos_sin_protagonista_claro": [],
+  "pasos_sin_ninguna_linea_legible": [
+   0.35,
+   0.4,
+   0.45,
+   0.5,
+   0.55,
+   0.6,
+   0.65
+  ],
+  "lienzo_cobertura_min": 0.0122,
+  "reversibilidad_visual_max_pct": 0
+ },
+ "baja": [
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    0
+   ],
+   "lienzo_cobertura": 0.0649,
+   "lienzo_luminancia_media": 128.5,
+   "p": 0
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    0
+   ],
+   "lienzo_cobertura": 0.0649,
+   "lienzo_luminancia_media": 128.5,
+   "p": 0.05
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    0
+   ],
+   "lienzo_cobertura": 0.0649,
+   "lienzo_luminancia_media": 128.5,
+   "p": 0.1
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    0
+   ],
+   "lienzo_cobertura": 0.0649,
+   "lienzo_luminancia_media": 128.5,
+   "p": 0.15
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    0
+   ],
+   "lienzo_cobertura": 0.0645,
+   "lienzo_luminancia_media": 25.1,
+   "p": 0.2
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    0
+   ],
+   "lienzo_cobertura": 0.0122,
+   "lienzo_luminancia_media": 75.9,
+   "p": 0.25
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    0
+   ],
+   "lienzo_cobertura": 0.0136,
+   "lienzo_luminancia_media": 65.8,
+   "p": 0.3
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0.71,
+    0
+   ],
+   "lienzo_cobertura": 0.0138,
+   "lienzo_luminancia_media": 65.4,
+   "p": 0.35
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0.02,
+    0
+   ],
+   "lienzo_cobertura": 0.0134,
+   "lienzo_luminancia_media": 65.6,
+   "p": 0.4
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0
+   ],
+   "lienzo_cobertura": 0.0132,
+   "lienzo_luminancia_media": 70.8,
+   "p": 0.45
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0
+   ],
+   "lienzo_cobertura": 0.0138,
+   "lienzo_luminancia_media": 75.5,
+   "p": 0.5
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0
+   ],
+   "lienzo_cobertura": 0.0137,
+   "lienzo_luminancia_media": 80.1,
+   "p": 0.55
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0
+   ],
+   "lienzo_cobertura": 0.0135,
+   "lienzo_luminancia_media": 84.8,
+   "p": 0.6
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0.29
+   ],
+   "lienzo_cobertura": 0.0135,
+   "lienzo_luminancia_media": 89,
+   "p": 0.65
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0.98
+   ],
+   "lienzo_cobertura": 0.0133,
+   "lienzo_luminancia_media": 92,
+   "p": 0.7
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    1
+   ],
+   "lienzo_cobertura": 0.0142,
+   "lienzo_luminancia_media": 91.4,
+   "p": 0.75
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    1
+   ],
+   "lienzo_cobertura": 0.0711,
+   "lienzo_luminancia_media": 29.3,
+   "p": 0.8
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    1
+   ],
+   "lienzo_cobertura": 0.0718,
+   "lienzo_luminancia_media": 182.1,
+   "p": 0.85
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    1
+   ],
+   "lienzo_cobertura": 0.0718,
+   "lienzo_luminancia_media": 183.7,
+   "p": 0.9
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    1
+   ],
+   "lienzo_cobertura": 0.0718,
+   "lienzo_luminancia_media": 183.7,
+   "p": 0.95
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    1
+   ],
+   "lienzo_cobertura": 0.0718,
+   "lienzo_luminancia_media": 183.7,
+   "p": 1
+  }
+ ],
+ "difs": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ]
+}

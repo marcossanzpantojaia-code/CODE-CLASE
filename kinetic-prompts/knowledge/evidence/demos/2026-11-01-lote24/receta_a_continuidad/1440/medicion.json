@@ -1,0 +1,685 @@
+{
+ "url": "http://127.0.0.1:8790/receta_a_continuidad.html",
+ "ancho": 1440,
+ "fecha": "2026-11-01T13:33:53.610Z",
+ "navegador": "153.0.8010.12",
+ "reversibilidad": {
+  "pasos": 41,
+  "diferencia_maxima": 0,
+  "campo": "",
+  "nota": "mismas posiciones de scroll, bajando y subiendo"
+ },
+ "barrido": [
+  {
+   "p": 0,
+   "objetivo": 0,
+   "jarra": [
+    58,
+    24,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    917,
+    281
+   ]
+  },
+  {
+   "p": 0.0252,
+   "objetivo": 0.0252,
+   "jarra": [
+    58,
+    24,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    917,
+    281
+   ]
+  },
+  {
+   "p": 0.05,
+   "objetivo": 0.05,
+   "jarra": [
+    58,
+    24,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    917,
+    281
+   ]
+  },
+  {
+   "p": 0.0752,
+   "objetivo": 0.0752,
+   "jarra": [
+    58,
+    24,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    917,
+    281
+   ]
+  },
+  {
+   "p": 0.1,
+   "objetivo": 0.1,
+   "jarra": [
+    58,
+    24,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    917,
+    281
+   ]
+  },
+  {
+   "p": 0.1252,
+   "objetivo": 0.1252,
+   "jarra": [
+    58,
+    24,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    917,
+    281
+   ]
+  },
+  {
+   "p": 0.15,
+   "objetivo": 0.15,
+   "jarra": [
+    58,
+    24,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    917,
+    281
+   ]
+  },
+  {
+   "p": 0.1752,
+   "objetivo": 0.1752,
+   "jarra": [
+    57.97,
+    23.97,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    917,
+    281
+   ]
+  },
+  {
+   "p": 0.2,
+   "objetivo": 0.2,
+   "jarra": [
+    57.78,
+    23.78,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    914,
+    279
+   ]
+  },
+  {
+   "p": 0.2252,
+   "objetivo": 0.2252,
+   "jarra": [
+    57.24,
+    23.24,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    906,
+    274
+   ]
+  },
+  {
+   "p": 0.25,
+   "objetivo": 0.25,
+   "jarra": [
+    56.22,
+    22.22,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    892,
+    265
+   ]
+  },
+  {
+   "p": 0.2752,
+   "objetivo": 0.2752,
+   "jarra": [
+    54.51,
+    20.51,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    867,
+    250
+   ]
+  },
+  {
+   "p": 0.3,
+   "objetivo": 0.3,
+   "jarra": [
+    52,
+    18,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    831,
+    227
+   ]
+  },
+  {
+   "p": 0.3252,
+   "objetivo": 0.3252,
+   "jarra": [
+    49.46,
+    15.46,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    794,
+    204
+   ]
+  },
+  {
+   "p": 0.35,
+   "objetivo": 0.35,
+   "jarra": [
+    47.78,
+    13.78,
+    0
+   ],
+   "taza": 120,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    770,
+    189
+   ]
+  },
+  {
+   "p": 0.3752,
+   "objetivo": 0.3752,
+   "jarra": [
+    46.74,
+    12.74,
+    0
+   ],
+   "taza": 119.04,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    755,
+    180
+   ]
+  },
+  {
+   "p": 0.4,
+   "objetivo": 0.4,
+   "jarra": [
+    46.22,
+    12.22,
+    0
+   ],
+   "taza": 112.5,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    748,
+    175
+   ]
+  },
+  {
+   "p": 0.4252,
+   "objetivo": 0.4252,
+   "jarra": [
+    46.03,
+    12.03,
+    0
+   ],
+   "taza": 94.5,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    745,
+    173
+   ]
+  },
+  {
+   "p": 0.45,
+   "objetivo": 0.45,
+   "jarra": [
+    46,
+    12,
+    0
+   ],
+   "taza": 60,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    744,
+    173
+   ]
+  },
+  {
+   "p": 0.4752,
+   "objetivo": 0.4752,
+   "jarra": [
+    46,
+    12,
+    -1.11
+   ],
+   "taza": 25.13,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    744,
+    174
+   ]
+  },
+  {
+   "p": 0.5,
+   "objetivo": 0.5,
+   "jarra": [
+    46,
+    12,
+    -8.65
+   ],
+   "taza": 7.5,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    741,
+    179
+   ]
+  },
+  {
+   "p": 0.5252,
+   "objetivo": 0.5252,
+   "jarra": [
+    46,
+    12,
+    -26.61
+   ],
+   "taza": 0.92,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    737,
+    194
+   ]
+  },
+  {
+   "p": 0.55,
+   "objetivo": 0.55,
+   "jarra": [
+    46,
+    12,
+    -36.13
+   ],
+   "taza": 0,
+   "chorro": 0,
+   "panel": 100,
+   "pico": [
+    737,
+    202
+   ]
+  },
+  {
+   "p": 0.5752,
+   "objetivo": 0.5752,
+   "jarra": [
+    46,
+    12,
+    -37.99
+   ],
+   "taza": 0,
+   "chorro": 0.152,
+   "panel": 100,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.6,
+   "objetivo": 0.6,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 0.4,
+   "panel": 100,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.6252,
+   "objetivo": 0.6252,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 0.652,
+   "panel": 99.2,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.65,
+   "objetivo": 0.65,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 0.9,
+   "panel": 93.75,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.6752,
+   "objetivo": 0.6752,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 78.75,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.7,
+   "objetivo": 0.7,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 50,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.7252,
+   "objetivo": 0.7252,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 20.94,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.75,
+   "objetivo": 0.75,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 6.25,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.7752,
+   "objetivo": 0.7752,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 0.76,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.8,
+   "objetivo": 0.8,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 0,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.8252,
+   "objetivo": 0.8252,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 0,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.85,
+   "objetivo": 0.85,
+   "jarra": [
+    46,
+    12,
+    -38
+   ],
+   "taza": 0,
+   "chorro": 1,
+   "panel": 0,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.8752,
+   "objetivo": 0.8752,
+   "jarra": [
+    46,
+    12,
+    -37.51
+   ],
+   "taza": 0,
+   "chorro": 0.873,
+   "panel": 0,
+   "pico": [
+    737,
+    203
+   ]
+  },
+  {
+   "p": 0.9,
+   "objetivo": 0.9,
+   "jarra": [
+    46,
+    12,
+    -34.15
+   ],
+   "taza": 0,
+   "chorro": 0.667,
+   "panel": 0,
+   "pico": [
+    737,
+    200
+   ]
+  },
+  {
+   "p": 0.9252,
+   "objetivo": 0.9252,
+   "jarra": [
+    46,
+    12,
+    -24.9
+   ],
+   "taza": 0,
+   "chorro": 0.457,
+   "panel": 0,
+   "pico": [
+    737,
+    192
+   ]
+  },
+  {
+   "p": 0.95,
+   "objetivo": 0.95,
+   "jarra": [
+    46,
+    12,
+    -15.85
+   ],
+   "taza": 0,
+   "chorro": 0.25,
+   "panel": 0,
+   "pico": [
+    739,
+    185
+   ]
+  },
+  {
+   "p": 0.9752,
+   "objetivo": 0.9752,
+   "jarra": [
+    46,
+    12,
+    -12.47
+   ],
+   "taza": 0,
+   "chorro": 0.04,
+   "panel": 0,
+   "pico": [
+    739,
+    182
+   ]
+  },
+  {
+   "p": 1,
+   "objetivo": 1,
+   "jarra": [
+    46,
+    12,
+    -12
+   ],
+   "taza": 0,
+   "chorro": 0,
+   "panel": 0,
+   "pico": [
+    740,
+    182
+   ]
+  }
+ ],
+ "fotogramas": {
+  "n": 200,
+  "p50_ms": 16.7,
+  "p95_ms": 16.8,
+  "max_ms": 16.8,
+  "sobre_33ms": 0,
+  "nota": "contenedor sin GPU, 2 núcleos, Chromium headless: orientativo"
+ },
+ "errores": [],
+ "reduced_motion": {
+  "marcado": true,
+  "claseRm": true,
+  "sticky": "relative",
+  "alto_pagina": 1980
+ }
+}

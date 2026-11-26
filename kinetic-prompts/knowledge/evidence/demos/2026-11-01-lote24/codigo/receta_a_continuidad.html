@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receta A — objeto que conecta dos secciones (microdemo)</title>
+<!-- Microdemo de MECÁNICA (C2): recursos procedurales SVG, no fotorrealistas (no evaluable en C1/C3).
+     Equivalente GSAP documentado en REC-001. Aquí: motor propio escena.js (sin dependencias). -->
+<style>
+  :root { --crema:#efe6d6; --caramelo:#b8794a; --tinta:#2a1d14; }
+  * { box-sizing:border-box; margin:0 }
+  body { font-family: Georgia, "Times New Roman", serif; color:var(--tinta); background:var(--crema); }
+  .intro, .fin { height:60vh; display:grid; place-items:center; font:16px system-ui; color:#6d625a }
+  #acto { height:400vh; position:relative }
+  .escenario { position:sticky; top:0; height:100vh; overflow:hidden; isolation:isolate }
+  .fondo { position:absolute; inset:0 }
+  .f1 { background:var(--crema) }
+  .f2 { background:var(--caramelo); clip-path: inset(100% 0 0 0) }        /* panel que sube (R1, 8,0 s) */
+  .fantasma { position:absolute; top:50%; left:50%; translate:-50% -50%; font-size:34vw; font-weight:700; letter-spacing:-.03em;
+              color:rgb(42 29 20 / .06); white-space:nowrap; z-index:1; user-select:none }
+  .texto { position:absolute; left:6vw; top:22vh; z-index:3; width:min(44vw,640px) }
+  .texto .linea { display:block; overflow:hidden }                          /* máscara de línea */
+  .texto .linea > span { display:block; will-change:transform }
+  .t1 h2, .t2 h2 { font-size:clamp(40px,7.2vw,118px); line-height:.92; font-weight:700 }
+  .rotulo { font:600 12px system-ui; letter-spacing:.16em; text-transform:uppercase; margin-bottom:14px; opacity:.7 }
+  .t2 { color:var(--crema) }
+  #jarra { position:absolute; left:0; top:0; width:min(30vw,420px); z-index:4; transform-origin:30% 20%; will-change:transform }
+  #taza  { position:absolute; left:0; top:0; width:min(24vw,330px); z-index:4; will-change:transform }
+  #chorro { position:absolute; inset:0; width:100%; height:100%; z-index:5; pointer-events:none }
+  /* reduced motion: sin pin; las dos composiciones clave apiladas y legibles */
+  .rm #acto { height:auto } .rm .escenario { position:relative; height:auto; min-height:100vh }
+  .rm .f2 { clip-path:none; top:50% } .rm .texto { position:relative; left:auto; top:auto; padding:10vh 6vw }
+  .rm #jarra, .rm #taza, .rm #chorro { display:none }
+  .rm .texto .linea > span { transform:none !important }
+  @media (max-width:700px) {
+    .texto { top:12vh; width:88vw } #jarra { width:52vw } #taza { width:40vw } .fantasma { font-size:48vw; top:62% }
+  }
+</style>
+</head>
+<body>
+<div class="intro">↓ Desliza (microdemo de continuidad)</div>
+<section id="acto" aria-label="Del filtro a la taza">
+  <div class="escenario">
+    <div class="fondo f1"></div><div class="fondo f2"></div>
+    <span class="fantasma" aria-hidden="true">BLOOM</span>
+    <div class="texto t1"><p class="rotulo">Sección 1 — Florecer</p>
+      <h2><span class="linea"><span>Deja que</span></span><span class="linea"><span>florezca.</span></span></h2></div>
+    <div class="texto t2"><p class="rotulo">Sección 2 — Servir</p>
+      <h2><span class="linea"><span>Sirve sin</span></span><span class="linea"><span>prisa.</span></span></h2></div>
+    <svg id="jarra" viewBox="0 0 200 220" aria-hidden="true">
+      <defs><linearGradient id="vidrio" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity=".45"/></linearGradient></defs>
+      <path d="M40 30 L150 30 L165 200 Q100 215 30 200 Z" fill="url(#vidrio)" stroke="#2a1d14" stroke-opacity=".35" stroke-width="2"/>
+      <path id="liquido" d="M36 95 L158 95 L165 200 Q100 215 30 200 Z" fill="#3b2116"/>
+      <path d="M150 34 Q190 40 178 92" fill="none" stroke="#2a1d14" stroke-opacity=".5" stroke-width="7"/>
+      <circle id="pico" cx="40" cy="32" r="1" fill="none"/>
+    </svg>
+    <svg id="taza" viewBox="0 0 200 140" aria-hidden="true">
+      <ellipse cx="100" cy="128" rx="86" ry="10" fill="#000" opacity=".18"/>
+      <path d="M20 20 L180 20 Q172 120 100 124 Q28 120 20 20 Z" fill="#f4efe8" stroke="#2a1d14" stroke-opacity=".25"/>
+      <ellipse id="boca" cx="100" cy="22" rx="78" ry="9" fill="#3b2116"/>
+      <path d="M178 40 Q205 52 172 86" fill="none" stroke="#f4efe8" stroke-width="10"/>
+    </svg>
+    <svg id="chorro" aria-hidden="true"><path id="trazo" fill="none" stroke="#3b2116" stroke-linecap="round" stroke-width="9"/></svg>
+  </div>
+</section>
+<div class="fin">Fin del tramo</div>
+<script type="module">
+import { montar, muestra, ease, clamp } from './escena.js';
+const $ = s => document.querySelector(s);
+const jarra = $('#jarra'), taza = $('#taza'), trazo = $('#trazo'), f2 = $('.f2'), fant = $('.fantasma');
+const l1 = [...document.querySelectorAll('.t1 .linea > span')], l2 = [...document.querySelectorAll('.t2 .linea > span')];
+const movil = () => innerWidth <= 700;
+// Tabla de ESTADOS (método 0/25/50/75/100 %). Posiciones en vw/vh: coordenadas compartidas por todas las capas.
+const K = {
+  jarraX: () => movil() ? [[0,40],[.15,40],[.45,30],[1,30]] : [[0,58],[.15,58],[.45,46],[1,46]],   // vw
+  jarraY: () => movil() ? [[0,40],[.15,40],[.45,30],[1,30]] : [[0,24],[.15,24],[.45,12],[1,12]],   // vh
+  jarraR: [[0,0],[.45,0],[.58,-38],[.85,-38],[1,-12]],                                               // grados (pausa .58–.85)
+  tazaY:  [[0,120],[.35,120],[.55,0],[1,0]],                                                          // vh de desplazamiento (entra por abajo)
+  chorro: [[0,0],[.56,0],[.66,1],[.86,1],[.98,0]],                                                    // fracción visible del trazo
+  panel:  [[0,100],[.6,100],[.8,0],[1,0]],                                                            // clip-path inset superior (%)
+  t1:     [[0,0],[.18,0],[.3,-110],[1,-110]],                                                         // yPercent de las líneas
+  t2:     [[0,110],[.66,110],[.78,0],[1,0]],
+  fant:   [[0,-6],[1,6]]                                                                              // vw (capa lejana: lenta)
+};
+function aplica(p, est) {
+  const jx = muestra(K.jarraX(), p), jy = muestra(K.jarraY(), p), jr = muestra(K.jarraR, p);
+  jarra.style.transform = `translate(${jx}vw, ${jy}vh) rotate(${jr}deg)`;
+  const tx = movil() ? 46 : 52, ty = movil() ? 66 : 68, dy = muestra(K.tazaY, p);
+  taza.style.transform = `translate(${tx}vw, ${ty + dy}vh)`;
+  f2.style.clipPath = `inset(${muestra(K.panel, p)}% 0 0 0)`;
+  fant.style.translate = `calc(-50% + ${muestra(K.fant, p, ease.none)}vw) -50%`;
+  l1.forEach((s, i) => s.style.transform = `translateY(${muestra(K.t1, clamp(p - i * .02))}%)`);
+  l2.forEach((s, i) => s.style.transform = `translateY(${muestra(K.t2, clamp(p - i * .02))}%)`);
+  // chorro: une el pico de la jarra (leído en coordenadas de pantalla) con la boca de la taza → continuidad entre capas
+  const a = $('#pico').getBoundingClientRect(), b = $('#boca').getBoundingClientRect();
+  const x0 = a.left, y0 = a.top, x1 = b.left + b.width * .45, y1 = b.top + b.height / 2;
+  const v = muestra(K.chorro, p, ease.none), cx = x0 + (x1 - x0) * .15, cy = y0 + (y1 - y0) * .45;
+  trazo.setAttribute('d', `M${x0},${y0} Q${cx},${cy} ${x1},${y1}`);
+  const L = trazo.getTotalLength() || 1;
+  trazo.style.strokeDasharray = `${L}`; trazo.style.strokeDashoffset = `${p < .9 ? L * (1 - v) : -L * (1 - v)}`;
+  Object.assign(est, { jarra: [+jx.toFixed(2), +jy.toFixed(2), +jr.toFixed(2)], taza: +dy.toFixed(2), chorro: +v.toFixed(3), panel: +muestra(K.panel, p).toFixed(2), pico: [Math.round(x0), Math.round(y0)] });
+}
+montar(document.getElementById('acto'), aplica, { suavizado: +(new URLSearchParams(location.search).get('suavizado') || 0) });
+</script>
+</body>
+</html>

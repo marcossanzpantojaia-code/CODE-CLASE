@@ -1,0 +1,58 @@
+{
+ "cabecera_320": {
+  "alto_cabecera": 84,
+  "elementos": [
+   {
+    "el": "brand",
+    "top": 66,
+    "left": 20,
+    "w": 161
+   },
+   {
+    "el": "btn btn--primary btn--sm",
+    "top": 106,
+    "left": 20,
+    "w": 147
+   },
+   {
+    "el": "nav-toggle",
+    "top": 106,
+    "left": 176,
+    "w": 44
+   }
+  ],
+  "overflow": false
+ },
+ "cabecera_375": {
+  "alto_cabecera": 98,
+  "elementos": [
+   {
+    "el": "brand",
+    "top": 55,
+    "left": 20,
+    "w": 161
+   },
+   {
+    "el": "btn btn--primary btn--sm",
+    "top": 48,
+    "left": 208,
+    "w": 147
+   },
+   {
+    "el": "nav-toggle",
+    "top": 102,
+    "left": 20,
+    "w": 44
+   }
+  ],
+  "overflow": false
+ },
+ "menu_abierto": {
+  "expanded": "true",
+  "visible": true
+ },
+ "menu_tras_escape": {
+  "expanded": "false",
+  "foco": "nav-toggle"
+ }
+}

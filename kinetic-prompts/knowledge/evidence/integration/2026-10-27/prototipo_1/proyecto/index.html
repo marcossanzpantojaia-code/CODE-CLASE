@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barbería Castellana · Corte clásico y afeitado a navaja en Madrid</title>
+  <meta name="description" content="Prototipo de barbería en Madrid: corte clásico, fade, barba y afeitado a navaja. Reserva tu cita. Todo el contenido es ficticio.">
+  <!-- Prototipo con datos ficticios: que no se indexe -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0e0c0a">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e0c0a'/%3E%3Crect x='12' y='5' width='8' height='22' rx='3' fill='%23c9974a'/%3E%3Cpath d='M12 11l8-3v4l-8 3zM12 19l8-3v4l-8 3z' fill='%238c2f2b'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <p class="proto-bar">Prototipo de prueba · Todo el contenido (nombres, precios, dirección y opiniones) es ficticio</p>
+
+  <span class="top-sentinel" aria-hidden="true"></span>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#inicio" aria-label="Barbería Castellana, inicio">
+        <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <rect x="11" y="3" width="10" height="26" rx="4" fill="#c9974a"/>
+          <path d="M11 10l10-4v5l-10 4zM11 19l10-4v5l-10 4z" fill="#8c2f2b"/>
+        </svg>
+        <span class="brand__text"><small>Barbería</small>Castellana</span>
+      </a>
+
+      <nav class="site-nav" id="menu" aria-label="Principal">
+        <ul>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#galeria">Trabajos</a></li>
+          <li><a href="#opiniones">Opiniones</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn btn--primary btn--sm" href="#reserva">Reservar cita</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu">
+        <span class="nav-toggle__bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menú</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- HERO: el h1 y el CTA están en el HTML y visibles desde el primer pintado -->
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero__light" aria-hidden="true"></div>
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow">Barbería · Madrid</p>
+          <h1 id="hero-title">Corte clásico y afeitado <em>a navaja</em> en el centro de Madrid</h1>
+          <p class="hero__lead">Oficio de barbero, toalla caliente y tiempo para ti. Elige servicio, día y hora en menos de un minuto.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary btn--lg" href="#reserva">Reservar cita</a>
+            <a class="btn btn--ghost btn--lg" href="#servicios">Ver servicios y precios</a>
+          </div>
+          <ul class="hero__facts" aria-label="Datos rápidos">
+            <li>Mar–Sáb</li>
+            <li>Calle de Ejemplo 12</li>
+            <li>Desde 12&nbsp;€</li>
+          </ul>
+        </div>
+
+        <div class="hero__art" aria-hidden="true">
+          <div class="pole">
+            <div class="pole__cap pole__cap--top"></div>
+            <div class="pole__tube"><div class="pole__stripes"></div></div>
+            <div class="pole__cap pole__cap--bottom"></div>
+          </div>
+          <div class="pole__shadow"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section class="section" id="servicios" aria-labelledby="servicios-title">
+      <div class="container split">
+        <header class="section-head reveal">
+          <p class="eyebrow">Servicios</p>
+          <h2 id="servicios-title">Lo que hacemos, con precio claro</h2>
+          <p>Precios con IVA incluido. Sin extras escondidos. <span class="muted">(Precios ficticios.)</span></p>
+          <a class="btn btn--primary" href="#reserva">Reservar cita</a>
+        </header>
+
+        <ul class="services">
+          <li class="service reveal">
+            <div class="service__body">
+              <h3>Corte clásico</h3>
+              <p>Tijera y máquina, lavado y peinado a tu gusto.</p>
+              <span class="service__time">30 min</span>
+            </div>
+            <p class="service__price"><span class="visually-hidden">Precio: </span>18&nbsp;€</p>
+          </li>
+          <li class="service reveal" style="--i:1">
+            <div class="service__body">
+              <h3>Fade y degradado</h3>
+              <p>Degradado limpio, perfilado y acabado con navaja.</p>
+              <span class="service__time">40 min</span>
+            </div>
+            <p class="service__price"><span class="visually-hidden">Precio: </span>22&nbsp;€</p>
+          </li>
+          <li class="service reveal" style="--i:2">
+            <div class="service__body">
+              <h3>Arreglo de barba</h3>
+              <p>Perfilado, toalla caliente y aceite hidratante.</p>
+              <span class="service__time">25 min</span>
+            </div>
+            <p class="service__price"><span class="visually-hidden">Precio: </span>12&nbsp;€</p>
+          </li>
+          <li class="service reveal">
+            <div class="service__body">
+              <h3>Afeitado a navaja</h3>
+              <p>Ritual de espuma, toalla caliente y navaja recta.</p>
+              <span class="service__time">35 min</span>
+            </div>
+            <p class="service__price"><span class="visually-hidden">Precio: </span>20&nbsp;€</p>
+          </li>
+          <li class="service reveal" style="--i:1">
+            <div class="service__body">
+              <h3>Corte + barba</h3>
+              <p>El combo más pedido: corte clásico y arreglo de barba.</p>
+              <span class="service__time">55 min</span>
+            </div>
+            <p class="service__price"><span class="visually-hidden">Precio: </span>28&nbsp;€</p>
+          </li>
+          <li class="service service--featured reveal" style="--i:2">
+            <div class="service__body">
+              <h3>Ritual Castellana</h3>
+              <p>Corte, barba a navaja, masaje facial y toalla caliente.</p>
+              <span class="service__time">75 min</span>
+            </div>
+            <p class="service__price"><span class="visually-hidden">Precio: </span>38&nbsp;€</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section class="section section--alt" id="galeria" aria-labelledby="galeria-title">
+      <div class="container">
+        <header class="section-head section-head--wide reveal">
+          <p class="eyebrow">Trabajos</p>
+          <h2 id="galeria-title">Cortes y barbas de la casa</h2>
+          <p>Ilustraciones de ejemplo para este prototipo; en la web real serían fotos del local.</p>
+        </header>
+
+        <ul class="gallery">
+          <li class="work reveal">
+            <figure>
+              <svg class="work__art work--1" viewBox="0 0 200 250" role="img" aria-label="Ilustración de un fade clásico visto de frente" preserveAspectRatio="xMidYMid slice">
+                <rect width="200" height="250" class="work__bg"/>
+                <use href="#bust"/>
+                <path class="hair" d="M53 100C50 56 76 44 100 44c24 0 50 12 47 56-5-16-13-24-23-28-16-4-32-4-48 0-10 4-18 12-23 28z"/>
+                <path class="hair" opacity=".35" d="M53 100c1 12 3 18 5 24l2-24zM147 100c-1 12-3 18-5 24l-2-24z"/>
+              </svg>
+              <figcaption><strong>Fade clásico</strong><span>Degradado bajo, perfilado a navaja</span></figcaption>
+            </figure>
+          </li>
+          <li class="work reveal" style="--i:1">
+            <figure>
+              <svg class="work__art work--2" viewBox="0 0 200 250" role="img" aria-label="Ilustración de un tupé con volumen" preserveAspectRatio="xMidYMid slice">
+                <rect width="200" height="250" class="work__bg"/>
+                <use href="#bust"/>
+                <path class="hair" d="M50 104C40 52 78 18 116 22c30 4 42 36 32 82-4-20-12-34-30-40-20-6-48 2-68 40z"/>
+              </svg>
+              <figcaption><strong>Tupé con volumen</strong><span>Lados cortos, cera mate</span></figcaption>
+            </figure>
+          </li>
+          <li class="work reveal" style="--i:2">
+            <figure>
+              <svg class="work__art work--3" viewBox="0 0 200 250" role="img" aria-label="Ilustración de un corte corto con barba completa" preserveAspectRatio="xMidYMid slice">
+                <rect width="200" height="250" class="work__bg"/>
+                <use href="#bust"/>
+                <path class="hair" d="M53 100C51 62 76 48 100 48c24 0 49 14 47 52-6-14-14-22-24-26-15-4-31-4-46 0-10 4-18 12-24 26z"/>
+                <path class="hair" d="M53 118c1 42 23 60 47 60s46-18 47-60c-7 22-23 28-47 28s-40-6-47-28z"/>
+                <path class="skin-dark" d="M80 132c10-6 30-6 40 0-10 6-30 6-40 0z"/>
+              </svg>
+              <figcaption><strong>Barba completa</strong><span>Contorno definido y aceite</span></figcaption>
+            </figure>
+          </li>
+          <li class="work reveal">
+            <figure>
+              <svg class="work__art work--4" viewBox="0 0 200 250" role="img" aria-label="Ilustración de un corte rizado texturizado" preserveAspectRatio="xMidYMid slice">
+                <rect width="200" height="250" class="work__bg"/>
+                <use href="#bust"/>
+                <g class="hair">
+                  <circle cx="70" cy="64" r="19"/><circle cx="90" cy="50" r="20"/><circle cx="112" cy="50" r="20"/>
+                  <circle cx="132" cy="64" r="19"/><circle cx="58" cy="86" r="14"/><circle cx="142" cy="86" r="14"/>
+                  <circle cx="100" cy="66" r="18"/>
+                </g>
+              </svg>
+              <figcaption><strong>Rizo texturizado</strong><span>Volumen arriba, lados limpios</span></figcaption>
+            </figure>
+          </li>
+          <li class="work reveal" style="--i:1">
+            <figure>
+              <svg class="work__art work--5" viewBox="0 0 200 250" role="img" aria-label="Ilustración de un rapado con barba de pocos días" preserveAspectRatio="xMidYMid slice">
+                <rect width="200" height="250" class="work__bg"/>
+                <use href="#bust"/>
+                <path class="hair" opacity=".55" d="M54 98C52 58 76 46 100 46c24 0 48 12 46 52-6-20-20-28-46-28S60 78 54 98z"/>
+                <path class="hair-line" d="M60 126c6 30 22 40 40 40s34-10 40-40"/>
+              </svg>
+              <figcaption><strong>Rapado y perfilado</strong><span>Cero a ras, barba de tres días</span></figcaption>
+            </figure>
+          </li>
+          <li class="work reveal" style="--i:2">
+            <figure>
+              <svg class="work__art work--6" viewBox="0 0 200 250" role="img" aria-label="Ilustración de media melena cuidada" preserveAspectRatio="xMidYMid slice">
+                <rect width="200" height="250" class="work__bg"/>
+                <path class="hair" d="M46 110C40 50 70 30 100 30s60 20 54 80l6 95c-20-9-26-45-26-75H66c0 30-6 66-26 75z"/>
+                <use href="#bust"/>
+                <path class="hair" d="M52 100c0-48 28-60 48-60s48 12 48 60c-10-26-30-38-48-38S62 74 52 100z"/>
+                <path class="hair" d="M52 100c-6 30-2 70-8 100l18-4c2-36-4-66-2-92zM148 100c6 30 2 70 8 100l-18-4c-2-36 4-66 2-92z"/>
+              </svg>
+              <figcaption><strong>Media melena</strong><span>Puntas hidratadas y corte en capas</span></figcaption>
+            </figure>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- TESTIMONIOS (ficticios, marcados) -->
+    <section class="section" id="opiniones" aria-labelledby="opiniones-title">
+      <div class="container">
+        <header class="section-head section-head--wide reveal">
+          <p class="eyebrow">Opiniones</p>
+          <h2 id="opiniones-title">Lo que dirían nuestros clientes</h2>
+          <p class="notice" role="note"><strong>Ejemplos ficticios.</strong> Estos testimonios son texto de relleno para el prototipo: no son opiniones de personas reales.</p>
+        </header>
+
+        <div class="quotes">
+          <figure class="quote reveal">
+            <span class="badge">Ejemplo · ficticio</span>
+            <blockquote><p>Salí con el mejor fade que me han hecho. Puntuales y sin prisas.</p></blockquote>
+            <figcaption>Javier M. <span>· cliente de ejemplo</span></figcaption>
+          </figure>
+          <figure class="quote reveal" style="--i:1">
+            <span class="badge">Ejemplo · ficticio</span>
+            <blockquote><p>El afeitado a navaja con toalla caliente es una pequeña pausa en la semana.</p></blockquote>
+            <figcaption>Lucía R. <span>· cliente de ejemplo</span></figcaption>
+          </figure>
+          <figure class="quote reveal" style="--i:2">
+            <span class="badge">Ejemplo · ficticio</span>
+            <blockquote><p>Reservar fue rápido y el resultado, justo lo que pedí con la foto.</p></blockquote>
+            <figcaption>Álvaro P. <span>· cliente de ejemplo</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESERVA -->
+    <section class="section section--alt" id="reserva" aria-labelledby="reserva-title">
+      <div class="container split split--form">
+        <header class="section-head reveal">
+          <p class="eyebrow">Reserva</p>
+          <h2 id="reserva-title">Reserva tu cita</h2>
+          <p>Cuéntanos qué necesitas y cuándo te viene bien.</p>
+          <p class="notice" role="note"><strong>Demostración.</strong> Este formulario no envía ni guarda ningún dato.</p>
+        </header>
+
+        <form class="form reveal" id="booking" action="#reserva" method="get" aria-describedby="form-status">
+          <div class="field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" autocomplete="name" required maxlength="80" aria-describedby="nombre-error">
+            <p class="field__error" id="nombre-error"></p>
+          </div>
+
+          <div class="field">
+            <label for="tel">Teléfono</label>
+            <input id="tel" name="tel" type="tel" autocomplete="tel" inputmode="tel" required pattern="[+0-9 ]{9,15}" aria-describedby="tel-help tel-error">
+            <p class="field__help" id="tel-help">Para avisarte si hay algún cambio.</p>
+            <p class="field__error" id="tel-error"></p>
+          </div>
+
+          <div class="field">
+            <label for="servicio">Servicio</label>
+            <select id="servicio" name="servicio" required aria-describedby="servicio-error">
+              <option value="">Elige un servicio</option>
+              <option>Corte clásico · 18 €</option>
+              <option>Fade y degradado · 22 €</option>
+              <option>Arreglo de barba · 12 €</option>
+              <option>Afeitado a navaja · 20 €</option>
+              <option>Corte + barba · 28 €</option>
+              <option>Ritual Castellana · 38 €</option>
+            </select>
+            <p class="field__error" id="servicio-error"></p>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="fecha">Día</label>
+              <input id="fecha" name="fecha" type="date" required aria-describedby="fecha-help fecha-error">
+              <p class="field__help" id="fecha-help">Abrimos de martes a sábado.</p>
+              <p class="field__error" id="fecha-error"></p>
+            </div>
+            <div class="field">
+              <label for="hora">Hora</label>
+              <select id="hora" name="hora" required aria-describedby="hora-error">
+                <option value="">Elige hora</option>
+                <option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option>
+                <option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option>
+                <option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option>
+                <option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option>
+                <option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option>
+              </select>
+              <p class="field__error" id="hora-error"></p>
+            </div>
+          </div>
+
+          <button class="btn btn--primary btn--lg" type="submit">Reservar cita</button>
+          <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="section" id="contacto" aria-labelledby="contacto-title">
+      <div class="container">
+        <header class="section-head section-head--wide reveal">
+          <p class="eyebrow">Contacto</p>
+          <h2 id="contacto-title">Cómo llegar y cuándo abrimos</h2>
+        </header>
+
+        <div class="contact">
+          <div class="contact__info reveal">
+            <address>
+              <strong>Barbería Castellana</strong><br>
+              Calle de Ejemplo, 12<br>
+              28000 Madrid<br>
+              <span class="muted">(dirección ficticia)</span>
+            </address>
+            <dl class="contact__list">
+              <div><dt>Teléfono</dt><dd>000 000 000 <span class="muted">(ficticio)</span></dd></div>
+              <div><dt>Correo</dt><dd>hola@barberia-castellana.example</dd></div>
+              <div><dt>Metro</dt><dd>Estación Imaginaria · 3 min a pie</dd></div>
+            </dl>
+
+            <h3>Horario</h3>
+            <table class="hours">
+              <caption class="visually-hidden">Horario de apertura</caption>
+              <tbody>
+                <tr><th scope="row">Martes a viernes</th><td>10:00 – 20:00</td></tr>
+                <tr><th scope="row">Sábado</th><td>09:00 – 17:00</td></tr>
+                <tr><th scope="row">Domingo y lunes</th><td>Cerrado</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <figure class="plan reveal" style="--i:1">
+            <svg viewBox="0 0 400 300" role="img" aria-labelledby="plan-title plan-desc">
+              <title id="plan-title">Plano esquemático de la zona</title>
+              <desc id="plan-desc">Dibujo ilustrativo: la barbería está en la Calle de Ejemplo, cerca del cruce con el Paseo Ficticio y a tres minutos de la Estación Imaginaria.</desc>
+              <rect width="400" height="300" class="plan__bg"/>
+              <g class="plan__blocks">
+                <rect x="20" y="20" width="110" height="80" rx="6"/><rect x="150" y="20" width="90" height="80" rx="6"/>
+                <rect x="260" y="20" width="120" height="80" rx="6"/><rect x="20" y="130" width="110" height="60" rx="6"/>
+                <rect x="260" y="130" width="120" height="60" rx="6"/><rect x="20" y="220" width="110" height="64" rx="6"/>
+                <rect x="150" y="220" width="90" height="64" rx="6"/><rect x="260" y="220" width="120" height="64" rx="6"/>
+              </g>
+              <path class="plan__park" d="M150 130h90v60h-90z"/>
+              <path class="plan__road" d="M0 115h400M0 205h400M140 0v300M250 0v300"/>
+              <path class="plan__route" d="M96 300V205h44l110-90"/>
+              <circle class="plan__metro" cx="96" cy="288" r="9"/>
+              <text class="plan__label" x="96" y="292" text-anchor="middle">M</text>
+              <g transform="translate(250 115)">
+                <path class="plan__pin" d="M0 0c-9-12-14-18-14-26a14 14 0 0128 0c0 8-5 14-14 26z"/>
+                <circle class="plan__pin-dot" cx="0" cy="-26" r="5"/>
+              </g>
+              <text class="plan__text" x="262" y="104">Barbería Castellana</text>
+              <text class="plan__text plan__text--street" x="22" y="198">Calle de Ejemplo</text>
+              <text class="plan__text plan__text--street" x="146" y="14">Paseo Ficticio</text>
+              <text class="plan__text plan__text--street" x="108" y="278">Estación Imaginaria</text>
+            </svg>
+            <figcaption>Plano esquemático ilustrativo, no es un mapa real.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="brand-line"><strong>Barbería Castellana</strong> · Madrid</p>
+      <ul class="footer-links">
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#galeria">Trabajos</a></li>
+        <li><a href="#opiniones">Opiniones</a></li>
+        <li><a href="#reserva">Reservar cita</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <p class="fine">Prototipo de prueba. Nombre, dirección, teléfono, precios, ilustraciones y opiniones son ficticios. Esta página no usa cookies, analítica ni servicios de terceros.</p>
+    </div>
+  </footer>
+
+  <!-- Figura base de las ilustraciones de la galería (capa, cuello, orejas y cabeza) -->
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <symbol id="bust" viewBox="0 0 200 250">
+      <path class="cape" d="M10 250c4-45 45-58 90-58s86 13 90 58z"/>
+      <path class="skin" d="M82 150h36v46c-10 8-26 8-36 0z"/>
+      <ellipse class="skin" cx="52" cy="108" rx="7" ry="12"/>
+      <ellipse class="skin" cx="148" cy="108" rx="7" ry="12"/>
+      <ellipse class="skin" cx="100" cy="105" rx="48" ry="58"/>
+    </symbol>
+  </svg>
+</body>
+</html>

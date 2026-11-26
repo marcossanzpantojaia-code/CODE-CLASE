@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barbería Castellana · Madrid (prototipo)</title>
+  <meta name="description" content="Prototipo de landing para Barbería Castellana, barbería ficticia de Madrid. Todo el contenido es de ejemplo.">
+  <meta name="theme-color" content="#0e0c0a">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230e0c0a'/%3E%3Cpath d='M9 7l14 18M23 7L9 25' stroke='%23c9a45c' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script src="main.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
+
+  <div class="proto-banner" role="note">Prototipo de prueba · todo el contenido es ficticio</div>
+
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="Barbería Castellana, inicio">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><path d="M9 7l14 18M23 7L9 25" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"/><circle cx="9" cy="26" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="23" cy="26" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      <span>Barbería <em>Castellana</em></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-principal">
+      <span class="visually-hidden">Menú</span>
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+    <nav id="nav-principal" class="nav" aria-label="Principal">
+      <ul>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#galeria">Trabajos</a></li>
+        <li><a href="#opiniones">Opiniones</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a class="btn btn-small" href="#reservar">Reservar cita</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="contenido">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-light" aria-hidden="true"></div>
+      <svg class="hero-art" viewBox="0 0 400 600" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="pole" x1="0" x2="1">
+            <stop offset="0" stop-color="#fff" stop-opacity=".35"/>
+            <stop offset=".35" stop-color="#fff" stop-opacity=".05"/>
+            <stop offset="1" stop-color="#000" stop-opacity=".45"/>
+          </linearGradient>
+          <pattern id="stripes" width="80" height="80" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)">
+            <rect width="80" height="80" fill="#efe7d6"/>
+            <rect width="27" height="80" fill="#8c2f2a"/>
+            <rect x="40" width="27" height="80" fill="#24406b"/>
+          </pattern>
+        </defs>
+        <rect x="150" y="40" width="100" height="40" rx="10" fill="#c9a45c"/>
+        <rect x="160" y="80" width="80" height="420" fill="url(#stripes)"/>
+        <rect x="160" y="80" width="80" height="420" fill="url(#pole)"/>
+        <rect x="150" y="500" width="100" height="40" rx="10" fill="#c9a45c"/>
+        <circle cx="200" cy="30" r="14" fill="#c9a45c"/>
+      </svg>
+      <div class="hero-inner">
+        <p class="eyebrow">Madrid · Desde 1987 <span class="fict">(ficticio)</span></p>
+        <h1 id="hero-title">El oficio,<br>a <em>cuchilla</em> y tijera.</h1>
+        <p class="lead">Corte clásico, barba con toalla caliente y una silla donde nadie tiene prisa.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#reservar">Reservar cita</a>
+          <a class="link-arrow" href="#servicios">Ver servicios <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+      <p class="scroll-hint" aria-hidden="true">Desliza</p>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section class="section" id="servicios" aria-labelledby="servicios-title">
+      <header class="section-head reveal">
+        <p class="eyebrow">Carta</p>
+        <h2 id="servicios-title">Servicios y precios</h2>
+        <p class="note">Precios de ejemplo, IVA incluido.</p>
+      </header>
+      <ul class="menu">
+        <li class="menu-item reveal">
+          <div><h3>Corte clásico</h3><p>Tijera y máquina, lavado y peinado.</p></div>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">18 €</span>
+        </li>
+        <li class="menu-item reveal">
+          <div><h3>Degradado (fade)</h3><p>Transición precisa con navaja en el contorno.</p></div>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">20 €</span>
+        </li>
+        <li class="menu-item reveal">
+          <div><h3>Arreglo de barba</h3><p>Perfilado, toalla caliente y aceite.</p></div>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">12 €</span>
+        </li>
+        <li class="menu-item reveal">
+          <div><h3>Afeitado a navaja</h3><p>Ritual completo con espuma y vapor.</p></div>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">16 €</span>
+        </li>
+        <li class="menu-item reveal">
+          <div><h3>Corte + barba</h3><p>El pack más pedido de la casa.</p></div>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">26 €</span>
+        </li>
+        <li class="menu-item reveal">
+          <div><h3>Corte infantil</h3><p>Hasta 12 años.</p></div>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">13 €</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- GALERIA -->
+    <section class="section section-dark" id="galeria" aria-labelledby="galeria-title">
+      <header class="section-head reveal">
+        <p class="eyebrow">Portfolio</p>
+        <h2 id="galeria-title">Trabajos recientes</h2>
+        <p class="note">Ilustraciones vectoriales de ejemplo.</p>
+      </header>
+      <div class="gallery">
+        <figure class="reveal">
+          <svg viewBox="0 0 200 240" role="img" aria-label="Ilustración de un degradado alto con barba corta">
+            <rect width="200" height="240" class="bg1"/>
+            <path class="shirt" d="M10 240c4-40 40-52 90-52s86 12 90 52z"/>
+            <rect class="skin" x="82" y="140" width="36" height="52" rx="10"/>
+            <ellipse class="skin" cx="100" cy="102" rx="44" ry="54"/>
+            <path class="hair" d="M56 96C52 56 74 36 100 36s48 20 44 60c-3-14-8-24-16-30-18 8-38 8-56 0-8 6-13 16-16 30z"/>
+            <path class="hair" d="M62 118c2 28 18 44 38 44s36-16 38-44c-6 18-20 26-38 26s-32-8-38-26z"/>
+          </svg>
+          <figcaption>Fade alto + barba</figcaption>
+        </figure>
+        <figure class="reveal">
+          <svg viewBox="0 0 200 240" role="img" aria-label="Ilustración de un corte clásico con raya lateral">
+            <rect width="200" height="240" class="bg2"/>
+            <path class="shirt" d="M10 240c4-40 40-52 90-52s86 12 90 52z"/>
+            <rect class="skin" x="82" y="140" width="36" height="52" rx="10"/>
+            <ellipse class="skin" cx="100" cy="102" rx="44" ry="54"/>
+            <path class="hair" d="M54 98C48 52 72 30 104 32c32 2 48 26 42 66-2-18-8-30-14-36-24 2-48-2-62-12-8 10-14 28-16 48z"/>
+            <path d="M84 40c-6 8-8 16-8 24" stroke="#000" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+          <figcaption>Clásico con raya</figcaption>
+        </figure>
+        <figure class="reveal">
+          <svg viewBox="0 0 200 240" role="img" aria-label="Ilustración de un pompadour con barba completa">
+            <rect width="200" height="240" class="bg3"/>
+            <path class="shirt" d="M10 240c4-40 40-52 90-52s86 12 90 52z"/>
+            <rect class="skin" x="82" y="140" width="36" height="52" rx="10"/>
+            <ellipse class="skin" cx="100" cy="102" rx="44" ry="54"/>
+            <path class="hair" d="M54 96C44 46 66 14 104 16c36 2 56 30 44 80-2-16-8-26-14-30-22 4-52 0-64-10-6 10-10 24-16 40z"/>
+            <path class="hair" d="M56 108c0 38 18 62 44 62s44-24 44-62c-6 14-12 20-18 22-8-6-20-8-26-8s-18 2-26 8c-6-2-12-8-18-22z"/>
+          </svg>
+          <figcaption>Pompadour + barba completa</figcaption>
+        </figure>
+        <figure class="reveal">
+          <svg viewBox="0 0 200 240" role="img" aria-label="Ilustración de un corte al uno con perfilado">
+            <rect width="200" height="240" class="bg2"/>
+            <path class="shirt" d="M10 240c4-40 40-52 90-52s86 12 90 52z"/>
+            <rect class="skin" x="82" y="140" width="36" height="52" rx="10"/>
+            <ellipse class="skin" cx="100" cy="102" rx="44" ry="54"/>
+            <path class="hair soft" d="M58 92C58 56 76 42 100 42s42 14 42 50c-6-12-14-22-42-22S64 80 58 92z"/>
+          </svg>
+          <figcaption>Corte al uno</figcaption>
+        </figure>
+        <figure class="reveal">
+          <svg viewBox="0 0 200 240" role="img" aria-label="Ilustración de un corte con textura y flequillo">
+            <rect width="200" height="240" class="bg3"/>
+            <path class="shirt" d="M10 240c4-40 40-52 90-52s86 12 90 52z"/>
+            <rect class="skin" x="82" y="140" width="36" height="52" rx="10"/>
+            <ellipse class="skin" cx="100" cy="102" rx="44" ry="54"/>
+            <path class="hair" d="M52 104C42 56 66 28 100 28s58 28 48 76c-2-20-6-34-12-40-6 12-20 18-34 14-14 8-32 6-40-6-6 8-8 20-10 32z"/>
+          </svg>
+          <figcaption>Textura y flequillo</figcaption>
+        </figure>
+        <figure class="reveal">
+          <svg viewBox="0 0 200 240" role="img" aria-label="Ilustración de un afeitado a navaja con toalla caliente">
+            <rect width="200" height="240" class="bg1"/>
+            <path class="shirt" d="M10 240c4-40 40-52 90-52s86 12 90 52z"/>
+            <rect class="skin" x="82" y="140" width="36" height="52" rx="10"/>
+            <ellipse class="skin" cx="100" cy="102" rx="44" ry="54"/>
+            <path class="hair" d="M58 90C58 54 78 40 100 40s42 14 42 50c-8-14-18-22-42-22S66 76 58 90z"/>
+            <path d="M60 128c10 8 26 12 40 12s30-4 40-12l4 28c-12 10-28 16-44 16s-32-6-44-16z" fill="#efe7d6" opacity=".92"/>
+          </svg>
+          <figcaption>Afeitado a navaja</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- OPINIONES -->
+    <section class="section" id="opiniones" aria-labelledby="opiniones-title">
+      <header class="section-head reveal">
+        <p class="eyebrow">Clientes</p>
+        <h2 id="opiniones-title">Lo que dicen</h2>
+        <p class="note badge-example">Testimonios de ejemplo · no son opiniones reales</p>
+      </header>
+      <div class="quotes">
+        <figure class="quote reveal">
+          <span class="stamp">Ejemplo</span>
+          <blockquote><p>“Salgo cada vez como nuevo. El afeitado a navaja es otra categoría.”</p></blockquote>
+          <figcaption>Cliente ficticio A.</figcaption>
+        </figure>
+        <figure class="quote reveal">
+          <span class="stamp">Ejemplo</span>
+          <blockquote><p>“Puntuales, detallistas y con un ambiente que invita a quedarse.”</p></blockquote>
+          <figcaption>Cliente ficticio B.</figcaption>
+        </figure>
+        <figure class="quote reveal">
+          <span class="stamp">Ejemplo</span>
+          <blockquote><p>“Llevé a mi hijo y a mi padre. Tres generaciones, tres cortes perfectos.”</p></blockquote>
+          <figcaption>Cliente ficticio C.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- RESERVA -->
+    <section class="section section-dark" id="reservar" aria-labelledby="reservar-title">
+      <div class="booking">
+        <header class="reveal">
+          <p class="eyebrow">Reserva</p>
+          <h2 id="reservar-title">Reservar cita</h2>
+          <p class="note">Formulario de demostración: no envía ni guarda ningún dato.</p>
+        </header>
+        <form id="form-reserva" class="form reveal" novalidate>
+          <div class="field">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" autocomplete="name" required>
+            <p class="error" id="err-nombre" hidden>Escribe tu nombre.</p>
+          </div>
+          <div class="field">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" name="telefono" type="tel" autocomplete="tel" inputmode="tel" required>
+            <p class="error" id="err-telefono" hidden>Introduce un teléfono válido (9 dígitos).</p>
+          </div>
+          <div class="field">
+            <label for="servicio">Servicio</label>
+            <select id="servicio" name="servicio" required>
+              <option value="">Elige un servicio</option>
+              <option>Corte clásico · 18 €</option>
+              <option>Degradado (fade) · 20 €</option>
+              <option>Arreglo de barba · 12 €</option>
+              <option>Afeitado a navaja · 16 €</option>
+              <option>Corte + barba · 26 €</option>
+              <option>Corte infantil · 13 €</option>
+            </select>
+            <p class="error" id="err-servicio" hidden>Elige un servicio.</p>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="fecha">Fecha</label>
+              <input id="fecha" name="fecha" type="date" required>
+              <p class="error" id="err-fecha" hidden>Elige una fecha.</p>
+            </div>
+            <div class="field">
+              <label for="hora">Hora</label>
+              <select id="hora" name="hora" required>
+                <option value="">Hora</option>
+                <option>10:00</option><option>11:00</option><option>12:00</option>
+                <option>13:00</option><option>16:00</option><option>17:00</option>
+                <option>18:00</option><option>19:00</option>
+              </select>
+              <p class="error" id="err-hora" hidden>Elige una hora.</p>
+            </div>
+          </div>
+          <button class="btn" type="submit">Reservar cita</button>
+          <p id="estado" class="status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section class="section" id="contacto" aria-labelledby="contacto-title">
+      <header class="section-head reveal">
+        <p class="eyebrow">Encuéntranos</p>
+        <h2 id="contacto-title">Contacto y ubicación</h2>
+        <p class="note">Datos ficticios.</p>
+      </header>
+      <div class="contact">
+        <address class="reveal">
+          <p><strong>Barbería Castellana</strong><br>Calle del Ejemplo, 00<br>28000 Madrid (dirección ficticia)</p>
+          <p>Teléfono: <span>600 000 000</span> (ficticio)<br>Correo: <span>hola@ejemplo.invalid</span></p>
+          <h3>Horario</h3>
+          <dl class="hours">
+            <div><dt>Lunes a viernes</dt><dd>10:00 – 20:00</dd></div>
+            <div><dt>Sábado</dt><dd>10:00 – 15:00</dd></div>
+            <div><dt>Domingo</dt><dd>Cerrado</dd></div>
+          </dl>
+        </address>
+        <figure class="plan reveal">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Plano esquemático ilustrativo: la barbería está en la esquina de dos calles, junto a una plaza.">
+            <rect width="400" height="300" fill="#16120f"/>
+            <g fill="#241d17">
+              <rect x="20" y="20" width="150" height="100"/><rect x="230" y="20" width="150" height="100"/>
+              <rect x="20" y="180" width="150" height="100"/><rect x="230" y="180" width="150" height="100"/>
+            </g>
+            <circle cx="200" cy="150" r="22" fill="#1d2a1f"/>
+            <g stroke="#3a3027" stroke-width="2" fill="none"><path d="M0 150h400M200 0v300"/></g>
+            <g transform="translate(232 122)">
+              <circle r="14" fill="#c9a45c"/>
+              <path d="M-5-5l10 10M5-5l-10 10" stroke="#0e0c0a" stroke-width="2.4" stroke-linecap="round"/>
+            </g>
+            <text x="250" y="126" fill="#d9d0bf" font-size="13" font-family="sans-serif">Barbería</text>
+            <text x="206" y="154" fill="#7d725f" font-size="10" font-family="sans-serif" text-anchor="middle">Plaza</text>
+          </svg>
+          <figcaption>Plano ilustrativo, no es un mapa real.</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© Barbería Castellana · Prototipo ficticio, sin valor comercial.</p>
+    <p><a href="#top">Volver arriba ↑</a></p>
+  </footer>
+</body>
+</html>

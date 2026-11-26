@@ -1,0 +1,26 @@
+{
+ "N12_escalonado": {
+  "salto_max": 18.071,
+  "salto_p95": 14.216,
+  "pasos_sin_cambio": 109,
+  "fantasma_max_pct": 0.0
+ },
+ "N12_fundido": {
+  "salto_max": 1.657,
+  "salto_p95": 1.657,
+  "pasos_sin_cambio": 0,
+  "fantasma_max_pct": 7.087
+ },
+ "N36_escalonado": {
+  "salto_max": 9.802,
+  "salto_p95": 9.266,
+  "pasos_sin_cambio": 85,
+  "fantasma_max_pct": 0.0
+ },
+ "N36_fundido": {
+  "salto_max": 2.859,
+  "salto_p95": 2.756,
+  "pasos_sin_cambio": 0,
+  "fantasma_max_pct": 3.844
+ }
+}

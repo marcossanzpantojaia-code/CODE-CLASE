@@ -1,0 +1,16 @@
+1440x900@1 crisp=0&solape=0 filas con costura: 0 / 900
+1440x900@1 crisp=1&solape=0 filas con costura: 0 / 900
+1440x900@1 crisp=0&solape=0.05 filas con costura: 0 / 900
+1440x900@1 crisp=1&solape=0.05 filas con costura: 0 / 900
+1366x768@1 crisp=0&solape=0 filas con costura: 14 / 768
+1366x768@1 crisp=1&solape=0 filas con costura: 0 / 768
+1366x768@1 crisp=0&solape=0.05 filas con costura: 0 / 768
+1366x768@1 crisp=1&solape=0.05 filas con costura: 0 / 768
+375x812@3 crisp=0&solape=0 filas con costura: 12 / 2436
+375x812@3 crisp=1&solape=0 filas con costura: 0 / 2436
+375x812@3 crisp=0&solape=0.05 filas con costura: 0 / 2436
+375x812@3 crisp=1&solape=0.05 filas con costura: 0 / 2436
+390x844@3 crisp=0&solape=0 filas con costura: 14 / 2532
+390x844@3 crisp=1&solape=0 filas con costura: 0 / 2532
+390x844@3 crisp=0&solape=0.05 filas con costura: 0 / 2532
+390x844@3 crisp=1&solape=0.05 filas con costura: 0 / 2532

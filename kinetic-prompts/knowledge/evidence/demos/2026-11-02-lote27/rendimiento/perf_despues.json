@@ -1,0 +1,33 @@
+{
+ "url": "http://127.0.0.1:8793/index.html?motor=gsap",
+ "W": "1440",
+ "H": "900",
+ "R": {
+  "base": [
+   {
+    "tareas": 299,
+    "script": 72,
+    "estilo_layout": 24,
+    "p95": 16.7,
+    "mayores33": 0,
+    "n": 263
+   },
+   {
+    "tareas": 289,
+    "script": 71,
+    "estilo_layout": 22,
+    "p95": 16.7,
+    "mayores33": 0,
+    "n": 262
+   },
+   {
+    "tareas": 356,
+    "script": 63,
+    "estilo_layout": 23,
+    "p95": 16.8,
+    "mayores33": 0,
+    "n": 262
+   }
+  ]
+ }
+}

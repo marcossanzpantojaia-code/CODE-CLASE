@@ -1,0 +1,5 @@
+Criterios fijados ANTES de ejecutar: 2026-10-27T11:16:07Z
+ZIP v0.17.0 sha256 dfeec4611ef16dcdf5fcbb1f4a5707b01a144e4204b22d380389ca265374c6b5
+verify_build_evidence.py sha256 36a3b90fc6c21f6c861b08d7d70aba1c91f0a90d1f565f9513dde357990b9844
+Comando: verify_build_evidence.py <copia> evidencia.jsonl <proyecto> --prompt prompt.txt
+Herramientas de la sesión evaluada: Read, Grep, Glob, Skill, Write, Edit (sin Bash). Modo acceptEdits. Deny Edit/Write sobre la copia de la biblioteca.

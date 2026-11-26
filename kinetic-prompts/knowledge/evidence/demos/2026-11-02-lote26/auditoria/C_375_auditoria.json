@@ -1,0 +1,327 @@
+{
+ "url": "http://127.0.0.1:8791/receta_c.html?motor=gsap",
+ "ancho": 375,
+ "pasos": 21,
+ "cfg": {
+  "protagonista": "#tras",
+  "textos": [
+   "#tit",
+   "#tit2"
+  ],
+  "ocluyentes": [
+   ".ing"
+  ]
+ },
+ "resumen": {
+  "protagonista_ancho_min": 0.96,
+  "protagonista_ancho_max": 1.018,
+  "pasos_sin_protagonista_claro": [],
+  "pasos_sin_ninguna_linea_legible": [
+   0.3501,
+   0.4002,
+   0.6999,
+   0.7499
+  ],
+  "lienzo_cobertura_min": null,
+  "oclusion_texto_max": 0.042,
+  "reversibilidad_visual_max_pct": 0.138
+ },
+ "baja": [
+  {
+   "protagonista_ancho": 0.96,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0
+  },
+  {
+   "protagonista_ancho": 0.963,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.05
+  },
+  {
+   "protagonista_ancho": 0.966,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.1
+  },
+  {
+   "protagonista_ancho": 0.969,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.1501
+  },
+  {
+   "protagonista_ancho": 0.972,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.2001
+  },
+  {
+   "protagonista_ancho": 0.974,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.2501
+  },
+  {
+   "protagonista_ancho": 0.977,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.3001
+  },
+  {
+   "protagonista_ancho": 0.98,
+   "protagonista_visible": 1,
+   "textos": [
+    0.56,
+    0.51
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.3501
+  },
+  {
+   "protagonista_ancho": 0.983,
+   "protagonista_visible": 1,
+   "textos": [
+    0.34,
+    0.28
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.4002
+  },
+  {
+   "protagonista_ancho": 0.986,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.4502
+  },
+  {
+   "protagonista_ancho": 0.989,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0.014
+   ],
+   "p": 0.5002
+  },
+  {
+   "protagonista_ancho": 0.992,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0.015
+   ],
+   "p": 0.5498
+  },
+  {
+   "protagonista_ancho": 0.995,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.5998
+  },
+  {
+   "protagonista_ancho": 0.997,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.6499
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0.34,
+    0.28
+   ],
+   "oclusion_texto": [
+    0,
+    0.042
+   ],
+   "p": 0.6999
+  },
+  {
+   "protagonista_ancho": 1.003,
+   "protagonista_visible": 0.997,
+   "textos": [
+    0.56,
+    0.51
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.7499
+  },
+  {
+   "protagonista_ancho": 1.006,
+   "protagonista_visible": 0.994,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.7999
+  },
+  {
+   "protagonista_ancho": 1.009,
+   "protagonista_visible": 0.991,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.8499
+  },
+  {
+   "protagonista_ancho": 1.012,
+   "protagonista_visible": 0.988,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.9
+  },
+  {
+   "protagonista_ancho": 1.015,
+   "protagonista_visible": 0.985,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 0.95
+  },
+  {
+   "protagonista_ancho": 1.018,
+   "protagonista_visible": 0.983,
+   "textos": [
+    1,
+    1
+   ],
+   "oclusion_texto": [
+    0,
+    0
+   ],
+   "p": 1
+  }
+ ],
+ "difs": [
+  0.00138,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ]
+}

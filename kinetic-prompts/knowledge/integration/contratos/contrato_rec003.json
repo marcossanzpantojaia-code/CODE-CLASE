@@ -1,0 +1,222 @@
+{
+ "version": "rec003-lote27",
+ "documento": "integration/contratos/CONTRATO_RECURSOS_REC003.md",
+ "calidad": {
+  "webp": 86,
+  "avif": 62
+ },
+ "ingredientes": {
+  "color_sombra": [
+   42,
+   28,
+   20
+  ],
+  "planos": {
+   "0": {
+    "dx": 0.04,
+    "dy": 0.06,
+    "blur_sombra": 0.05,
+    "opacidad_sombra": 0.22,
+    "desenfoque": 0.012
+   },
+   "1": {
+    "dx": 0.1,
+    "dy": 0.16,
+    "blur_sombra": 0.09,
+    "opacidad_sombra": 0.28,
+    "desenfoque": 0
+   },
+   "2": {
+    "dx": 0.18,
+    "dy": 0.28,
+    "blur_sombra": 0.14,
+    "opacidad_sombra": 0.3,
+    "desenfoque": 0
+   }
+  }
+ },
+ "recursos": [
+  {
+   "id": "heroe",
+   "archivo": "I1_heroe_tenedor.png",
+   "rol": "heroe",
+   "imprescindible": true,
+   "anchos": [
+    1200,
+    800,
+    540
+   ],
+   "comprobar": {
+    "luz_lado": "arriba-izquierda",
+    "ancho_min": 1024
+   },
+   "meta": {
+    "nido": {
+     "x": 0.5,
+     "y": 0.76,
+     "ancho": 0.62
+    },
+    "nota": "fracciones de la imagen RECORTADA; calibrar con la hoja de inspección"
+   }
+  },
+  {
+   "id": "producto",
+   "archivo": "I2_plato.png",
+   "rol": "producto",
+   "imprescindible": true,
+   "anchos": [
+    1640,
+    1080,
+    820
+   ],
+   "fraccion_elipse_interior": 0.8,
+   "sombra": {
+    "color": [
+     42,
+     28,
+     20
+    ]
+   },
+   "comprobar": {
+    "luz_lado": "arriba-izquierda",
+    "elevacion": [
+     25,
+     35
+    ],
+    "ancho_min": 2048
+   },
+   "meta": {
+    "nido": {
+     "x": 0.5,
+     "y": 0.47,
+     "ancho": 0.36
+    },
+    "nota": "centro y ancho del nido de pasta en el plato; calibrar con la hoja"
+   }
+  },
+  {
+   "id": "ing_tomate",
+   "archivo": "I3_tomate.png",
+   "rol": "ingrediente",
+   "imprescindible": true,
+   "planos": [
+    0,
+    1,
+    2
+   ],
+   "anchos": [
+    512,
+    256,
+    128
+   ],
+   "comprobar": {
+    "ancho_min": 1024
+   }
+  },
+  {
+   "id": "ing_tomate_partido",
+   "archivo": "I3_tomate_partido.png",
+   "rol": "ingrediente",
+   "imprescindible": false,
+   "planos": [
+    0,
+    1,
+    2
+   ],
+   "anchos": [
+    512,
+    256,
+    128
+   ],
+   "comprobar": {
+    "ancho_min": 1024
+   }
+  },
+  {
+   "id": "ing_albahaca",
+   "archivo": "I3_albahaca.png",
+   "rol": "ingrediente",
+   "imprescindible": true,
+   "planos": [
+    0,
+    1,
+    2
+   ],
+   "anchos": [
+    512,
+    256,
+    128
+   ],
+   "comprobar": {
+    "ancho_min": 1024
+   }
+  },
+  {
+   "id": "ing_parmesano",
+   "archivo": "I3_parmesano.png",
+   "rol": "ingrediente",
+   "imprescindible": true,
+   "planos": [
+    0,
+    1,
+    2
+   ],
+   "anchos": [
+    512,
+    256,
+    128
+   ],
+   "comprobar": {
+    "ancho_min": 1024
+   }
+  },
+  {
+   "id": "ing_ajo",
+   "archivo": "I3_ajo.png",
+   "rol": "ingrediente",
+   "imprescindible": false,
+   "planos": [
+    0,
+    1,
+    2
+   ],
+   "anchos": [
+    512,
+    256,
+    128
+   ],
+   "comprobar": {
+    "ancho_min": 1024
+   }
+  },
+  {
+   "id": "ing_guindilla",
+   "archivo": "I3_guindilla.png",
+   "rol": "ingrediente",
+   "imprescindible": true,
+   "planos": [
+    0,
+    1,
+    2
+   ],
+   "anchos": [
+    512,
+    256,
+    128
+   ],
+   "comprobar": {
+    "ancho_min": 1024
+   }
+  },
+  {
+   "id": "salpicadura",
+   "archivo": "O2_salpicadura.png",
+   "rol": "secundario",
+   "imprescindible": false,
+   "anchos": [
+    512,
+    256
+   ]
+  }
+ ]
+}

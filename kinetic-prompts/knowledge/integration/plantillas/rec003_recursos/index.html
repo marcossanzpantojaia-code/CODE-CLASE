@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REC-003 con recursos reales — héroe fijo, entorno cambiante, aterrizaje en el plato</title>
+<!-- Integración preparada (lote 27). Misma arquitectura VERIFICADA con GSAP 3.15.0 en el lote 26 (pistas → timeline,
+     onRefresh, medidas relativas al escenario, restauración al cruzar puntos de corte), pero con RECURSOS DE IMAGEN
+     descritos en recursos/manifest.json (generado por integration/tools/preparar_recursos.py a partir del contrato).
+     - Sin recursos imprescindibles NO hay sustitutos vectoriales: la página muestra qué falta.
+     - Sombra de contacto e ingredientes HORNEADOS (sin mix-blend-mode ni filtros CSS: causa medida del bajo rendimiento).
+     - ?motor=gsap|nativo &pin=1 &scrub=<s> &recursos=<carpeta> -->
+<style>
+  :root { --crema:#efe6d6; --granate:#7e2a1d; --tinta:#231a14 }
+  * { box-sizing:border-box; margin:0 }
+  body { background:var(--crema); color:var(--tinta); font-family: Georgia, "Times New Roman", serif }
+  .intro, .fin { height:60vh; display:grid; place-items:center; font:16px system-ui; color:#6d625a }
+  #acto { height:420vh; position:relative }
+  .escenario { position:sticky; top:0; height:100vh; overflow:hidden; isolation:isolate }
+  .panel { position:absolute; inset:0 0 0 56%; background:var(--granate); z-index:0 }   /* lote 27: con 52 % el titular cruzaba el panel (tinta/granate = 1,82:1) */
+  .capa-fantasma { position:absolute; inset:0 0 8% 0; display:grid; place-items:center; z-index:1; pointer-events:none }
+  .fantasma { font-size:30vw; font-weight:700; color:rgb(35 26 20 / .05); white-space:nowrap }
+  /* las tres capas del producto comparten caja: el recurso recortado define la proporción (--prop = alto/ancho) */
+  .capa { position:absolute; left:50%; top:54%; width:min(58vw,880px); aspect-ratio:1 / var(--prop, .5); translate:-18% -50%; pointer-events:none }
+  .capa img { display:block; width:100%; height:100%; will-change:transform }
+  .c-sombra { z-index:2 } .c-tras { z-index:2 } .c-delante { z-index:4 }
+  /* héroe (I1): vertical, a la derecha, POR DELANTE del titular (oclusión medida con el alfa real); origen del escalado en el nido */
+  .c-heroe { position:absolute; left:68%; top:50%; height:84vh; aspect-ratio:1 / var(--propH, 1.5); translate:-50% -50%; z-index:4; pointer-events:none }
+  .c-heroe img { display:block; width:100%; height:100%; transform-origin:var(--nx, 50%) var(--ny, 76%); will-change:transform, opacity }
+  .titular { position:absolute; left:6vw; top:44%; z-index:3; font-size:clamp(48px,9.5vw,150px); line-height:.9; font-weight:700; white-space:nowrap }
+  .titular .linea { display:block; overflow:hidden } .titular .linea > span { display:block }
+  .bajada { position:absolute; left:6vw; top:20vh; z-index:5; font:600 12px system-ui; letter-spacing:.16em; text-transform:uppercase }
+  .ing { position:absolute; left:0; top:0; width:var(--ing, 8vw); height:auto; pointer-events:none; will-change:transform, opacity }
+  .aviso { position:fixed; inset:auto 16px 16px 16px; z-index:20; padding:12px 16px; background:#231a14; color:#efe6d6; font:13px/1.4 system-ui; border-radius:6px }
+  .aviso.fixture { inset:16px 16px auto auto; background:#b3261e }
+  .rm #acto { height:auto } .rm .escenario { position:relative; height:100vh } .rm .ing, .rm .c-heroe { display:none }
+  .modo-pin #acto { height:auto } .modo-pin .escenario { position:relative }
+  @media (max-width:700px) { .capa { width:96vw; translate:-50% -50%; top:62% } .titular { top:30%; font-size:15vw } .panel { inset:58% 0 0 0 }
+    .ing { width:var(--ing-movil, 13vw) } .c-heroe { left:60%; top:71%; height:48vh } }   /* lote 27: con 56vh tapaba el 71 % de una línea del titular */
+</style>
+</head>
+<body>
+<div class="intro">↓ Desliza</div>
+<section id="acto" aria-label="Producto fijo, entorno cambiante">
+  <div class="escenario">
+    <div class="panel"></div>
+    <div class="capa-fantasma"><span class="fantasma" aria-hidden="true">[MARCA]</span></div>
+    <p class="bajada" id="bajada">Sección 01</p>
+    <div class="capa c-sombra"><img id="sombra" alt="" aria-hidden="true"></div>
+    <div class="capa c-tras"><img id="tras" alt="" aria-hidden="true"></div>
+    <h2 class="titular" id="titular"><span class="linea"><span id="tit">Amor al</span></span><span class="linea"><span id="tit2">primer giro.</span></span></h2>
+    <div class="capa c-delante"><img id="delante" alt=""></div>
+    <div class="c-heroe"><img id="heroe" alt="Tenedor con pasta enrollada"></div>
+  </div>
+</section>
+<div class="fin">Fin del tramo</div>
+<script type="module">
+import { muestra, ease } from './escena.js';
+import { arrancar } from './arranque.js';
+const q = new URLSearchParams(location.search), CARPETA = (q.get('recursos') || 'recursos').replace(/\/$/, '');
+const $ = s => document.querySelector(s), escenario = $('.escenario');
+const avisar = (txt, clase = '') => { const d = document.createElement('div'); d.className = 'aviso ' + clase; d.textContent = txt; document.body.append(d); };
+// --- 1. Recursos: el manifiesto describe variantes WebP/AVIF por ancho; se elige la menor que cubra el ancho × DPR ---
+const avif = await new Promise(ok => { const i = new Image(); i.onload = () => ok(i.width > 0); i.onerror = () => ok(false);
+  i.src = 'data:image/avif;base64,AAAAIGZ0eXBhdmlmAAAAAGF2aWZtaWYxbWlhZk1BMUIAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAABGgAAAB0AAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAIAAAACAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgQ0MAAAAABNjb2xybmNseAACAAIAAYAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAACVtZGF0EgAKCBgANogQEAwgMg8f8D///8WfhwB8+ErK42A='; });
+let M; try { M = await (await fetch(`${CARPETA}/manifest.json`)).json(); } catch { M = null; }
+const IMPRESCINDIBLES = ['heroe', 'producto', 'producto_delantero', 'producto_sombra'];
+const faltan = !M ? ['manifest.json'] : IMPRESCINDIBLES.filter(k => !M.recursos[k]);
+const ingIds = M ? Object.keys(M.recursos).filter(k => /^ing_.+_p[012]$/.test(k)) : [];
+if (!ingIds.length) faltan.push('ingredientes (ing_*_p0/p1/p2)');
+if (faltan.length) { avisar('Faltan recursos imprescindibles: ' + faltan.join(', ') + '. Genera los recursos según CONTRATO_RECURSOS_REC003.md y ejecuta preparar_recursos.py. (No se usan sustitutos.)'); window.__error = 'faltan recursos'; throw new Error('faltan recursos'); }
+if (String(M.version_contrato || '').startsWith('fixture')) avisar('FIXTURE DE PRUEBA — no son recursos finales', 'fixture');
+function url(nombre, anchoCss) {
+  const r = M.recursos[nombre], lista = (avif && r.variantes.avif) || r.variantes.webp, necesario = anchoCss * Math.min(devicePixelRatio, 2);
+  const orden = [...lista].sort((a, b) => a.ancho - b.ancho); return `${CARPETA}/${(orden.find(v => v.ancho >= necesario) || orden.at(-1)).archivo}`;
+}
+const tras = $('#tras'), del = $('#delante'), sombra = $('#sombra'), heroe = $('#heroe');
+document.querySelectorAll('.capa').forEach(c => c.style.setProperty('--prop', M.recursos.producto.proporcion));
+const anchoCapa = () => $('.c-tras').getBoundingClientRect().width;
+tras.src = url('producto', anchoCapa()); del.src = url('producto_delantero', anchoCapa()); sombra.src = url('producto_sombra', anchoCapa());
+const NH = M.recursos.heroe.meta?.nido || { x: .5, y: .76, ancho: .62 }, NP = M.recursos.producto.meta?.nido || { x: .5, y: .47, ancho: .36 };
+const cHeroe = $('.c-heroe'); cHeroe.style.setProperty('--propH', M.recursos.heroe.proporcion);
+heroe.style.setProperty('--nx', NH.x * 100 + '%'); heroe.style.setProperty('--ny', NH.y * 100 + '%');
+heroe.src = url('heroe', cHeroe.getBoundingClientRect().width);
+// ingredientes: 9 huecos en 3 planos; cada hueco usa la variante horneada de su plano (sombra y desenfoque ya incluidos)
+const PLANO = [{ esc: .6, vel: .6, z: 1 }, { esc: .9, vel: 1, z: 3 }, { esc: 1.3, vel: 1.6, z: 5 }];
+const HUECOS = [2, 0, 1, 0, 2, 1, 1, 1, 2];
+const bases = [...new Set(ingIds.map(k => k.replace(/_p[012]$/, '')))];
+const els = HUECOS.map((z, i) => { const nom = `${bases[i % bases.length]}_p${z}`, d = new Image(); d.className = 'ing'; d.alt = ''; d.decoding = 'async';
+  d.src = url(M.recursos[nom] ? nom : ingIds[0], innerWidth * .13); d.style.zIndex = PLANO[z].z; escenario.append(d); return { d, z, i }; });
+// decodificar TODO antes de arrancar (img.decode(): sin saltos por decodificación durante el scroll)
+await Promise.all([heroe, tras, del, sombra, ...els.map(e => e.d)].map(i => i.decode().catch(() => avisar('No se pudo decodificar ' + i.src))));
+window.__recursos = { avif, archivos: [heroe, tras, del, sombra, ...els.map(e => e.d)].map(i => ({ src: i.currentSrc || i.src, w: i.naturalWidth, h: i.naturalHeight })) };
+// --- 2. Escena: MISMAS pistas y reglas verificadas en el lote 26 (receta_c.html) ---
+const panel = $('.panel'), fant = $('.fantasma'), bajada = $('#bajada'), t1 = $('#tit'), t2 = $('#tit2');
+const textos = [['Amor al', 'primer giro.', 'Sección 01'], ['Un poco', 'de todo.', 'Sección 02'], ['Tu mesa', 'te espera.', 'Sección 03']];
+const L = [[0,0],[.33,0],[.38,110],[.43,0],[.67,0],[.72,110],[.77,0],[1,0]];
+const L2 = [[0,0],[.33,0],[.33 + .05 / 1.1,110],[.43 - .05 / 1.1,110],[.43,0],[.67,0],[.67 + .05 / 1.1,110],[.77 - .05 / 1.1,110],[.77,0],[1,0]];
+let escena = -1;
+// Acto 3: el héroe baja y escala para que su nido coincida con el del plato; el plato entra desde abajo y, con ambos
+// alineados, el héroe se desvanece ENCIMA del plato ya opaco (relevo sin valle, SEQ-003). Funciones → se recalculan en refresh.
+const caja = el => el.getBoundingClientRect();     // los contenedores .capa y .c-heroe no los transforma GSAP
+const nidoH = () => { const r = caja(cHeroe); return { x: r.left + r.width * NH.x, y: r.top + r.height * NH.y, w: r.width * NH.ancho }; };
+const nidoP = () => { const r = caja($('.c-tras')); return { x: r.left + r.width * NP.x, y: r.top + r.height * NP.y, w: r.width * NP.ancho * 1.05 }; };
+const receta = {
+  recorrido: 3.2,
+  pistas: () => [
+    // plato: oculto bajo el encuadre hasta el acto 3; entra en .70–.86 y hace un leve dolly al final
+    ...[tras, del, sombra].map(el => ({ el, keys: [[0,1],[.70,1],[.86,0],[1,0]], gsap: { prop: 'y', conv: v => () => v * innerHeight } })),
+    ...[tras, del, sombra].map(el => ({ el, keys: [[0,1],[.86,1.05],[1,1.06]], ease: ease.none, gsap: { prop: 'scale' } })),
+    // héroe: fijo en los actos 1–2 con un leve dolly; en .72–.86 viaja hasta el nido del plato; en .84–.90 se desvanece
+    { el: heroe, keys: [[0,0],[.72,0],[.86,1],[1,1]], gsap: { prop: 'x', conv: v => () => v * (nidoP().x - nidoH().x) } },
+    { el: heroe, keys: [[0,0],[.72,0],[.86,1],[1,1]], gsap: { prop: 'y', conv: v => () => v * (nidoP().y - nidoH().y) } },
+    // escala por tramos lineales en v (0→1: dolly 1→1,04; 1→2: hasta el tamaño del nido del plato) → idéntico en GSAP y nativo
+    { el: heroe, keys: [[0,0],[.72,1],[.86,2],[1,2]], gsap: { prop: 'scale', conv: v => () => v <= 1 ? 1 + .04 * v : 1.04 + (v - 1) * (nidoP().w / nidoH().w - 1.04) } },
+    { el: heroe, keys: [[0,1],[.84,1],[.90,0],[1,0]], gsap: { prop: 'opacity' } },
+    { el: panel, keys: [[0,0],[.18,0],[.34,100],[1,100]], gsap: { prop: 'clipPath', conv: v => `inset(0% 0% ${v}% 0%)` } },
+    { el: fant, keys: [[0,4],[1,-4]], ease: ease.none, gsap: { prop: 'x', conv: v => () => v * innerWidth / 100 } },
+    { el: t1, keys: L, ease: ease.none, gsap: { prop: 'yPercent' } },
+    { el: t2, keys: L2, ease: ease.none, gsap: { prop: 'yPercent' } },
+  ],
+  limpiar() { els.forEach(({ d }) => { d.style.transform = ''; d.style.opacity = ''; }); },
+  actualizar(p, est) {
+    const k = p < .38 ? 0 : p < .72 ? 1 : 2;
+    // acto 3: el héroe pasa POR DETRÁS del titular (sándwich). El cambio de profundidad ocurre en p = .72, cuando las líneas
+    // están fuera de su máscara (cambio de texto), así que no se ve. Corrige la oclusión del 71 % medida a 375 px.
+    cHeroe.style.zIndex = p >= .72 ? 2 : 4;
+    if (k !== escena) { [t1.textContent, t2.textContent, bajada.textContent] = textos[k]; escena = k; }
+    const E = escenario.getBoundingClientRect(), n = nidoH(), cx = n.x - E.left, cy = n.y - E.top;
+    const rect = { width: n.w * 2.2, height: n.w * 1.1, left: cx - n.w * 1.1, top: cy - n.w * .55 };
+    const aparic = muestra([[0, 0], [.4, 0], [.5, 1], [.68, 1], [.78, 0], [1, 0]], p);
+    // legibilidad (lote 27, más estricta): el titular se infla 12 px y un ingrediente es transparente con un 20 % de solape
+    const T0 = $('#titular').getBoundingClientRect(), mg = 12;
+    const T = { l: T0.left - E.left - mg, r: T0.right - E.left + mg, t: T0.top - E.top - mg, b: T0.bottom - E.top + mg };
+    els.forEach(({ d, z, i }) => {
+      const pl = PLANO[z], ang = i / els.length * Math.PI * 2 + p * Math.PI * 2 * pl.vel;
+      const rx = rect.width * (.48 + z * .07), ry = rect.height * (.55 + z * .12);
+      const w = d.offsetWidth, h = d.offsetHeight, esc = pl.esc * (0.3 + .7 * aparic);
+      const x = cx + Math.cos(ang) * rx * aparic - w / 2, yy = cy + Math.sin(ang) * ry * aparic - h / 2;
+      const lw = w * esc, lh = h * esc, x0 = x + (w - lw) / 2, y0 = yy + (h - lh) / 2;
+      const sol = z === 0 ? 0 : Math.max(0, Math.min(T.r, x0 + lw) - Math.max(T.l, x0)) * Math.max(0, Math.min(T.b, y0 + lh) - Math.max(T.t, y0)) / (lw * lh || 1);
+      d.style.transform = `translate(${x.toFixed(2)}px, ${yy.toFixed(2)}px) scale(${esc.toFixed(4)})`; d.style.opacity = (aparic * (1 - Math.min(1, sol * 5))).toFixed(4);
+    });
+    const h = heroe.getBoundingClientRect(); Object.assign(est, { escena: k, heroe: [Math.round(h.left - E.left), Math.round(h.top - E.top), Math.round(h.width)], heroe_opacidad: +getComputedStyle(heroe).opacity, ingredientes: +aparic.toFixed(3) });
+  },
+};
+addEventListener('resize', () => { for (const [img, n, w] of [[tras, 'producto', anchoCapa()], [del, 'producto_delantero', anchoCapa()], [sombra, 'producto_sombra', anchoCapa()], [heroe, 'heroe', caja(cHeroe).width]]) { const u = url(n, w); if (!img.src.endsWith(u)) img.src = u; } });
+arrancar($('#acto'), receta).catch(e => { console.error(e); window.__error = String(e); });
+</script>
+</body>
+</html>

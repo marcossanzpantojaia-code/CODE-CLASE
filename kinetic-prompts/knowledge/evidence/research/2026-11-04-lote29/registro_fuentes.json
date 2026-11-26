@@ -1,0 +1,27 @@
+{
+ "lote": 29,
+ "fecha": "2026-11-04",
+ "directiva": "ENKY MOTION EDITING MASTERCLASS — FASE 1 (la directiva llegó truncada tras la regla de evidencia; no se recibieron fases posteriores)",
+ "incidencia_de_acceso": "El ordenador del usuario no estaba conectado al puente durante el lote (navegador y terminal: 'device ... not connected'; extensión de Chrome: 'not connected'). Es el único acceso verificado a YouTube (lote 28). Desde la nube, WebFetch de youtube.com dio metadatos de una página y RATE_LIMIT_EXCEEDED en las demás. No se usaron vías alternativas (curl, espejos) por las restricciones de contenido web.",
+ "fuentes": [
+  {"vr": "VR-240", "url": "https://www.youtube.com/watch?v=rWUZWMDsglc", "autor": "Ben Marriott", "titulo": "After Effects Smooth Transitions - Animation Tutorial pt. 2", "publicado": "2019-07-24",
+   "estado": "SOLO_METADATOS", "timestamps": "ninguno (vídeo no visto)", "herramientas_declaradas": "Adobe After Effects (descripción); archivos del proyecto descargables (no descargados)",
+   "contenido_declarado": "segunda parte del bucle de animación del café: flujo de trabajo, easing, anticipación y transiciones 2D; nivel intermedio (descripción del autor)",
+   "aporte": "pendiente", "receta_pedida": "'conectar dos escenas sin fundido' → entregada como receta PROVISIONAL de la biblioteca en AIVID-001 §6 y YOUTUBE_ESTUDIOS lote 29, sin atribuirla a Marriott"},
+  {"vr": "VR-241", "url": "https://www.youtube.com/watch?v=YcHH6_T9DTU", "autor": "Sonduckfilm", "estado": "INACCESIBLE", "motivo": "WebFetch RATE_LIMIT_EXCEEDED (2 intentos); navegador del usuario desconectado", "aporte": "pendiente"},
+  {"vr": "VR-242", "url": "https://www.youtube.com/watch?v=uX5J3dnQZao", "autor": "Sonduckfilm", "estado": "INACCESIBLE", "motivo": "igual que VR-241", "aporte": "pendiente"},
+  {"vr": "VR-243", "url": "https://help.runwayml.com/hc/en-us/articles/48324313115155-Image-to-Video-Prompting-Guide", "autor": "Runway (Help Center)", "estado": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "nota": "la URL pedida (academy.runwayml.com/guides/prompting-guide) dio SERVER_ERROR en 2 intentos; se leyó la guía oficial equivalente del Help Center (Gen-4.5)",
+   "tecnica": "la imagen es el primer fotograma; prompt solo de movimiento; quitar pistas de movimiento implícitas; secuencia temporal con marcas; encadenar por el último fotograma y quitar el fotograma compartido; plano fijo / bucle; 'Continuous, seamless shot' contra cortes",
+   "herramientas": "Runway Gen-4.5, Image to Video, Text/Image to Image, Animate Frames", "ficha": "AIVID-001"},
+  {"vr": "VR-244", "url": "https://curiousrefuge.com/ai-tutorials", "autor": "Curious Refuge", "estado": "SOLO_METADATOS", "nota": "índice: 6 tutoriales listados; ninguno trata explícitamente start/end frames, transiciones entre clips ni consistencia de producto"},
+  {"vr": "VR-245", "url": "https://curiousrefuge.com/blog/how-to-change-camera-angles-with-ai", "autor": "Mable Huang (Curious Refuge)", "estado": "ARTICULO_AUTOR_ANALIZADO",
+   "tecnica": "cobertura de ángulos a partir de clips de 3–5 s; original como maestro de identidad/acción/tiempo; restricciones explícitas; 2–3 iteraciones; límites de continuidad observados", "herramientas": "Seedance 2.5, Magnific, Premiere Pro", "ficha": "AIVID-001"},
+  {"vr": "VR-246", "url": "https://tympanus.net/codrops/2022/10/10/how-to-code-a-three-js-postprocessing-transition/", "autor": "Yuri Artiukh (Codrops, directo del 2022-10-09)", "estado": "SOLO_METADATOS",
+   "nota": "la página solo describe el directo (transición inspirada en 'INSPIRATION' de TOPPAN con three.js, postprocesado y GSAP); sin código, repo ni demo enlazados; el vídeo exige el navegador del usuario", "aporte": "pendiente"},
+  {"vr": null, "url": "https://www.youtube.com/watch?v=9Y2bjYQCWvE", "autor": "Codegrid", "estado": "YA_ESTUDIADO (VR-233, lote 28)", "aporte": "sin novedad en este lote; no se duplica"},
+  {"vr": "VR-247", "url": "https://blog.olivierlarose.com/tutorials", "autor": "Olivier Larose", "estado": "SOLO_METADATOS",
+   "nota": "índice leído: 63+ tutoriales. Los de máscara, perspectiva, zoom y transición de sección ya estaban en la biblioteca (SECT-001, PIX-001, ZOOM-001, CARD-001, CLIP-001). Nuevos intentados: svg-mask-scroll y mask-entry → INACCESIBLE_POR_COSTE (Web Animation Course)"}
+ ],
+ "pendientes_prioritarios_lote29": ["rWUZWMDsglc (Marriott)", "YcHH6_T9DTU y uX5J3dnQZao (Sonduckfilm)", "directo de Artiukh del 2022-10-09 (Codrops)", "academy.runwayml.com/guides/prompting-guide (reintentar)"]
+}

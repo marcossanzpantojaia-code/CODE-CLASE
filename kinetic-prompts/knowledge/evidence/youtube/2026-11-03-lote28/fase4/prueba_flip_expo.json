@@ -1,0 +1,92 @@
+{
+ "manual 1440x900": {
+  "error_086_px": "0.58",
+  "error_090_px": "0.62",
+  "ancho_nido_heroe_vs_plato_086": [
+   315.71,
+   315.7
+  ],
+  "rms_logarea_vs_power2inOut": 0.0188,
+  "errores": []
+ },
+ "manual 375x812": {
+  "error_086_px": "0.25",
+  "error_090_px": "0.27",
+  "ancho_nido_heroe_vs_plato_086": [
+   136.09,
+   136.08
+  ],
+  "rms_logarea_vs_power2inOut": 0.0075,
+  "errores": []
+ },
+ "manual 1440x900 tras resize": {
+  "error_086_px": "0.58",
+  "error_090_px": "0.62",
+  "ancho_nido_heroe_vs_plato_086": [
+   315.71,
+   315.7
+  ],
+  "rms_logarea_vs_power2inOut": 0.0188,
+  "errores": []
+ },
+ "flip_expo 1440x900": {
+  "error_086_px": "0.96",
+  "error_090_px": "0.93",
+  "ancho_nido_heroe_vs_plato_086": [
+   314.56,
+   315.7
+  ],
+  "rms_logarea_vs_power2inOut": 0.0009,
+  "errores": []
+ },
+ "flip_expo 375x812": {
+  "error_086_px": "1.11",
+  "error_090_px": "1.10",
+  "ancho_nido_heroe_vs_plato_086": [
+   134.96,
+   136.08
+  ],
+  "rms_logarea_vs_power2inOut": 0.0004,
+  "errores": []
+ },
+ "flip_expo 1440x900 tras resize": {
+  "error_086_px": "0.96",
+  "error_090_px": "0.93",
+  "ancho_nido_heroe_vs_plato_086": [
+   314.56,
+   315.7
+  ],
+  "rms_logarea_vs_power2inOut": 0.0123,
+  "errores": []
+ },
+ "flip_lineal 1440x900": {
+  "error_086_px": "0.96",
+  "error_090_px": "0.93",
+  "ancho_nido_heroe_vs_plato_086": [
+   314.56,
+   315.7
+  ],
+  "rms_logarea_vs_power2inOut": 0.024,
+  "errores": []
+ },
+ "flip_lineal 375x812": {
+  "error_086_px": "1.11",
+  "error_090_px": "1.10",
+  "ancho_nido_heroe_vs_plato_086": [
+   134.96,
+   136.08
+  ],
+  "rms_logarea_vs_power2inOut": 0.0132,
+  "errores": []
+ },
+ "flip_lineal 1440x900 tras resize": {
+  "error_086_px": "0.96",
+  "error_090_px": "0.93",
+  "ancho_nido_heroe_vs_plato_086": [
+   314.56,
+   315.7
+  ],
+  "rms_logarea_vs_power2inOut": 0.024,
+  "errores": []
+ }
+}

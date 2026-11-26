@@ -1,0 +1,17 @@
+Crea una landing page premium para una barbería ficticia, "Barbería Castellana" (Madrid). Es un prototipo de prueba: todo el contenido es ficticio.
+
+Requisitos:
+- Diseño profesional con estética cinematográfica.
+- Responsive para móvil, tablet y escritorio.
+- Hero visual con llamada a la acción "Reservar cita".
+- Sección de servicios con precios.
+- Galería de trabajos.
+- Testimonios (ficticios y marcados visiblemente como ejemplos).
+- Contacto y ubicación (dirección ficticia, sin mapas de terceros).
+- Transiciones y revelados al hacer scroll, solo donde estén justificados.
+- Accesibilidad y respeto de prefers-reduced-motion.
+- Buen rendimiento.
+
+Restricciones del entorno: no hay npm, ni conexión a internet, ni CDNs, ni terminal. Usa solo HTML, CSS y JavaScript nativos en esta carpeta (index.html, styles.css y main.js). No uses imágenes externas: ilustra con SVG o CSS propios. No conectes servicios reales: el formulario de reserva no envía datos a ningún sitio.
+
+Al terminar, explica brevemente las decisiones técnicas que has tomado en cada sección y por qué.

@@ -1,0 +1,48 @@
+{
+ "lote": 28,
+ "fecha": "2026-11-03",
+ "metodo_de_acceso": "Navegador del ordenador del usuario (panel Browser enlazado a la sesión): reproducción normal en youtube.com con anuncios; panel 'Mostrar transcripción' de YouTube (subtítulos automáticos en inglés, en:asr) leído del DOM; fotogramas capturados pausando el reproductor en tiempos concretos. Sin descargas ni herramientas de terceros. La transcripción no se reproduce íntegra en la biblioteca (derechos de autor): se guarda su sha256 y el número de segmentos únicos para poder verificar qué se leyó.",
+ "estados": {
+  "VIDEO_INSPECCIONADO": "se han visto fotogramas reales del vídeo en momentos concretos (lista en 'fotogramas')",
+  "TRANSCRIPCION_ANALIZADA": "transcripción completa de YouTube leída y analizada",
+  "CODIGO_INSPECCIONADO": "código del autor leído (en fotogramas del vídeo o en el enlace público)"
+ },
+ "videos": [
+  {"vr": "VR-232", "id": "9eHEOAn2FOA", "url": "https://www.youtube.com/watch?v=9eHEOAn2FOA", "titulo": "My Top 5 Techniques for Web Animation", "autor": "Olivier Larose", "duracion_s": 597,
+   "estados": ["TRANSCRIPCION_ANALIZADA", "VIDEO_INSPECCIONADO"], "transcripcion": {"pista": "en:asr", "segmentos_unicos": 274, "sha256": "cf8d5214e3a5a9b9633ed0809a45392cc026e02662d9731924c5ee7a19a19dee"},
+   "fotogramas": ["2:50 (cámara del autor; el vídeo es una charla sin código)"], "codigo": "no enlazado (remite a blog.olivierlarose.com)",
+   "capitulos": {"0:41": "Scroll tracking", "1:46": "Viewport detection", "2:42": "Sticky position", "3:37": "Easing", "4:43": "Text splitting", "6:22": "Map range", "7:39": "Lerp", "8:20": "Shader"}},
+  {"vr": "VR-233", "id": "9Y2bjYQCWvE", "url": "https://www.youtube.com/watch?v=9Y2bjYQCWvE", "titulo": "This Scroll Animation Makes Every Image Reveal Feel Like Hacking (GSAP & ScrollTrigger)", "autor": "Codegrid", "duracion_s": 660, "publicado": "2026-05-20",
+   "estados": ["TRANSCRIPCION_ANALIZADA", "VIDEO_INSPECCIONADO", "CODIGO_INSPECCIONADO"], "transcripcion": {"pista": "en:asr", "segmentos_unicos": 337, "sha256": "681d6a203f4f7950b4f2aa72123f8005fb1c815c2d70cf8b2d2fa57eb0da7cf0"},
+   "fotogramas": ["0:33 resultado (imágenes apiladas)", "8:35 función de la banda de disolución (líneas 109–136)", "10:00 ScrollTrigger onUpdate (líneas 152–182)"], "codigo": "fuente completa de pago (codegrid.gumroad.com, INACCESIBLE_POR_COSTE); el código relevante se leyó en los fotogramas",
+   "capitulos": {"1:26": "HTML", "2:21": "CSS", "4:11": "JavaScript"}},
+  {"vr": "VR-234", "id": "DTTNSjyEtes", "url": "https://www.youtube.com/watch?v=DTTNSjyEtes", "titulo": "ScrollTrigger Hijacked My Video Playback (Now It Plays on Scroll)", "autor": "Codegrid", "duracion_s": 1275, "publicado": "2025-08-06",
+   "estados": ["TRANSCRIPCION_ANALIZADA", "VIDEO_INSPECCIONADO", "CODIGO_INSPECCIONADO"], "transcripcion": {"pista": "en:asr", "segmentos_unicos": 159, "sha256": "5897e1595ca202824fe676f4eac6e31fe0c775457c941d7dc997d94dc18bd0c0"},
+   "fotogramas": ["17:48 setupScrollTrigger (end +=innerHeight*7, pin, scrub: 1, progress/0.9)"], "codigo": "fuente de pago; comando de conversión TIFF→JPG publicado en la descripción",
+   "capitulos": {"1:22": "Assets", "3:47": "HTML", "5:36": "CSS", "10:47": "JavaScript"}},
+  {"vr": "VR-235", "id": "3SJIPjlSjtM", "url": "https://www.youtube.com/watch?v=3SJIPjlSjtM", "titulo": "Video exploding to particles, m-trust.co.jp with Three.js and WebGL #44", "autor": "Yuri Artiukh", "duracion_s": 4065, "publicado": "2020-11-08",
+   "estados": ["TRANSCRIPCION_ANALIZADA", "VIDEO_INSPECCIONADO", "CODIGO_INSPECCIONADO"], "transcripcion": {"pista": "en:asr", "segmentos_unicos": 458, "sha256": "88e4658aa0ca06c18410a7a9e9a536510aad19565025ea436bc5298925319906"},
+   "fotogramas": ["55:35 código: video 'ended' → GSAP opacity 0 (0,1 s), uniforms.distortion 0→3→0, bloomPass.strength 0→10→0"], "codigo": "directo en vivo; el autor no publica el código del proyecto (solo plantilla en gist)",
+   "nota": "versión de three.js de 2020 (PlaneBufferGeometry, ya fusionada en PlaneGeometry en versiones actuales)"},
+  {"vr": "VR-236", "id": "37wy90RnATM", "url": "https://www.youtube.com/watch?v=37wy90RnATM", "titulo": "New browser update lets you set things on FIRE", "autor": "Hyperplexed", "duracion_s": 460, "publicado": "2026-08-13",
+   "estados": ["TRANSCRIPCION_ANALIZADA"], "transcripcion": {"pista": "en:asr", "segmentos_unicos": 233, "sha256": "02a45ced1b06c2ee8e06d36c849050714868e25be391b5dddfb0fb5a25a14c95"},
+   "fotogramas": [], "codigo": "repo público github.com/githyperplexed/canvas-ui-experiment (no leído en este lote); API HTML-in-canvas EXPERIMENTAL"},
+  {"vr": "VR-237", "id": "z1wZp4jV4cQ", "url": "https://www.youtube.com/watch?v=z1wZp4jV4cQ", "titulo": "The Turbulent Particle Effect With Zero JS Required", "autor": "Hyperplexed", "duracion_s": 420, "publicado": "2023-04-10",
+   "estados": ["TRANSCRIPCION_ANALIZADA", "CODIGO_INSPECCIONADO"], "transcripcion": {"pista": "en:asr", "segmentos_unicos": 209, "sha256": "6d50c93812f4d63b29c505e60a00da14a0c74ab42efdbf5cb72bd0445a68a711"},
+   "fotogramas": [], "codigo": "CodePen público MWqNroM leído en el navegador (feTurbulence baseFrequency 0.7 0.8, seed 0→100, feDisplacementMap scale 0;40;0, 800 ms)"},
+  {"vr": "VR-238", "id": "YftYHkS5Dao", "url": "https://www.youtube.com/watch?v=YftYHkS5Dao", "titulo": "Introducing Flip Plugin for GSAP", "autor": "GSAP Learning (GreenSock)", "duracion_s": 1449, "publicado": "2021-01-12",
+   "estados": ["TRANSCRIPCION_ANALIZADA"], "transcripcion": {"pista": "en:asr", "segmentos_unicos": 711, "sha256": "c6779091d3eabdcbeff3eb6471d0dc50bf08df31095cbebd30d00e19d6ed62b2", "tramos_leidos": "7:20–10:00 (Flip.fit) y 12:20–17:20 (data-flip-id, intercambio, fade + absolute)"},
+   "fotogramas": [], "codigo": "Flip.js 3.15.0 del paquete npm instalado (_fit, fitChild, getVars)",
+   "capitulos": {"1:55": "How Flip works", "5:05": "scale: true", "7:20": "Flip.fit()", "9:54": "absolute: true", "12:21": "targets y data-flip-id", "13:35": "swapping targets", "17:11": "onEnter/onLeave"}},
+  {"vr": "VR-239", "id": "rwdlO3uIlwk", "url": "https://www.youtube.com/watch?v=rwdlO3uIlwk", "titulo": "ExpoScaleEase for smooth scaling and zooming | GreenSock", "autor": "GSAP Learning (GreenSock)", "duracion_s": 436, "publicado": "2018-02-26",
+   "estados": ["TRANSCRIPCION_ANALIZADA"], "transcripcion": {"pista": "en:asr", "segmentos_unicos": 179, "sha256": "9a203f7c871dfc5b2ee756b81a65c2814fa439684c397d020b9df3e895afb525"},
+   "fotogramas": [], "codigo": "EasePack.js 3.15.0 del paquete npm (ExpoScaleEase.config); la sintaxis del vídeo es de GSAP 2 (TweenMax)"}
+ ],
+ "pendientes_prioritarios": [
+  {"id": "Qq8ht-fUY64", "autor": "Codegrid", "titulo": "Choreographing a scroll animation that hides four phases inside one ScrollTrigger", "motivo": "coreografía de fases (E)"},
+  {"id": "UnaGGWV3KL4", "autor": "Yuri Artiukh", "titulo": "Smooth particle animation with GPGPU and Poisson sampling", "motivo": "partículas de alta densidad (B)"},
+  {"id": "AS1Zb26o3ss", "autor": "Yuri Artiukh", "titulo": "Shader image transition with three.js and TSL", "motivo": "transiciones de imagen con shaders (E)"},
+  {"id": "X7IBa7vZjmo", "autor": "GSAP Learning", "titulo": "Introducing ScrollTrigger for GSAP", "motivo": "fundamentos oficiales (ya cubiertos por la documentación)"},
+  {"autor": "Olivier Larose", "motivo": "tutoriales con código (mask, zoom parallax, perspective transition) ya inspeccionados por repositorio; faltan sus vídeos"}
+ ]
+}

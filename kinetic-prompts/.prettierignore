@@ -11,3 +11,5 @@ test-results/
 playwright-report/
 blob-report/
 tests/visual/
+# Generado (lista de archivos de la biblioteca no copiados)
+docs/BIBLIOTECA_OMITIDOS.md

@@ -1,0 +1,562 @@
+{
+ "url": "http://127.0.0.1:8790/receta_c_producto_fijo.html",
+ "ancho": 1440,
+ "fecha": "2026-11-01T13:36:52.664Z",
+ "navegador": "153.0.8010.12",
+ "reversibilidad": {
+  "pasos": 41,
+  "diferencia_maxima": 0,
+  "campo": "",
+  "nota": "mismas posiciones de scroll, bajando y subiendo"
+ },
+ "barrido": [
+  {
+   "p": 0,
+   "objetivo": 0,
+   "solape_linea2": 0.064,
+   "escena": 0,
+   "producto": [
+    572,
+    76,
+    820
+   ],
+   "escala": 1,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.025,
+   "objetivo": 0.025,
+   "solape_linea2": 0.064,
+   "escena": 0,
+   "producto": [
+    572,
+    75,
+    821
+   ],
+   "escala": 1.0015,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.05,
+   "objetivo": 0.05,
+   "solape_linea2": 0.063,
+   "escena": 0,
+   "producto": [
+    571,
+    75,
+    822
+   ],
+   "escala": 1.003,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.075,
+   "objetivo": 0.075,
+   "solape_linea2": 0.063,
+   "escena": 0,
+   "producto": [
+    571,
+    74,
+    824
+   ],
+   "escala": 1.0045,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.1,
+   "objetivo": 0.1,
+   "solape_linea2": 0.063,
+   "escena": 0,
+   "producto": [
+    570,
+    74,
+    825
+   ],
+   "escala": 1.006,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.125,
+   "objetivo": 0.125,
+   "solape_linea2": 0.062,
+   "escena": 0,
+   "producto": [
+    569,
+    73,
+    826
+   ],
+   "escala": 1.0075,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.15,
+   "objetivo": 0.15,
+   "solape_linea2": 0.062,
+   "escena": 0,
+   "producto": [
+    569,
+    72,
+    827
+   ],
+   "escala": 1.009,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.175,
+   "objetivo": 0.175,
+   "solape_linea2": 0.062,
+   "escena": 0,
+   "producto": [
+    568,
+    72,
+    829
+   ],
+   "escala": 1.0105,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.2,
+   "objetivo": 0.2,
+   "solape_linea2": 0.061,
+   "escena": 0,
+   "producto": [
+    567,
+    71,
+    830
+   ],
+   "escala": 1.012,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.225,
+   "objetivo": 0.225,
+   "solape_linea2": 0.061,
+   "escena": 0,
+   "producto": [
+    567,
+    70,
+    831
+   ],
+   "escala": 1.0135,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.25,
+   "objetivo": 0.25,
+   "solape_linea2": 0.061,
+   "escena": 0,
+   "producto": [
+    566,
+    70,
+    832
+   ],
+   "escala": 1.015,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.275,
+   "objetivo": 0.275,
+   "solape_linea2": 0.06,
+   "escena": 0,
+   "producto": [
+    566,
+    69,
+    834
+   ],
+   "escala": 1.0165,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.3,
+   "objetivo": 0.3,
+   "solape_linea2": 0.06,
+   "escena": 0,
+   "producto": [
+    565,
+    69,
+    835
+   ],
+   "escala": 1.018,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.325,
+   "objetivo": 0.325,
+   "solape_linea2": 0.059,
+   "escena": 0,
+   "producto": [
+    564,
+    68,
+    836
+   ],
+   "escala": 1.0195,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.35,
+   "objetivo": 0.35,
+   "solape_linea2": 0.059,
+   "escena": 0,
+   "producto": [
+    564,
+    67,
+    837
+   ],
+   "escala": 1.021,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.375,
+   "objetivo": 0.375,
+   "solape_linea2": 0.059,
+   "escena": 0,
+   "producto": [
+    563,
+    67,
+    838
+   ],
+   "escala": 1.0225,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.4,
+   "objetivo": 0.4,
+   "solape_linea2": 0.002,
+   "escena": 1,
+   "producto": [
+    563,
+    66,
+    840
+   ],
+   "escala": 1.024,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.425,
+   "objetivo": 0.425,
+   "solape_linea2": 0.003,
+   "escena": 1,
+   "producto": [
+    562,
+    66,
+    841
+   ],
+   "escala": 1.0255,
+   "ingredientes": 0.062
+  },
+  {
+   "p": 0.45,
+   "objetivo": 0.45,
+   "solape_linea2": 0.003,
+   "escena": 1,
+   "producto": [
+    561,
+    65,
+    842
+   ],
+   "escala": 1.027,
+   "ingredientes": 0.5
+  },
+  {
+   "p": 0.475,
+   "objetivo": 0.475,
+   "solape_linea2": 0.003,
+   "escena": 1,
+   "producto": [
+    561,
+    64,
+    843
+   ],
+   "escala": 1.0285,
+   "ingredientes": 0.937
+  },
+  {
+   "p": 0.5,
+   "objetivo": 0.5,
+   "solape_linea2": 0.003,
+   "escena": 1,
+   "producto": [
+    560,
+    64,
+    845
+   ],
+   "escala": 1.03,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.525,
+   "objetivo": 0.525,
+   "solape_linea2": 0.003,
+   "escena": 1,
+   "producto": [
+    559,
+    63,
+    846
+   ],
+   "escala": 1.0315,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.55,
+   "objetivo": 0.55,
+   "solape_linea2": 0.004,
+   "escena": 1,
+   "producto": [
+    559,
+    62,
+    847
+   ],
+   "escala": 1.033,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.575,
+   "objetivo": 0.575,
+   "solape_linea2": 0.004,
+   "escena": 1,
+   "producto": [
+    558,
+    62,
+    848
+   ],
+   "escala": 1.0345,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.6,
+   "objetivo": 0.6,
+   "solape_linea2": 0.004,
+   "escena": 1,
+   "producto": [
+    558,
+    61,
+    850
+   ],
+   "escala": 1.036,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.625,
+   "objetivo": 0.625,
+   "solape_linea2": 0.004,
+   "escena": 1,
+   "producto": [
+    557,
+    61,
+    851
+   ],
+   "escala": 1.0375,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.65,
+   "objetivo": 0.65,
+   "solape_linea2": 0.004,
+   "escena": 1,
+   "producto": [
+    556,
+    60,
+    852
+   ],
+   "escala": 1.039,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.675,
+   "objetivo": 0.675,
+   "solape_linea2": 0.004,
+   "escena": 1,
+   "producto": [
+    556,
+    59,
+    853
+   ],
+   "escala": 1.0405,
+   "ingredientes": 1
+  },
+  {
+   "p": 0.7,
+   "objetivo": 0.7,
+   "solape_linea2": 0.005,
+   "escena": 1,
+   "producto": [
+    555,
+    59,
+    854
+   ],
+   "escala": 1.042,
+   "ingredientes": 0.968
+  },
+  {
+   "p": 0.725,
+   "objetivo": 0.725,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    555,
+    58,
+    856
+   ],
+   "escala": 1.0435,
+   "ingredientes": 0.636
+  },
+  {
+   "p": 0.75,
+   "objetivo": 0.75,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    554,
+    58,
+    857
+   ],
+   "escala": 1.045,
+   "ingredientes": 0.108
+  },
+  {
+   "p": 0.775,
+   "objetivo": 0.775,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    553,
+    57,
+    858
+   ],
+   "escala": 1.0465,
+   "ingredientes": 0.001
+  },
+  {
+   "p": 0.8,
+   "objetivo": 0.8,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    553,
+    56,
+    859
+   ],
+   "escala": 1.048,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.825,
+   "objetivo": 0.825,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    552,
+    56,
+    861
+   ],
+   "escala": 1.0495,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.85,
+   "objetivo": 0.85,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    551,
+    55,
+    862
+   ],
+   "escala": 1.051,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.875,
+   "objetivo": 0.875,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    551,
+    54,
+    863
+   ],
+   "escala": 1.0525,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.9,
+   "objetivo": 0.9,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    550,
+    54,
+    864
+   ],
+   "escala": 1.054,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.925,
+   "objetivo": 0.925,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    550,
+    53,
+    866
+   ],
+   "escala": 1.0555,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.95,
+   "objetivo": 0.95,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    549,
+    53,
+    867
+   ],
+   "escala": 1.057,
+   "ingredientes": 0
+  },
+  {
+   "p": 0.975,
+   "objetivo": 0.975,
+   "solape_linea2": 0.024,
+   "escena": 2,
+   "producto": [
+    548,
+    52,
+    868
+   ],
+   "escala": 1.0585,
+   "ingredientes": 0
+  },
+  {
+   "p": 1,
+   "objetivo": 1,
+   "solape_linea2": 0.023,
+   "escena": 2,
+   "producto": [
+    548,
+    51,
+    869
+   ],
+   "escala": 1.06,
+   "ingredientes": 0
+  }
+ ],
+ "fotogramas": {
+  "n": 159,
+  "p50_ms": 16.7,
+  "p95_ms": 16.8,
+  "max_ms": 50,
+  "sobre_33ms": 1,
+  "nota": "contenedor sin GPU, 2 núcleos, Chromium headless: orientativo"
+ },
+ "errores": [],
+ "reduced_motion": {
+  "marcado": true,
+  "claseRm": true,
+  "sticky": "relative",
+  "alto_pagina": 1980
+ }
+}

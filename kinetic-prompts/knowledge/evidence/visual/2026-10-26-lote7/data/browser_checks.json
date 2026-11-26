@@ -1,0 +1,37 @@
+{
+  "descripcion": "Comprobaciones del estado del navegador integrado de Cowork al inicio y durante el lote 7. Método: bucle requestAnimationFrame contado durante 2 s con setTimeout; tabs_context para el estado del panel.",
+  "regla": "No se hacen mediciones temporales si rAF < 50 por segundo o el panel figura como oculto.",
+  "checks": [
+    {
+      "orden": 1,
+      "pagina": "https://blog.olivierlarose.com/demos/text-mask-animation",
+      "rafPerSec": 0.5,
+      "document_hidden": false,
+      "visibilityState": "visible",
+      "hasFocus": false,
+      "tabs_context": "The Browser pane is currently hidden."
+    },
+    {
+      "orden": 2,
+      "pagina": "idem",
+      "rafPerSec": 0.5,
+      "hasFocus": false
+    },
+    {
+      "orden": 3,
+      "pagina": "idem",
+      "rafPerSec": 0.5,
+      "hasFocus": false,
+      "t": "2026-10-26T18:36:25.487Z",
+      "tabs_context": "The Browser pane is currently hidden."
+    },
+    {
+      "orden": 4,
+      "pagina": "idem",
+      "rafPerSec": 0.5,
+      "hasFocus": false,
+      "t": "2026-10-26T18:40:03.687Z"
+    }
+  ],
+  "resultado": "Navegador limitado en las cuatro comprobaciones (inicio, mitad y final del lote) → ninguna medición temporal en el lote 7. Se avisó al usuario."
+}

@@ -1,0 +1,8 @@
+PRUEBA DE RECUPERACIÓN DE SOLO LECTURA. No escribas ni modifiques ningún archivo.
+Encargo: web profesional para una barbería de Madrid (reservas, SEO local, cookies conformes en España) con animaciones cinematográficas (GSAP, ScrollTrigger y una escena Three.js en el héroe). Todavía NO construyas nada: solo prepara el conocimiento.
+1. Invoca la Skill web-library-router con la herramienta Skill. Indica si se cargó correctamente y la carpeta real desde la que se cargó (valor resuelto de CLAUDE_SKILL_DIR).
+2. Siguiendo la Skill, resuelve la raíz de la biblioteca (LIB), lee LIB/KNOWLEDGE_INDEX.md y copia literalmente su línea "Versión ...".
+3. Lee LIB/integration/LIBRARY_MANIFEST.json completo (comprueba total_fichas) y elige EXACTAMENTE 5 fichas para este encargo (al menos 2 para la parte comercial y al menos 2 para la parte cinematográfica).
+4. Lee cada ficha con la herramienta Read y muestra: ID, ruta ABSOLUTA completa, estado y la línea ultima_revision.
+5. Para cada ficha, explica 1–2 decisiones técnicas que aplicarías, citando el número de campo de la ficha del que salen, y distingue lo documentado de lo no probado.
+6. Termina con un registro en el formato de LIB/integration/CONSULTA_BIBLIOTECA_TEMPLATE.md (secciones 1–4) dentro de tu respuesta.

@@ -1,0 +1,244 @@
+{
+ "generado_por": "integration/tools/make_trace.py",
+ "version_biblioteca": "0.16.0",
+ "zip": "WEB_ENGINEERING_KNOWLEDGE_LIBRARY_v0.16.0.zip",
+ "zip_sha256": "c7e02cd5806d177d326c785702d64eb560127fb390dba53f1a08242d814fa42a",
+ "manifiesto_sha256": "19a412a97b9ed676aec4e4c18b5ff1ed45a7dd6b17769324bd7bd07de8e1d171",
+ "evidencia_sha256": "69831571afded2b508e778d34daea84d91f05a712ef091a93fc95072e204285f",
+ "raiz_original": "/tmp/claude-0/-home-claude/4163556f-e6b7-5519-9643-7a71e30aadce/scratchpad/itest5/lib/WEB_ENGINEERING_KNOWLEDGE_LIBRARY",
+ "init": {
+  "claude_code_version": "2.1.311",
+  "model": "claude-sonnet-5-5",
+  "permissionMode": "plan",
+  "tools": [
+   "Glob",
+   "Grep",
+   "Read",
+   "Skill"
+  ],
+  "skills": [
+   "web-cinematic-site",
+   "web-commercial-site",
+   "web-library-router",
+   "web-qa-validation",
+   "deep-research",
+   "design",
+   "slides",
+   "design-sync",
+   "dataviz",
+   "artifact-diagramming",
+   "artifact-capabilities",
+   "update-config",
+   "verify",
+   "debug",
+   "code-review",
+   "simplify",
+   "batch",
+   "fewer-permission-prompts",
+   "doctor",
+   "explain-usage",
+   "setup-claude",
+   "loop",
+   "claude-api",
+   "workflow-authoring",
+   "run",
+   "run-skill-generator",
+   "plugin-authoring"
+  ]
+ },
+ "resultado": {
+  "subtype": "success",
+  "is_error": false,
+  "num_turns": 21,
+  "duration_ms": 125547,
+  "permission_denials": [],
+  "result_sha256": "b3b06dd61acc2bf8929bd4d5ddd0799e96f901d5cc07d2099710442d54864941"
+ },
+ "llamadas": [
+  {
+   "orden": 1,
+   "herramienta": "Skill",
+   "skill": "web-library-router",
+   "error": false
+  },
+  {
+   "orden": 2,
+   "herramienta": "Glob",
+   "patron": "**/*",
+   "ruta_rel": ".",
+   "fuera_de_la_biblioteca": false,
+   "error": false
+  },
+  {
+   "orden": 3,
+   "herramienta": "Read",
+   "ruta_rel": "KNOWLEDGE_INDEX.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "cad801f157d5acc27c3ae6ae17bebf13392973a53c88f4ff35bf152dc67bc783",
+   "lineas": 320,
+   "id_ficha": null,
+   "error": false
+  },
+  {
+   "orden": 4,
+   "herramienta": "Read",
+   "ruta_rel": "integration/RETRIEVAL_PROCEDURE.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "0cff305bc287f9e52f616820757ed94e9a0f855a78e5b6bd09921281cd2ba87b",
+   "lineas": 35,
+   "id_ficha": null,
+   "error": false
+  },
+  {
+   "orden": 5,
+   "herramienta": "Read",
+   "ruta_rel": "integration/LIBRARY_MANIFEST.json",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "19a412a97b9ed676aec4e4c18b5ff1ed45a7dd6b17769324bd7bd07de8e1d171",
+   "lineas": 140,
+   "id_ficha": null,
+   "error": false
+  },
+  {
+   "orden": 6,
+   "herramienta": "Read",
+   "ruta_rel": "architecture/ARCH-001-receta-pagina-completa.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "d4c8429414b0ae668f3d5991046efacf4a68da98db5e773eea2787eb33ae4e6a",
+   "lineas": 56,
+   "id_ficha": "ARCH-001",
+   "error": false
+  },
+  {
+   "orden": 7,
+   "herramienta": "Read",
+   "ruta_rel": "integration/CONSULTA_BIBLIOTECA_TEMPLATE.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "3afebbb9c3e0bb3bdac4d8cd72315aba2bc1469b73e0ffe89f7d4b5feb2d16e2",
+   "lineas": 33,
+   "id_ficha": null,
+   "error": false
+  },
+  {
+   "orden": 8,
+   "herramienta": "Read",
+   "ruta_rel": "ux/UX-002-pagina-de-inicio-de-negocio.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "02c5aa89a033be272073991cc5a0f00da1fc01596549e8d2824067ad3f0f1c65",
+   "lineas": 34,
+   "id_ficha": "UX-002",
+   "error": false
+  },
+  {
+   "orden": 9,
+   "herramienta": "Read",
+   "ruta_rel": "seo/SEO-002-metadata-nextjs-y-datos-estructurados.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "8b89622cf5195e513464e89e8a989f87b9817a1a36f307be83b3c346ccf0e001",
+   "lineas": 26,
+   "id_ficha": "SEO-002",
+   "error": false
+  },
+  {
+   "orden": 10,
+   "herramienta": "Read",
+   "ruta_rel": "seo/SEO-003-seo-local-perfil-de-empresa.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "9a2f958ee1048c39bc507eb5996c866dc176cf57b16fe827ea72f38964eca4c3",
+   "lineas": 34,
+   "id_ficha": "SEO-003",
+   "error": false
+  },
+  {
+   "orden": 11,
+   "herramienta": "Read",
+   "ruta_rel": "accessibility/A11Y-001-reduced-motion.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "6877d3ac65833b3fbccdf5f332ee6e2e396b5096dc0fcec83386be47a2e9fe39",
+   "lineas": 48,
+   "id_ficha": "A11Y-001",
+   "error": false
+  },
+  {
+   "orden": 12,
+   "herramienta": "Read",
+   "ruta_rel": "scrolltrigger/ST-001-fundamentos-scrolltrigger.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "b279eda7da3ee9eba741977e0793a11d42a0fa22381e0637de5bda9458d45693",
+   "lineas": 38,
+   "id_ficha": "ST-001",
+   "error": false
+  },
+  {
+   "orden": 13,
+   "herramienta": "Read",
+   "ruta_rel": "lenis/LN-001-lenis-scrolltrigger.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "3f719f308f57cfd5418cb84e1a05d35caa05f67df84c5ed9286b8098be271576",
+   "lineas": 41,
+   "id_ficha": "LN-001",
+   "error": false
+  },
+  {
+   "orden": 14,
+   "herramienta": "Read",
+   "ruta_rel": "frontend/FORM-001-formularios-validacion.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "cdd9b1a0bf7fe566fad73637b1c34dd87922e5cdbca5d173e254ca415e2ac310",
+   "lineas": 46,
+   "id_ficha": "FORM-001",
+   "error": false
+  },
+  {
+   "orden": 15,
+   "herramienta": "Read",
+   "ruta_rel": "performance/PERF-001-core-web-vitals-y-animacion.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "5de716032347eda100a828492a5a78447254528ff6f6835fb13fadb3fde45f13",
+   "lineas": 43,
+   "id_ficha": "PERF-001",
+   "error": false
+  },
+  {
+   "orden": 16,
+   "herramienta": "Read",
+   "ruta_rel": "threejs/WGPU-001-webgpu-vs-webgl-y-degradacion.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "c2b18b8e34489a9694802a72f53484a679244c7c01d539fa6789668ff38dcc6e",
+   "lineas": 44,
+   "id_ficha": "WGPU-001",
+   "error": false
+  },
+  {
+   "orden": 17,
+   "herramienta": "Read",
+   "ruta_rel": "css/CSS-001-scroll-driven-animations.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "621bca80f05a8e67b0b9f9e5a0bf71234f72e70d715905c1562f1c9d8de8a03c",
+   "lineas": 28,
+   "id_ficha": "CSS-001",
+   "error": false
+  },
+  {
+   "orden": 18,
+   "herramienta": "Read",
+   "ruta_rel": "architecture/NEXT-002-app-router-proyecto-completo-y-errores.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "12d417dc45a81e19260f9f891867385134cb170d68101707ec2a7fa378654ab3",
+   "lineas": 43,
+   "id_ficha": "NEXT-002",
+   "error": false
+  },
+  {
+   "orden": 19,
+   "herramienta": "Read",
+   "ruta_rel": "security/SEC-002-validacion-entradas-servidor.md",
+   "fuera_de_la_biblioteca": false,
+   "sha256": "be4e533f3afcab4382ce9c11c3d07a424e8953816481820bd286a3c36ff78880",
+   "lineas": 21,
+   "id_ficha": "SEC-002",
+   "error": false
+  }
+ ],
+ "nota": "Para re-verificar: descomprimir el mismo ZIP (mismo sha256) y usar verify_test_evidence.py --remap <raiz_original>=<nueva_raiz>."
+}

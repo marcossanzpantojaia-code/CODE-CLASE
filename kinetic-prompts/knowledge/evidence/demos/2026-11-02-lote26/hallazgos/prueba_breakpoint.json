@@ -1,0 +1,128 @@
+{
+ "motor=nativo": [
+  {
+   "w": 1440,
+   "scrollY": 2430,
+   "p": 0.7
+  },
+  {
+   "w": 1400,
+   "scrollY": 2430,
+   "p": 0.7
+  },
+  {
+   "w": 375,
+   "scrollY": 2430,
+   "p": 0.7
+  },
+  {
+   "w": 1440,
+   "scrollY": 2430,
+   "p": 0.7
+  }
+ ],
+ "motor=gsap&sinMovil=1": [
+  {
+   "w": 1440,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  },
+  {
+   "w": 1400,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  },
+  {
+   "w": 375,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  },
+  {
+   "w": 1440,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  }
+ ],
+ "motor=gsap&sinRestaurarScroll=1": [
+  {
+   "w": 1440,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  },
+  {
+   "w": 1400,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  },
+  {
+   "w": 375,
+   "scrollY": 0,
+   "p": 0,
+   "construcciones": 2
+  },
+  {
+   "w": 1440,
+   "scrollY": 0,
+   "p": 0,
+   "construcciones": 3
+  }
+ ],
+ "motor=gsap": [
+  {
+   "w": 1440,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  },
+  {
+   "w": 1400,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  },
+  {
+   "w": 375,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 2
+  },
+  {
+   "w": 1440,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 3
+  }
+ ],
+ "motor=gsap&pin=1": [
+  {
+   "w": 1440,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  },
+  {
+   "w": 1400,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 1
+  },
+  {
+   "w": 375,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 2
+  },
+  {
+   "w": 1440,
+   "scrollY": 2430,
+   "p": 0.7,
+   "construcciones": 3
+  }
+ ]
+}

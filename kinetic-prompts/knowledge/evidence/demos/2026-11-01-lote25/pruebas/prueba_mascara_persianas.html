@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prueba — máscara SVG de persianas (costuras)</title>
+<!-- Lote 25. Reproduce el patrón "Horizontal Blinds" descrito para el tutorial de Codrops de H. Watanabe (2026-03-11), leído en resúmenes
+     secundarios: viewBox 0..100, rects en una <mask>, apertura desde el centro, crispEdges y solape. Escena A = azul puro (#0000ff)
+     para detectar FUGAS (costuras) cuando B debería cubrirlo todo. Parámetros: ?crisp=0|1 &solape=0..0.2 &tiras=30 -->
+<style>* { margin:0 } html,body { height:100% } body { background:#0000ff } svg { position:fixed; inset:0; width:100vw; height:100vh; display:block }</style>
+</head><body>
+<svg id="s" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  <defs><mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100"><g id="tiras" fill="#fff"></g></mask></defs>
+  <g mask="url(#m)"><rect width="100" height="100" fill="#efe6d6"/><image href="producto_ok.png" x="20" y="5" width="60" height="90" preserveAspectRatio="xMidYMid meet"/></g>
+</svg>
+<script>
+const q = new URLSearchParams(location.search), N = +(q.get('tiras') || 30), crisp = q.get('crisp') === '1', solape = +(q.get('solape') || 0);
+const g = document.getElementById('tiras'); if (crisp) g.setAttribute('shape-rendering', 'crispEdges');
+const h = 100 / N, rects = Array.from({ length: N }, (_, i) => { const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  r.setAttribute('x', 0); r.setAttribute('width', 100); g.append(r); return { r, c: (i + .5) * h, i }; });
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+window.pon = p => { // apertura desde el centro de la pantalla hacia fuera, escalonada (como el patrón descrito)
+  rects.forEach(({ r, c, i }) => { const dist = Math.abs(i - (N - 1) / 2) / (N / 2); const t = ease(Math.min(1, Math.max(0, (p - dist * .4) / .6)));
+    const hh = h * t + (t > 0 ? solape : 0); r.setAttribute('y', c - hh / 2); r.setAttribute('height', hh); });
+  window.__estado = { p }; };
+pon(+(q.get('p') || 1));
+</script></body></html>

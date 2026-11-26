@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receta B — transformación por partículas (microdemo)</title>
+<!-- Microdemo de MECÁNICA (C2). Las partículas hacen de PUENTE entre dos imágenes: nacen exactamente en los píxeles
+     de la imagen A y aterrizan en los de la imagen B, con fundido cruzado en los extremos. Posición = función pura de p
+     (reversible). Imagen A procedural; imagen B = producto_ok.png (procedural). No fotorrealista: no evaluable en C1/C3. -->
+<style>
+  * { box-sizing:border-box; margin:0 }
+  body { background:#140d08; color:#efe2cc; font-family: Georgia, serif }
+  .intro, .fin { height:60vh; display:grid; place-items:center; font:16px system-ui; color:#9c8b7a }
+  #acto { height:400vh; position:relative }
+  .escenario { position:sticky; top:0; height:100vh; overflow:hidden }
+  canvas { position:absolute; inset:0; width:100%; height:100%; z-index:2 }
+  .titulo { position:absolute; left:6vw; bottom:12vh; z-index:3 }
+  .titulo h2 { font-size:clamp(40px,7vw,112px); line-height:.95; font-weight:600 }
+  .titulo p { font:600 12px system-ui; letter-spacing:.16em; text-transform:uppercase; color:#d6a46a; margin-bottom:12px }
+  .titulo.b { opacity:0 }
+  .rm #acto { height:auto } .rm .escenario { position:relative } .rm .titulo.b { opacity:1; position:relative; left:6vw; bottom:auto; padding:6vh 0 }
+  .rm canvas { position:relative; height:100vh }
+</style>
+</head>
+<body>
+<div class="intro">↓ Desliza (microdemo de partículas)</div>
+<section id="acto" aria-label="De la gota a la extracción">
+  <div class="escenario">
+    <canvas id="lienzo" aria-hidden="true"></canvas>
+    <div class="titulo a"><p>Sección 01 — La gota</p><h2>Oro en cada gota.</h2></div>
+    <div class="titulo b"><p>Sección 02 — La extracción</p><h2>La extracción.</h2></div>
+  </div>
+</section>
+<div class="fin">Fin del tramo</div>
+<script type="module">
+import { montar, muestra, ease, clamp, lerp } from './escena.js';
+const cv = document.getElementById('lienzo'), ctx = cv.getContext('2d');
+const N = +(new URLSearchParams(location.search).get('n') || 6000);
+const ta = document.querySelector('.titulo.a'), tb = document.querySelector('.titulo.b');
+let W, H, dpr, A, B, imgA, imgB, P = [];
+const fotoB = new Image(); fotoB.src = 'producto_ok.png';
+
+function dibujaGota(c, w, h) {                // imagen A procedural (sustituible por un render con alfa)
+  const g = c.getContext('2d'), cx = w * .62, cy = h * .45, r = Math.min(w, h) * .2;
+  const grad = g.createRadialGradient(cx - r * .3, cy, r * .1, cx, cy + r * .2, r * 1.2);
+  grad.addColorStop(0, '#ffd27a'); grad.addColorStop(.5, '#c47a22'); grad.addColorStop(1, '#5a2a0a');
+  g.fillStyle = grad; g.beginPath(); g.moveTo(cx, cy - r * 1.6);
+  g.bezierCurveTo(cx + r * .9, cy - r * .4, cx + r, cy + r * .9, cx, cy + r);
+  g.bezierCurveTo(cx - r, cy + r * .9, cx - r * .9, cy - r * .4, cx, cy - r * 1.6); g.fill();
+  g.fillStyle = 'rgba(255,255,255,.55)'; g.beginPath(); g.ellipse(cx - r * .35, cy - r * .1, r * .08, r * .3, -.4, 0, 7); g.fill();
+}
+function muestrea(c, n) {                      // n puntos donde alfa > 0,5, con su color
+  const g = c.getContext('2d'), { width: w, height: h } = c, d = g.getImageData(0, 0, w, h).data, pts = [];
+  const paso = Math.max(1, Math.floor(Math.sqrt((w * h) / (n * 6))));
+  for (let y = 0; y < h; y += paso) for (let x = 0; x < w; x += paso) { const i = (y * w + x) * 4; if (d[i + 3] > 128) pts.push([x, y, d[i], d[i + 1], d[i + 2]]); }
+  for (let i = pts.length - 1; i > 0; i--) { const j = (Math.sin(i * 12.9898) * 43758.5453 % 1 + 1) % 1 * (i + 1) | 0; [pts[i], pts[j]] = [pts[j], pts[i]]; } // barajado determinista
+  return pts.slice(0, n);
+}
+function prepara() {
+  dpr = Math.min(devicePixelRatio, 2); W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr;
+  imgA = Object.assign(document.createElement('canvas'), { width: W, height: H }); dibujaGota(imgA, W, H);
+  imgB = Object.assign(document.createElement('canvas'), { width: W, height: H });
+  const s = Math.min(W, H) * .8 / fotoB.width; imgB.getContext('2d').drawImage(fotoB, W * .6 - fotoB.width * s / 2, H * .5 - fotoB.height * s / 2, fotoB.width * s, fotoB.height * s);
+  A = muestrea(imgA, N); B = muestrea(imgB, N);
+  const cx = W * .6, cy = H * .5, ang = q => Math.atan2(q[1] - cy, q[0] - cx);
+  A.sort((p, q) => ang(p) - ang(q)); B.sort((p, q) => ang(p) - ang(q));      // emparejar por ángulo → remolino coherente
+  P = A.map((a, i) => { const b = B[i % B.length]; const dist = Math.hypot(a[0] - cx, a[1] - cy) / (Math.min(W, H) * .4);
+    return { a, b, d: clamp(dist) * .25, giro: (i % 7 - 3) * .35, r: (40 + (i * 37) % 120) * dpr }; });
+}
+fotoB.onload = () => { prepara(); addEventListener('resize', prepara);
+  montar(document.getElementById('acto'), (p, est) => {
+    ctx.clearRect(0, 0, W, H);
+    const fa = muestra([[0, 1], [.15, 1], [.22, 0], [1, 0]], p), fb = muestra([[0, 0], [.78, 0], [.86, 1], [1, 1]], p);
+    const tp = clamp((p - .15) / .7);                            // tramo de viaje de las partículas
+    if (fa > 0) { ctx.globalAlpha = fa; ctx.drawImage(imgA, 0, 0); }
+    const vis = muestra([[0, 0], [.14, 0], [.2, 1], [.8, 1], [.87, 0], [1, 0]], p, ease.none);
+    if (vis > 0) {
+      ctx.globalAlpha = vis; const cx = W * .6, cy = H * .5;
+      for (const q of P) {
+        const t = ease.inOut(clamp((tp - q.d) / (1 - q.d * .9)));   // retardo por distancia al centro (se dispersa desde dentro)
+        const bell = Math.sin(Math.PI * t);                           // desvío máximo a mitad de viaje
+        let x = lerp(q.a[0], q.b[0], t), y = lerp(q.a[1], q.b[1], t);
+        const an = Math.atan2(y - cy, x - cx) + q.giro * bell;        // remolino alrededor del centro
+        x += Math.cos(an) * q.r * bell; y += Math.sin(an) * q.r * bell * .6;
+        ctx.fillStyle = `rgb(${lerp(q.a[2], q.b[2], t) | 0},${lerp(q.a[3], q.b[3], t) | 0},${lerp(q.a[4], q.b[4], t) | 0})`;
+        ctx.fillRect(x, y, 2 * dpr, 2 * dpr);
+      }
+    }
+    if (fb > 0) { ctx.globalAlpha = fb; ctx.drawImage(imgB, 0, 0); }
+    ctx.globalAlpha = 1;
+    ta.style.opacity = muestra([[0, 1], [.3, 1], [.42, 0], [1, 0]], p); ta.style.transform = `translateY(${muestra([[0, 0], [.3, 0], [.42, -30], [1, -30]], p)}px)`;
+    tb.style.opacity = muestra([[0, 0], [.6, 0], [.72, 1], [1, 1]], p); tb.style.transform = `translateY(${muestra([[0, 30], [.6, 30], [.72, 0], [1, 0]], p)}px)`;
+    Object.assign(est, { n: P.length, imagenA: +fa.toFixed(3), particulas: +vis.toFixed(3), imagenB: +fb.toFixed(3), viaje: +tp.toFixed(3) });
+  });
+};
+</script>
+</body>
+</html>

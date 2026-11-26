@@ -1,0 +1,10 @@
+Baseline /tmp/claude-0/-home-claude/4163556f-e6b7-5519-9643-7a71e30aadce/scratchpad/base015/WEB_ENGINEERING_KNOWLEDGE_LIBRARY: 128 fichas, 157 VR comprobados
+Fichas: 129 · TUT: 43 · VR: 167 · errores: 0 · avisos: 0
+OK    correcto → SUPERA (esperado: SUPERA)
+OK    atribucion_sin_leer → NO SUPERA (esperado: NO SUPERA)
+OK    lectura_parcial → NO SUPERA (esperado: NO SUPERA)
+OK    lectura_con_error → NO SUPERA (esperado: NO SUPERA)
+OK    sin_ruta_absoluta → NO SUPERA (esperado: NO SUPERA)
+OK    sin_manifiesto → NO SUPERA (esperado: NO SUPERA)
+OK    sin_registro → NO SUPERA (esperado: NO SUPERA)
+AUTOPRUEBA: correcta

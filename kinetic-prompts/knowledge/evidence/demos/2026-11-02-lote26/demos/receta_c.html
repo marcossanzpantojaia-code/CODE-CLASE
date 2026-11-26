@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receta C — producto fijo, entorno cambiante (lote 26: nativo | GSAP 3.15.0)</title>
+<!-- Microdemo de MECÁNICA y COMPOSICIÓN (C2 + capas). Producto procedural (producto_ok.png): no fotorrealista.
+     El titular queda ENHEBRADO en el plato: detrás del borde frontal y delante del posterior (dos copias de la misma imagen,
+     la delantera recortada con clip-path). Ingredientes en 3 planos con velocidad, escala y desenfoque por profundidad.
+     Lote 26: ?motor=nativo|gsap (GSAP 3.15.0 por defecto), ?pin=1, ?scrub=<s>. Correcciones AUD-001: plato procedural
+     CON VOLUMEN (producto_c.png, genera_plato.py), SOMBRA DE CONTACTO en su capa y sombras de los ingredientes con la misma
+     luz clave (arriba-izquierda). Sigue sin ser fotorrealista. -->
+<style>
+  :root { --crema:#efe6d6; --granate:#7e2a1d; --tinta:#231a14 }
+  * { box-sizing:border-box; margin:0 }
+  body { background:var(--crema); color:var(--tinta); font-family: Georgia, serif }
+  .intro, .fin { height:60vh; display:grid; place-items:center; font:16px system-ui; color:#6d625a }
+  #acto { height:420vh; position:relative }
+  .escenario { position:sticky; top:0; height:100vh; overflow:hidden; isolation:isolate }
+  .panel { position:absolute; inset:0 0 0 52%; background:var(--granate); z-index:0 }
+  /* GSAP absorbe la propiedad CSS `translate` del elemento que anima (hallazgo lote 26): el centrado va en capas contenedoras */
+  .capa-fantasma { position:absolute; inset:0 0 8% 0; display:grid; place-items:center; z-index:1; pointer-events:none }
+  .fantasma { font-size:30vw; font-weight:700; color:rgb(35 26 20 / .05); white-space:nowrap }
+  .capa { position:absolute; left:50%; top:54%; width:min(58vw,820px); aspect-ratio:1; translate:-18% -50%; pointer-events:none }
+  .prod { display:block; width:100%; will-change:transform }
+  .c-tras { z-index:2 }
+  /* Regla de legibilidad: el borde delantero solo puede cubrir una franja baja de las letras (≤ 15 % del área de la línea). */
+  .c-delante { z-index:4 } .delante { clip-path: inset(66% 0 0 0) }          /* solo el borde frontal del plato pasa por delante del titular */
+  .titular { position:absolute; left:6vw; top:44%; z-index:3; font-size:clamp(48px,9.5vw,150px); line-height:.9; font-weight:700; white-space:nowrap }
+  .titular .linea { display:block; overflow:hidden } .titular .linea > span { display:block }
+  .bajada { position:absolute; left:6vw; top:20vh; z-index:5; font:600 12px system-ui; letter-spacing:.16em; text-transform:uppercase }
+  .c-sombra { z-index:2; mix-blend-mode:multiply } .sombra { position:relative; width:100%; aspect-ratio:1 }
+  .sombra::before { content:""; position:absolute; left:15%; right:12%; top:61%; height:9%; border-radius:50%;
+            background:radial-gradient(closest-side, rgb(40 20 10 / .55), rgb(40 20 10 / .25) 55%, transparent); filter:blur(6px) }
+  .sombra::after { content:""; position:absolute; left:20%; right:16%; top:62.5%; height:4%; border-radius:50%;
+            background:radial-gradient(closest-side, rgb(20 10 5 / .6), transparent); filter:blur(2px) }   /* oclusión de contacto */
+  .ing { position:absolute; left:0; top:0; width:44px; height:44px; border-radius:50%; z-index:3; will-change:transform }
+  .rm #acto { height:auto } .rm .escenario { position:relative; height:100vh } .rm .ing { display:none }
+  .modo-pin #acto { height:auto } .modo-pin .escenario { position:relative }
+  @media (max-width:700px) { .capa { width:96vw; translate:-50% -50%; top:60% } .titular { top:34%; font-size:15vw } .panel { inset:55% 0 0 0 } }
+</style>
+</head>
+<body>
+<div class="intro">↓ Desliza (microdemo de producto fijo)</div>
+<section id="acto" aria-label="Rosso, un poco de todo">
+  <div class="escenario">
+    <div class="panel"></div>
+    <div class="capa-fantasma"><span class="fantasma" aria-hidden="true">ROSSO</span></div>
+    <p class="bajada" id="bajada">Sección 01</p>
+    <div class="capa c-sombra"><div class="sombra" id="sombra" aria-hidden="true"></div></div>
+    <div class="capa c-tras"><img class="prod tras" id="tras" alt="" aria-hidden="true"></div>
+    <h2 class="titular" id="titular"><span class="linea"><span id="tit">Amor al</span></span><span class="linea"><span id="tit2">primer giro.</span></span></h2>
+    <div class="capa c-delante"><img class="prod delante" id="delante" alt="Plato de pasta (recurso de prueba)"></div>
+  </div>
+</section>
+<div class="fin">Fin del tramo</div>
+<script type="module">
+import { muestra, ease, clamp } from './escena.js';
+import { arrancar } from './arranque.js';
+const tras = document.getElementById('tras'), del = document.getElementById('delante'), sombra = document.getElementById('sombra');
+tras.src = del.src = 'producto_c.png';
+const escenario = document.querySelector('.escenario'), panel = document.querySelector('.panel'), fant = document.querySelector('.fantasma'), bajada = document.getElementById('bajada');
+const t1 = document.getElementById('tit'), t2 = document.getElementById('tit2');
+const textos = [['Amor al', 'primer giro.', 'Sección 01'], ['Un poco', 'de todo.', 'Sección 02'], ['Tu mesa', 'te espera.', 'Sección 03']];
+const ING = [['#c8321e',2],['#3f7a2a',0],['#e08a3c',1],['#c8321e',0],['#3f7a2a',2],['#e08a3c',1],['#c8321e',1],['#3f7a2a',1],['#e08a3c',2]];
+// planos: escala, velocidad angular, desenfoque y SOMBRA proyectada coherente con la luz clave arriba-izquierda (más lejos del
+// fondo = sombra más desplazada y difusa)
+const PLANO = [{ esc: .55, vel: .6, blur: 2.5, sombra: '3px 4px 4px rgb(40 20 10 / .25)' },
+               { esc: .85, vel: 1, blur: 0, sombra: '6px 9px 8px rgb(40 20 10 / .30)' },
+               { esc: 1.35, vel: 1.6, blur: 0, sombra: '12px 18px 14px rgb(40 20 10 / .32)' }];
+const els = ING.map(([c, z], i) => { const d = document.createElement('div'); d.className = 'ing';
+  d.style.background = `radial-gradient(circle at 32% 28%, #fffc 0 7%, #fff5 12%, ${c} 38%, color-mix(in srgb, ${c} 55%, #000) 88%, #0008 100%)`;
+  d.style.zIndex = z === 2 ? 5 : z === 1 ? 3 : 1;
+  d.style.filter = `${PLANO[z].blur ? `blur(${PLANO[z].blur}px) ` : ''}drop-shadow(${PLANO[z].sombra})`; escenario.append(d); return { d, z, i }; });
+let escena = -1;
+const L = [[0,0],[.33,0],[.38,110],[.43,0],[.67,0],[.72,110],[.77,0],[1,0]];            // salida y entrada enmascaradas (lineal)
+const L2 = [[0,0],[.33,0],[.33 + .05 / 1.1,110],[.43 - .05 / 1.1,110],[.43,0],[.67,0],[.67 + .05 / 1.1,110],[.77 - .05 / 1.1,110],[.77,0],[1,0]];
+const receta = {
+  recorrido: 3.2,                                                        // 420vh − 100vh
+  pistas: () => [
+    // producto FIJO con un leve dolly; la sombra escala con él (misma capa de referencia)
+    ...[tras, del, sombra].map(el => ({ el, keys: [[0,1],[1,1.06]], ease: ease.none, gsap: { prop: 'scale' } })),
+    { el: panel, keys: [[0,0],[.18,0],[.34,100],[1,100]], gsap: { prop: 'clipPath', conv: v => `inset(0% 0% ${v}% 0%)` } },
+    { el: fant, keys: [[0,4],[1,-4]], ease: ease.none, gsap: { prop: 'x', conv: v => () => v * innerWidth / 100 } },
+    { el: t1, keys: L, ease: ease.none, gsap: { prop: 'yPercent' } },
+    { el: t2, keys: L2, ease: ease.none, gsap: { prop: 'yPercent' } },
+  ],
+  limpiar() { els.forEach(({ d }) => { d.style.transform = ''; d.style.opacity = ''; }); },
+  // lo que no es un tween: cambio de texto (discreto), órbitas de ingredientes alrededor del producto medido y solape
+  actualizar(p, est) {
+    const k = p < .38 ? 0 : p < .72 ? 1 : 2;
+    if (k !== escena) { [t1.textContent, t2.textContent, bajada.textContent] = textos[k]; escena = k; }
+    const E = escenario.getBoundingClientRect(), r0 = tras.getBoundingClientRect();
+    const rect = { left: r0.left - E.left, top: r0.top - E.top, width: r0.width, height: r0.height, bottom: r0.bottom - E.top, right: r0.right - E.left };
+    const cx = rect.left + rect.width / 2, cy = rect.top + rect.height / 2;
+    const aparic = muestra([[0, 0], [.4, 0], [.5, 1], [.68, 1], [.78, 0], [1, 0]], p);
+    // Defecto visto en la hoja de estados (375 px): los ingredientes del primer plano tapaban el titular. Regla de
+    // legibilidad: un ingrediente que se superpone al titular se atenúa EN PROPORCIÓN al área solapada (sin saltos).
+    const T0 = document.getElementById('titular').getBoundingClientRect();
+    const T = { l: T0.left - E.left, r: T0.right - E.left, t: T0.top - E.top, b: T0.bottom - E.top };
+    els.forEach(({ d, z, i }) => {
+      const pl = PLANO[z], ang = i / els.length * Math.PI * 2 + p * Math.PI * 2 * pl.vel;
+      const rx = rect.width * (.45 + z * .08), ry = rect.height * (.22 + z * .05);
+      const x = cx + Math.cos(ang) * rx * aparic - 22, yy = cy + Math.sin(ang) * ry * aparic - 22;
+      const esc = pl.esc * (0.3 + .7 * aparic), lado = 44 * esc, x0 = x + 22 - lado / 2, y0 = yy + 22 - lado / 2;
+      const sol = z === 0 ? 0 : Math.max(0, Math.min(T.r, x0 + lado) - Math.max(T.l, x0)) * Math.max(0, Math.min(T.b, y0 + lado) - Math.max(T.t, y0)) / (lado * lado);
+      d.style.transform = `translate(${x.toFixed(2)}px, ${yy.toFixed(2)}px) scale(${esc.toFixed(4)})`; d.style.opacity = (aparic * (1 - Math.min(1, sol * 2.5))).toFixed(4);   // 40 % de solape → transparente
+    });
+    const l2r = t2.parentElement.getBoundingClientRect(), l2 = { left: l2r.left - E.left, right: l2r.right - E.left, top: l2r.top - E.top, bottom: l2r.bottom - E.top };
+    const fr = { top: rect.top + rect.height * .66, bottom: rect.bottom, left: rect.left, right: rect.right };
+    const ix = Math.max(0, Math.min(l2.right, fr.right) - Math.max(l2.left, fr.left)), iy = Math.max(0, Math.min(l2.bottom, fr.bottom) - Math.max(l2.top, fr.top));
+    est.solape_linea2 = +(ix * iy / (l2r.width * l2r.height)).toFixed(3);
+    Object.assign(est, { escena: k, producto: [Math.round(rect.left), Math.round(rect.top), Math.round(rect.width)], ingredientes: +aparic.toFixed(3) });
+  },
+};
+arrancar(document.getElementById('acto'), receta).catch(e => { console.error(e); window.__error = String(e); });
+</script>
+</body>
+</html>

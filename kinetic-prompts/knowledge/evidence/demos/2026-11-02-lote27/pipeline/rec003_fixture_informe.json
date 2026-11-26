@@ -1,0 +1,368 @@
+{
+ "recursos": {
+  "heroe": {
+   "archivo": "I1_heroe_tenedor.png",
+   "ancho": 1024,
+   "alto": 1536,
+   "modo": "RGBA",
+   "tiene_alfa": true,
+   "memoria_decodificada_MB": 6.0,
+   "peso_KB": 13.1,
+   "alfa_util": true,
+   "caja": [
+    200,
+    80,
+    824,
+    1456
+   ],
+   "margenes_px": {
+    "izq": 200,
+    "der": 199,
+    "arr": 80,
+    "aba": 79
+   },
+   "objeto_toca_el_borde": false,
+   "area_objeto_pct": 54.5,
+   "borde": {
+    "franja_px": 0
+   },
+   "luz": {
+    "vector": [
+     0.0,
+     -1.0
+    ],
+    "angulo_grados": 89.9,
+    "lado": "arriba"
+   },
+   "color": {
+    "L_media": 60.2,
+    "a_media": 0.0,
+    "b_media": 0.0,
+    "L_zona_alta_p99_9": 62.0,
+    "saturacion_zona_alta_p99_9": 0.0
+   },
+   "elipse": {
+    "cx": 512.0,
+    "cy": 768.0,
+    "semieje_mayor": 848.3,
+    "semieje_menor": 352.2,
+    "angulo": 0.0,
+    "b_sobre_a": 0.415,
+    "elevacion_camara_grados": 24.5
+   },
+   "borde_tras_descontaminar": {
+    "franja_px": 0
+   }
+  },
+  "producto": {
+   "archivo": "I2_plato.png",
+   "ancho": 900,
+   "alto": 900,
+   "modo": "RGB",
+   "tiene_alfa": false,
+   "memoria_decodificada_MB": 3.1,
+   "peso_KB": 118.4,
+   "alfa_util": false,
+   "fondo": {
+    "color_medio": [
+     38,
+     38,
+     40
+    ],
+    "desviacion": 0.0,
+    "apto_para_llave": true
+   },
+   "nota": "medidas sobre un recorte provisional por llave de diferencia",
+   "caja": [
+    120,
+    300,
+    779,
+    579
+   ],
+   "margenes_px": {
+    "izq": 120,
+    "der": 120,
+    "arr": 300,
+    "aba": 320
+   },
+   "objeto_toca_el_borde": false,
+   "area_objeto_pct": 17.9,
+   "borde": {
+    "franja_px": 6763,
+    "luminancia_franja_menos_interior": -51.8,
+    "veredicto": "halo OSCURO"
+   },
+   "luz": {
+    "vector": [
+     -0.88,
+     -0.47
+    ],
+    "angulo_grados": 152.1,
+    "lado": "arriba-izquierda"
+   },
+   "color": {
+    "L_media": 54.9,
+    "a_media": 9.4,
+    "b_media": 13.2,
+    "L_zona_alta_p99_9": 98.0,
+    "saturacion_zona_alta_p99_9": 1.0
+   },
+   "elipse": {
+    "cx": 449.7,
+    "cy": 439.7,
+    "semieje_mayor": 330.0,
+    "semieje_menor": 139.8,
+    "angulo": 90.0,
+    "b_sobre_a": 0.424,
+    "elevacion_camara_grados": 25.1
+   },
+   "borde_tras_descontaminar": {
+    "franja_px": 6763,
+    "luminancia_franja_menos_interior": -7.7,
+    "veredicto": "sin halo apreciable"
+   }
+  },
+  "ing_tomate": {
+   "archivo": "I3_tomate.png",
+   "ancho": 400,
+   "alto": 400,
+   "modo": "RGBA",
+   "tiene_alfa": true,
+   "memoria_decodificada_MB": 0.6,
+   "peso_KB": 40.8,
+   "alfa_util": true,
+   "caja": [
+    22,
+    22,
+    378,
+    378
+   ],
+   "margenes_px": {
+    "izq": 22,
+    "der": 21,
+    "arr": 22,
+    "aba": 21
+   },
+   "objeto_toca_el_borde": false,
+   "area_objeto_pct": 62.9,
+   "borde": {
+    "franja_px": 1792,
+    "luminancia_franja_menos_interior": -0.7,
+    "veredicto": "sin halo apreciable"
+   },
+   "luz": {
+    "vector": [
+     -0.71,
+     -0.71
+    ],
+    "angulo_grados": 135.0,
+    "lado": "arriba-izquierda"
+   },
+   "color": {
+    "L_media": 26.6,
+    "a_media": 37.9,
+    "b_media": 29.5,
+    "L_zona_alta_p99_9": 45.1,
+    "saturacion_zona_alta_p99_9": 0.867
+   },
+   "elipse": {
+    "cx": 200.0,
+    "cy": 200.0,
+    "semieje_mayor": 178.5,
+    "semieje_menor": 178.5,
+    "angulo": 0.0,
+    "b_sobre_a": 1.0,
+    "elevacion_camara_grados": 90.0
+   },
+   "borde_tras_descontaminar": {
+    "franja_px": 1792,
+    "luminancia_franja_menos_interior": -0.5,
+    "veredicto": "sin halo apreciable"
+   }
+  },
+  "ing_albahaca": {
+   "archivo": "I3_albahaca.png",
+   "ancho": 400,
+   "alto": 400,
+   "modo": "RGBA",
+   "tiene_alfa": true,
+   "memoria_decodificada_MB": 0.6,
+   "peso_KB": 40.8,
+   "alfa_util": true,
+   "caja": [
+    22,
+    22,
+    378,
+    378
+   ],
+   "margenes_px": {
+    "izq": 22,
+    "der": 21,
+    "arr": 22,
+    "aba": 21
+   },
+   "objeto_toca_el_borde": false,
+   "area_objeto_pct": 62.9,
+   "borde": {
+    "franja_px": 1792,
+    "luminancia_franja_menos_interior": -0.7,
+    "veredicto": "sin halo apreciable"
+   },
+   "luz": {
+    "vector": [
+     -0.71,
+     -0.71
+    ],
+    "angulo_grados": 135.0,
+    "lado": "arriba-izquierda"
+   },
+   "color": {
+    "L_media": 26.6,
+    "a_media": 37.9,
+    "b_media": 29.5,
+    "L_zona_alta_p99_9": 45.1,
+    "saturacion_zona_alta_p99_9": 0.867
+   },
+   "elipse": {
+    "cx": 200.0,
+    "cy": 200.0,
+    "semieje_mayor": 178.5,
+    "semieje_menor": 178.5,
+    "angulo": 0.0,
+    "b_sobre_a": 1.0,
+    "elevacion_camara_grados": 90.0
+   },
+   "borde_tras_descontaminar": {
+    "franja_px": 1792,
+    "luminancia_franja_menos_interior": -0.5,
+    "veredicto": "sin halo apreciable"
+   }
+  },
+  "ing_parmesano": {
+   "archivo": "I3_parmesano.png",
+   "ancho": 400,
+   "alto": 400,
+   "modo": "RGBA",
+   "tiene_alfa": true,
+   "memoria_decodificada_MB": 0.6,
+   "peso_KB": 40.8,
+   "alfa_util": true,
+   "caja": [
+    22,
+    22,
+    378,
+    378
+   ],
+   "margenes_px": {
+    "izq": 22,
+    "der": 21,
+    "arr": 22,
+    "aba": 21
+   },
+   "objeto_toca_el_borde": false,
+   "area_objeto_pct": 62.9,
+   "borde": {
+    "franja_px": 1792,
+    "luminancia_franja_menos_interior": -0.7,
+    "veredicto": "sin halo apreciable"
+   },
+   "luz": {
+    "vector": [
+     -0.71,
+     -0.71
+    ],
+    "angulo_grados": 135.0,
+    "lado": "arriba-izquierda"
+   },
+   "color": {
+    "L_media": 26.6,
+    "a_media": 37.9,
+    "b_media": 29.5,
+    "L_zona_alta_p99_9": 45.1,
+    "saturacion_zona_alta_p99_9": 0.867
+   },
+   "elipse": {
+    "cx": 200.0,
+    "cy": 200.0,
+    "semieje_mayor": 178.5,
+    "semieje_menor": 178.5,
+    "angulo": 0.0,
+    "b_sobre_a": 1.0,
+    "elevacion_camara_grados": 90.0
+   },
+   "borde_tras_descontaminar": {
+    "franja_px": 1792,
+    "luminancia_franja_menos_interior": -0.5,
+    "veredicto": "sin halo apreciable"
+   }
+  },
+  "ing_guindilla": {
+   "archivo": "I3_guindilla.png",
+   "ancho": 400,
+   "alto": 400,
+   "modo": "RGBA",
+   "tiene_alfa": true,
+   "memoria_decodificada_MB": 0.6,
+   "peso_KB": 40.8,
+   "alfa_util": true,
+   "caja": [
+    22,
+    22,
+    378,
+    378
+   ],
+   "margenes_px": {
+    "izq": 22,
+    "der": 21,
+    "arr": 22,
+    "aba": 21
+   },
+   "objeto_toca_el_borde": false,
+   "area_objeto_pct": 62.9,
+   "borde": {
+    "franja_px": 1792,
+    "luminancia_franja_menos_interior": -0.7,
+    "veredicto": "sin halo apreciable"
+   },
+   "luz": {
+    "vector": [
+     -0.71,
+     -0.71
+    ],
+    "angulo_grados": 135.0,
+    "lado": "arriba-izquierda"
+   },
+   "color": {
+    "L_media": 26.6,
+    "a_media": 37.9,
+    "b_media": 29.5,
+    "L_zona_alta_p99_9": 45.1,
+    "saturacion_zona_alta_p99_9": 0.867
+   },
+   "elipse": {
+    "cx": 200.0,
+    "cy": 200.0,
+    "semieje_mayor": 178.5,
+    "semieje_menor": 178.5,
+    "angulo": 0.0,
+    "b_sobre_a": 1.0,
+    "elevacion_camara_grados": 90.0
+   },
+   "borde_tras_descontaminar": {
+    "franja_px": 1792,
+    "luminancia_franja_menos_interior": -0.5,
+    "veredicto": "sin halo apreciable"
+   }
+  }
+ },
+ "avisos": [
+  "heroe: luz desde 'arriba', el contrato pide 'arriba-izquierda'",
+  "producto: recortado con llave de diferencia (revisar el borde)",
+  "producto: 900 px de ancho < 2048 px exigidos",
+  "ing_tomate: 400 px de ancho < 1024 px exigidos",
+  "ing_albahaca: 400 px de ancho < 1024 px exigidos",
+  "ing_parmesano: 400 px de ancho < 1024 px exigidos",
+  "ing_guindilla: 400 px de ancho < 1024 px exigidos"
+ ],
+ "memoria_decodificada_max_MB": 18.0
+}

@@ -1,0 +1,17 @@
+{
+ "lote": 31, "fecha": "2026-11-04",
+ "criterio": "Solo fuentes que resuelven un defecto concreto de la transición: D3 (estroboscopio, sin motion blur).",
+ "fuentes": [
+  {"url":"https://www.provideocoalition.com/motion_blur/","autor":"Chris y Trish Meyer (ProVideo Coalition)","titulo":"Motion Blur Musings","fecha":"2008-02-06","estado":"ARTICULO_AUTOR_ANALIZADO",
+   "procedimiento":"ángulo de obturación (180° = cine), fase = −½ del ángulo para centrar el desenfoque (con fase 0 el movimiento 'se para' en los fotogramas clave), muestras por fotograma / límite adaptativo; pocas muestras = ecos",
+   "prerender":"no (es la definición del muestreo)","aplicacion":"MBLUR-001: obturador 0,5, fase −0,5, separación de muestras ≤ 1,5 px"},
+  {"url":"https://www.provideocoalition.com/cmg_hidden_gems_chapter_8_motion_blur_and_more/","autor":"Chris y Trish Meyer","titulo":"CMG Hidden Gems: Chapter 8 – Motion Blur and More","fecha":"2011-01-22","estado":"ARTICULO_AUTOR_ANALIZADO",
+   "procedimiento":"el motion blur de capa solo existe para capas movidas por transformaciones y no se añade a material ya renderizado; para metraje sin blur, Timewarp (flujo óptico) con ≥ 12 muestras, vigilando que no se 'derrita'; Echo solo repite metraje",
+   "prerender":"el blur por flujo óptico, sí (en el editor)","aplicacion":"tabla de MBLUR-001 §5; AIVID-001 (clips de IA sin blur)"},
+  {"url":"https://ae-plugins.docsforadobe.dev/effect-details/motion-blur.html","autor":"Adobe (SDK de After Effects)","titulo":"Motion Blur","estado":"DOCUMENTACION_OFICIAL_ANALIZADA",
+   "procedimiento":"los efectos calculan su propio blur a partir de shutter_angle y shutter_phase, consultando sus parámetros en otros instantes dentro del intervalo del obturador",
+   "prerender":"—","aplicacion":"mismo principio que la acumulación analítica: evaluar el estado en varios instantes de la ventana"},
+  {"url":"https://www.youtube.com/watch?v=b5R8STAqydk","autor":"Adobe Video x Film Riot","titulo":"Add Motion Blur To Your Premiere Pro and After Effects Projects","estado":"SOLO_METADATOS","motivo":"sin pista de transcripción en YouTube; no se vio el vídeo","aplicacion":"ninguna"}
+ ],
+ "no_repetido": "los vídeos de Marriott, SonduckFilm y Artiukh del lote 30 se aplicaron, no se volvieron a estudiar"
+}

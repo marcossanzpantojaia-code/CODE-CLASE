@@ -1,0 +1,52 @@
+[
+ {
+  "f": 14,
+  "blur_px": 5,
+  "muestras": 4,
+  "error_acumulacion": 0.22,
+  "error_sin_blur": 0.08,
+  "pixeles_afectados_por_movimiento": 208,
+  "error_acumulacion_en_bordes": 2.62,
+  "error_sin_blur_en_bordes": 5.23
+ },
+ {
+  "f": 18,
+  "blur_px": 10.4,
+  "muestras": 16,
+  "error_acumulacion": 0.23,
+  "error_sin_blur": 0.13,
+  "pixeles_afectados_por_movimiento": 1231,
+  "error_acumulacion_en_bordes": 1.13,
+  "error_sin_blur_en_bordes": 4.42
+ },
+ {
+  "f": 21,
+  "blur_px": 12.2,
+  "muestras": 16,
+  "error_acumulacion": 0.24,
+  "error_sin_blur": 0.15,
+  "pixeles_afectados_por_movimiento": 1378,
+  "error_acumulacion_en_bordes": 1.08,
+  "error_sin_blur_en_bordes": 4.93
+ },
+ {
+  "f": 24,
+  "blur_px": 11.8,
+  "muestras": 16,
+  "error_acumulacion": 1.28,
+  "error_sin_blur": 1.14,
+  "pixeles_afectados_por_movimiento": 6035,
+  "error_acumulacion_en_bordes": 16.28,
+  "error_sin_blur_en_bordes": 16.82
+ },
+ {
+  "f": 28,
+  "blur_px": 9.9,
+  "muestras": 16,
+  "error_acumulacion": 4.21,
+  "error_sin_blur": 4.05,
+  "pixeles_afectados_por_movimiento": 22669,
+  "error_acumulacion_en_bordes": 18.1,
+  "error_sin_blur_en_bordes": 18.27
+ }
+]

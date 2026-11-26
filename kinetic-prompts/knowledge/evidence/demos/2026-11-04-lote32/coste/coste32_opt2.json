@@ -1,0 +1,66 @@
+{
+ "1280x720_cpu1_v31": {
+  "fotogramas": 149,
+  "intervalo_p50": 16.7,
+  "intervalo_p95": 16.7,
+  "mas_de_33ms": 0,
+  "js_p50": 1.1,
+  "js_p95": 5.1
+ },
+ "1280x720_cpu1_v32": {
+  "fotogramas": 150,
+  "intervalo_p50": 16.7,
+  "intervalo_p95": 16.8,
+  "mas_de_33ms": 0,
+  "js_p50": 0.4,
+  "js_p95": 5.1
+ },
+ "1280x720_cpu4_v31": {
+  "fotogramas": 129,
+  "intervalo_p50": 16.7,
+  "intervalo_p95": 33.4,
+  "mas_de_33ms": 9,
+  "js_p50": 0.9,
+  "js_p95": 28.4
+ },
+ "1280x720_cpu4_v32": {
+  "fotogramas": 67,
+  "intervalo_p50": 33.3,
+  "intervalo_p95": 83.3,
+  "mas_de_33ms": 23,
+  "js_p50": 2.8,
+  "js_p95": 30.2
+ },
+ "375x812_cpu1_v31": {
+  "fotogramas": 150,
+  "intervalo_p50": 16.7,
+  "intervalo_p95": 16.7,
+  "mas_de_33ms": 0,
+  "js_p50": 0.2,
+  "js_p95": 3.7
+ },
+ "375x812_cpu1_v32": {
+  "fotogramas": 150,
+  "intervalo_p50": 16.7,
+  "intervalo_p95": 16.8,
+  "mas_de_33ms": 0,
+  "js_p50": 0.5,
+  "js_p95": 7.4
+ },
+ "375x812_cpu4_v31": {
+  "fotogramas": 149,
+  "intervalo_p50": 16.7,
+  "intervalo_p95": 16.7,
+  "mas_de_33ms": 0,
+  "js_p50": 0.9,
+  "js_p95": 11.2
+ },
+ "375x812_cpu4_v32": {
+  "fotogramas": 106,
+  "intervalo_p50": 16.7,
+  "intervalo_p95": 50,
+  "mas_de_33ms": 10,
+  "js_p50": 1.5,
+  "js_p95": 32
+ }
+}

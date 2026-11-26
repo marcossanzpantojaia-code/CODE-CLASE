@@ -1,0 +1,398 @@
+{
+ "url": "http://127.0.0.1:8790/receta_b_particulas.html",
+ "ancho": 1440,
+ "fecha": "2026-11-01T13:34:43.508Z",
+ "navegador": "153.0.8010.12",
+ "reversibilidad": {
+  "pasos": 41,
+  "diferencia_maxima": 0,
+  "campo": "",
+  "nota": "mismas posiciones de scroll, bajando y subiendo"
+ },
+ "barrido": [
+  {
+   "p": 0,
+   "objetivo": 0,
+   "n": 2318,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.0252,
+   "objetivo": 0.0252,
+   "n": 2318,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.05,
+   "objetivo": 0.05,
+   "n": 2318,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.0752,
+   "objetivo": 0.0752,
+   "n": 2318,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.1,
+   "objetivo": 0.1,
+   "n": 2318,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.1252,
+   "objetivo": 0.1252,
+   "n": 2318,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.15,
+   "objetivo": 0.15,
+   "n": 2318,
+   "imagenA": 1,
+   "particulas": 0.167,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.1752,
+   "objetivo": 0.1752,
+   "n": 2318,
+   "imagenA": 0.814,
+   "particulas": 0.586,
+   "imagenB": 0,
+   "viaje": 0.036
+  },
+  {
+   "p": 0.2,
+   "objetivo": 0.2,
+   "n": 2318,
+   "imagenA": 0.093,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.071
+  },
+  {
+   "p": 0.2252,
+   "objetivo": 0.2252,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.107
+  },
+  {
+   "p": 0.25,
+   "objetivo": 0.25,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.143
+  },
+  {
+   "p": 0.2752,
+   "objetivo": 0.2752,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.179
+  },
+  {
+   "p": 0.3,
+   "objetivo": 0.3,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.214
+  },
+  {
+   "p": 0.3252,
+   "objetivo": 0.3252,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.25
+  },
+  {
+   "p": 0.35,
+   "objetivo": 0.35,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.286
+  },
+  {
+   "p": 0.3752,
+   "objetivo": 0.3752,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.322
+  },
+  {
+   "p": 0.4,
+   "objetivo": 0.4,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.357
+  },
+  {
+   "p": 0.4252,
+   "objetivo": 0.4252,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.393
+  },
+  {
+   "p": 0.45,
+   "objetivo": 0.45,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.429
+  },
+  {
+   "p": 0.4752,
+   "objetivo": 0.4752,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.465
+  },
+  {
+   "p": 0.5,
+   "objetivo": 0.5,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.5
+  },
+  {
+   "p": 0.5252,
+   "objetivo": 0.5252,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.536
+  },
+  {
+   "p": 0.55,
+   "objetivo": 0.55,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.571
+  },
+  {
+   "p": 0.5752,
+   "objetivo": 0.5752,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.607
+  },
+  {
+   "p": 0.6,
+   "objetivo": 0.6,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.643
+  },
+  {
+   "p": 0.6252,
+   "objetivo": 0.6252,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.679
+  },
+  {
+   "p": 0.65,
+   "objetivo": 0.65,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.714
+  },
+  {
+   "p": 0.6752,
+   "objetivo": 0.6752,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.75
+  },
+  {
+   "p": 0.7,
+   "objetivo": 0.7,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.786
+  },
+  {
+   "p": 0.7252,
+   "objetivo": 0.7252,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.822
+  },
+  {
+   "p": 0.75,
+   "objetivo": 0.75,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.857
+  },
+  {
+   "p": 0.7752,
+   "objetivo": 0.7752,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.893
+  },
+  {
+   "p": 0.8,
+   "objetivo": 0.8,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0.063,
+   "viaje": 0.929
+  },
+  {
+   "p": 0.8252,
+   "objetivo": 0.8252,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 0.64,
+   "imagenB": 0.67,
+   "viaje": 0.965
+  },
+  {
+   "p": 0.85,
+   "objetivo": 0.85,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 0.286,
+   "imagenB": 0.992,
+   "viaje": 1
+  },
+  {
+   "p": 0.8752,
+   "objetivo": 0.8752,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 0.9,
+   "objetivo": 0.9,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 0.9252,
+   "objetivo": 0.9252,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 0.95,
+   "objetivo": 0.95,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 0.9752,
+   "objetivo": 0.9752,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 1,
+   "objetivo": 1,
+   "n": 2318,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  }
+ ],
+ "fotogramas": {
+  "n": 199,
+  "p50_ms": 16.7,
+  "p95_ms": 16.7,
+  "max_ms": 16.8,
+  "sobre_33ms": 0,
+  "nota": "contenedor sin GPU, 2 núcleos, Chromium headless: orientativo"
+ },
+ "errores": [],
+ "reduced_motion": {
+  "marcado": true,
+  "claseRm": true,
+  "sticky": "relative",
+  "alto_pagina": 1980
+ }
+}

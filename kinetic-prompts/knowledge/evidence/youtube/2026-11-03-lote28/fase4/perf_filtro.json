@@ -1,0 +1,66 @@
+{
+ "filtro=0&tam=pantalla": [
+  {
+   "tareas_ms": 48,
+   "script_ms": 12,
+   "p95": 16.8,
+   "mayores33": 0,
+   "n": 115
+  },
+  {
+   "tareas_ms": 33,
+   "script_ms": 9,
+   "p95": 16.7,
+   "mayores33": 0,
+   "n": 87
+  }
+ ],
+ "filtro=1&tam=pantalla": [
+  {
+   "tareas_ms": 140,
+   "script_ms": 21,
+   "p95": 50,
+   "mayores33": 21,
+   "n": 121
+  },
+  {
+   "tareas_ms": 107,
+   "script_ms": 18,
+   "p95": 49.9,
+   "mayores33": 15,
+   "n": 90
+  }
+ ],
+ "filtro=0&tam=tarjeta": [
+  {
+   "tareas_ms": 47,
+   "script_ms": 11,
+   "p95": 16.8,
+   "mayores33": 0,
+   "n": 113
+  },
+  {
+   "tareas_ms": 34,
+   "script_ms": 8,
+   "p95": 16.7,
+   "mayores33": 0,
+   "n": 87
+  }
+ ],
+ "filtro=1&tam=tarjeta": [
+  {
+   "tareas_ms": 71,
+   "script_ms": 14,
+   "p95": 16.7,
+   "mayores33": 0,
+   "n": 114
+  },
+  {
+   "tareas_ms": 53,
+   "script_ms": 10,
+   "p95": 16.8,
+   "mayores33": 0,
+   "n": 86
+  }
+ ]
+}

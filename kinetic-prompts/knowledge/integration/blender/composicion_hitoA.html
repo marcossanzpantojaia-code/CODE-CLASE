@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hito A — composición estática</title>
+<!-- Lote 23. Composición estática (sin GSAP) para evaluar el render con C1/C3: palabra fantasma y titular DETRÁS, navaja DELANTE.
+     Espera hitoA_cerrada_final.png (RGBA) junto a este archivo. Sin el render, muestra «pendiente»: NO es un resultado.
+     Tipografía: pila del sistema en esta plantilla; la fuente display (OFL, autoalojada) se elige en el Hito C. -->
+<style>
+  :root { --tabaco: oklch(18% 0.02 50); --crema: oklch(94% 0.02 85); --laton: oklch(72% 0.09 80); }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--tabaco); color: var(--crema); font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; }
+  .escena { position: relative; min-height: 100svh; overflow: hidden; display: grid; align-items: center; padding: clamp(24px, 5vw, 72px); }
+  .fantasma { position: absolute; z-index: 1; left: 50%; top: 52%; translate: -40% -50%; font-size: 30vw; font-weight: 700; letter-spacing: -.02em;
+              color: color-mix(in oklch, var(--tabaco), white 7%); line-height: .8; user-select: none; }
+  .texto { position: relative; z-index: 2; max-width: 52vw; }
+  .rotulo { font: 600 13px/1 system-ui, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--laton); margin-bottom: 18px; }
+  h1 { font-size: clamp(44px, 9vw, 148px); line-height: .95; font-weight: 600; letter-spacing: -.01em; }
+  h1 em { font-style: italic; color: var(--laton); }
+  .producto { position: absolute; z-index: 3; right: -2vw; top: 50%; translate: 0 -50%; width: min(64vw, 1100px); height: auto; }
+  .pendiente { position: absolute; z-index: 3; right: 6vw; top: 50%; translate: 0 -50%; width: min(50vw, 800px); aspect-ratio: 16/9;
+               border: 1px dashed color-mix(in oklch, var(--crema), transparent 60%); display: grid; place-items: center;
+               font: 14px/1.4 system-ui, sans-serif; color: color-mix(in oklch, var(--crema), transparent 30%); text-align: center; padding: 16px; }
+  @media (max-width: 700px) {
+    .escena { align-items: start; padding-top: 96px; }
+    .texto { max-width: 100%; }
+    .producto, .pendiente { position: relative; right: auto; top: auto; translate: none; width: 118vw; margin: 8vh -9vw 0; }
+    .fantasma { top: 62%; font-size: 44vw; }
+  }
+</style>
+</head>
+<body>
+<main class="escena">
+  <span class="fantasma" aria-hidden="true">FILO</span>
+  <div class="texto">
+    <p class="rotulo">Acto I — El filo</p>
+    <h1>El oficio empieza en el <em>filo.</em></h1>
+  </div>
+  <img class="producto" src="hitoA_cerrada_final.png" alt="Navaja de barbero cerrada, de acero pulido con cachas negras y pasador de latón"
+       onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'pendiente',textContent:'Render del Hito A pendiente (hitoA_cerrada_final.png). Esta página no es un resultado hasta que exista el render.'}))">
+</main>
+</body>
+</html>

@@ -1,0 +1,239 @@
+{
+ "url": "http://127.0.0.1:8790/receta_c_producto_fijo.html",
+ "ancho": 375,
+ "pasos": 21,
+ "cfg": {
+  "protagonista": "#tras",
+  "textos": [
+   "#tit",
+   "#tit2"
+  ]
+ },
+ "resumen": {
+  "protagonista_ancho_min": 0.96,
+  "protagonista_ancho_max": 1.018,
+  "pasos_sin_protagonista_claro": [],
+  "pasos_sin_ninguna_linea_legible": [
+   0.3498,
+   0.3999,
+   0.7001,
+   0.7501
+  ],
+  "lienzo_cobertura_min": null,
+  "reversibilidad_visual_max_pct": 0.138
+ },
+ "baja": [
+  {
+   "protagonista_ancho": 0.96,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0
+  },
+  {
+   "protagonista_ancho": 0.963,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.05
+  },
+  {
+   "protagonista_ancho": 0.966,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.1
+  },
+  {
+   "protagonista_ancho": 0.969,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.15
+  },
+  {
+   "protagonista_ancho": 0.972,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.2001
+  },
+  {
+   "protagonista_ancho": 0.974,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.2501
+  },
+  {
+   "protagonista_ancho": 0.977,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.2998
+  },
+  {
+   "protagonista_ancho": 0.98,
+   "protagonista_visible": 1,
+   "textos": [
+    0.56,
+    0.52
+   ],
+   "p": 0.3498
+  },
+  {
+   "protagonista_ancho": 0.983,
+   "protagonista_visible": 1,
+   "textos": [
+    0.34,
+    0.27
+   ],
+   "p": 0.3999
+  },
+  {
+   "protagonista_ancho": 0.986,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.4499
+  },
+  {
+   "protagonista_ancho": 0.989,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.4999
+  },
+  {
+   "protagonista_ancho": 0.992,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.55
+  },
+  {
+   "protagonista_ancho": 0.995,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.6
+  },
+  {
+   "protagonista_ancho": 0.997,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.65
+  },
+  {
+   "protagonista_ancho": 1,
+   "protagonista_visible": 1,
+   "textos": [
+    0.34,
+    0.27
+   ],
+   "p": 0.7001
+  },
+  {
+   "protagonista_ancho": 1.003,
+   "protagonista_visible": 0.997,
+   "textos": [
+    0.56,
+    0.52
+   ],
+   "p": 0.7501
+  },
+  {
+   "protagonista_ancho": 1.006,
+   "protagonista_visible": 0.994,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.7998
+  },
+  {
+   "protagonista_ancho": 1.009,
+   "protagonista_visible": 0.991,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.8498
+  },
+  {
+   "protagonista_ancho": 1.012,
+   "protagonista_visible": 0.988,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.8999
+  },
+  {
+   "protagonista_ancho": 1.015,
+   "protagonista_visible": 0.985,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.9499
+  },
+  {
+   "protagonista_ancho": 1.018,
+   "protagonista_visible": 0.983,
+   "textos": [
+    1,
+    1
+   ],
+   "p": 0.9999
+  }
+ ],
+ "difs": [
+  0.00138,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ]
+}

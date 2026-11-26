@@ -1,0 +1,2 @@
+Comando: python3 integration/tools/library_check.py . --write-manifest (2026-10-27, entorno de la sesión)
+Fichas: 119 · TUT: 41 · errores: 0 · avisos: 0

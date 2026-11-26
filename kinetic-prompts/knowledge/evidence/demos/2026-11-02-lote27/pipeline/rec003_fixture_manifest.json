@@ -1,0 +1,777 @@
+{
+ "version_contrato": "fixture-rec003-lote27",
+ "recursos": {
+  "heroe": {
+   "proporcion": 2.119,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "heroe-540.webp",
+      "ancho": 540,
+      "alto": 1144,
+      "KB": 4.7
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "heroe-540.avif",
+      "ancho": 540,
+      "alto": 1144,
+      "KB": 4.1
+     }
+    ]
+   },
+   "meta": {
+    "nido": {
+     "x": 0.5,
+     "y": 0.76,
+     "ancho": 0.62
+    },
+    "nota": "fracciones de la imagen RECORTADA; calibrar con la hoja de inspección"
+   }
+  },
+  "producto": {
+   "proporcion": 0.464,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "producto-709.webp",
+      "ancho": 709,
+      "alto": 329,
+      "KB": 24.6
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "producto-709.avif",
+      "ancho": 709,
+      "alto": 329,
+      "KB": 14.4
+     }
+    ]
+   },
+   "meta": {
+    "nido": {
+     "x": 0.5,
+     "y": 0.47,
+     "ancho": 0.36
+    },
+    "nota": "centro y ancho del nido de pasta en el plato; calibrar con la hoja"
+   }
+  },
+  "producto_delantero": {
+   "proporcion": 0.464,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "producto_delantero-709.webp",
+      "ancho": 709,
+      "alto": 329,
+      "KB": 5.7
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "producto_delantero-709.avif",
+      "ancho": 709,
+      "alto": 329,
+      "KB": 12.0
+     }
+    ]
+   }
+  },
+  "producto_sombra": {
+   "proporcion": 0.464,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "producto_sombra-709.webp",
+      "ancho": 709,
+      "alto": 329,
+      "KB": 5.0
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "producto_sombra-709.avif",
+      "ancho": 709,
+      "alto": 329,
+      "KB": 0.9
+     }
+    ]
+   }
+  },
+  "ing_tomate": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_tomate-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 5.7
+     },
+     {
+      "archivo": "ing_tomate-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 3.0
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_tomate-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 2.8
+     },
+     {
+      "archivo": "ing_tomate-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.9
+     }
+    ]
+   }
+  },
+  "ing_tomate_p0": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_tomate_p0-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 13.4
+     },
+     {
+      "archivo": "ing_tomate_p0-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 4.9
+     },
+     {
+      "archivo": "ing_tomate_p0-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 2.3
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_tomate_p0-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 4.3
+     },
+     {
+      "archivo": "ing_tomate_p0-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 2.1
+     },
+     {
+      "archivo": "ing_tomate_p0-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.3
+     }
+    ]
+   }
+  },
+  "ing_tomate_p1": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_tomate_p1-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 17.0
+     },
+     {
+      "archivo": "ing_tomate_p1-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 6.8
+     },
+     {
+      "archivo": "ing_tomate_p1-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 2.8
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_tomate_p1-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 5.8
+     },
+     {
+      "archivo": "ing_tomate_p1-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 3.1
+     },
+     {
+      "archivo": "ing_tomate_p1-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.8
+     }
+    ]
+   }
+  },
+  "ing_tomate_p2": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_tomate_p2-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 18.9
+     },
+     {
+      "archivo": "ing_tomate_p2-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 7.5
+     },
+     {
+      "archivo": "ing_tomate_p2-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 3.1
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_tomate_p2-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 6.0
+     },
+     {
+      "archivo": "ing_tomate_p2-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 3.2
+     },
+     {
+      "archivo": "ing_tomate_p2-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.8
+     }
+    ]
+   }
+  },
+  "ing_albahaca": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_albahaca-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 5.7
+     },
+     {
+      "archivo": "ing_albahaca-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 3.0
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_albahaca-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 2.8
+     },
+     {
+      "archivo": "ing_albahaca-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.9
+     }
+    ]
+   }
+  },
+  "ing_albahaca_p0": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_albahaca_p0-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 13.4
+     },
+     {
+      "archivo": "ing_albahaca_p0-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 4.9
+     },
+     {
+      "archivo": "ing_albahaca_p0-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 2.3
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_albahaca_p0-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 4.3
+     },
+     {
+      "archivo": "ing_albahaca_p0-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 2.1
+     },
+     {
+      "archivo": "ing_albahaca_p0-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.3
+     }
+    ]
+   }
+  },
+  "ing_albahaca_p1": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_albahaca_p1-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 17.0
+     },
+     {
+      "archivo": "ing_albahaca_p1-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 6.8
+     },
+     {
+      "archivo": "ing_albahaca_p1-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 2.8
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_albahaca_p1-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 5.8
+     },
+     {
+      "archivo": "ing_albahaca_p1-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 3.1
+     },
+     {
+      "archivo": "ing_albahaca_p1-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.8
+     }
+    ]
+   }
+  },
+  "ing_albahaca_p2": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_albahaca_p2-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 18.9
+     },
+     {
+      "archivo": "ing_albahaca_p2-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 7.5
+     },
+     {
+      "archivo": "ing_albahaca_p2-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 3.1
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_albahaca_p2-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 6.0
+     },
+     {
+      "archivo": "ing_albahaca_p2-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 3.2
+     },
+     {
+      "archivo": "ing_albahaca_p2-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.8
+     }
+    ]
+   }
+  },
+  "ing_parmesano": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_parmesano-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 5.7
+     },
+     {
+      "archivo": "ing_parmesano-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 3.0
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_parmesano-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 2.8
+     },
+     {
+      "archivo": "ing_parmesano-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.9
+     }
+    ]
+   }
+  },
+  "ing_parmesano_p0": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_parmesano_p0-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 13.4
+     },
+     {
+      "archivo": "ing_parmesano_p0-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 4.9
+     },
+     {
+      "archivo": "ing_parmesano_p0-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 2.3
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_parmesano_p0-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 4.3
+     },
+     {
+      "archivo": "ing_parmesano_p0-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 2.1
+     },
+     {
+      "archivo": "ing_parmesano_p0-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.3
+     }
+    ]
+   }
+  },
+  "ing_parmesano_p1": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_parmesano_p1-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 17.0
+     },
+     {
+      "archivo": "ing_parmesano_p1-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 6.8
+     },
+     {
+      "archivo": "ing_parmesano_p1-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 2.8
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_parmesano_p1-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 5.8
+     },
+     {
+      "archivo": "ing_parmesano_p1-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 3.1
+     },
+     {
+      "archivo": "ing_parmesano_p1-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.8
+     }
+    ]
+   }
+  },
+  "ing_parmesano_p2": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_parmesano_p2-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 18.9
+     },
+     {
+      "archivo": "ing_parmesano_p2-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 7.5
+     },
+     {
+      "archivo": "ing_parmesano_p2-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 3.1
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_parmesano_p2-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 6.0
+     },
+     {
+      "archivo": "ing_parmesano_p2-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 3.2
+     },
+     {
+      "archivo": "ing_parmesano_p2-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.8
+     }
+    ]
+   }
+  },
+  "ing_guindilla": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_guindilla-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 5.7
+     },
+     {
+      "archivo": "ing_guindilla-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 3.0
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_guindilla-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 2.8
+     },
+     {
+      "archivo": "ing_guindilla-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.9
+     }
+    ]
+   }
+  },
+  "ing_guindilla_p0": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_guindilla_p0-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 13.4
+     },
+     {
+      "archivo": "ing_guindilla_p0-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 4.9
+     },
+     {
+      "archivo": "ing_guindilla_p0-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 2.3
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_guindilla_p0-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 4.3
+     },
+     {
+      "archivo": "ing_guindilla_p0-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 2.1
+     },
+     {
+      "archivo": "ing_guindilla_p0-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.3
+     }
+    ]
+   }
+  },
+  "ing_guindilla_p1": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_guindilla_p1-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 17.0
+     },
+     {
+      "archivo": "ing_guindilla_p1-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 6.8
+     },
+     {
+      "archivo": "ing_guindilla_p1-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 2.8
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_guindilla_p1-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 5.8
+     },
+     {
+      "archivo": "ing_guindilla_p1-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 3.1
+     },
+     {
+      "archivo": "ing_guindilla_p1-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.8
+     }
+    ]
+   }
+  },
+  "ing_guindilla_p2": {
+   "proporcion": 1.0,
+   "variantes": {
+    "webp": [
+     {
+      "archivo": "ing_guindilla_p2-512.webp",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 18.9
+     },
+     {
+      "archivo": "ing_guindilla_p2-256.webp",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 7.5
+     },
+     {
+      "archivo": "ing_guindilla_p2-128.webp",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 3.1
+     }
+    ],
+    "avif": [
+     {
+      "archivo": "ing_guindilla_p2-512.avif",
+      "ancho": 512,
+      "alto": 512,
+      "KB": 6.0
+     },
+     {
+      "archivo": "ing_guindilla_p2-256.avif",
+      "ancho": 256,
+      "alto": 256,
+      "KB": 3.2
+     },
+     {
+      "archivo": "ing_guindilla_p2-128.avif",
+      "ancho": 128,
+      "alto": 128,
+      "KB": 1.8
+     }
+    ]
+   }
+  }
+ }
+}

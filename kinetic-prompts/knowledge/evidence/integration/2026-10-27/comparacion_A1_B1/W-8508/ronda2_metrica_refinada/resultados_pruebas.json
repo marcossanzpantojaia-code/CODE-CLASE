@@ -1,0 +1,444 @@
+{
+ "url": "http://127.0.0.1:8765/W-8508/",
+ "fecha": "2026-10-27T12:07:15.126Z",
+ "resultados": {
+  "escritorio": {
+   "estado_http": 200,
+   "carga_ms": 181,
+   "overflow": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "hay": false,
+    "culpables": []
+   },
+   "revelados": {
+    "elementos": 209,
+    "ocultos_tras_scroll": 1,
+    "ocultos_con_contenido": 0
+   },
+   "consola": [],
+   "errores_js": [],
+   "peticiones_fallidas": [],
+   "peticiones": [
+    "GET http://127.0.0.1:8765/W-8508/",
+    "GET http://127.0.0.1:8765/W-8508/styles.css",
+    "GET http://127.0.0.1:8765/W-8508/main.js"
+   ]
+  },
+  "tablet": {
+   "estado_http": 200,
+   "carga_ms": 97,
+   "overflow": {
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "hay": false,
+    "culpables": [
+     "div.hero__art [640,784]"
+    ]
+   },
+   "revelados": {
+    "elementos": 209,
+    "ocultos_tras_scroll": 2,
+    "ocultos_con_contenido": 0
+   },
+   "consola": [],
+   "errores_js": [],
+   "peticiones_fallidas": [],
+   "peticiones": [
+    "GET http://127.0.0.1:8765/W-8508/",
+    "GET http://127.0.0.1:8765/W-8508/styles.css",
+    "GET http://127.0.0.1:8765/W-8508/main.js"
+   ]
+  },
+  "movil": {
+   "estado_http": 200,
+   "carga_ms": 129,
+   "overflow": {
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "hay": false,
+    "culpables": [
+     "div.hero__art [247,391]"
+    ]
+   },
+   "revelados": {
+    "elementos": 209,
+    "ocultos_tras_scroll": 2,
+    "ocultos_con_contenido": 0
+   },
+   "consola": [],
+   "errores_js": [],
+   "peticiones_fallidas": [],
+   "peticiones": [
+    "GET http://127.0.0.1:8765/W-8508/",
+    "GET http://127.0.0.1:8765/W-8508/styles.css",
+    "GET http://127.0.0.1:8765/W-8508/main.js"
+   ]
+  },
+  "rendimiento_laboratorio": {
+   "lcp": 128,
+   "cls": 0,
+   "lcpEl": "H1.",
+   "fcp": 128,
+   "recursos": [
+    {
+     "n": "styles.css",
+     "kb": 21.3
+    },
+    {
+     "n": "main.js",
+     "kb": 5.8
+    }
+   ],
+   "doc_kb": 21.7,
+   "nodos_dom": 362,
+   "nota": "Chromium sin limitación de red/CPU, servidor local: no comparable con Lighthouse ni con datos de campo"
+  },
+  "teclado": {
+   "pasos": [
+    {
+     "el": "a.skip-link",
+     "texto": "Saltar al contenido",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": true
+    },
+    {
+     "el": "a.brand",
+     "texto": "BARBERÍA\nCASTELLANA",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "SERVICIOS",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "TRABAJOS",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "OPINIONES",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "CONTACTO",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a.btn",
+     "texto": "RESERVAR CITA",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a.btn",
+     "texto": "RESERVAR CITA",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a.btn",
+     "texto": "VER SERVICIOS Y PRECIOS",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a.btn",
+     "texto": "RESERVAR CITA",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#nombre",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#tel",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "select#servicio",
+     "texto": "Elige un servicio\nCorte clásico · 18 €\nF",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#fecha",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#fecha",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#fecha",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#fecha",
+     "texto": "",
+     "outline": "NINGUNO",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "select#hora",
+     "texto": "Elige hora\n10:00\n10:30\n11:00\n11:30\n12:00",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "button.btn",
+     "texto": "RESERVAR CITA",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Servicios",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Trabajos",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Opiniones",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Reservar cita",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Contacto",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    null
+   ]
+  },
+  "reduced_motion_reduce": {
+   "ocultos_en_carga": 0,
+   "ocultos_con_contenido": 0,
+   "animaciones_activas": []
+  },
+  "reduced_motion_no-preference": {
+   "ocultos_en_carga": 25,
+   "ocultos_con_contenido": 23,
+   "animaciones_activas": [
+    {
+     "nombre": "breathe",
+     "objetivo": "div.hero__light",
+     "estado": "running"
+    },
+    {
+     "nombre": "drift",
+     "objetivo": "div.hero__light",
+     "estado": "running"
+    },
+    {
+     "nombre": "art-in",
+     "objetivo": "div.hero__art",
+     "estado": "running"
+    },
+    {
+     "nombre": "spin",
+     "objetivo": "div.pole__stripes",
+     "estado": "running"
+    }
+   ]
+  },
+  "revelado_muestras": {
+   "objetivo": "section-head reveal is-in",
+   "muestras": [
+    {
+     "t": 0,
+     "op": 0,
+     "tr": "none"
+    },
+    {
+     "t": 82,
+     "op": 0,
+     "tr": "none"
+    },
+    {
+     "t": 182,
+     "op": 0,
+     "tr": "none"
+    },
+    {
+     "t": 282,
+     "op": 0.46,
+     "tr": "none"
+    },
+    {
+     "t": 382,
+     "op": 0.75,
+     "tr": "none"
+    },
+    {
+     "t": 482,
+     "op": 0.9,
+     "tr": "none"
+    },
+    {
+     "t": 582,
+     "op": 0.97,
+     "tr": "none"
+    },
+    {
+     "t": 682,
+     "op": 1,
+     "tr": "none"
+    },
+    {
+     "t": 783,
+     "op": 1,
+     "tr": "none"
+    },
+    {
+     "t": 882,
+     "op": 1,
+     "tr": "none"
+    },
+    {
+     "t": 982,
+     "op": 1,
+     "tr": "none"
+    },
+    {
+     "t": 1082,
+     "op": 1,
+     "tr": "none"
+    },
+    {
+     "t": 1182,
+     "op": 1,
+     "tr": "none"
+    }
+   ]
+  },
+  "formulario": {
+   "envio_vacio": {
+    "foco": "nombre",
+    "errores_visibles": [
+     "Escribe tu nombre.",
+     "Escribe un teléfono de contacto.",
+     "Elige un servicio.",
+     "Elige un día.",
+     "Elige una hora.",
+     "Revisa los 5 campos marcados."
+    ],
+    "url": "http://127.0.0.1:8765/W-8508/"
+   },
+   "peticiones_nuevas_tras_envio_vacio": []
+  },
+  "contraste": {
+   "medidos": 24,
+   "no_medidos": 8,
+   "fallos": [],
+   "muestra_no_medidos": [
+    {
+     "el": "A",
+     "texto": "BarberíaCastellana",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "SPAN",
+     "texto": "BarberíaCastellana",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "SMALL",
+     "texto": "Barbería",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "A",
+     "texto": "Servicios",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "P",
+     "texto": "Barbería · Madrid",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "H1",
+     "texto": "Corte clásico y afeitado a nav",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "P",
+     "texto": "Oficio de barbero, toalla cali",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "A",
+     "texto": "Ver servicios y precios",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    }
+   ]
+  }
+ },
+ "navegador": "153.0.8010.12",
+ "version_playwright": "1.63.0"
+}

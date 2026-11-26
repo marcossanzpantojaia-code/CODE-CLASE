@@ -6,10 +6,10 @@ dentro el prompt para construirlo con Claude Code, Cursor u otra IA. El encargo 
 
 ## Estado
 
-| Fase | Contenido                                                                | Estado                                                               |
-| ---- | ------------------------------------------------------------------------ | -------------------------------------------------------------------- |
-| 0    | Preparación del proyecto                                                 | Hecha, salvo el resumen de la biblioteca (falta copiar `knowledge/`) |
-| 1–8  | Sistema de diseño, galerías, fichas, catálogo, login, pagos, lanzamiento | Pendientes                                                           |
+| Fase | Contenido                                                                | Estado                                                                   |
+| ---- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| 0    | Preparación del proyecto                                                 | Hecha; resumen en [`docs/BIBLIOTECA_FASE0.md`](docs/BIBLIOTECA_FASE0.md) |
+| 1–8  | Sistema de diseño, galerías, fichas, catálogo, login, pagos, lanzamiento | Pendientes                                                               |
 
 ## Puesta en marcha
 
@@ -50,6 +50,6 @@ docs/PLAN.md         el plan
 
 ## Biblioteca
 
-Copia el contenido de `WEB_ENGINEERING_KNOWLEDGE_LIBRARY` dentro de `knowledge/`, de forma que exista
-`knowledge/KNOWLEDGE_INDEX.md`. Claude Code solo lee el índice y las fichas que necesita, y solo modifica
-`knowledge/RESEARCH_PROGRESS.md`.
+`knowledge/` contiene `WEB_ENGINEERING_KNOWLEDGE_LIBRARY` v0.32.0 (162 fichas): todos sus archivos de texto, sin las
+imágenes ni los vídeos de `evidence/` y `_origen/`, que siguen en Drive ([lista](docs/BIBLIOTECA_OMITIDOS.md)). Claude
+Code solo lee el índice y las fichas que necesita, y solo modifica `knowledge/RESEARCH_PROGRESS.md`.

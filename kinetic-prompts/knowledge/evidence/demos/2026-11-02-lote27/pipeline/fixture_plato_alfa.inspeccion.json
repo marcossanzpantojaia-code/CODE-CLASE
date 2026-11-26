@@ -1,0 +1,53 @@
+{
+ "archivo": "fixture_plato_alfa.png",
+ "ancho": 900,
+ "alto": 900,
+ "modo": "RGBA",
+ "tiene_alfa": true,
+ "memoria_decodificada_MB": 3.1,
+ "peso_KB": 129.3,
+ "alfa_util": true,
+ "caja": [
+  120,
+  301,
+  779,
+  579
+ ],
+ "margenes_px": {
+  "izq": 120,
+  "der": 120,
+  "arr": 301,
+  "aba": 320
+ },
+ "objeto_toca_el_borde": false,
+ "area_objeto_pct": 17.9,
+ "borde": {
+  "franja_px": 939,
+  "luminancia_franja_menos_interior": -0.0,
+  "veredicto": "sin halo apreciable"
+ },
+ "luz": {
+  "vector": [
+   -0.88,
+   -0.47
+  ],
+  "angulo_grados": 152.1,
+  "lado": "arriba-izquierda"
+ },
+ "color": {
+  "L_media": 54.5,
+  "a_media": 9.3,
+  "b_media": 13.2,
+  "L_zona_alta_p99_9": 98.0,
+  "saturacion_zona_alta_p99_9": 1.0
+ },
+ "elipse": {
+  "cx": 449.8,
+  "cy": 439.8,
+  "semieje_mayor": 329.6,
+  "semieje_menor": 139.4,
+  "angulo": 90.0,
+  "b_sobre_a": 0.423,
+  "elevacion_camara_grados": 25.0
+ }
+}

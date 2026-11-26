@@ -1,0 +1,1451 @@
+{
+ "library": "WEB_ENGINEERING_KNOWLEDGE_LIBRARY",
+ "catalog_version": "0.32.0",
+ "date": "2026-11-04",
+ "note_on_name": "El JSON de entrada usaba 'WEB_MOTION_KNOWLEDGE_LIBRARY'; se adopta el nombre de la misión: WEB_ENGINEERING_KNOWLEDGE_LIBRARY.",
+ "evidence_states": [
+  "ARTICULO_AUTOR_ANALIZADO",
+  "CODIGO_INSPECCIONADO",
+  "CODIGO_RESUMIDO_POR_LECTOR",
+  "DEMO_INSPECCIONADA",
+  "DOCUMENTACION_OFICIAL_ANALIZADA",
+  "IMPLEMENTADO",
+  "INACCESIBLE",
+  "INACCESIBLE_POR_COSTE",
+  "METADATOS_VERIFICADOS",
+  "SOLO_REFERENCIA",
+  "TRANSCRIPCION_ANALIZADA",
+  "VALIDADO",
+  "VIDEO_INSPECCIONADO"
+ ],
+ "evidence_rules": "Ningún canal de YouTube tiene vídeos analizados en este lote. METADATOS_VERIFICADOS = identidad/URL confirmada desde fuente oficial o primaria. SOLO_REFERENCIA = solo listados de terceros o la lista del usuario.",
+ "official_references": [
+  {
+   "id": "REF-GSAP-ST",
+   "name": "GSAP ScrollTrigger docs",
+   "url": "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+   "version": "3.15",
+   "status": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "used_in": [
+    "ST-001",
+    "ST-002",
+    "ST-003",
+    "A11Y-001"
+   ]
+  },
+  {
+   "id": "REF-GSAP-SKILLS",
+   "name": "greensock/gsap-skills",
+   "url": "https://github.com/greensock/gsap-skills",
+   "license": "MIT",
+   "status": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "scope": "README; SKILL.md individuales no inspeccionados",
+   "used_in": [
+    "GS-001",
+    "skills/"
+   ]
+  },
+  {
+   "id": "REF-LENIS",
+   "name": "Lenis (darkroomengineering)",
+   "url": "https://github.com/darkroomengineering/lenis",
+   "version": "1.3.27",
+   "license": "MIT",
+   "status": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "used_in": [
+    "LN-001",
+    "A11Y-001"
+   ]
+  },
+  {
+   "id": "REF-THREE-DISPOSE",
+   "name": "Three.js — How to dispose of objects",
+   "url": "https://threejs.org/manual/pages/how-to-dispose-of-objects.html",
+   "status": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "used_in": [
+    "TJ-001"
+   ]
+  },
+  {
+   "id": "REF-CLAUDE-SKILLS",
+   "name": "Agent Skills overview",
+   "url": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview",
+   "status": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "used_in": [
+    "skills/",
+    "IMPORT_GUIDE.md"
+   ]
+  },
+  {
+   "id": "REF-GSAP-RESOURCES",
+   "name": "gsap.com/resources",
+   "url": "https://gsap.com/resources/",
+   "status": "METADATOS_VERIFICADOS",
+   "note": "Usado para verificar Osmo, Creative Coding Club, Mastering Web Animation"
+  },
+  {
+   "id": "REF-MDN-RM",
+   "name": "MDN prefers-reduced-motion",
+   "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion",
+   "status": "PENDIENTE_DE_VERIFICACION"
+  },
+  {
+   "id": "REF-THREE-DOCS",
+   "name": "Three.js docs",
+   "url": "https://threejs.org/docs/",
+   "status": "PENDIENTE_DE_VERIFICACION"
+  },
+  {
+   "id": "REF-GSAP-STMISTAKES",
+   "name": "ScrollTrigger tips & mistakes",
+   "url": "https://gsap.com/resources/st-mistakes",
+   "status": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "used_in": [
+    "ST-004"
+   ]
+  },
+  {
+   "id": "REF-GSAP-SPLITTEXT",
+   "name": "SplitText docs",
+   "url": "https://gsap.com/docs/v3/Plugins/SplitText/",
+   "version": "3.15 (reescritura en 3.13)",
+   "status": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "used_in": [
+    "TXT-001"
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "SRC-001",
+   "name": "GreenSock (canal oficial)",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "GSAP, ScrollTrigger, Flip, SplitText, MorphSVG, timelines",
+   "user_notes": "Prioridad máxima; contrastar con docs oficiales",
+   "official_url": "https://www.youtube.com/@GreenSockLearning",
+   "evidence_status": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "verification_note": "Handle enlazado desde la navegación oficial de gsap.com/docs (2026-10-26). Docs GSAP v3.15. Existe repo oficial de AI Skills: https://github.com/greensock/gsap-skills (MIT). | Lote 3: docs Flip, MorphSVG, React, a11y y Demo Hub (demos.gsap.com) analizados.",
+   "tutorials_analyzed": 19,
+   "techniques_extracted": [
+    "A11Y-001",
+    "DRAG-001",
+    "FLIP-001",
+    "FLIP-002",
+    "GS-001",
+    "GS-002",
+    "GS-003",
+    "GS-004",
+    "HOV-001",
+    "MORPH-001",
+    "OBS-001",
+    "ST-001",
+    "ST-002",
+    "ST-003",
+    "ST-004",
+    "ST-005",
+    "ST-006",
+    "TXT-001",
+    "VEL-001"
+   ],
+   "coverage": {
+    "identificados": "Demo Hub: 9 demos visibles + ~10 lecciones de texto en gsap.com/resources + 3 vídeos oficiales listados en gsap.com/learning (Introducing ScrollTrigger, useGSAP, GSAP for Webflow)",
+    "estudiados": "Docs: ScrollTrigger, st-mistakes, SplitText, Flip, MorphSVG, React, a11y. CodePen literal: Yzdzxem, azmKBBJ, eYpGLYL, vYMzKZx (4) + Observer sections XWzRraJ (lote 8). Docs lote 8: Observer, ScrollSmoother, MotionPath. Vídeos: 0 + lote 12: ScrollTrigger.batch() + lote 13: normalizeScroll(), Draggable (st-mistakes releído: ya cubierto en ST-004) + lote 15: repositorio gsap-skills completo (8 Skills oficiales para agentes) + lote 24: Flip.fit y ScrollSmoother (docs), ScrollTrigger releído (snap/labels/pin) → CONT-001, MOT-001",
+    "evidencia": "DOCUMENTACION_OFICIAL_ANALIZADA, CODIGO_INSPECCIONADO, DEMO_INSPECCIONADA (2 demos medidas)",
+    "tecnicas": [
+     "A11Y-001",
+     "DRAG-001",
+     "FLIP-001",
+     "FLIP-002",
+     "GS-001",
+     "GS-002",
+     "GS-003",
+     "GS-004",
+     "HOV-001",
+     "MORPH-001",
+     "OBS-001",
+     "ST-001",
+     "ST-002",
+     "ST-003",
+     "ST-004",
+     "ST-005",
+     "ST-006",
+     "TXT-001",
+     "VEL-001",
+     "CONT-001",
+     "MOT-001"
+    ],
+    "pendiente": "Vídeos oficiales; Demo Hub restante (cursor preview, proximity grid, infinite slider, dock); docs DrawSVG, ScrambleText, Draggable/Inertia; changelog de versiones",
+    "n_ident": 22,
+    "n_est": 21
+   }
+  },
+  {
+   "id": "SRC-002",
+   "name": "Creative Coding Club (Carl Schooff)",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "Fundamentos GSAP, easing, timelines, stagger",
+   "user_notes": "Prioridad alta",
+   "official_url": "https://www.creativecodingclub.com/",
+   "evidence_status": "METADATOS_VERIFICADOS",
+   "verification_note": "VERIFICADO lote 3: web firmada por Carl (LinkedIn carl-schooff), ex-GreenSock ~8 años; enlaza YouTube snorkltv. GSAP 3 Express gratuito con inscripción (cuenta); fuentes de vídeos solo miembros; paquete completo de pago. CodePen snorkltv no accesible desde aquí.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "youtube": "https://youtube.com/snorkltv",
+   "cost_status": "INACCESIBLE_POR_COSTE",
+   "cost_reason": "Curso con inscripción; fuentes para miembros",
+   "free_alternative": "Lecciones de texto gratuitas de gsap.com/resources (get-started, easing, staggers, timelines, control, position parameter, keyframes, conflict) y canal oficial GreenSock",
+   "coverage": {
+    "identificados": "GSAP 3 Express (34 lecciones, requiere inscripción), GSAP Summer Camp (lista pública de YouTube)",
+    "estudiados": "0",
+    "evidencia": "METADATOS_VERIFICADOS",
+    "tecnicas": [],
+    "pendiente": "INACCESIBLE_POR_COSTE/cuenta; vídeos públicos sin estudiar (no se automatiza YouTube)",
+    "n_ident": 2,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-003",
+   "name": "Codegrid",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "Sitios de estilo agencia, pinning, revelados, menús, transiciones",
+   "user_notes": "Prioridad alta",
+   "official_url": "https://www.youtube.com/channel/UC7pVho4O31FyfQsZdXWejEw",
+   "evidence_status": "METADATOS_VERIFICADOS",
+   "verification_note": "ID de canal confirmado en la página de un vídeo (2026-10-26). Código fuente de sus tutoriales en Gumroad de pago (Codegrid Pro): no accesible sin compra. | Lote 3: código fuente en Gumroad \"Codegrid Pro\" (suscripción, ~3,49 $/mes según el título del producto en buscador; no verificado en la página). Vídeos aparentemente sin narración. Sin repos públicos. Vías: suscripción del usuario o inspección visual de los sitios que acredita como inspiración.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "cost_status": "INACCESIBLE_POR_COSTE",
+   "cost_reason": "Código en suscripción Codegrid Pro",
+   "free_alternative": "GSAP Demo Hub (demos.gsap.com) y docs oficiales; tutoriales gratuitos de Olivier Larose con repo; repos MIT/Codrops de akella; vídeos públicos de Codegrid solo como referencia visual sin código",
+   "coverage": {
+    "identificados": "3 vídeos inventariados (VR-001…003)",
+    "estudiados": "0 (código de pago, vídeos sin narración aparente)",
+    "evidencia": "SOLO_METADATOS",
+    "tecnicas": [],
+    "pendiente": "INACCESIBLE_POR_COSTE; alternativa: GreenSock oficial",
+    "n_ident": 3,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-004",
+   "name": "Olivier Larose",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "React / Next.js, GSAP, ScrollTrigger, Lenis, parallax",
+   "user_notes": "Prioridad alta",
+   "official_url": "https://blog.olivierlarose.com",
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "VERIFICADO lote 2: GitHub → olivierlarose.com → blog; páginas del blog enlazan repos GitHub y vídeos de YouTube. Gran parte del material usa framer-motion (no GSAP) y Locomotive/Lenis.",
+   "tutorials_analyzed": 15,
+   "techniques_extracted": [
+    "CARD-001",
+    "CLIP-001",
+    "HOV-001",
+    "HOV-002",
+    "ZOOM-001",
+    "TXT-002",
+    "FOOT-001",
+    "SECT-001",
+    "TXT-004",
+    "PIX-001",
+    "HOV-005",
+    "MENU-001",
+    "GL-004",
+    "TXT-005",
+    "MORPH-001"
+   ],
+   "github": "https://github.com/olivierlarose",
+   "youtube": "https://www.youtube.com/@olivierlarose1",
+   "cost_note": "Web Animation Course de pago → INACCESIBLE_POR_COSTE (VR-025, VR-026). Sus tutoriales gratuitos del blog sí se usan.",
+   "coverage": {
+    "identificados": "63 tutoriales en blog.olivierlarose.com (20 scroll, 19 ratón, 9 3D, 5 landing, 4 menú, 3 misc, 2 transición, 1 SVG); al menos 3 de pago (mask-section-transition, svg-mask-scroll, horizontal-scroll). Vídeos identificados desde sus artículos: MJ_cRRqBfU8 (sticky cursor), NOJCt7qyh9c (curved menu) — no vistos",
+    "estudiados": "15 (código del repo + artículo escrito del autor cuando existe): lotes 2–6 → cards-parallax, smooth-scroll, awwwards-landing, zoom-parallax, text-gradient-opacity, text-mask (6); lote 7 → sticky-footer, perspective-section-transition, text-along-path, pixel-transition (4); lote 8 → sticky-cursor, curved-menu, 3d-wave-on-scroll, infinite-text-move-on-scroll, svg-morph (5). 2 demos medidas. Vídeos: 0",
+    "evidencia": "CODIGO_INSPECCIONADO, ARTICULO_AUTOR_ANALIZADO, DEMO_INSPECCIONADA",
+    "tecnicas": [
+     "CARD-001",
+     "CLIP-001",
+     "HOV-001",
+     "HOV-002",
+     "ZOOM-001",
+     "TXT-002",
+     "FOOT-001",
+     "SECT-001",
+     "TXT-004",
+     "PIX-001",
+     "HOV-005",
+     "MENU-001",
+     "GL-004",
+     "TXT-005",
+     "MORPH-001"
+    ],
+    "pendiente": "48 tutoriales (prioridad: mask-cursor-effect, image-pixel-loading, gallery/floating images, 3d-earth, menús restantes, scroll-progress)",
+    "n_ident": 63,
+    "n_est": 15,
+    "correccion_lote11": "El texto anterior empezaba por \"10\" (recuento de v0.8.0) y se le añadieron los 5 del lote 8 sin actualizar la cifra; n_est ya era 15. Texto corregido; no cambia ningún dato."
+   }
+  },
+  {
+   "id": "SRC-005",
+   "name": "Hyperplexed",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "Hovers, interacciones, efectos UI, texto",
+   "user_notes": "Prioridad media",
+   "official_url": "https://hyperplexed.io/",
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "VERIFICADO lote 6: el perfil de CodePen enlaza su YouTube y su web. 3 pens leídos (MIT).",
+   "tutorials_analyzed": 6,
+   "techniques_extracted": [
+    "HOV-004",
+    "TXT-003",
+    "DRAG-001",
+    "HOV-006",
+    "CSS-005",
+    "UX-003"
+   ],
+   "youtube": "https://youtube.com/@hyperplexed",
+   "codepen": "https://codepen.io/Hyperplexed",
+   "coverage": {
+    "identificados": "6 pens populares + 4 vídeos recientes en hyperplexed.io; vídeos enlazados desde los pens: 6TYkDy54q4E, jMVhxBB3l0w, kySGqoU7X-s, W5oawMJaXbU (no vistos); GitHub githyperplexed",
+    "estudiados": "6/6 pens populares (código literal): Magical Hover, Hacked Text, Sliding Image Track (lote 6) + Kippo Hover Card, Futuristic Card, App Menu With Lock Screen (lote 8)",
+    "evidencia": "CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "HOV-004",
+     "TXT-003",
+     "DRAG-001",
+     "HOV-006",
+     "CSS-005",
+     "UX-003"
+    ],
+    "pendiente": "Pens menos populares; repos de githyperplexed; vídeos (sin acceso automatizado)",
+    "n_ident": 10,
+    "n_est": 6
+   }
+  },
+  {
+   "id": "SRC-006",
+   "name": "DesignCourse (Gary Simon)",
+   "layer": "C_diseno_negocio",
+   "topics_hypothesis": "UI/UX, landing pages y GSAP",
+   "user_notes": "Prioridad media",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 3,
+   "techniques_extracted": [
+    "UI-002"
+   ],
+   "coverage": {
+    "identificados": "designcourse.com: 9 artículos de UI en el blog; cursos, Foundations y Sprint Training de pago; reto gratuito 2026; vídeo incrustado rUTuvDyFHwo",
+    "estudiados": "3 artículos (jerarquía tipográfica, color tint/shade, CTA). Vídeos: 0",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "UI-002"
+    ],
+    "pendiente": "Patrones de UI, página 404; vídeos (no automatizables)",
+    "n_ident": 12,
+    "n_est": 3
+   }
+  },
+  {
+   "id": "SRC-007",
+   "name": "Cassie Evans",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "SVG, GSAP, técnicas avanzadas",
+   "user_notes": "Identificar charlas y material fuente",
+   "official_url": null,
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 2,
+   "techniques_extracted": [
+    "OBS-002"
+   ],
+   "coverage": {
+    "identificados": "cassie.codes retirado; 6 pens populares en codepen.io/cassie-codes; charlas en noti.st/cassiecodes",
+    "estudiados": "2 pens (swipe gallery con ScrollTrigger.observe, SVG text animation)",
+    "evidencia": "CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "OBS-002"
+    ],
+    "pendiente": "\"lil' me.\", chameleon, blobby background; charlas",
+    "n_ident": 7,
+    "n_est": 2
+   }
+  },
+  {
+   "id": "SRC-008",
+   "name": "Wael Yasmina",
+   "layer": "E_3d",
+   "topics_hypothesis": "Three.js, GSAP, cámaras y scroll 3D",
+   "user_notes": "Prioridad alta para 3D",
+   "official_url": "https://waelyasmina.net/",
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "VERIFICADO lote 2: perfil GitHub enlaza web, YouTube y CodePen; la web enlaza el mismo canal. Artículos en texto con demos y CodePen.",
+   "tutorials_analyzed": 2,
+   "techniques_extracted": [
+    "CAM-001"
+   ],
+   "github": "https://github.com/WaelYasmina",
+   "youtube": "https://www.youtube.com/@WaelYasmina",
+   "codepen": "https://codepen.io/WaelYasmina",
+   "coverage": {
+    "identificados": "~20 artículos relevantes en waelyasmina.net (cámara, LOD, instancing, BatchedMesh, carga de modelos, shaders, bloom selectivo, R3F)",
+    "estudiados": "2 artículos (cámara GSAP, immersive) + boilerplate",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO, CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "CAM-001"
+    ],
+    "pendiente": "LOD, instancing, carga de modelos, camera zoom/dynamic movement, 6 CodePen",
+    "n_ident": 20,
+    "n_est": 2
+   }
+  },
+  {
+   "id": "SRC-009",
+   "name": "Wawa Sensei",
+   "layer": "E_3d",
+   "topics_hypothesis": "React Three Fiber, interacciones y escenas 3D",
+   "user_notes": "Prioridad alta para 3D",
+   "official_url": "https://wawasensei.dev/",
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "VERIFICADO lote 2: README de perfil de wass08 = Wawa Sensei (Wassim Samad), enlaza YouTube y wawasensei.dev; las páginas /tuto/ enlazan repos starter/final y vídeos. Curso de pago (R3F Ultimate Guide) no accedido.",
+   "tutorials_analyzed": 5,
+   "techniques_extracted": [
+    "CAM-002",
+    "CFG-001",
+    "R3F-001",
+    "SCN-001",
+    "TXT3D-001"
+   ],
+   "github": "https://github.com/wass08",
+   "youtube": "https://www.youtube.com/@WawaSensei",
+   "cost_note": "R3F Ultimate Guide de pago → INACCESIBLE_POR_COSTE. Tutoriales gratuitos con repos sí se usan.",
+   "coverage": {
+    "identificados": "≥16 tutoriales en wawasensei.dev/videos con páginas /tuto/ (scroll, configuradores, avatar builder, portfolio 3D, transiciones, galerías, slideshow, book slider)",
+    "estudiados": "5 repos + versión escrita en dev.to del tutorial de scroll",
+    "evidencia": "CODIGO_INSPECCIONADO, ARTICULO_AUTOR_ANALIZADO, DEMO_INSPECCIONADA (1)",
+    "tecnicas": [
+     "R3F-001",
+     "CFG-001",
+     "TXT3D-001",
+     "CAM-002",
+     "SCN-001"
+    ],
+    "pendiente": "Portfolio 3D (4 partes), 3D slideshow, book slider, apply images to 3D objects; curso de pago INACCESIBLE_POR_COSTE",
+    "n_ident": 16,
+    "n_est": 5
+   }
+  },
+  {
+   "id": "SRC-010",
+   "name": "JavaScript Mastery",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "Landings completas, Three.js, React, GSAP",
+   "user_notes": "Evaluar vigencia del código",
+   "official_url": "https://www.youtube.com/@javascriptmastery",
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "Handle tomado del README de su repositorio oficial. Repositorio GTA VI inspeccionado (sin licencia).",
+   "tutorials_analyzed": 1,
+   "techniques_extracted": [
+    "MASK-001",
+    "VID-001",
+    "PX-001",
+    "CASE-001"
+   ],
+   "coverage": {
+    "identificados": "Repo GTA VI (+ catálogo amplio de repos públicos adrianhajdin)",
+    "estudiados": "1 repo completo (10/10 secciones)",
+    "evidencia": "CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "MASK-001",
+     "VID-001",
+     "PX-001",
+     "CASE-001"
+    ],
+    "pendiente": "Otros repos de landings con GSAP/Three.js",
+    "n_ident": 1,
+    "n_est": 1
+   }
+  },
+  {
+   "id": "SRC-011",
+   "name": "The Code Creative",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "GSAP, Flip, ScrollTrigger",
+   "user_notes": "Prioridad media",
+   "official_url": null,
+   "evidence_status": "SOLO_REFERENCIA",
+   "verification_note": "Class Central lista una serie de GSAP Flip y ScrollTrigger. Orden de vídeos no cronológico.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "coverage": {
+    "identificados": "No localizada una fuente oficial verificable con este nombre (búsqueda web sin resultados atribuibles)",
+    "estudiados": "0",
+    "evidencia": "SOLO_REFERENCIA",
+    "tecnicas": [],
+    "pendiente": "Pedir al usuario el enlace del canal para verificar identidad",
+    "n_ident": 0,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-012",
+   "name": "Ihatetomatoes (Petr Tichy)",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "GSAP / ScrollTrigger",
+   "user_notes": "Comprobar versiones históricas",
+   "official_url": null,
+   "evidence_status": "METADATOS_VERIFICADOS",
+   "verification_note": "Class Central lo cita como curso GSAP para principiantes. Comprobar si el material es anterior a GSAP 3.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "coverage": {
+    "identificados": "ihatetomatoes.net/blog: solo 2 entradas visibles (2015: tutorial de ScrollMagic, noticia); la página no identifica al autor",
+    "estudiados": "0 (contenido antiguo: ScrollMagic, sustituido por ScrollTrigger)",
+    "evidencia": "METADATOS_VERIFICADOS",
+    "tecnicas": [],
+    "pendiente": "Sin recursos gratuitos actuales localizados; cursos no consultados",
+    "n_ident": 2,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-013",
+   "name": "Rajacharles SRD",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "Landings, sliders, menús, ScrollTrigger",
+   "user_notes": "Prioridad media",
+   "official_url": null,
+   "evidence_status": "SOLO_REFERENCIA",
+   "verification_note": "Class Central lista ~30 vídeos GSAP (landings, menús, sliders). Varios títulos usan sintaxis antigua (TweenMax): auditar versión.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "coverage": {
+    "identificados": "No localizada una fuente verificable con este nombre (búsqueda web sin resultados atribuibles)",
+    "estudiados": "0",
+    "evidencia": "SOLO_REFERENCIA",
+    "tecnicas": [],
+    "pendiente": "Pedir al usuario el enlace del canal",
+    "n_ident": 0,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-014",
+   "name": "Motion Tricks",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "Animaciones web con GSAP",
+   "user_notes": "Confirmar identidad/ubicación del material",
+   "official_url": "https://gsap.com/community/motion-tricks/",
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Página dentro de la comunidad oficial de GSAP; tutoriales de proyectos reales con GSAP. Canal de vídeo propio no confirmado.",
+   "tutorials_analyzed": 2,
+   "techniques_extracted": [
+    "SVG-001"
+   ],
+   "coverage": {
+    "identificados": "motiontricks.com (Craig Roblewsky / PointC): 8 artículos gratuitos de SVG + GSAP con pens",
+    "estudiados": "2 artículos (caligrafía, navegación elástica)",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "SVG-001"
+    ],
+    "pendiente": "Pens (MIT) de esos artículos; unroll/unfold; SVG dinámico",
+    "n_ident": 8,
+    "n_est": 2
+   }
+  },
+  {
+   "id": "SRC-015",
+   "name": "Kevin Powell",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "CSS, transiciones de vistas, accesibilidad",
+   "user_notes": "Prioridad alta para soluciones sin JS",
+   "official_url": "https://www.kevinpowell.co/",
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "VERIFICADO lote 2 (unidireccional): el perfil GitHub kevin-powell enlaza youtube.com/kevinpowell. Repos públicos poco útiles para animación (bootcamp de 2020). Vía recomendada: transcripción manual (método A) y CodePen. | Lote 6: perfil de CodePen enlaza YouTube y web (verificación bidireccional vía CodePen). Pen BavVLra leído.",
+   "tutorials_analyzed": 2,
+   "techniques_extracted": [
+    "CSS-003",
+    "CSS-006"
+   ],
+   "github": "https://github.com/kevin-powell",
+   "youtube": "https://youtube.com/kevinpowell",
+   "codepen": "https://codepen.io/kevinpowell",
+   "coverage": {
+    "identificados": "6 pens populares (2 navbars hover, infinite scroller, jQuery smooth scroll obsoleto, neon button, mobile nav); 6 vídeos recientes listados en kevinpowell.co/youtube",
+    "estudiados": "2 pens (infinite scroller lote 6, neon button lote 8)",
+    "evidencia": "CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "CSS-003",
+     "CSS-006"
+    ],
+    "pendiente": "Navbars con hover (GrLKNo, jxppmr), mobile nav; vídeos de tipografía fluida y CSS moderno (sin acceso automatizado)",
+    "n_ident": 12,
+    "n_est": 2
+   }
+  },
+  {
+   "id": "SRC-016",
+   "name": "Yuri Artiukh (akella)",
+   "layer": "E_3d",
+   "topics_hypothesis": "WebGL, shaders, distorsiones, efectos avanzados",
+   "user_notes": "Prioridad alta para WebGL",
+   "official_url": "https://riverco.de/",
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "VERIFICADO lote 2: GitHub akella = Yuri Artiukh (Kyiv), enlaza riverco.de (Coderiver, fundado por Yuriy Artiukh), que enlaza el canal flintyara. Repos de Codrops con MIT o licencia Codrops.",
+   "tutorials_analyzed": 3,
+   "techniques_extracted": [
+    "GL-001",
+    "GL-002",
+    "GL-003",
+    "HOV-003"
+   ],
+   "github": "https://github.com/akella",
+   "youtube": "https://www.youtube.com/user/flintyara",
+   "coverage": {
+    "identificados": "203 repos (muchos tutoriales de Codrops) + canal YouTube flintyara (directos)",
+    "estudiados": "3 repos (mouseover, image transitions, fake3d) + 2 demos públicas",
+    "evidencia": "CODIGO_INSPECCIONADO, DEMO_INSPECCIONADA",
+    "tecnicas": [
+     "GL-001",
+     "GL-002",
+     "GL-003",
+     "HOV-003"
+    ],
+    "pendiente": "Repos recientes (shaders de scroll, transiciones de página), directos",
+    "n_ident": 203,
+    "n_est": 3
+   }
+  },
+  {
+   "id": "SRC-017",
+   "name": "Frontend Horse (Alex Trost)",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "Entrevistas y técnicas de creative coding",
+   "user_notes": "Mayormente fuente secundaria",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 3,
+   "techniques_extracted": [
+    "MP-001",
+    "BTN-001",
+    "UI-001"
+   ],
+   "coverage": {
+    "identificados": "frontend.horse: 15 artículos de técnicas creativas",
+    "estudiados": "3 artículos (Swimming on scroll, Buttons that spark joy, The Linear Look) + 3 pens citados (Michelle Barker, Aaron Iker ×2)",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO, CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "MP-001",
+     "BTN-001",
+     "UI-001"
+    ],
+    "pendiente": "SVG con máscaras, rejillas generativas, GIFs en letras con clip-path, shaders, ilustraciones CSS 3D",
+    "n_ident": 15,
+    "n_est": 3
+   }
+  },
+  {
+   "id": "SRC-018",
+   "name": "The Coding Train",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "Creative coding, principios de movimiento",
+   "user_notes": "Fundamentos, no necesariamente GSAP",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 1,
+   "techniques_extracted": [
+    "PHYS-001"
+   ],
+   "coverage": {
+    "identificados": "natureofcode.com (libro gratuito online, 2.ª ed.) + repo noc-book-2",
+    "estudiados": "1 capítulo (Oscillation). Vídeos: 0",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "PHYS-001"
+    ],
+    "pendiente": "Vectores, fuerzas, partículas, steering, ruido; licencia del repo",
+    "n_ident": 2,
+    "n_est": 1
+   }
+  },
+  {
+   "id": "SRC-019",
+   "name": "Codrops",
+   "layer": "C_diseno_negocio",
+   "topics_hypothesis": "Publicaciones, demos y experimentos",
+   "user_notes": "Investigación de efectos y fuentes de código",
+   "official_url": "https://tympanus.net/codrops/",
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Publica tutoriales con código (p. ej. scroll infinito con GSAP + Lenis). El README de Lenis enlaza una demo de Codrops. Bloquea la lectura automatizada: artículos INACCESIBLES desde este entorno.",
+   "tutorials_analyzed": 5,
+   "techniques_extracted": [
+    "CAM-001",
+    "HERO-001",
+    "PT-001",
+    "TSL-002",
+    "TXT-006"
+   ],
+   "coverage": {
+    "identificados": "18 tutoriales en la página 1 (ago–oct 2026): mayoría Three.js/TSL/WebGPU y shaders; GSAP + React Router; Astro + GSAP; hero CMS; org github.com/codrops",
+    "estudiados": "4 artículos (transiciones paralelas, ghost trails, testimonial hero, cristal líquido TSL) + 2 repos (amber, hyperkinetic); el artículo del clúster 3D TSL dio error al leerlo + lote 13: \"Cinematic 3D Scroll Experiences with GSAP\" (Joseph Santamaria) + su repo; \"Scroll-Driven 3D Gallery Using a Blender Camera Path\" dio error del sitio + lote 22: «Scroll-Driven 3D Gallery Using a Blender Camera Path» (Gaspard Hedde, 07-2026), leído al fin (→ CAM-002)",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO, CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "CAM-001",
+     "HERO-001",
+     "PT-001",
+     "TSL-002",
+     "TXT-006",
+     "CAM-002"
+    ],
+    "pendiente": "Clúster 3D TSL y landing Astro (errores del sitio), cursor trail TSL, lupa GLSL, repos de codrops",
+    "n_ident": 20,
+    "n_est": 6
+   }
+  },
+  {
+   "id": "SRC-020",
+   "name": "Osmo",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "Biblioteca/comunidad/cursos de desarrollo creativo",
+   "user_notes": "Transiciones y componentes; distinguir contenido público de pago",
+   "official_url": "https://www.osmo.supply",
+   "evidence_status": "METADATOS_VERIFICADOS",
+   "verification_note": "Listado en gsap.com/resources como recursos y efectos listos. Membresía de pago; distinguir material público.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "cost_status": "INACCESIBLE_POR_COSTE",
+   "cost_reason": "Recursos de pago",
+   "free_alternative": "GSAP Demo Hub; docs Flip/SplitText; tutoriales gratuitos de Olivier Larose (p. ej. TUT-003 recrea el portfolio de un cofundador de Osmo)",
+   "coverage": {
+    "identificados": "osmo.supply (Dennis Snellenberg e Ilja van Eck): Vault de pago (desde ~16–25 €/mes según la página), curso de transiciones de pago; 20 recursos de prueba \"gratis para siempre\" pero **bloqueados tras registro** con nombre y correo",
+    "estudiados": "0 (requiere cuenta → no permitido por las reglas; resto de pago → INACCESIBLE_POR_COSTE)",
+    "evidencia": "METADATOS_VERIFICADOS",
+    "tecnicas": [],
+    "pendiente": "Solo si el usuario autoriza crear cuenta; showcase público sin código",
+    "n_ident": 10,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-021",
+   "name": "Mastering Web Animation",
+   "layer": "D_movimiento",
+   "topics_hypothesis": "Curso / formación",
+   "user_notes": "Principios de motion design; acceso autorizado únicamente",
+   "official_url": null,
+   "evidence_status": "SOLO_REFERENCIA",
+   "verification_note": "Listado en gsap.com/resources como curso de principios de movimiento. URL y autoría pendientes de confirmar. Acceso autorizado únicamente.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "cost_status": "INACCESIBLE_POR_COSTE",
+   "cost_reason": "Curso de pago",
+   "free_alternative": "gsap.com/resources + NN/g (UX-001) + W3C Understanding WCAG (A11Y-002)",
+   "coverage": {
+    "identificados": "No identificada una fuente oficial con este nombre; la búsqueda solo devuelve cursos genéricos de Udemy no relacionados",
+    "estudiados": "0",
+    "evidencia": "SOLO_REFERENCIA",
+    "tecnicas": [],
+    "pendiente": "Pedir al usuario el enlace exacto",
+    "n_ident": 0,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-022",
+   "name": "Awwwards",
+   "layer": "C_diseno_negocio",
+   "topics_hypothesis": "Galería de webs premiadas y ejemplos",
+   "user_notes": "Referencias visuales, no prueba de implementación",
+   "official_url": "https://www.awwwards.com",
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Galería de referencias visuales (sección Elements). No prueba de implementación.",
+   "tutorials_analyzed": 2,
+   "techniques_extracted": [
+    "CASE-002",
+    "GL-006"
+   ],
+   "coverage": {
+    "identificados": "Blog con ≥ 11 casos y entrevistas (abr–ago 2026); Academy/Creative Pass de pago",
+    "estudiados": "2 casos (Immersive Garden para GQ × Audemars Piguet; Exo Ape para Fluid Glass)",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "CASE-002",
+     "GL-006"
+    ],
+    "pendiente": "La Revoltosa, Razorpay, The New Obys; Academy INACCESIBLE_POR_COSTE",
+    "n_ident": 12,
+    "n_est": 2
+   }
+  },
+  {
+   "id": "SRC-023",
+   "name": "Three.js Journey (Bruno Simon)",
+   "layer": "E_3d",
+   "topics_hypothesis": "Curso de pago",
+   "user_notes": "Fundamentos avanzados de Three.js; no eludir acceso",
+   "official_url": null,
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 1,
+   "techniques_extracted": [
+    "ARCH-002"
+   ],
+   "cost_status": "INACCESIBLE_POR_COSTE",
+   "cost_reason": "Curso de pago",
+   "free_alternative": "Manual oficial de three.js (threejs.org/manual), docs de R3F (R3F-002), artículos gratuitos de Wael Yasmina y tutoriales gratuitos de Wawa Sensei con repos",
+   "coverage": {
+    "identificados": "Three.js Journey (curso de pago → INACCESIBLE_POR_COSTE); repo MIT brunosimon/folio-2019",
+    "estudiados": "1 repo (folio-2019: arquitectura, Time, Sizes, Resources, matcaps, sombras falsas, fusión de geometrías)",
+    "evidencia": "CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "ARCH-002"
+    ],
+    "pendiente": "Car/Physics/Controls de folio-2019; folio actual si es público; artículos/charlas gratuitas",
+    "n_ident": 2,
+    "n_est": 1
+   }
+  },
+  {
+   "id": "SRC-024",
+   "name": "Fireship",
+   "layer": "B_arquitectura",
+   "topics_hypothesis": "Ecosistema web, herramientas, tendencias y resúmenes",
+   "user_notes": "Radar de tecnologías, **no** guía definitiva de implementación",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 1,
+   "techniques_extracted": [
+    "PHYS-001"
+   ],
+   "coverage": {
+    "identificados": "fireship.io/lessons: lecciones de texto (Tailwind, Framer Motion modal y notificaciones, D3, Redis+Next, criptografía); cursos PRO de pago",
+    "estudiados": "1 lección (modal con Framer Motion; sin accesibilidad). Vídeos: 0",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "PHYS-001"
+    ],
+    "pendiente": "Lección de notificaciones animadas; contenido principal en vídeos cortos (no automatizable)",
+    "n_ident": 6,
+    "n_est": 1
+   }
+  },
+  {
+   "id": "SRC-025",
+   "name": "Web Dev Simplified",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "JavaScript, DOM, React y fundamentos",
+   "user_notes": "Conceptos e implementación desde la base",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 4,
+   "techniques_extracted": [
+    "CSS-007",
+    "A11Y-004"
+   ],
+   "coverage": {
+    "identificados": "blog.webdevsimplified.com: 25 artículos relevantes listados (CSS moderno, JS, rendimiento, accesibilidad, React)",
+    "estudiados": "4 artículos: calc-size (2024), @property (2025), <dialog> (2023), estilos de foco (2024)",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "CSS-007",
+     "A11Y-004"
+    ],
+    "pendiente": "corner-shape, :has, cascade layers, quantity queries, AbortController, Intersection Observer, debounce/throttle, responsive/lazy images, RSC",
+    "n_ident": 25,
+    "n_est": 4
+   }
+  },
+  {
+   "id": "SRC-026",
+   "name": "freeCodeCamp",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "Formación de programación y proyectos completos",
+   "user_notes": "Cursos estructurados y ejemplos integrales",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 2,
+   "techniques_extracted": [
+    "A11Y-005"
+   ],
+   "coverage": {
+    "identificados": "freecodecamp.org/news: ≥10 artículos de accesibilidad, varios de GSAP, curso 3D React/WebGi",
+    "estudiados": "2 artículos (Web Accessibility Handbook 2025; landing GSAP+Tailwind 2022)",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "A11Y-005"
+    ],
+    "pendiente": "Handbooks React/Next.js; curso 3D React",
+    "n_ident": 13,
+    "n_est": 2
+   }
+  },
+  {
+   "id": "SRC-027",
+   "name": "Theo Browne / t3.gg",
+   "layer": "B_arquitectura",
+   "topics_hypothesis": "Arquitectura y ecosistema JavaScript/TypeScript",
+   "user_notes": "Decisiones de stack; contrastar opiniones con fuentes primarias",
+   "official_url": null,
+   "evidence_status": "DOCUMENTACION_OFICIAL_ANALIZADA",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 2,
+   "techniques_extracted": [
+    "T3-001"
+   ],
+   "coverage": {
+    "identificados": "create.t3.gg (docs de create-t3-app); canal de Theo",
+    "estudiados": "2 páginas de docs (introducción/axiomas, variables de entorno). Vídeos: 0",
+    "evidencia": "DOCUMENTACION_OFICIAL_ANALIZADA",
+    "tecnicas": [
+     "T3-001"
+    ],
+    "pendiente": "Estructura de carpetas, auth/DB en T3; vídeos (no automatizables)",
+    "n_ident": 2,
+    "n_est": 2
+   }
+  },
+  {
+   "id": "SRC-028",
+   "name": "The Net Ninja",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "Series de React, Next.js y tecnologías web",
+   "user_notes": "Rutas de aprendizaje y proyectos",
+   "official_url": null,
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 1,
+   "techniques_extracted": [
+    "NEXT-002"
+   ],
+   "coverage": {
+    "identificados": "Repo nextjs-masterclass (39 ramas de lección); curso completo en Net Ninja Pro (de pago)",
+    "estudiados": "1 repo (rama final lesson-43)",
+    "evidencia": "CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "NEXT-002"
+    ],
+    "pendiente": "Ramas intermedias; otros repos de iamshaunjp (React, Astro, Tailwind)",
+    "n_ident": 2,
+    "n_est": 1
+   }
+  },
+  {
+   "id": "SRC-029",
+   "name": "Traversy Media",
+   "layer": "B_arquitectura",
+   "topics_hypothesis": "Aplicaciones web y proyectos prácticos",
+   "user_notes": "Flujos completos, integración frontend/backend",
+   "official_url": null,
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 3,
+   "techniques_extracted": [
+    "UX-004"
+   ],
+   "coverage": {
+    "identificados": "50projects50days (MIT, 50 mini-proyectos) + design-resources-for-developers; curso de pago en traversymedia.com; listado de repos bloqueado por robots",
+    "estudiados": "3 mini-proyectos (FAQ, sticky nav, form wave)",
+    "evidencia": "CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "UX-004"
+    ],
+    "pendiente": "Resto de mini-proyectos; proyectos completos (landing, MERN)",
+    "n_ident": 52,
+    "n_est": 3
+   }
+  },
+  {
+   "id": "SRC-030",
+   "name": "Jack Herrington",
+   "layer": "B_arquitectura",
+   "topics_hypothesis": "React, Next.js y prácticas de ingeniería frontend",
+   "user_notes": "Patrones avanzados y mantenibilidad",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 4,
+   "techniques_extracted": [
+    "NEXT-003"
+   ],
+   "coverage": {
+    "identificados": "pronextjs.dev: 24 artículos gratuitos (2023–2024); curso Professional Next.js de pago; repos fijados de Module Federation",
+    "estudiados": "4 artículos (acciones vs API, useFormState, ubicación de componentes, JWT)",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "NEXT-003"
+    ],
+    "pendiente": "Caché, streaming, subida de archivos, auth, BD serverless",
+    "n_ident": 24,
+    "n_est": 4
+   }
+  },
+  {
+   "id": "SRC-031",
+   "name": "ByteGrad",
+   "layer": "B_arquitectura",
+   "topics_hypothesis": "Next.js, TypeScript y proyectos",
+   "user_notes": "Flujos profesionales y aplicaciones modernas",
+   "official_url": null,
+   "evidence_status": "METADATOS_VERIFICADOS",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "coverage": {
+    "identificados": "bytegrad.com (Wesley): cursos de pago (Professional React & Next.js); blog.bytegrad.com con 30 entradas (las 9 visibles: CSS/Flexbox, 2021)",
+    "estudiados": "0 (sin contenido gratuito avanzado accesible)",
+    "evidencia": "METADATOS_VERIFICADOS",
+    "tecnicas": [],
+    "pendiente": "Archivo del blog (21 entradas no visibles); cursos INACCESIBLE_POR_COSTE",
+    "n_ident": 31,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-032",
+   "name": "Matt Pocock",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "TypeScript y diseño de tipos",
+   "user_notes": "Código seguro, APIs y patrones de tipos",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 3,
+   "techniques_extracted": [
+    "TS-001"
+   ],
+   "coverage": {
+    "identificados": "totaltypescript.com: 15 artículos gratuitos relevantes (RSS oficial); libro Total TypeScript Essentials; cursos de pago",
+    "estudiados": "3 artículos: tsconfig cheat sheet, ComponentProps, cuándo usar Zod",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "TS-001"
+    ],
+    "pendiente": "Uniones discriminadas, tipos de eventos, ElementRef, ReactNode vs JSX.Element, noUncheckedIndexedAccess; cursos de pago INACCESIBLE_POR_COSTE",
+    "n_ident": 15,
+    "n_est": 3
+   }
+  },
+  {
+   "id": "SRC-033",
+   "name": "Coding in Public",
+   "layer": "B_arquitectura",
+   "topics_hypothesis": "Astro y frontend",
+   "user_notes": "Sitios rápidos, arquitectura de contenido",
+   "official_url": null,
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 2,
+   "techniques_extracted": [
+    "ASTRO-002",
+    "DS-001"
+   ],
+   "coverage": {
+    "identificados": "6 repos populares (astro-blog-tutorial, astro-course-files con 212 ramas, react-router-budget-app, light-dark, homesmart-landing-page, react-todo); web codinginpublic.dev; blog chrispennington.blog; lista de YouTube del curso de blog",
+    "estudiados": "2 repos (astro-course-files module-6.21, light-dark)",
+    "evidencia": "CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "ASTRO-002",
+     "DS-001"
+    ],
+    "pendiente": "homesmart-landing-page, astro-blog-tutorial, blog del autor",
+    "n_ident": 9,
+    "n_est": 2
+   }
+  },
+  {
+   "id": "SRC-034",
+   "name": "ThePrimeagen",
+   "layer": "B_arquitectura",
+   "topics_hypothesis": "Desarrollo y criterios de ingeniería",
+   "user_notes": "Debate técnico, rendimiento, herramientas; verificar pertinencia web",
+   "official_url": null,
+   "evidence_status": "METADATOS_VERIFICADOS",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "coverage": {
+    "identificados": "Cursos en Frontend Masters (p. ej. \"The Last Algorithms Course You'll Need\", algoritmos; \"Developer Productivity\", con vista previa gratuita)",
+    "estudiados": "0 (sin material gratuito de ingeniería web frontend relevante para esta biblioteca)",
+    "evidencia": "METADATOS_VERIFICADOS",
+    "tecnicas": [],
+    "pendiente": "Ninguno prioritario",
+    "n_ident": 2,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-035",
+   "name": "Flux Academy",
+   "layer": "C_diseno_negocio",
+   "topics_hypothesis": "Diseño web, Webflow y negocio de servicios",
+   "user_notes": "Diseño centrado en clientes y entregables comerciales",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 1,
+   "techniques_extracted": [
+    "CLIENT-001"
+   ],
+   "coverage": {
+    "identificados": "flux-academy.com/blog: 13 artículos relevantes; cursos de pago (Webflow Masterclass)",
+    "estudiados": "1 artículo (propósito de la web)",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "CLIENT-001"
+    ],
+    "pendiente": "Jerarquía visual, maquetación; vídeos",
+    "n_ident": 13,
+    "n_est": 1
+   }
+  },
+  {
+   "id": "SRC-036",
+   "name": "midudev",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "JavaScript, React y desarrollo web en español",
+   "user_notes": "Proyectos y contexto del ecosistema",
+   "official_url": null,
+   "evidence_status": "CODIGO_INSPECCIONADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 1,
+   "techniques_extracted": [
+    "ASTRO-003"
+   ],
+   "coverage": {
+    "identificados": "midu.dev (7 entradas); repos porfolio.dev (Astro, CC BY-NC 4.0), landing-infojobs (Astro 4), aprendiendo-react",
+    "estudiados": "1 repo (porfolio.dev)",
+    "evidencia": "CODIGO_INSPECCIONADO",
+    "tecnicas": [
+     "ASTRO-003"
+    ],
+    "pendiente": "landing-infojobs, aprendiendo-react; vídeos/directos",
+    "n_ident": 10,
+    "n_est": 1
+   }
+  },
+  {
+   "id": "SRC-037",
+   "name": "MoureDev",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "Enseñanza de programación y proyectos",
+   "user_notes": "Explicaciones y aprendizaje estructurado",
+   "official_url": null,
+   "evidence_status": "METADATOS_VERIFICADOS",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "coverage": {
+    "identificados": "repo mouredev/hello-javascript (curso de fundamentos de JS desde cero con vídeo 1glVfFxj8a4 y marcas de tiempo; licencia en el repo)",
+    "estudiados": "0 (revisado el índice: contenido de iniciación, sin valor diferencial para esta biblioteca)",
+    "evidencia": "METADATOS_VERIFICADOS",
+    "tecnicas": [],
+    "pendiente": "Buscar material de MoureDev sobre desarrollo web avanzado si existe",
+    "n_ident": 1,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-038",
+   "name": "Soy Dalto",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "Fundamentos web y programación en español",
+   "user_notes": "Nivel introductorio; contrastar prácticas y actualidad",
+   "official_url": null,
+   "evidence_status": "SOLO_REFERENCIA",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "coverage": {
+    "identificados": "Búsqueda web (lote 13) sin sitio oficial verificable; solo prensa de terceros",
+    "estudiados": "0",
+    "evidencia": "SOLO_REFERENCIA",
+    "tecnicas": [],
+    "pendiente": "Pedir al usuario el enlace oficial (web o repos)",
+    "n_ident": 0,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-039",
+   "name": "Fazt",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "Desarrollo web y programación práctica",
+   "user_notes": "Proyectos full stack",
+   "official_url": "https://github.com/FaztWeb",
+   "evidence_status": "METADATOS_VERIFICADOS",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "coverage": {
+    "identificados": "Organización github.com/FaztWeb (\"A Free and Open Project to help people to write code and learn technology\"): 381 repos; los más populares son CRUD (Next.js + MongoDB/PostgreSQL, React + Supabase, Flask + React)",
+    "estudiados": "0 (proyectos CRUD de aprendizaje; baja prioridad frente a fuentes de diseño/animación)",
+    "evidencia": "METADATOS_VERIFICADOS",
+    "tecnicas": [],
+    "pendiente": "Si se estudia: revisar un CRUD Next.js con la lista de SEC-003 (no duplicar NEXT-002)",
+    "n_ident": 10,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-040",
+   "name": "FalconMasters",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "HTML, CSS, JavaScript y diseño web",
+   "user_notes": "Fundamentos y ejemplos; auditar vigencia",
+   "official_url": "https://www.falconmasters.com/",
+   "evidence_status": "METADATOS_VERIFICADOS",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 0,
+   "techniques_extracted": [],
+   "coverage": {
+    "identificados": "falconmasters.com: 8 cursos de pago (Diseño Web, JavaScript, React, Bootstrap 5, PHP/MySQL, Tiendas Online, Vim/Neovim, Claude Code); la página no lista artículos gratuitos; enlaces a YouTube y X",
+    "estudiados": "0 (cursos → INACCESIBLE_POR_COSTE; vídeos pendientes)",
+    "evidencia": "METADATOS_VERIFICADOS",
+    "tecnicas": [],
+    "pendiente": "Vídeos gratuitos del canal (fase de vídeos)",
+    "n_ident": 8,
+    "n_est": 0
+   }
+  },
+  {
+   "id": "SRC-041",
+   "name": "Carlos Azaustre",
+   "layer": "A_ingenieria_base",
+   "topics_hypothesis": "JavaScript, Node.js y React",
+   "user_notes": "Prácticas del ecosistema JS y frontend",
+   "official_url": null,
+   "evidence_status": "ARTICULO_AUTOR_ANALIZADO",
+   "verification_note": "Solo presente en la lista del usuario / rankings de terceros. Sin verificación propia en este lote.",
+   "tutorials_analyzed": 2,
+   "techniques_extracted": [
+    "CSS-008",
+    "CLIENT-001"
+   ],
+   "coverage": {
+    "identificados": "carlosazaustre.es/blog: 24 artículos (2015–2026)",
+    "estudiados": "2 artículos (CSS 2026; Spec Driven Development)",
+    "evidencia": "ARTICULO_AUTOR_ANALIZADO",
+    "tecnicas": [
+     "CSS-008",
+     "CLIENT-001"
+    ],
+    "pendiente": "JavaScript 2026; Husky/lint-staged/Conventional Commits (CI)",
+    "n_ident": 24,
+    "n_est": 2
+   }
+  }
+ ],
+ "budget_policy": "PRESUPUESTO 0 € (directiva del usuario, 2026-10-26): no se contrata ni se propone como requisito ninguna suscripción o curso. Fuentes de pago → INACCESIBLE_POR_COSTE + alternativa gratuita equivalente.",
+ "official_references_lote8": [
+  "https://gsap.com/docs/v3/Plugins/Observer/",
+  "https://gsap.com/docs/v3/Plugins/ScrollSmoother/",
+  "https://gsap.com/docs/v3/Plugins/MotionPathPlugin/",
+  "https://docs.astro.build/en/concepts/islands/",
+  "https://playwright.dev/docs/best-practices",
+  "https://nextjs.org/docs/app/guides/production-checklist",
+  "https://developer.mozilla.org/en-US/docs/Web/CSS/interpolate-size",
+  "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog"
+ ],
+ "official_references_lote9": [
+  "https://nextjs.org/docs/app/api-reference/file-conventions/proxy",
+  "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark",
+  "https://support.google.com/business/answer/7091",
+  "https://threejs.org/docs/pages/InstancedMesh.html",
+  "https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html",
+  "https://utopia.fyi/blog/designing-with-fluid-type-scales/"
+ ],
+ "official_references_lote10": [
+  "https://nextjs.org/docs/app/guides/forms",
+  "https://create.t3.gg/en/usage/env-variables"
+ ],
+ "official_references_lote11": [
+  "https://github.com/mrdoob/three.js/wiki/Three.js-Shading-Language",
+  "https://threejs.org/manual/en/webgpurenderer",
+  "https://threejs.org/docs/pages/BatchedMesh.html",
+  "https://caniuse.com/webgpu",
+  "https://www.aepd.es/guias/guia-cookies.pdf",
+  "https://www.aepd.es/guias/guia-cookies-analiticas-externas.pdf",
+  "https://nextjs.org/docs/app/guides/internationalization",
+  "https://developers.google.com/search/docs/specialty/international/localized-versions",
+  "https://playwright.dev/docs/ci-intro",
+  "https://web.dev/articles/optimize-inp",
+  "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Animation_triggers",
+  "https://developer.chrome.com/blog/element-scoped-view-transitions",
+  "https://developer.mozilla.org/en-US/docs/Web/CSS/corner-shape",
+  "https://github.com/theatre-js/theatre"
+ ],
+ "official_references_lote12": [
+  "https://code.claude.com/docs/en/skills",
+  "https://code.claude.com/docs/en/cli-reference",
+  "https://gltf-transform.dev/cli",
+  "https://github.com/zeux/meshoptimizer/blob/master/gltf/README.md",
+  "https://github.com/KhronosGroup/3D-Formats-Guidelines/blob/main/KTXArtistGuide.md",
+  "https://threejs.org/docs/pages/GLTFLoader.html",
+  "https://gsap.com/docs/v3/Plugins/ScrollTrigger/static.batch()",
+  "https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/",
+  "https://nextjs.org/docs/app/guides/data-security"
+ ],
+ "official_references_lote13": [
+  "https://gsap.com/resources/st-mistakes",
+  "https://gsap.com/docs/v3/Plugins/ScrollTrigger/static.normalizeScroll()",
+  "https://gsap.com/docs/v3/Plugins/Draggable/",
+  "https://threejs.org/manual/en/shadows.html",
+  "https://github.com/mrdoob/three.js (src/constants.js, LightShadow.js, WebGLShadowMap.js; examples webgl_shadow_contact, webgl_shadowmap_csm, webgl_loader_gltf; commit e06d724)",
+  "https://docs.astro.build/en/guides/images/",
+  "https://docs.astro.build/en/guides/view-transitions/",
+  "https://playwright.dev/docs/test-snapshots",
+  "https://playwright.dev/docs/api/class-pageassertions",
+  "https://github.com/GoogleChrome/lighthouse-ci/blob/main/docs/configuration.md",
+  "https://www.w3.org/WAI/ARIA/apg/patterns/carousel/",
+  "https://www.nngroup.com/articles/visual-hierarchy-ux-definition/",
+  "https://code.claude.com/docs/en/cli-reference",
+  "https://code.claude.com/docs/en/permissions"
+ ],
+ "official_references_lote15": [
+  "https://github.com/greensock/gsap-skills",
+  "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+  "https://github.com/mrdoob/three.js (dev, e06d724: MeshStandardMaterial, Texture.channel, GLTFLoader, LightMapper, unwrapUVs, PostProcessing/RenderPipeline, BloomNode, ejemplos de bloom y AO)",
+  "https://docs.blender.org/manual/en/latest/addons/import_export/scene_gltf2.html",
+  "https://web.dev/articles/font-best-practices",
+  "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch"
+ ],
+ "official_references_lote16": [
+  "https://github.com/blender/blender (ba33d29)",
+  "https://github.com/KhronosGroup/glTF-Blender-IO (e03d660)",
+  "https://gsap.com/docs/v3/GSAP/gsap.matchMedia()",
+  "https://gsap.com/docs/v3/Plugins/ScrollToPlugin/",
+  "https://gsap.com/docs/v3/Plugins/ScrollSmoother/",
+  "https://docs.astro.build/en/guides/view-transitions/",
+  "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/color-gamut",
+  "https://www.typescriptlang.org/tsconfig/#module",
+  "https://registry.npmjs.org/"
+ ],
+ "official_references_lote17": [
+  "https://nextjs.org/docs/app/getting-started/caching",
+  "https://react.dev/blog/2025/10/01/react-19-2",
+  "https://github.com/mrdoob/three.js (src/core/Clock.js, Timer.js; e06d724)"
+ ],
+ "official_references_lote18": [
+  "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+  "https://gsap.com/docs/v3/Installation/",
+  "https://gsap.com/standard-license",
+  "https://registry.npmjs.org/"
+ ],
+ "official_references_lote19": [
+  "https://docs.astro.build/en/guides/upgrade-to/v6/",
+  "https://docs.astro.build/en/guides/upgrade-to/v7/",
+  "https://registry.npmjs.org/"
+ ],
+ "official_references_lote20": [
+  "https://gsap.com/docs/v3/HelperFunctions/helpers/imageSequenceScrub"
+ ],
+ "official_references_lote21": [
+  "https://unsplash.com/license",
+  "https://www.pexels.com/license/",
+  "https://pixabay.com/service/license-summary/",
+  "https://polyhaven.com/license",
+  "https://www.blender.org/about/license/",
+  "https://www.blender.org/download/"
+ ],
+ "official_references_lote22": [
+  "https://api.polyhaven.com/assets?type=hdris&categories=studio",
+  "https://free3d.com/royalty-free-license"
+ ],
+ "official_references_lote23": [
+  "https://www.blender.org/download/requirements/"
+ ],
+ "official_references_lote24": [
+  "https://gsap.com/docs/v3/Plugins/Flip/static.fit()",
+  "https://gsap.com/docs/v3/Plugins/ScrollTrigger/",
+  "https://gsap.com/docs/v3/Plugins/ScrollSmoother/",
+  "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Stacking_context"
+ ],
+ "official_references_lote25": [
+  "https://gsap.com/docs/v3/HelperFunctions/",
+  "https://gsap.com/docs/v3/HelperFunctions/helpers/blendEases",
+  "https://gsap.com/docs/v3/HelperFunctions/helpers/smoothOriginChange",
+  "https://gsap.com/docs/v3/HelperFunctions/helpers/callAfterResize",
+  "https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/shape-rendering"
+ ],
+ "official_references_lote26": [
+  "https://registry.npmjs.org/gsap/-/gsap-3.15.0.tgz (sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==)"
+ ],
+ "official_references_lote27": [
+  "https://developer.mozilla.org/docs/Web/API/HTMLImageElement/decode",
+  "https://docs.midjourney.com/style-reference",
+  "https://libcom.readthedocs.io/en/latest/color_transfer.html",
+  "https://graphics.cs.yale.edu/sites/default/files/2012sig_compositing.pdf",
+  "https://arxiv.org/pdf/1703.03872",
+  "https://jakearchibald.com/2024/video-with-transparency/"
+ ],
+ "youtube_lote28": [
+  "https://www.youtube.com/watch?v=9eHEOAn2FOA",
+  "https://www.youtube.com/watch?v=9Y2bjYQCWvE",
+  "https://www.youtube.com/watch?v=DTTNSjyEtes",
+  "https://www.youtube.com/watch?v=3SJIPjlSjtM",
+  "https://www.youtube.com/watch?v=37wy90RnATM",
+  "https://www.youtube.com/watch?v=z1wZp4jV4cQ",
+  "https://www.youtube.com/watch?v=YftYHkS5Dao",
+  "https://www.youtube.com/watch?v=rwdlO3uIlwk",
+  "https://codepen.io/Hyperplexed/pen/MWqNroM"
+ ],
+ "fuentes_lote29": {
+  "leidas": [
+   "https://help.runwayml.com/hc/en-us/articles/48324313115155-Image-to-Video-Prompting-Guide",
+   "https://curiousrefuge.com/blog/how-to-change-camera-angles-with-ai"
+  ],
+  "solo_metadatos_o_inaccesibles": [
+   "https://www.youtube.com/watch?v=rWUZWMDsglc",
+   "https://www.youtube.com/watch?v=YcHH6_T9DTU",
+   "https://www.youtube.com/watch?v=uX5J3dnQZao",
+   "https://academy.runwayml.com/guides/prompting-guide",
+   "https://curiousrefuge.com/ai-tutorials",
+   "https://tympanus.net/codrops/2022/10/10/how-to-code-a-three-js-postprocessing-transition/",
+   "https://blog.olivierlarose.com/tutorials",
+   "https://blog.olivierlarose.com/tutorials/svg-mask-scroll",
+   "https://blog.olivierlarose.com/tutorials/mask-entry"
+  ],
+  "registro": "evidence/research/2026-11-04-lote29/registro_fuentes.json"
+ },
+ "youtube_lote30": [
+  "https://www.youtube.com/watch?v=rWUZWMDsglc",
+  "https://www.youtube.com/watch?v=UVDpgP7sRbw",
+  "https://www.youtube.com/watch?v=_cjEnGWN3Ug",
+  "https://www.youtube.com/watch?v=ythBGTLjot8",
+  "https://www.youtube.com/watch?v=LcWJKYbYvi8",
+  "https://www.youtube.com/watch?v=YcHH6_T9DTU",
+  "https://www.youtube.com/watch?v=uX5J3dnQZao",
+  "https://www.youtube.com/watch?v=xvCTlEIvC8U",
+  "https://www.youtube.com/watch?v=12yVUxIkag0"
+ ],
+ "fuentes_lote31": {
+  "registro": "evidence/research/2026-11-04-lote31/registro_fuentes.json",
+  "leidas": [
+   "https://www.provideocoalition.com/motion_blur/",
+   "https://www.provideocoalition.com/cmg_hidden_gems_chapter_8_motion_blur_and_more/",
+   "https://ae-plugins.docsforadobe.dev/effect-details/motion-blur.html"
+  ],
+  "solo_metadatos": [
+   "https://www.youtube.com/watch?v=b5R8STAqydk"
+  ]
+ },
+ "youtube_lote32": [
+  "https://www.youtube.com/watch?v=JHeMJ_l2iNA",
+  "https://www.youtube.com/watch?v=2bi5YcnOGkA",
+  "https://www.youtube.com/watch?v=rdi0bPWqYyI",
+  "https://www.youtube.com/watch?v=n24aTp1-jK4",
+  "https://www.youtube.com/watch?v=a7Nyzqy9_I0",
+  "https://www.youtube.com/watch?v=l_-c5QDpYY0",
+  "https://www.youtube.com/watch?v=frgmk0Wu76A",
+  "https://www.youtube.com/watch?v=GeNjyb8UBKM",
+  "https://www.youtube.com/watch?v=NRheDOjkOs8",
+  "https://www.youtube.com/watch?v=Vr9l4m6bkcQ"
+ ]
+}

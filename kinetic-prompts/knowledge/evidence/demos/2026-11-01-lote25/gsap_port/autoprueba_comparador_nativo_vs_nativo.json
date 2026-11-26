@@ -1,0 +1,17 @@
+{
+ "nativo": "http://127.0.0.1:8790/receta_a_continuidad.html",
+ "gsap": "http://127.0.0.1:8790/receta_a_continuidad.html",
+ "ancho": 1440,
+ "espera_ms": 200,
+ "diferencia_pct": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "gsap_info": null,
+ "gsap_reduced_motion": {
+  "rm": true
+ }
+}

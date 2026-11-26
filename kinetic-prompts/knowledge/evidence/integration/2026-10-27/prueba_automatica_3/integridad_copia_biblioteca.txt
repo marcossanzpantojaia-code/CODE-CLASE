@@ -1,0 +1,4 @@
+Copia aislada de v0.14.1 (257 archivos): sha256 antes y después idénticos
+5851d698f500364d320f0329e2b54d82ec646b43eb9d207ba49e9df38abf5d89  lib_before.sha
+5851d698f500364d320f0329e2b54d82ec646b43eb9d207ba49e9df38abf5d89  lib_after.sha
+Carpeta sandbox al terminar: 0 archivos

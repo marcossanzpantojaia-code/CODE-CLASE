@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Microprueba lote 32 · ROSSO con luz, integración, profundidad y partículas</title>
+<!-- ?v=31 → B del lote 31 (fixtures originales, sin capas nuevas) · ?v=32 → lote 32 (grado horneado, integración, atmósfera).
+     FIXTURES rotulados: solo valida mecánica, coherencia geométrica y coste; NO calidad visual (C1) ni creativa (C3). -->
+<style>
+ :root{--crema:#efe6d6;--tinta:#231a14}
+ *{box-sizing:border-box;margin:0}
+ html,body{width:100%;height:100%;overflow:hidden;background:var(--crema);font-family:Georgia,serif;color:var(--tinta)}
+ #escena{position:absolute;inset:0;transform-origin:50% 55%}
+ /* luz motivada (Sonduck 1:40): degradado radial centrado donde "está" la luz principal (arriba a la izquierda).
+    FUERA de #escena: un fondo lejano no tiene paralaje con el push-in, y dentro obligaba a re-rasterizar el degradado en cada fotograma (medido) */
+ .v32 #fondo{position:fixed;inset:0;background:radial-gradient(circle at 18% 12%, #f7efe2 0%, #e9dcc6 38%, #c9b79c 100%);z-index:0}
+ .tit{position:absolute;left:6vw;top:40%;font-size:7.5vw;line-height:.92;font-weight:700;z-index:3}
+ .plato{position:absolute;left:50%;top:78%;width:58vw;aspect-ratio:1/.464;margin-left:-29vw;margin-top:calc(-29vw * .464)}
+ .plato img{position:absolute;inset:0;width:100%;height:100%}
+ #plato{z-index:2} #plato-delante{z-index:5} .foco{opacity:0}
+ #part-tras{position:absolute;left:0;top:0;z-index:1;pointer-events:none}
+ #lienzo{position:absolute;left:0;top:0;z-index:4;pointer-events:none}
+ #part-delante{position:absolute;left:0;top:0;z-index:7;pointer-events:none}
+ .ing{position:absolute;width:6vw;z-index:6;left:0;top:0}
+ #grano{position:fixed;inset:0;z-index:8;opacity:.045;mix-blend-mode:normal;pointer-events:none;display:none}
+ .v32 #grano{display:block}
+ /* viñeta centrada en la luz (Sonduck 7:17) y al 75 % (Marriott 19:33): estática → coste nulo */
+ .v32 #vineta{position:fixed;inset:0;z-index:8;pointer-events:none;background:radial-gradient(ellipse 85% 85% at 40% 35%, transparent 55%, rgba(35,22,14,.42) 100%)}
+ /* tema oscuro tipo CREMA (CASE-003 R2/R6: fondo oscuro y partículas doradas): misma escena, solo cambia el entorno */
+ .oscuro{background:#140d08;color:#efe2cc} .oscuro.v32 #fondo{background:radial-gradient(circle at 18% 12%, #4a3020 0%, #24170f 40%, #0d0805 100%)}
+ .oscuro.v32 #vineta{background:radial-gradient(ellipse 85% 85% at 40% 35%, transparent 50%, rgba(0,0,0,.55) 100%)}
+ .src{display:none}
+ .rot{position:fixed;left:12px;top:10px;z-index:9;font:600 13px system-ui;background:#b3261e;color:#fff;padding:6px 10px;border-radius:4px}
+ .eti{position:fixed;right:12px;top:10px;z-index:9;font:600 13px system-ui;background:#231a14;color:#efe6d6;padding:6px 10px;border-radius:4px}
+</style></head><body>
+<div class="rot">MICROPRUEBA · FIXTURES (no son recursos finales) · mecánica y coste</div>
+<div class="eti" id="eti"></div>
+<img class="src" id="src-heroe" alt="">
+<div id="fondo"></div>
+<div id="escena">
+ <canvas id="part-tras"></canvas>
+ <h2 class="tit">Tu mesa<br>te espera.</h2>
+ <div class="plato" id="plato"><img id="pl-sombra" alt=""><img id="pl" alt=""><img id="pl-b3" class="foco" alt=""><img id="pl-b6" class="foco" alt=""></div>
+ <canvas id="lienzo"></canvas>
+ <div class="plato" id="plato-delante"><img id="pl-del" alt=""></div>
+ <canvas id="part-delante"></canvas>
+</div>
+<canvas id="grano"></canvas><div id="vineta"></div>
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script src="node_modules/gsap/dist/EasePack.min.js"></script>
+<script type="module">
+import { crear } from './escena32.js';
+import { crearAtmosfera } from './atmosfera32.js';
+gsap.registerPlugin(ExpoScaleEase);
+const Q = new URLSearchParams(location.search), V = Q.get('v') || '32', R = V === '32' ? 'recursos' : 'recursos_src', SIN = (Q.get('sin') || '').split(',');
+if (SIN.includes('grano')) document.getElementById('grano').remove(); if (SIN.includes('vineta')) document.getElementById('vineta').remove();
+if (SIN.includes('fondo')) document.getElementById('fondo').remove();
+document.body.classList.toggle('v32', V === '32'); document.body.classList.toggle('oscuro', Q.get('tema') === 'crema');
+document.getElementById('eti').textContent = V === '32' ? 'B · lote 32: grado + integración + luz + partículas + foco' : 'A · lote 31';
+const set = (id, f) => document.getElementById(id).src = `${R}/${f}`;
+set('src-heroe', 'heroe-540.webp'); set('pl-sombra', 'producto_sombra-709.webp'); set('pl', 'producto-709.webp'); set('pl-del', 'producto_delantero-709.webp');
+if (V === '32') { set('pl-b3', 'producto-709-blur3.webp'); set('pl-b6', 'producto-709-blur6.webp'); }
+await Promise.all([...document.images].filter(i => i.getAttribute('src')).map(i => i.decode().catch(() => {})));
+const T = crear({ modo: 'l31', blur: !SIN.includes('blur'), comp: V === '32' && !SIN.includes('comp'), gsap });
+if (!document.getElementById('grano')) { const c = document.createElement('canvas'); c.id = 'grano'; c.style.display = 'none'; document.body.append(c); }
+const atm = V === '32' ? crearAtmosfera({ n: SIN.includes('part') ? 0 : 70 }) : null;
+const esc = document.getElementById('escena'), { nH, nP0 } = T.geo, tc = T.geo.tc, rH = { w: innerHeight * .84 / 2.119, h: innerHeight * .84 };
+['tomate','albahaca','parmesano','guindilla','tomate','albahaca'].forEach((n, i) => {
+  const im = new Image(); im.src = `${R}/ing_${n}_p1-128.webp`; im.className = 'ing'; im.alt = ''; esc.append(im);
+  const a = i / 6 * Math.PI * 2, x0 = nH.x + Math.cos(a) * rH.w * .9, y0 = nH.y - rH.h * .25 + Math.sin(a) * rH.h * .18;
+  const xf = nP0.x + Math.cos(a) * nP0.w * .9, yf = nP0.y + Math.sin(a) * nP0.w * .28, d = i * .05 + ((i * 37) % 5) * .02;
+  gsap.set(im, { x: x0 - 40, y: y0 - 40 });
+  T.tl.to(im, { x: xf - 40, y: yf - 40, duration: .55 + ((i * 13) % 4) * .06, ease: 'power2.inOut' }, tc - .35 + d)
+      .to(im, { y: yf - 40 - 14, duration: .12, ease: 'power2.out' }, '>').to(im, { y: yf - 40, duration: .22, ease: 'power2.in' }, '>');
+});
+// "respiro" de foco al aterrizar: 0 → 4 px → 0 (Marriott 26:04–26:41), con capas desenfocadas PRERENDERIZADAS
+const foco = t => { const a = (t - (tc - .1)) / 1.0; return a <= 0 || a >= 1 ? 0 : 4 * Math.sin(Math.PI * a) ** 2; };
+const b3 = document.getElementById('pl-b3'), b6 = document.getElementById('pl-b6');
+T.tl.eventCallback('onUpdate', () => {
+  const st = T.render(); if (!atm) return;
+  const f = SIN.includes('foco') ? 0 : foco(st.t);
+  // CORREGIDO en el lote 32 tras ver el fotograma 50: desenfocar SOLO el plato dejaba nítidos los ingredientes del mismo plano
+  // (incoherencia de profundidad). El "respiro" afecta solo a lo que está FUERA del plano de foco (partículas): el
+  // protagonista sigue nítido. Las capas plato-blur3/6 quedan disponibles solo si se prerenderizan TODAS las capas del plano.
+  if (Q.get('foco') === 'plato') { b3.style.opacity = Math.min(1, f / 3).toFixed(3); b6.style.opacity = Math.max(0, (f - 3) / 3).toFixed(3); }
+  window.__atm = atm.render(st.t, st.cam, f);
+});
+window.DUR = T.tl.duration();
+window.ir = t => { T.tl.seek(t, false); return { ...window.__st, atm: window.__atm ? { ...window.__atm } : null, sombra: window.__sombra ? { ...window.__sombra } : null }; };
+window.T = T; T.reset(); T.render(0); if (atm) window.__atm = atm.render(0, 1, 0); window.LISTO = true;
+</script></body></html>

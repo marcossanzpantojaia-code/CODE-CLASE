@@ -1,0 +1,288 @@
+{
+ "url": "http://127.0.0.1:8790/receta_a_continuidad.html",
+ "ancho": 375,
+ "pasos": 21,
+ "cfg": {
+  "protagonista": "#jarra",
+  "textos": [
+   ".t1 .linea > span",
+   ".t2 .linea > span"
+  ]
+ },
+ "resumen": {
+  "protagonista_ancho_min": 0.52,
+  "protagonista_ancho_max": 0.762,
+  "pasos_sin_protagonista_claro": [],
+  "pasos_sin_ninguna_linea_legible": [
+   0.2499,
+   0.3,
+   0.3501,
+   0.3998,
+   0.4498,
+   0.4999,
+   0.55,
+   0.6001,
+   0.6498,
+   0.6998,
+   0.7499
+  ],
+  "lienzo_cobertura_min": null,
+  "reversibilidad_visual_max_pct": 0.21
+ },
+ "baja": [
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1,
+    0,
+    0
+   ],
+   "p": 0
+  },
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1,
+    0,
+    0
+   ],
+   "p": 0.05
+  },
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1,
+    0,
+    0
+   ],
+   "p": 0.1001
+  },
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    1,
+    1,
+    0,
+    0
+   ],
+   "p": 0.1498
+  },
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    0.98,
+    1,
+    0,
+    0
+   ],
+   "p": 0.1998
+  },
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    0.22,
+    0.68,
+    0,
+    0
+   ],
+   "p": 0.2499
+  },
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "p": 0.3
+  },
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "p": 0.3501
+  },
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "p": 0.3998
+  },
+  {
+   "protagonista_ancho": 0.52,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "p": 0.4498
+  },
+  {
+   "protagonista_ancho": 0.6,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "p": 0.4999
+  },
+  {
+   "protagonista_ancho": 0.757,
+   "protagonista_visible": 0.974,
+   "textos": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "p": 0.55
+  },
+  {
+   "protagonista_ancho": 0.762,
+   "protagonista_visible": 0.968,
+   "textos": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "p": 0.6001
+  },
+  {
+   "protagonista_ancho": 0.762,
+   "protagonista_visible": 0.968,
+   "textos": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "p": 0.6498
+  },
+  {
+   "protagonista_ancho": 0.762,
+   "protagonista_visible": 0.968,
+   "textos": [
+    0,
+    0,
+    0.06,
+    0
+   ],
+   "p": 0.6998
+  },
+  {
+   "protagonista_ancho": 0.762,
+   "protagonista_visible": 0.968,
+   "textos": [
+    0,
+    0,
+    0.93,
+    0.68
+   ],
+   "p": 0.7499
+  },
+  {
+   "protagonista_ancho": 0.762,
+   "protagonista_visible": 0.968,
+   "textos": [
+    0,
+    0,
+    1,
+    1
+   ],
+   "p": 0.8
+  },
+  {
+   "protagonista_ancho": 0.762,
+   "protagonista_visible": 0.968,
+   "textos": [
+    0,
+    0,
+    1,
+    1
+   ],
+   "p": 0.8501
+  },
+  {
+   "protagonista_ancho": 0.752,
+   "protagonista_visible": 0.981,
+   "textos": [
+    0,
+    0,
+    1,
+    1
+   ],
+   "p": 0.8998
+  },
+  {
+   "protagonista_ancho": 0.657,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0,
+    1,
+    1
+   ],
+   "p": 0.9498
+  },
+  {
+   "protagonista_ancho": 0.628,
+   "protagonista_visible": 1,
+   "textos": [
+    0,
+    0,
+    1,
+    1
+   ],
+   "p": 0.9999
+  }
+ ],
+ "difs": [
+  0.0021,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ]
+}

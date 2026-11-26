@@ -1,0 +1,26 @@
+{
+  "lote": 8,
+  "regla": "Sin mediciones temporales si rAF < 50/s, sin foco o panel oculto",
+  "checks": [
+    {
+      "orden": 1,
+      "pagina": "blog.olivierlarose.com/demos/text-mask-animation",
+      "rafPerSec": 0.0,
+      "frames_en_5s": 0,
+      "hasFocus": false,
+      "visibilityState": "visible",
+      "herramienta": "The Browser pane is currently hidden",
+      "t": "2026-10-26T18:50:11.211Z"
+    },
+    {
+      "orden": 2,
+      "pagina": "codepen.io/kevinpowell/pens/popular",
+      "rafPerSec": 0.0,
+      "frames_en_5s": 0,
+      "hasFocus": false,
+      "visibilityState": "visible",
+      "t": "2026-10-26T19:02:48.562Z"
+    }
+  ],
+  "resultado": "Panel oculto al inicio y al final del lote 8 → 0 mediciones temporales. Uso del navegador limitado a leer código de CodePen (fetch de mismo origen, sin sesión) y listados públicos."
+}

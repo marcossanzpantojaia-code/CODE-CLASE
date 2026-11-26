@@ -1,0 +1,3 @@
+sha256 de 229 archivos idéntico antes y después (diff vacío)
+31bcef67e118b9bd506dcf465edc3e82fbb5b7633bbb2c3e10ecd7b6ec61a126  /tmp/claude-0/-home-claude/4163556f-e6b7-5519-9643-7a71e30aadce/scratchpad/itest/lib_before.sha
+31bcef67e118b9bd506dcf465edc3e82fbb5b7633bbb2c3e10ecd7b6ec61a126  /tmp/claude-0/-home-claude/4163556f-e6b7-5519-9643-7a71e30aadce/scratchpad/itest/lib_after.sha

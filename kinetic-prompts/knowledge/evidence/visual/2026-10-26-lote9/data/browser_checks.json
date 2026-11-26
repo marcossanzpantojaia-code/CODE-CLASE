@@ -1,0 +1,16 @@
+{
+  "lote": 9,
+  "regla": "Si el panel sigue oculto: registrar el bloqueo una sola vez y continuar con investigación textual y de código",
+  "checks": [
+    {
+      "orden": 1,
+      "pagina": "codepen.io/kevinpowell/pens/popular",
+      "rafPerSec": 0.0,
+      "frames_en_5s": 0,
+      "hasFocus": false,
+      "herramienta": "The Browser pane is currently hidden",
+      "t": "2026-10-26T19:13:54.943Z"
+    }
+  ],
+  "resultado": "Bloqueado → 0 mediciones temporales. Navegador usado solo para leer el código fuente de pens públicos de CodePen (fetch de mismo origen, sin sesión)."
+}

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receta A — objeto que conecta dos secciones (lote 26: nativo | GSAP 3.15.0)</title>
+<!-- Microdemo de MECÁNICA (C2), lote 26: la MISMA tabla de pistas se ejecuta con el motor nativo (?motor=nativo) o con
+     GSAP 3.15.0 real (?motor=gsap, por defecto; ?pin=1 usa el pin de ScrollTrigger; ?scrub=0.8 scrub numérico).
+     Recursos procedurales SVG: no fotorrealistas (no evaluables en C1/C3). Corrección AUD-001 H1/H2: meseta legible. -->
+<style>
+  :root { --crema:#efe6d6; --caramelo:#b8794a; --tinta:#2a1d14; }
+  * { box-sizing:border-box; margin:0 }
+  body { font-family: Georgia, "Times New Roman", serif; color:var(--tinta); background:var(--crema); }
+  .intro, .fin { height:60vh; display:grid; place-items:center; font:16px system-ui; color:#6d625a }
+  #acto { height:400vh; position:relative }
+  .escenario { position:sticky; top:0; height:100vh; overflow:hidden; isolation:isolate }
+  .fondo { position:absolute; inset:0 }
+  .f1 { background:var(--crema) }
+  .f2 { background:var(--caramelo); clip-path: inset(100% 0 0 0) }        /* panel que sube (R1, 8,0 s) */
+  /* Hallazgo lote 26: GSAP 3.15 absorbe la propiedad CSS `translate` del elemento que anima (escribe translate:none y la
+     pasa a transform) y mm.revert() no la restaura → el centrado va en una capa contenedora y GSAP solo anima x. */
+  .capa-fantasma { position:absolute; inset:0; display:grid; place-items:center; z-index:1; pointer-events:none }
+  .fantasma { font-size:34vw; font-weight:700; letter-spacing:-.03em;
+              color:rgb(42 29 20 / .06); white-space:nowrap; user-select:none }
+  .texto { position:absolute; left:6vw; top:22vh; z-index:3; width:min(44vw,640px) }
+  .texto .linea { display:block; overflow:hidden }                          /* máscara de línea */
+  .texto .linea > span { display:block; will-change:transform }
+  .t1 h2, .t2 h2 { font-size:clamp(40px,7.2vw,118px); line-height:.92; font-weight:700 }
+  .rotulo { font:600 12px system-ui; letter-spacing:.16em; text-transform:uppercase; margin-bottom:14px; opacity:.7 }
+  .t2 { color:var(--crema) }
+  #jarra { position:absolute; left:0; top:0; width:min(30vw,420px); z-index:4; transform-origin:30% 20%; will-change:transform }
+  #taza  { position:absolute; left:0; top:0; width:min(24vw,330px); z-index:4; will-change:transform }
+  #chorro { position:absolute; inset:0; width:100%; height:100%; z-index:5; pointer-events:none }
+  /* reduced motion: sin pin; las dos composiciones clave apiladas y legibles */
+  .rm #acto { height:auto } .rm .escenario { position:relative; height:auto; min-height:100vh }
+  .rm .f2 { clip-path:none; top:50% } .rm .texto { position:relative; left:auto; top:auto; padding:10vh 6vw }
+  .rm #jarra, .rm #taza, .rm #chorro { display:none }
+  .rm .texto .linea > span { transform:none !important } .rm .rotulo { opacity:.7 !important }
+  /* pin de ScrollTrigger: sin sticky ni 400vh (el pin-spacer aporta el recorrido) */
+  .modo-pin #acto { height:auto } .modo-pin .escenario { position:relative }
+  @media (max-width:700px) {
+    .texto { top:12vh; width:88vw } #jarra { width:52vw } #taza { width:40vw } .fantasma { font-size:48vw } .capa-fantasma { top:24% }
+  }
+</style>
+</head>
+<body>
+<div class="intro">↓ Desliza (microdemo de continuidad)</div>
+<section id="acto" aria-label="Del filtro a la taza">
+  <div class="escenario">
+    <div class="fondo f1"></div><div class="fondo f2"></div>
+    <div class="capa-fantasma"><span class="fantasma" aria-hidden="true">BLOOM</span></div>
+    <div class="texto t1"><p class="rotulo">Sección 1 — Florecer</p>
+      <h2><span class="linea"><span>Deja que</span></span><span class="linea"><span>florezca.</span></span></h2></div>
+    <div class="texto t2"><p class="rotulo">Sección 2 — Servir</p>
+      <h2><span class="linea"><span>Sirve sin</span></span><span class="linea"><span>prisa.</span></span></h2></div>
+    <svg id="jarra" viewBox="0 0 200 220" aria-hidden="true">
+      <defs><linearGradient id="vidrio" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity=".45"/></linearGradient></defs>
+      <path d="M40 30 L150 30 L165 200 Q100 215 30 200 Z" fill="url(#vidrio)" stroke="#2a1d14" stroke-opacity=".35" stroke-width="2"/>
+      <path id="liquido" d="M36 95 L158 95 L165 200 Q100 215 30 200 Z" fill="#3b2116"/>
+      <path d="M150 34 Q190 40 178 92" fill="none" stroke="#2a1d14" stroke-opacity=".5" stroke-width="7"/>
+      <circle id="pico" cx="40" cy="32" r="1" fill="none"/>
+    </svg>
+    <svg id="taza" viewBox="0 0 200 140" aria-hidden="true">
+      <ellipse cx="100" cy="128" rx="86" ry="10" fill="#000" opacity=".18"/>
+      <path d="M20 20 L180 20 Q172 120 100 124 Q28 120 20 20 Z" fill="#f4efe8" stroke="#2a1d14" stroke-opacity=".25"/>
+      <ellipse id="boca" cx="100" cy="22" rx="78" ry="9" fill="#3b2116"/>
+      <path d="M178 40 Q205 52 172 86" fill="none" stroke="#f4efe8" stroke-width="10"/>
+    </svg>
+    <svg id="chorro" aria-hidden="true"><path id="trazo" fill="none" stroke="#3b2116" stroke-linecap="round" stroke-width="9"/></svg>
+  </div>
+</section>
+<div class="fin">Fin del tramo</div>
+<script type="module">
+import { muestra, ease, clamp, vw, vh } from './escena.js';
+import { arrancar } from './arranque.js';
+const $ = s => document.querySelector(s);
+const escenario = $('.escenario'), jarra = $('#jarra'), taza = $('#taza'), trazo = $('#trazo'), f2 = $('.f2'), fant = $('.fantasma');
+const l1 = [...document.querySelectorAll('.t1 .linea > span')], l2 = [...document.querySelectorAll('.t2 .linea > span')];
+const r1 = $('.t1 .rotulo'), r2 = $('.t2 .rotulo');
+const CHORRO = [[0,0],[.56,0],[.66,1],[.86,1],[.98,0]];
+const receta = {
+  recorrido: 3,                                            // alturas de ventana de scroll (igual que 400vh − 100vh)
+  pistas: ({ movil }) => {
+    const tx = movil ? 46 : 52, ty = movil ? 66 : 68;
+    return [
+      { el: jarra, keys: movil ? [[0,40],[.15,40],[.45,30],[1,30]] : [[0,58],[.15,58],[.45,46],[1,46]], gsap: { prop: 'x', conv: vw } },
+      { el: jarra, keys: movil ? [[0,40],[.15,40],[.45,30],[1,30]] : [[0,24],[.15,24],[.45,12],[1,12]], gsap: { prop: 'y', conv: vh } },
+      // anticipación de 3° antes de verter (MOT-002) y meseta de vertido .58–.85
+      { el: jarra, keys: [[0,0],[.45,0],[.48,3],[.58,-38],[.85,-38],[1,-12]], gsap: { prop: 'rotation' } },
+      { el: taza, keys: [[0,tx],[1,tx]], gsap: { prop: 'x', conv: vw } },
+      { el: taza, keys: [[0,ty+120],[.35,ty+120],[.55,ty],[1,ty]], gsap: { prop: 'y', conv: vh } },
+      // H1/H2 (AUD-001): el panel sube ANTES (.40–.56) para que el titular 2 entre en .52–.60 sobre fondo caramelo
+      { el: f2, keys: [[0,100],[.40,100],[.56,0],[1,0]], gsap: { prop: 'clipPath', conv: v => `inset(${v}% 0% 0% 0%)` } },
+      { el: fant, keys: [[0,-6],[1,6]], ease: ease.none, gsap: { prop: 'x', conv: vw } },
+      // defecto visto en la hoja de estados del lote 26: el rótulo de la sección 1 nunca salía y se solapaba con el de la 2
+      { el: r1, keys: [[0,.7],[.42,.7],[.48,0],[1,0]], gsap: { prop: 'opacity' } },
+      { el: r2, keys: [[0,0],[.54,0],[.60,.7],[1,.7]], gsap: { prop: 'opacity' } },
+      ...l1.map((el, i) => ({ el, keys: [[0,0],[.44,0],[.52,-110],[1,-110]], desfase: i * .02, gsap: { prop: 'yPercent' } })),
+      ...l2.map((el, i) => ({ el, keys: [[0,110],[.52,110],[.60,0],[1,0]], desfase: i * .02, gsap: { prop: 'yPercent' } })),
+    ];
+  },
+  limpiar() { trazo.removeAttribute('d'); trazo.style.strokeDasharray = trazo.style.strokeDashoffset = ''; },
+  // chorro: une el pico de la jarra (medido en pantalla DESPUÉS de los tweens) con la boca de la taza → no es interpolable por GSAP
+  actualizar(p, est) {
+    // Coordenadas RELATIVAS al escenario (hallazgo lote 26): con pin de ScrollTrigger, onUpdate se ejecuta antes de que el
+    // pin pase a position: fixed en ese mismo ciclo; medir en coordenadas de ventana dejaba el chorro desplazado.
+    const E = escenario.getBoundingClientRect(), a = $('#pico').getBoundingClientRect(), b = $('#boca').getBoundingClientRect();
+    const x0 = a.left - E.left, y0 = a.top - E.top, x1 = b.left - E.left + b.width * .45, y1 = b.top - E.top + b.height / 2;
+    const v = muestra(CHORRO, p, ease.none), cx = x0 + (x1 - x0) * .15, cy = y0 + (y1 - y0) * .45;
+    trazo.setAttribute('d', `M${x0.toFixed(2)},${y0.toFixed(2)} Q${cx.toFixed(2)},${cy.toFixed(2)} ${x1.toFixed(2)},${y1.toFixed(2)}`);
+    const L = trazo.getTotalLength() || 1;
+    trazo.style.strokeDasharray = `${L}`; trazo.style.strokeDashoffset = `${p < .9 ? L * (1 - v) : -L * (1 - v)}`;
+    const j = jarra.getBoundingClientRect();
+    Object.assign(est, { jarra: [Math.round(j.left - E.left), Math.round(j.top - E.top)], chorro: +v.toFixed(3), pico: [Math.round(x0), Math.round(y0)] });
+  },
+};
+arrancar(document.getElementById('acto'), receta).catch(e => { console.error(e); window.__error = String(e); });
+</script>
+</body>
+</html>

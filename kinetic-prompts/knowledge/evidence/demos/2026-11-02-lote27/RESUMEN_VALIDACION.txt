@@ -1,0 +1,23 @@
+ev27/validacion/1440 errores 0 gsap 3.15.0 cortes 0
+ nativo↔gsap visible % [0.0, 0.0, 0.0, 0.0, 0.0] | pin [0.0, 0.0, 0.015, 0.0, 0.0]
+ reversibilidad valores {'gsap': 0, 'gsap_pin': 0, 'nativo': 0} píxeles {'gsap': 0.015, 'gsap_pin': 0.0, 'nativo': 0.015}
+ pin fijo True | resize (1, 3) [0.023, 0.015, 0.0] | rm 0 [1, 0, 1] | desmontaje estilos 0
+  rend gsap script 70.4 · pintado/comp. 228.4 · actualizar p95 0.7 · >33ms 0
+  rend nativo script 89.5 · pintado/comp. 174.6 · actualizar p95 0.7 · >33ms 1
+  rend gsap_pin script 75.9 · pintado/comp. 185.3 · actualizar p95 0.7 · >33ms 0
+ev27/validacion/375 errores 0 gsap 3.15.0 cortes 0
+ nativo↔gsap visible % [0.0, 0.0, 0.155, 0.258, 0.37] | pin [0.0, 0.272, 0.184, 0.151, 3.217]
+ reversibilidad valores {'gsap': 0, 'gsap_pin': 0, 'nativo': 0} píxeles {'gsap': 0.138, 'gsap_pin': 0.0, 'nativo': 0.138}
+ pin fijo True | resize (1, 3) [0.103, 0.155, 0.0] | rm 0 [1, 0, 1] | desmontaje estilos 0
+  rend gsap script 60.3 · pintado/comp. 158 · actualizar p95 0.9 · >33ms 0
+  rend nativo script 79.9 · pintado/comp. 136.4 · actualizar p95 0.7 · >33ms 0
+  rend gsap_pin script 53.9 · pintado/comp. 145.1 · actualizar p95 0.7 · >33ms 0
+ev27/validacion/375x800 errores 0 gsap 3.15.0 cortes 0
+ nativo↔gsap visible % [0.0, 0.0, 0.0, 0.0, 0.0] | pin [0.0, 0.0, 0.0, 0.0, 0.0]
+ reversibilidad valores {'gsap': 0, 'gsap_pin': 0, 'nativo': 0} píxeles {'gsap': 0.0, 'gsap_pin': 0.0, 'nativo': 0.0}
+ pin fijo True | resize (1, 3) [0.0, 0.0, 0.0] | rm 0 [1, 0, 1] | desmontaje estilos 0
+  rend gsap script 51.8 · pintado/comp. 138.6 · actualizar p95 0.8 · >33ms 0
+  rend nativo script 78.1 · pintado/comp. 123.2 · actualizar p95 0.6 · >33ms 0
+  rend gsap_pin script 53.2 · pintado/comp. 135.1 · actualizar p95 0.7 · >33ms 1
+perf 1440 antes (receta_c lote 26): {'base': [26, 38], 'sin_filtros_ingredientes': [37, 25], 'sin_blur_sombra': [27, 32], 'sin_multiply': [1, 0], 'sin_ingredientes': [23, 19], 'sin_fantasma': [26, 26], 'todo_lo_anterior': [0, 0]}
+perf 1440 después (integración lote 27): [0, 0, 0] tareas [299, 289, 356]

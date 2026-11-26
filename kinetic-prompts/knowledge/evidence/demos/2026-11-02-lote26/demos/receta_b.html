@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receta B — transformación por partículas (lote 26: nativo | GSAP 3.15.0)</title>
+<!-- Microdemo de MECÁNICA (C2). Las partículas hacen de PUENTE entre dos imágenes: nacen exactamente en los píxeles
+     de la imagen A y aterrizan en los de la imagen B, con fundido cruzado en los extremos. Posición = función pura de p
+     (reversible). Imagen A procedural; imagen B = producto_ok.png (procedural). No fotorrealista: no evaluable en C1/C3.
+     Lote 26: ?motor=nativo|gsap (por defecto GSAP 3.15.0), ?pin=1, ?scrub=<s>. Correcciones AUD-001 H3–H5: relevo SIN VALLE
+     (partículas al 100 % debajo de A y de B), partículas más grandes en vuelo (cobertura) y titulares sin hueco largo. -->
+<style>
+  * { box-sizing:border-box; margin:0 }
+  body { background:#140d08; color:#efe2cc; font-family: Georgia, serif }
+  .intro, .fin { height:60vh; display:grid; place-items:center; font:16px system-ui; color:#9c8b7a }
+  #acto { height:400vh; position:relative }
+  .escenario { position:sticky; top:0; height:100vh; overflow:hidden }
+  canvas { position:absolute; inset:0; width:100%; height:100%; z-index:2 }
+  .titulo { position:absolute; left:6vw; bottom:12vh; z-index:3 }
+  .titulo h2 { font-size:clamp(40px,7vw,112px); line-height:.95; font-weight:600 }
+  .titulo p { font:600 12px system-ui; letter-spacing:.16em; text-transform:uppercase; color:#d6a46a; margin-bottom:12px }
+  .titulo.b { opacity:0 }
+  .rm #acto { height:auto } .rm .escenario { position:relative } .rm .titulo.b { opacity:1; position:relative; left:6vw; bottom:auto; padding:6vh 0 }
+  .rm canvas { position:relative; height:100vh }
+  .modo-pin #acto { height:auto } .modo-pin .escenario { position:relative }
+</style>
+</head>
+<body>
+<div class="intro">↓ Desliza (microdemo de partículas)</div>
+<section id="acto" aria-label="De la gota a la extracción">
+  <div class="escenario">
+    <canvas id="lienzo" aria-hidden="true"></canvas>
+    <div class="titulo a"><p>Sección 01 — La gota</p><h2>Oro en cada gota.</h2></div>
+    <div class="titulo b"><p>Sección 02 — La extracción</p><h2>La extracción.</h2></div>
+  </div>
+</section>
+<div class="fin">Fin del tramo</div>
+<script type="module">
+import { muestra, ease, clamp, lerp } from './escena.js';
+import { arrancar } from './arranque.js';
+const cv = document.getElementById('lienzo'), ctx = cv.getContext('2d');
+const N = +(new URLSearchParams(location.search).get('n') || 6000);
+const ta = document.querySelector('.titulo.a'), tb = document.querySelector('.titulo.b');
+let W, H, dpr, A, B, imgA, imgB, P = [], ultimoP = 0, listo = false, paso = 2; const estadoPrep = {};
+const fotoB = new Image(); fotoB.src = 'producto_ok.png';
+function dibujaGota(c, w, h) {
+  const g = c.getContext('2d'), cx = w * .62, cy = h * .45, r = Math.min(w, h) * .2;
+  const grad = g.createRadialGradient(cx - r * .3, cy, r * .1, cx, cy + r * .2, r * 1.2);
+  grad.addColorStop(0, '#ffd27a'); grad.addColorStop(.5, '#c47a22'); grad.addColorStop(1, '#5a2a0a');
+  g.fillStyle = grad; g.beginPath(); g.moveTo(cx, cy - r * 1.6);
+  g.bezierCurveTo(cx + r * .9, cy - r * .4, cx + r, cy + r * .9, cx, cy + r);
+  g.bezierCurveTo(cx - r, cy + r * .9, cx - r * .9, cy - r * .4, cx, cy - r * 1.6); g.fill();
+  g.fillStyle = 'rgba(255,255,255,.55)'; g.beginPath(); g.ellipse(cx - r * .35, cy - r * .1, r * .08, r * .3, -.4, 0, 7); g.fill();
+}
+function muestrea(c, n) {
+  const g = c.getContext('2d'), { width: w, height: h } = c, d = g.getImageData(0, 0, w, h).data, pts = [];
+  const paso = Math.max(1, Math.floor(Math.sqrt((w * h) / (n * 6))));
+  for (let y = 0; y < h; y += paso) for (let x = 0; x < w; x += paso) { const i = (y * w + x) * 4; if (d[i + 3] > 128) pts.push([x, y, d[i], d[i + 1], d[i + 2]]); }
+  for (let i = pts.length - 1; i > 0; i--) { const j = (Math.sin(i * 12.9898) * 43758.5453 % 1 + 1) % 1 * (i + 1) | 0; [pts[i], pts[j]] = [pts[j], pts[i]]; }
+  muestrea.paso = paso; return pts.slice(0, n);
+}
+function prepara() {
+  dpr = Math.min(devicePixelRatio, 2); W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr;
+  imgA = Object.assign(document.createElement('canvas'), { width: W, height: H }); dibujaGota(imgA, W, H);
+  imgB = Object.assign(document.createElement('canvas'), { width: W, height: H });
+  const s = Math.min(W, H) * .8 / fotoB.width; imgB.getContext('2d').drawImage(fotoB, W * .6 - fotoB.width * s / 2, H * .5 - fotoB.height * s / 2, fotoB.width * s, fotoB.height * s);
+  A = muestrea(imgA, N); paso = muestrea.paso; B = muestrea(imgB, N);
+  const cx = W * .6, cy = H * .5, ang = q => Math.atan2(q[1] - cy, q[0] - cx);
+  A.sort((p, q) => ang(p) - ang(q)); B.sort((p, q) => ang(p) - ang(q));
+  // Defecto heredado del lote 24 (visto en la hoja de estados del lote 26): con B[i % B.length] y menos puntos en A que
+  // en B, solo se cubría el primer tramo angular de B → al recomponerse faltaba una CUÑA del plato. Ahora hay
+  // max(nA, nB) partículas y cada imagen se recorre de forma proporcional, así ambas quedan cubiertas por completo.
+  const nP = Math.max(A.length, B.length);
+  P = Array.from({ length: nP }, (_, i) => { const a = A[Math.floor(i * A.length / nP)], b = B[Math.floor(i * B.length / nP)];
+    const dist = Math.hypot(a[0] - cx, a[1] - cy) / (Math.min(W, H) * .4);
+    return { a, b, d: clamp(dist) * .25, giro: (i % 7 - 3) * .35, r: (40 + (i * 37) % 120) * dpr }; });
+  estadoPrep.nA = A.length; estadoPrep.nB = B.length;
+  listo = true;
+}
+// Curvas del relevo SIN VALLE (SEQ-003): las partículas están al 100 % DEBAJO desde antes de que A empiece a desvanecerse
+// y siguen al 100 % debajo de B hasta que B es opaca; nunca hay dos fundidos opuestos sobre el fondo oscuro.
+const K = { A: [[0,1],[.15,1],[.26,0],[1,0]], B: [[0,0],[.78,0],[.86,1],[1,1]], PART: [[0,0],[.13,0],[.14,1],[.87,1],[.88,0],[1,0]] };
+function dibuja(p, est) {
+  ctx.globalAlpha = 1; ctx.clearRect(0, 0, W, H);
+  const fa = muestra(K.A, p), fb = muestra(K.B, p), vis = muestra(K.PART, p, ease.none), tp = clamp((p - .15) / .7);
+  let cubiertos = 0;
+  if (vis > 0) {
+    ctx.globalAlpha = vis; const cx = W * .6, cy = H * .5;
+    for (const q of P) {
+      const t = ease.inOut(clamp((tp - q.d) / (1 - q.d * .9))), bell = Math.sin(Math.PI * t);
+      let x = lerp(q.a[0], q.b[0], t), y = lerp(q.a[1], q.b[1], t);
+      const an = Math.atan2(y - cy, x - cx) + q.giro * bell;
+      x += Math.cos(an) * q.r * bell; y += Math.sin(an) * q.r * bell * .6;
+      // H3/H4 (corregido tras la 2.ª auditoría): en reposo cada partícula mide el PASO de muestreo, de modo que las
+      // partículas TESELAN A y B por completo (si no, debajo de A no hay nada y el relevo vuelve a tener valle);
+      // en vuelo crecen un 30 % para conservar masa visual
+      // discos (no cuadrados): en reposo los cuadrados del tamaño del paso formaban un MOSAICO visible al desvanecerse A
+      const s = paso * (.75 + .3 * bell);
+      ctx.fillStyle = `rgb(${lerp(q.a[2], q.b[2], t) | 0},${lerp(q.a[3], q.b[3], t) | 0},${lerp(q.a[4], q.b[4], t) | 0})`;
+      ctx.beginPath(); ctx.arc(x, y, s, 0, 6.2832); ctx.fill();
+    }
+  }
+  if (fa > 0) { ctx.globalAlpha = fa; ctx.drawImage(imgA, 0, 0); }       // A ENCIMA de las partículas mientras se desvanece
+  if (fb > 0) { ctx.globalAlpha = fb; ctx.drawImage(imgB, 0, 0); }       // B ENCIMA mientras aparece
+  ctx.globalAlpha = 1;
+  Object.assign(est, { n: P.length, nA: estadoPrep.nA, nB: estadoPrep.nB, imagenA: +fa.toFixed(3), particulas: +vis.toFixed(3), imagenB: +fb.toFixed(3), viaje: +tp.toFixed(3) });
+}
+const receta = {
+  recorrido: 3,
+  pistas: () => [                                                        // H5: titulares con hueco ≈ 12 % del acto
+    { el: ta, keys: [[0,1],[.32,1],[.40,0],[1,0]], gsap: { prop: 'opacity' } },
+    { el: ta, keys: [[0,0],[.32,0],[.40,-30],[1,-30]], gsap: { prop: 'y' } },
+    { el: tb, keys: [[0,0],[.44,0],[.52,1],[1,1]], gsap: { prop: 'opacity' } },
+    { el: tb, keys: [[0,30],[.44,30],[.52,0],[1,0]], gsap: { prop: 'y' } },
+  ],
+  actualizar(p, est) { ultimoP = p; if (listo) dibuja(p, est); },
+};
+fotoB.onload = () => {
+  prepara();
+  // tras un resize el lienzo se vacía (cambia width/height): hay que redibujar aunque el progreso no cambie
+  addEventListener('resize', () => { prepara(); dibuja(ultimoP, window.__estado || {}); });
+  arrancar(document.getElementById('acto'), receta).catch(e => { console.error(e); window.__error = String(e); });
+};
+</script>
+</body>
+</html>

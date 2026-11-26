@@ -1,0 +1,405 @@
+{
+ "url": "http://127.0.0.1:8765/W-4FF0/",
+ "fecha": "2026-10-27T12:06:10.128Z",
+ "resultados": {
+  "escritorio": {
+   "estado_http": 200,
+   "carga_ms": 108,
+   "overflow": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "hay": false,
+    "culpables": []
+   },
+   "revelados": {
+    "elementos": 148,
+    "ocultos_tras_scroll": 6,
+    "ocultos_con_contenido": 0
+   },
+   "consola": [],
+   "errores_js": [],
+   "peticiones_fallidas": [],
+   "peticiones": [
+    "GET http://127.0.0.1:8765/W-4FF0/",
+    "GET http://127.0.0.1:8765/W-4FF0/styles.css",
+    "GET http://127.0.0.1:8765/W-4FF0/main.js"
+   ]
+  },
+  "tablet": {
+   "estado_http": 200,
+   "carga_ms": 121,
+   "overflow": {
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "hay": false,
+    "culpables": []
+   },
+   "revelados": {
+    "elementos": 148,
+    "ocultos_tras_scroll": 6,
+    "ocultos_con_contenido": 0
+   },
+   "consola": [],
+   "errores_js": [],
+   "peticiones_fallidas": [],
+   "peticiones": [
+    "GET http://127.0.0.1:8765/W-4FF0/",
+    "GET http://127.0.0.1:8765/W-4FF0/styles.css",
+    "GET http://127.0.0.1:8765/W-4FF0/main.js"
+   ]
+  },
+  "movil": {
+   "estado_http": 200,
+   "carga_ms": 96,
+   "overflow": {
+    "scrollWidth": 375,
+    "clientWidth": 375,
+    "hay": false,
+    "culpables": [
+     "svg.hero-art [48,487]"
+    ]
+   },
+   "revelados": {
+    "elementos": 147,
+    "ocultos_tras_scroll": 6,
+    "ocultos_con_contenido": 0
+   },
+   "consola": [],
+   "errores_js": [],
+   "peticiones_fallidas": [],
+   "peticiones": [
+    "GET http://127.0.0.1:8765/W-4FF0/",
+    "GET http://127.0.0.1:8765/W-4FF0/styles.css",
+    "GET http://127.0.0.1:8765/W-4FF0/main.js"
+   ]
+  },
+  "rendimiento_laboratorio": {
+   "lcp": 140,
+   "cls": 0,
+   "lcpEl": "H1.",
+   "fcp": 140,
+   "recursos": [
+    {
+     "n": "styles.css",
+     "kb": 12.4
+    },
+    {
+     "n": "main.js",
+     "kb": 3.5
+    }
+   ],
+   "doc_kb": 16.6,
+   "nodos_dom": 281,
+   "nota": "Chromium sin limitación de red/CPU, servidor local: no comparable con Lighthouse ni con datos de campo"
+  },
+  "teclado": {
+   "pasos": [
+    {
+     "el": "a.skip",
+     "texto": "Saltar al contenido",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": true
+    },
+    {
+     "el": "a.brand",
+     "texto": "Barbería Castellana",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Servicios",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Trabajos",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Opiniones",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Contacto",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a.btn",
+     "texto": "RESERVAR CITA",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a.btn",
+     "texto": "RESERVAR CITA",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a.link-arrow",
+     "texto": "Ver servicios →",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#nombre",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#telefono",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "select#servicio",
+     "texto": "Elige un servicio\nCorte clásico · 18 €\nD",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#fecha",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#fecha",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#fecha",
+     "texto": "",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "input#fecha",
+     "texto": "",
+     "outline": "NINGUNO",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "select#hora",
+     "texto": "Hora\n10:00\n11:00\n12:00\n13:00\n16:00\n17:00",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "button.btn",
+     "texto": "RESERVAR CITA",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Volver arriba ↑",
+     "outline": "3px solid",
+     "visible_en_vista": false,
+     "posible_tapado_por_cabecera": false
+    },
+    null,
+    {
+     "el": "a.skip",
+     "texto": "Saltar al contenido",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": true
+    },
+    {
+     "el": "a.brand",
+     "texto": "Barbería Castellana",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Servicios",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Trabajos",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    },
+    {
+     "el": "a",
+     "texto": "Opiniones",
+     "outline": "3px solid",
+     "visible_en_vista": true,
+     "posible_tapado_por_cabecera": false
+    }
+   ]
+  },
+  "reduced_motion_reduce": {
+   "ocultos_en_carga": 6,
+   "ocultos_con_contenido": 0,
+   "animaciones_activas": []
+  },
+  "reduced_motion_no-preference": {
+   "ocultos_en_carga": 29,
+   "ocultos_con_contenido": 23,
+   "animaciones_activas": [
+    {
+     "nombre": "sway",
+     "objetivo": "div.hero-light",
+     "estado": "running"
+    }
+   ]
+  },
+  "revelado_muestras": {
+   "objetivo": "section-head reveal in",
+   "muestras": [
+    {
+     "t": 37,
+     "op": 0,
+     "tr": "matrix(1, 0, 0, 1, 0, 24)"
+    },
+    {
+     "t": 200,
+     "op": 0,
+     "tr": "matrix(1, 0, 0, 1, 0, 24)"
+    },
+    {
+     "t": 339,
+     "op": 0.1,
+     "tr": "matrix(1, 0, 0, 1, 0, 15.0456)"
+    },
+    {
+     "t": 476,
+     "op": 0.45,
+     "tr": "matrix(1, 0, 0, 1, 0, 5.83149)"
+    },
+    {
+     "t": 587,
+     "op": 0.71,
+     "tr": "matrix(1, 0, 0, 1, 0, 2.6696)"
+    },
+    {
+     "t": 695,
+     "op": 0.86,
+     "tr": "matrix(1, 0, 0, 1, 0, 1.17418)"
+    },
+    {
+     "t": 804,
+     "op": 0.94,
+     "tr": "matrix(1, 0, 0, 1, 0, 0.506214)"
+    },
+    {
+     "t": 924,
+     "op": 0.98,
+     "tr": "matrix(1, 0, 0, 1, 0, 0.122097)"
+    },
+    {
+     "t": 1048,
+     "op": 1,
+     "tr": "matrix(1, 0, 0, 1, 0, 4.92789e-09)"
+    },
+    {
+     "t": 1181,
+     "op": 1,
+     "tr": "none"
+    }
+   ]
+  },
+  "formulario": {
+   "envio_vacio": {
+    "foco": "nombre",
+    "errores_visibles": [
+     "Escribe tu nombre.",
+     "Introduce un teléfono válido (9 dígitos).",
+     "Elige un servicio.",
+     "Elige una fecha.",
+     "Elige una hora."
+    ],
+    "url": "http://127.0.0.1:8765/W-4FF0/"
+   },
+   "peticiones_nuevas_tras_envio_vacio": []
+  },
+  "contraste": {
+   "medidos": 23,
+   "no_medidos": 7,
+   "fallos": [],
+   "muestra_no_medidos": [
+    {
+     "el": "P",
+     "texto": "Madrid · Desde 1987 (ficticio)",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "SPAN",
+     "texto": "(ficticio)",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "H1",
+     "texto": "El oficio,a cuchilla y tijera.",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "P",
+     "texto": "Corte clásico, barba con toall",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "A",
+     "texto": "Ver servicios →",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "P",
+     "texto": "Desliza",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    },
+    {
+     "el": "FIGCAPTION",
+     "texto": "Fade alto + barba",
+     "ratio": null,
+     "nota": "fondo con imagen/degradado: no medido"
+    }
+   ]
+  }
+ },
+ "navegador": "153.0.8010.12",
+ "version_playwright": "1.63.0"
+}

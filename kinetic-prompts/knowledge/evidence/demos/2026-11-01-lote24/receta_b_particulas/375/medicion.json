@@ -1,0 +1,398 @@
+{
+ "url": "http://127.0.0.1:8790/receta_b_particulas.html",
+ "ancho": 375,
+ "fecha": "2026-11-01T13:35:11.776Z",
+ "navegador": "153.0.8010.12",
+ "reversibilidad": {
+  "pasos": 41,
+  "diferencia_maxima": 0,
+  "campo": "",
+  "nota": "mismas posiciones de scroll, bajando y subiendo"
+ },
+ "barrido": [
+  {
+   "p": 0,
+   "objetivo": 0,
+   "n": 3618,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.025,
+   "objetivo": 0.025,
+   "n": 3618,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.05,
+   "objetivo": 0.05,
+   "n": 3618,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.075,
+   "objetivo": 0.075,
+   "n": 3618,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.1001,
+   "objetivo": 0.1001,
+   "n": 3618,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.1251,
+   "objetivo": 0.1251,
+   "n": 3618,
+   "imagenA": 1,
+   "particulas": 0,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.1498,
+   "objetivo": 0.1498,
+   "n": 3618,
+   "imagenA": 1,
+   "particulas": 0.163,
+   "imagenB": 0,
+   "viaje": 0
+  },
+  {
+   "p": 0.1748,
+   "objetivo": 0.1748,
+   "n": 3618,
+   "imagenA": 0.822,
+   "particulas": 0.58,
+   "imagenB": 0,
+   "viaje": 0.035
+  },
+  {
+   "p": 0.1998,
+   "objetivo": 0.1998,
+   "n": 3618,
+   "imagenA": 0.096,
+   "particulas": 0.997,
+   "imagenB": 0,
+   "viaje": 0.071
+  },
+  {
+   "p": 0.2249,
+   "objetivo": 0.2249,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.107
+  },
+  {
+   "p": 0.2499,
+   "objetivo": 0.2499,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.143
+  },
+  {
+   "p": 0.275,
+   "objetivo": 0.275,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.179
+  },
+  {
+   "p": 0.3,
+   "objetivo": 0.3,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.214
+  },
+  {
+   "p": 0.325,
+   "objetivo": 0.325,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.25
+  },
+  {
+   "p": 0.3501,
+   "objetivo": 0.3501,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.286
+  },
+  {
+   "p": 0.3751,
+   "objetivo": 0.3751,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.322
+  },
+  {
+   "p": 0.3998,
+   "objetivo": 0.3998,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.357
+  },
+  {
+   "p": 0.4248,
+   "objetivo": 0.4248,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.393
+  },
+  {
+   "p": 0.4498,
+   "objetivo": 0.4498,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.428
+  },
+  {
+   "p": 0.4749,
+   "objetivo": 0.4749,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.464
+  },
+  {
+   "p": 0.4999,
+   "objetivo": 0.4999,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.5
+  },
+  {
+   "p": 0.525,
+   "objetivo": 0.525,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.536
+  },
+  {
+   "p": 0.55,
+   "objetivo": 0.55,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.571
+  },
+  {
+   "p": 0.575,
+   "objetivo": 0.575,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.607
+  },
+  {
+   "p": 0.6001,
+   "objetivo": 0.6001,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.643
+  },
+  {
+   "p": 0.6251,
+   "objetivo": 0.6251,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.679
+  },
+  {
+   "p": 0.6498,
+   "objetivo": 0.6498,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.714
+  },
+  {
+   "p": 0.6748,
+   "objetivo": 0.6748,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.75
+  },
+  {
+   "p": 0.6998,
+   "objetivo": 0.6998,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.785
+  },
+  {
+   "p": 0.7249,
+   "objetivo": 0.7249,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.821
+  },
+  {
+   "p": 0.7499,
+   "objetivo": 0.7499,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.857
+  },
+  {
+   "p": 0.775,
+   "objetivo": 0.775,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0,
+   "viaje": 0.893
+  },
+  {
+   "p": 0.8,
+   "objetivo": 0.8,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 1,
+   "imagenB": 0.063,
+   "viaje": 0.929
+  },
+  {
+   "p": 0.825,
+   "objetivo": 0.825,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 0.642,
+   "imagenB": 0.666,
+   "viaje": 0.964
+  },
+  {
+   "p": 0.8501,
+   "objetivo": 0.8501,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 0.284,
+   "imagenB": 0.992,
+   "viaje": 1
+  },
+  {
+   "p": 0.8751,
+   "objetivo": 0.8751,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 0.8998,
+   "objetivo": 0.8998,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 0.9248,
+   "objetivo": 0.9248,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 0.9498,
+   "objetivo": 0.9498,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 0.9749,
+   "objetivo": 0.9749,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  },
+  {
+   "p": 0.9999,
+   "objetivo": 0.9999,
+   "n": 3618,
+   "imagenA": 0,
+   "particulas": 0,
+   "imagenB": 1,
+   "viaje": 1
+  }
+ ],
+ "fotogramas": {
+  "n": 199,
+  "p50_ms": 16.7,
+  "p95_ms": 16.8,
+  "max_ms": 16.8,
+  "sobre_33ms": 0,
+  "nota": "contenedor sin GPU, 2 núcleos, Chromium headless: orientativo"
+ },
+ "errores": [],
+ "reduced_motion": {
+  "marcado": true,
+  "claseRm": true,
+  "sticky": "relative",
+  "alto_pagina": 1786
+ }
+}

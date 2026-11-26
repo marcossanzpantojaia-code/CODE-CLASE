@@ -1,0 +1,5 @@
+Criterios fijados ANTES de ejecutar: 2026-10-27T10:53:58Z
+ZIP: WEB_ENGINEERING_KNOWLEDGE_LIBRARY_v0.16.0.zip sha256 c7e02cd5806d177d326c785702d64eb560127fb390dba53f1a08242d814fa42a
+Verificador sha256: b3529fba84c77b3d650f338d8d5c56f17b0dccafe7984ffe7b7536d31bc224c9 (acepta '(no leída)' y 'sin leer', anunciado en el lote 16)
+Comando: verify_test_evidence.py <copia> evidencia_prueba.jsonl --prompt prompt.txt --modo automatico --areas comercial,seo,accesibilidad,animacion,scroll,gsap,3d
+Nota: '3d' sin '?' → ficha threejs/ obligatoria (directiva lote 17, punto 5: antes de decidir usar o descartar 3D)

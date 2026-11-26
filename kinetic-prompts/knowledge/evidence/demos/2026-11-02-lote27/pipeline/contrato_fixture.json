@@ -1,0 +1,11 @@
+{"version": "fixture-lote27", "calidad": {"webp": 86, "avif": 62},
+ "ingredientes": {"color_sombra": [40, 20, 10], "planos": {
+   "0": {"dx": 0.04, "dy": 0.06, "blur_sombra": 0.05, "opacidad_sombra": 0.25, "desenfoque": 0.012},
+   "1": {"dx": 0.10, "dy": 0.16, "blur_sombra": 0.09, "opacidad_sombra": 0.30, "desenfoque": 0},
+   "2": {"dx": 0.18, "dy": 0.28, "blur_sombra": 0.14, "opacidad_sombra": 0.32, "desenfoque": 0}}},
+ "recursos": [
+  {"id": "producto", "archivo": "fixture_plato_fondo_oscuro.png", "rol": "producto", "imprescindible": true, "anchos": [900, 640],
+   "fraccion_elipse_interior": 0.80, "comprobar": {"luz_lado": "arriba-izquierda", "elevacion": [20, 35], "ancho_min": 2048}},
+  {"id": "ing_tomate", "archivo": "fixture_ingrediente_esfera.png", "rol": "ingrediente", "imprescindible": true, "planos": [0, 1, 2], "anchos": [256, 128]},
+  {"id": "ing_albahaca", "archivo": "no_entregado.png", "rol": "ingrediente", "imprescindible": true}
+ ]}

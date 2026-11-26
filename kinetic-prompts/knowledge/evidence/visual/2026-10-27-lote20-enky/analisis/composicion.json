@@ -1,0 +1,308 @@
+[
+ {
+  "imagen": "referencia/r1_acto3.png",
+  "recorte": null,
+  "paleta": [
+   {
+    "hex": "#b88b61",
+    "cobertura": 0.336
+   },
+   {
+    "hex": "#a26f4d",
+    "cobertura": 0.307
+   },
+   {
+    "hex": "#dfc7b1",
+    "cobertura": 0.152
+   },
+   {
+    "hex": "#5a3d2d",
+    "cobertura": 0.12
+   },
+   {
+    "hex": "#241711",
+    "cobertura": 0.085
+   }
+  ],
+  "dispersion_tono": 0.004,
+  "croma_media": 0.277,
+  "espacio_negativo": 0.237,
+  "foco_mayor_componente": 0.763,
+  "rango_luminancia_p5_p95": [
+   26.0,
+   212.0
+  ]
+ },
+ {
+  "imagen": "referencia/r1_heroe.png",
+  "recorte": null,
+  "paleta": [
+   {
+    "hex": "#e4dacc",
+    "cobertura": 0.607
+   },
+   {
+    "hex": "#483930",
+    "cobertura": 0.126
+   },
+   {
+    "hex": "#c8b8a8",
+    "cobertura": 0.105
+   },
+   {
+    "hex": "#897b72",
+    "cobertura": 0.088
+   },
+   {
+    "hex": "#201512",
+    "cobertura": 0.075
+   }
+  ],
+  "dispersion_tono": 0.014,
+  "croma_media": 0.098,
+  "espacio_negativo": 0.296,
+  "foco_mayor_componente": 0.506,
+  "rango_luminancia_p5_p95": [
+   25.0,
+   223.0
+  ]
+ },
+ {
+  "imagen": "referencia/r2_gota.png",
+  "recorte": null,
+  "paleta": [
+   {
+    "hex": "#140d07",
+    "cobertura": 0.547
+   },
+   {
+    "hex": "#3c2218",
+    "cobertura": 0.21
+   },
+   {
+    "hex": "#71452a",
+    "cobertura": 0.124
+   },
+   {
+    "hex": "#a37147",
+    "cobertura": 0.073
+   },
+   {
+    "hex": "#c2ad9d",
+    "cobertura": 0.046
+   }
+  ],
+  "dispersion_tono": 0.008,
+  "croma_media": 0.129,
+  "espacio_negativo": 0.307,
+  "foco_mayor_componente": 0.68,
+  "rango_luminancia_p5_p95": [
+   5.0,
+   146.0
+  ]
+ },
+ {
+  "imagen": "referencia/r2_reward.png",
+  "recorte": null,
+  "paleta": [
+   {
+    "hex": "#130f0c",
+    "cobertura": 0.585
+   },
+   {
+    "hex": "#271f1b",
+    "cobertura": 0.221
+   },
+   {
+    "hex": "#503f37",
+    "cobertura": 0.1
+   },
+   {
+    "hex": "#907058",
+    "cobertura": 0.057
+   },
+   {
+    "hex": "#b6ada8",
+    "cobertura": 0.037
+   }
+  ],
+  "dispersion_tono": 0.013,
+  "croma_media": 0.059,
+  "espacio_negativo": 0.433,
+  "foco_mayor_componente": 0.526,
+  "rango_luminancia_p5_p95": [
+   11.0,
+   134.0
+  ]
+ },
+ {
+  "imagen": "referencia/r4_heroe.png",
+  "recorte": null,
+  "paleta": [
+   {
+    "hex": "#ebe3d3",
+    "cobertura": 0.408
+   },
+   {
+    "hex": "#7e3020",
+    "cobertura": 0.382
+   },
+   {
+    "hex": "#a86a44",
+    "cobertura": 0.085
+   },
+   {
+    "hex": "#29211b",
+    "cobertura": 0.064
+   },
+   {
+    "hex": "#cba381",
+    "cobertura": 0.062
+   }
+  ],
+  "dispersion_tono": 0.027,
+  "croma_media": 0.242,
+  "espacio_negativo": 0.428,
+  "foco_mayor_componente": 0.324,
+  "rango_luminancia_p5_p95": [
+   39.0,
+   232.0
+  ]
+ },
+ {
+  "imagen": "referencia/r4_plato.png",
+  "recorte": null,
+  "paleta": [
+   {
+    "hex": "#e6dbcb",
+    "cobertura": 0.509
+   },
+   {
+    "hex": "#c7a789",
+    "cobertura": 0.156
+   },
+   {
+    "hex": "#826f5b",
+    "cobertura": 0.118
+   },
+   {
+    "hex": "#512716",
+    "cobertura": 0.113
+   },
+   {
+    "hex": "#ae5029",
+    "cobertura": 0.105
+   }
+  ],
+  "dispersion_tono": 0.022,
+  "croma_media": 0.199,
+  "espacio_negativo": 0.263,
+  "foco_mayor_componente": 0.737,
+  "rango_luminancia_p5_p95": [
+   46.0,
+   230.0
+  ]
+ },
+ {
+  "imagen": "referencia/r5_gota.png",
+  "recorte": null,
+  "paleta": [
+   {
+    "hex": "#d5c1a9",
+    "cobertura": 0.325
+   },
+   {
+    "hex": "#bd7e37",
+    "cobertura": 0.246
+   },
+   {
+    "hex": "#4d2e20",
+    "cobertura": 0.244
+   },
+   {
+    "hex": "#221612",
+    "cobertura": 0.111
+   },
+   {
+    "hex": "#8d4e25",
+    "cobertura": 0.074
+   }
+  ],
+  "dispersion_tono": 0.008,
+  "croma_media": 0.275,
+  "espacio_negativo": 0.419,
+  "foco_mayor_componente": 0.549,
+  "rango_luminancia_p5_p95": [
+   27.0,
+   208.0
+  ]
+ },
+ {
+  "imagen": "comparacion_A1_B1/W-8508/ronda1/escritorio_inicio.jpg",
+  "recorte": null,
+  "paleta": [
+   {
+    "hex": "#15120f",
+    "cobertura": 0.741
+   },
+   {
+    "hex": "#352a1f",
+    "cobertura": 0.145
+   },
+   {
+    "hex": "#c19758",
+    "cobertura": 0.053
+   },
+   {
+    "hex": "#6d6153",
+    "cobertura": 0.042
+   },
+   {
+    "hex": "#e5e3d9",
+    "cobertura": 0.02
+   }
+  ],
+  "dispersion_tono": 0.022,
+  "croma_media": 0.064,
+  "espacio_negativo": 0.58,
+  "foco_mayor_componente": 0.25,
+  "rango_luminancia_p5_p95": [
+   11.0,
+   157.0
+  ]
+ },
+ {
+  "imagen": "comparacion_A1_B1/W-4FF0/ronda1/escritorio_inicio.jpg",
+  "recorte": null,
+  "paleta": [
+   {
+    "hex": "#0d0d0a",
+    "cobertura": 0.487
+   },
+   {
+    "hex": "#1d1813",
+    "cobertura": 0.39
+   },
+   {
+    "hex": "#c0a065",
+    "cobertura": 0.058
+   },
+   {
+    "hex": "#65534c",
+    "cobertura": 0.042
+   },
+   {
+    "hex": "#dfd5bf",
+    "cobertura": 0.022
+   }
+  ],
+  "dispersion_tono": 0.07,
+  "croma_media": 0.059,
+  "espacio_negativo": 0.622,
+  "foco_mayor_componente": 0.181,
+  "rango_luminancia_p5_p95": [
+   0.0,
+   168.0
+  ]
+ }
+]

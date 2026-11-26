@@ -1,0 +1,29 @@
+OK    Skill web-library-router registrada en la sesión (evento init) 
+OK    Skill web-library-router invocada con éxito 
+OK    KNOWLEDGE_INDEX.md leído 
+FALLA LIBRARY_MANIFEST.json leído 
+OK    >= 5 fichas del manifiesto leídas — A11Y-001, ARCH-001, ASTRO-002, CLIENT-001, CSS-001, FORM-001, GS-002, LEGAL-001, PERF-001, SEO-002, SEO-003, ST-001, UX-002
+OK    Rutas leídas existen 
+OK    Ninguna ruta con prefijo engañoso 
+OK    Sin herramientas de escritura/ejecución 
+OK    Respuesta cita la versión 0.15.0 
+OK    Respuesta cita la ruta absoluta real de la biblioteca 
+OK    Respuesta cita los IDs leídos — 13/13
+OK    Lecturas de la biblioteca completas y sin error 
+FALLA Ninguna ficha no leída citada sin marcar "(no leída)" — 2: A11Y-003, I18N-001
+FALLA Registro CONSULTA (secciones 1–4) en la respuesta — faltan: 1. Encargo, 2. Necesidades, 3. Aplicación, 4. Fichas consultadas
+FALLA Ruta absoluta completa de cada ficha leída en la respuesta — A11Y-001, ARCH-001, ASTRO-002, CLIENT-001, CSS-001, FORM-001, GS-002, LEGAL-001, PERF-001, SEO-002, SEO-003, ST-001, UX-002
+OK    Área comercial: al menos una ficha específica leída — CLIENT-001, UX-002
+OK    Área seo: al menos una ficha específica leída — SEO-002, SEO-003
+OK    Área accesibilidad: al menos una ficha específica leída — A11Y-001
+OK    Área animacion: al menos una ficha específica leída — GS-002, ST-001
+OK    Área scroll: al menos una ficha específica leída — ST-001
+OK    Área gsap: al menos una ficha específica leída — GS-002, ST-001
+FALLA Área 3d: al menos una ficha específica leída (exigida porque la respuesta trata 3D) 
+OK    Encargo sin mencionar Skill/Skills/biblioteca 
+OK    Skill invocada antes de la primera lectura de la biblioteca 
+MODO DE INVOCACIÓN: AUTOMÁTICA (encargo limpio; Claude Code invocó la Skill por iniciativa propia)
+INFO fichas leídas (completas): A11Y-001, ARCH-001, ASTRO-002, CLIENT-001, CSS-001, FORM-001, GS-002, LEGAL-001, PERF-001, SEO-002, SEO-003, ST-001, UX-002
+INFO fichas mencionadas como pendientes "(no leída)": —
+INFO fichas citadas sin leer y sin marcar: A11Y-003, I18N-001
+VEREDICTO: NO SUPERA

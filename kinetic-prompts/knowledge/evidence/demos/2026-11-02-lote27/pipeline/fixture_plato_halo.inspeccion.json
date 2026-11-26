@@ -1,0 +1,53 @@
+{
+ "archivo": "fixture_plato_halo.png",
+ "ancho": 900,
+ "alto": 900,
+ "modo": "RGBA",
+ "tiene_alfa": true,
+ "memoria_decodificada_MB": 3.1,
+ "peso_KB": 51.6,
+ "alfa_util": true,
+ "caja": [
+  120,
+  311,
+  779,
+  588
+ ],
+ "margenes_px": {
+  "izq": 120,
+  "der": 120,
+  "arr": 311,
+  "aba": 311
+ },
+ "objeto_toca_el_borde": false,
+ "area_objeto_pct": 17.8,
+ "borde": {
+  "franja_px": 1298,
+  "luminancia_franja_menos_interior": -112.2,
+  "veredicto": "halo OSCURO"
+ },
+ "luz": {
+  "vector": [
+   1.0,
+   0.0
+  ],
+  "angulo_grados": -0.0,
+  "lado": "-derecha"
+ },
+ "color": {
+  "L_media": 76.9,
+  "a_media": 12.9,
+  "b_media": 19.0,
+  "L_zona_alta_p99_9": 96.9,
+  "saturacion_zona_alta_p99_9": 0.851
+ },
+ "elipse": {
+  "cx": 449.6,
+  "cy": 449.5,
+  "semieje_mayor": 329.6,
+  "semieje_menor": 138.3,
+  "angulo": 90.0,
+  "b_sobre_a": 0.42,
+  "elevacion_camara_grados": 24.8
+ }
+}
