@@ -40,8 +40,9 @@ de `docs/PLAN.md`. Si algo de aquí contradice el plan, manda el plan.
 
 **Tipografía (next/font, Google Fonts)**
 
-- Títulos: Bricolage Grotesque, 600–800, tracking −2 %.
-- Texto e interfaz: Instrument Sans, 400–600.
+- Letra estilo iOS 16 (decisión del 2026-11-26): SF Pro del sistema en Apple e Inter en el resto
+  (`--family-display` y `--family-sans`). SF Pro no se puede servir desde la web por su licencia.
+- Títulos: 600–800, tracking −2 %. Texto e interfaz: 400–600.
 - Prompts y código: JetBrains Mono, 400, 14 px, interlineado 1,6.
 - Escala (px): 12 · 14 · 16 · 20 · 28 · 40 · 64. Base 16 px. Párrafos de 65 caracteres como máximo.
 

@@ -6,18 +6,14 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
+import { APARTADOS, type ApartadoId } from "./apartados";
 import { type ParamValue, promptVariables, renderPrompt, selectStack, type StackId } from "./prompt-render";
 
-export const CATEGORIES = {
-  transiciones: "Transiciones de página",
-  scroll: "Scroll",
-  heros: "Heros",
-  texto: "Letras",
-  microinteracciones: "Microinteracciones",
-  "3d-webgl": "3D / WebGL",
-  fondos: "Fondos",
-} as const;
-export type Category = keyof typeof CATEGORIES;
+export const CATEGORIES = Object.fromEntries(APARTADOS.map((a) => [a.id, a.label])) as Record<
+  ApartadoId,
+  string
+>;
+export type Category = ApartadoId;
 
 /** Niveles de complejidad (docs/PLAN.md, «Niveles de complejidad»). */
 export const LEVELS = { 1: "Básico", 2: "Intermedio", 3: "Avanzado" } as const;
@@ -201,6 +197,19 @@ export function defaultPrompt(item: AnimationItem, stack: StackId = "auto"): str
 }
 
 type Manifest = { columnas: string[]; fichas: string[][] };
+
+/** Número de fichas de la biblioteca (manifiesto), para mostrar de dónde sale el conocimiento. */
+export function knowledgeCount(): number {
+  const path = join(process.cwd(), "knowledge", "integration", "LIBRARY_MANIFEST.json");
+  if (!existsSync(path)) return 0;
+  return (
+    JSON.parse(
+      readFileSync(join(process.cwd(), "knowledge", "integration", "LIBRARY_MANIFEST.json"), "utf8"),
+    ) as {
+      total_fichas: number;
+    }
+  ).total_fichas;
+}
 
 /** Títulos de las fichas citadas, leídos del manifiesto de la biblioteca (sin cargar las fichas). */
 export function knowledgeTitles(refs: string[]): string[] {

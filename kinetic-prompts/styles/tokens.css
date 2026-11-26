@@ -35,10 +35,13 @@
   --shimmer: color-mix(in oklab, var(--surface-2), var(--text) 8%);
 
   /* ── Tipografía ──────────────────────────────────────────────────────────────── */
-  /* Las familias las inyecta next/font en app/layout.tsx (--font-bricolage, …). */
-  --family-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --family-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
-  --family-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+  /* Letra estilo iOS 16: SF Pro del sistema en Apple (-apple-system: iPhone, iPad y Safari); en el
+     resto, Inter, que inyecta next/font en app/layout.tsx (--font-inter). Sin BlinkMacSystemFont ni
+     system-ui delante: Chrome los resuelve a la fuente del sistema en todas partes (Segoe, Roboto).
+     Código: SF Mono en Apple, JetBrains Mono fuera. */
+  --family-display: -apple-system, "SF Pro Display", var(--font-inter), sans-serif;
+  --family-sans: -apple-system, "SF Pro Text", var(--font-inter), sans-serif;
+  --family-mono: ui-monospace, "SF Mono", var(--font-jetbrains), monospace;
   --track-display: -0.02em; /* tracking −2 % de los títulos */
 
   /* Escala: 12 · 14 · 16 · 20 · 28 · 40 · 64 px (en rem para respetar el tamaño del usuario). */

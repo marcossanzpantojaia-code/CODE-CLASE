@@ -29,15 +29,23 @@ test.describe("/design", () => {
     expect(messages).toEqual([]);
   });
 
-  test("las tres familias tipográficas del plan están cargadas", async ({ page }) => {
+  test("letra estilo iOS 16: SF Pro del sistema primero e Inter de respaldo disponible", async ({ page }) => {
     await page.goto("/design");
     await page.evaluate(() => document.fonts.ready);
-    const families = await page.evaluate(() =>
-      [...document.fonts].filter((f) => f.status === "loaded").map((f) => f.family),
-    );
-    for (const family of ["Bricolage Grotesque", "Instrument Sans", "JetBrains Mono"]) {
-      expect(families).toContain(family);
-    }
+    const { body, heading, mono, faces } = await page.evaluate(() => ({
+      body: getComputedStyle(document.body).fontFamily,
+      heading: getComputedStyle(document.querySelector("h1")!).fontFamily,
+      mono: getComputedStyle(document.querySelector("code")!).fontFamily,
+      faces: [...new Set([...document.fonts].map((f) => f.family))],
+    }));
+    // En Apple se usa SF Pro del sistema; fuera de Apple, la Inter que sirve next/font.
+    expect(body.startsWith("-apple-system")).toBe(true);
+    expect(heading.startsWith("-apple-system")).toBe(true);
+    expect(body).toContain("Inter");
+    expect(mono).toContain("JetBrains Mono");
+    for (const family of ["Inter", "JetBrains Mono"]) expect(faces).toContain(family);
+    // Nada de BlinkMacSystemFont ni system-ui delante: Chrome los resolvería a Segoe o Roboto.
+    expect(body).not.toMatch(/BlinkMacSystemFont|system-ui/);
   });
 
   test("todas las parejas de contraste cumplen 4,5:1 medidas en el navegador", async ({ page, isMobile }) => {

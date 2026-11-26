@@ -31,37 +31,37 @@ const DERIVED_TOKENS = [
 const TYPE_SCALE = [
   {
     cls: "text-64 font-display font-extrabold tracking-display",
-    label: "64 · Bricolage Grotesque 800",
+    label: "64 · SF Pro / Inter 800",
     sample: "Efectos en movimiento",
   },
   {
     cls: "text-40 font-display font-bold tracking-display",
-    label: "40 · Bricolage Grotesque 700",
+    label: "40 · SF Pro / Inter 700",
     sample: "Galería de animaciones",
   },
   {
     cls: "text-28 font-display font-semibold tracking-display",
-    label: "28 · Bricolage Grotesque 600",
+    label: "28 · SF Pro / Inter 600",
     sample: "Transición cortina",
   },
   {
     cls: "text-20 font-sans font-semibold",
-    label: "20 · Instrument Sans 600",
+    label: "20 · SF Pro / Inter 600",
     sample: "Parámetros de la animación",
   },
   {
     cls: "text-16 font-sans",
-    label: "16 · Instrument Sans 400 (base)",
+    label: "16 · SF Pro / Inter 400 (base)",
     sample: "Ajusta la duración y el prompt se reescribe solo.",
   },
   {
     cls: "text-14 font-sans font-medium text-text-muted",
-    label: "14 · Instrument Sans 500",
+    label: "14 · SF Pro / Inter 500",
     sample: "GSAP · Next.js · Ligero",
   },
   {
     cls: "text-12 font-sans text-text-muted",
-    label: "12 · Instrument Sans 400",
+    label: "12 · SF Pro / Inter 400",
     sample: "Nuevo · hace 3 días",
   },
 ] as const;

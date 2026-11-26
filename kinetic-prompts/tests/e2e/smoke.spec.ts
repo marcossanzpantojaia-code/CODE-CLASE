@@ -11,7 +11,7 @@ test("la página de inicio carga sin errores de consola", async ({ page }) => {
 
   expect(response?.ok()).toBe(true);
   await expect(page).toHaveTitle("Kinetic Prompts");
-  await expect(page.getByRole("heading", { level: 1, name: "Kinetic Prompts" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: /Elige el efecto/ })).toBeVisible();
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
   expect(errors).toEqual([]);
 });

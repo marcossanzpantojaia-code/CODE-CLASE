@@ -149,11 +149,13 @@ La dirección es una «sala de proyección»: fondo oscuro y sobrio, la interfaz
 
 El acento solo aparece en lo que se puede pulsar o en lo activo. Nunca se usa en fondos grandes ni degradados.
 
-### Tipografía (Google Fonts)
+### Tipografía: estilo iOS 16
 
-- **Títulos:** Bricolage Grotesque, pesos 600–800, tracking −2 %.
-- **Texto e interfaz:** Instrument Sans, pesos 400–600.
-- **Prompts y código:** JetBrains Mono, 400, 14 px, interlineado 1,6.
+*(Cambio del 2026-11-26, a petición del usuario. Sustituye a Bricolage Grotesque e Instrument Sans.)*
+
+- **Títulos y texto:** SF Pro, la letra de iOS 16, a través de la fuente del sistema (`-apple-system`) en iPhone, iPad y Mac. En el resto de sistemas, **Inter** (Google Fonts, licencia libre), que es muy parecida. SF Pro no se puede incrustar ni servir desde una web: su licencia de Apple lo prohíbe.
+- **Títulos:** pesos 600–800, tracking −2 %. **Texto e interfaz:** pesos 400–600.
+- **Prompts y código:** SF Mono en Apple y JetBrains Mono en el resto, 400, 14 px, interlineado 1,6.
 - **Escala (px):** 12 · 14 · 16 · 20 · 28 · 40 · 64. Texto base 16 px; ancho máximo de párrafo 65 caracteres.
 
 ### Espaciado, forma y rejilla
@@ -957,7 +959,7 @@ Claude Code pasa esta lista al cerrar cada fase con `kp-revision-visual`, y tú 
 - [ ] Solo se usan colores, tamaños y radios de `styles/tokens.css`.
 - [ ] El acento `--accent` aparece solo en elementos pulsables o activos.
 - [ ] Todas las tarjetas tienen la misma proporción, altura y alineación de pie.
-- [ ] Los títulos usan Bricolage Grotesque; el texto usa Instrument Sans; los prompts usan JetBrains Mono.
+- [ ] Títulos y texto usan la letra estilo iOS 16 (SF Pro del sistema o Inter); los prompts, SF Mono o JetBrains Mono.
 - [ ] Ningún texto se corta ni se sale de su caja a 375, 768, 1280 y 1440 px.
 - [ ] La galería muestra tarjetas sin hacer scroll en 1440×900.
 - [ ] No hay degradados decorativos, emojis ni sombras grandes.

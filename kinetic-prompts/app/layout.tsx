@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 
 import { UIProviders } from "@/components/ui/providers";
 
 import "./globals.css";
 
-/* Familias del sistema de diseño (docs/PLAN.md). Son fuentes variables: se cargan todos los pesos. */
-const display = Bricolage_Grotesque({ subsets: ["latin"], display: "swap", variable: "--font-bricolage" });
-const sans = Instrument_Sans({ subsets: ["latin"], display: "swap", variable: "--font-instrument" });
+/* Letra estilo iOS 16: en Apple se usa SF Pro del sistema (no se puede servir desde la web por su
+ * licencia); en el resto, Inter, que es libre y muy parecida. Ver --family-* en styles/tokens.css. */
+const sans = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
 const mono = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-jetbrains" });
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+    <html lang="es" className={`${sans.variable} ${mono.variable}`}>
       <body>
         <UIProviders>{children}</UIProviders>
       </body>
