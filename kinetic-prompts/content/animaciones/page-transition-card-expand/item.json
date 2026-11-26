@@ -1,0 +1,69 @@
+{
+  "section": "animaciones",
+  "slug": "page-transition-card-expand",
+  "title": "Tarjeta que se convierte en página",
+  "summary": "La imagen de una tarjeta viaja y crece hasta ser la portada de su página; el texto entra después, escalonado. Al volver, se encoge hasta su sitio.",
+  "category": "transiciones",
+  "tech": [
+    "View Transitions",
+    "Web Animations",
+    "GSAP Flip"
+  ],
+  "difficulty": 3,
+  "performance": "medio",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/transitions/FLIP-001-flip-transiciones-layout.md",
+    "knowledge/css/CSS-002-view-transitions.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md",
+    "knowledge/ux/UX-001-duracion-y-easing.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "duration",
+      "label": "Duración del viaje",
+      "type": "range",
+      "min": 0.3,
+      "max": 1.4,
+      "step": 0.05,
+      "default": 0.7,
+      "unit": "s"
+    },
+    {
+      "id": "stagger",
+      "label": "Escalonado del texto",
+      "type": "range",
+      "min": 0,
+      "max": 0.15,
+      "step": 0.01,
+      "default": 0.06,
+      "unit": "s"
+    },
+    {
+      "id": "ease",
+      "label": "Easing",
+      "type": "select",
+      "options": [
+        "cubic-bezier(0.76, 0, 0.24, 1)",
+        "ease-in-out",
+        "ease-out"
+      ],
+      "default": "cubic-bezier(0.76, 0, 0.24, 1)"
+    }
+  ],
+  "tips": [
+    "Guarda la posición de la tarjeta antes de tocar el DOM: sin ese «primer fotograma» no hay de dónde viajar.",
+    "Cada pareja que viaja (miniatura y portada) necesita un nombre único en la página; dos iguales cancelan la transición.",
+    "Si el ancho y el alto escalan distinto, el contenido se deforma: haz viajar un bloque de imagen sin texto dentro y que el texto entre aparte.",
+    "No empieces otra transición hasta que acabe la actual: los clics rápidos rompen el viaje.",
+    "El orden del DOM tiene que coincidir con el orden visual final, por el teclado y los lectores de pantalla.",
+    "Con movimiento reducido: un fundido corto, sin viaje."
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-26"
+}

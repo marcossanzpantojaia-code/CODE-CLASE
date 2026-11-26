@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tarjeta que se convierte en página · demo</title>
+    <style>
+      /* Demo de Kinetic Prompts: identidad propia (maqueta «alba»), no usa los tokens de la app. */
+      :root { --cream: #f3eee6; --ink: #1c1b19; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; background: var(--cream); color: var(--ink); }
+      .page { position: absolute; inset: 0; display: flex; flex-direction: column; gap: clamp(8px, 2.2vw, 24px); padding: clamp(12px, 3.2vw, 40px); }
+      .page[hidden] { display: none; }
+      header { display: flex; align-items: center; justify-content: space-between; font-size: clamp(11px, 1.6vw, 16px); }
+      .logo { font-weight: 800; letter-spacing: -0.04em; font-size: 1.4em; }
+      nav { display: flex; gap: 1.4em; }
+      nav a, .volver { color: inherit; text-decoration: none; opacity: 0.6; }
+      nav a[aria-current="page"] { opacity: 1; border-bottom: 2px solid currentColor; }
+      a:focus-visible, button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+      h1 { margin: 0; font-size: clamp(26px, 6vw, 84px); line-height: 0.95; letter-spacing: -0.05em; font-weight: 800; }
+      h1:focus { outline: none; }
+      .grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(6px, 1.4vw, 18px); align-content: start; }
+      .card { all: unset; cursor: pointer; display: flex; flex-direction: column; gap: 8px; font-size: clamp(10px, 1.3vw, 14px); }
+      .card-img { aspect-ratio: 4 / 5; border-radius: clamp(4px, 0.8vw, 10px); }
+      #detalle { padding: 0; }
+      .fondo { position: absolute; inset: 0; background: var(--cream); }
+      .hero-img { position: relative; height: 58%; border-radius: 0 0 clamp(6px, 1vw, 14px) clamp(6px, 1vw, 14px); transform-origin: 0 0; will-change: transform; }
+      .detalle-texto { position: relative; display: flex; flex-direction: column; gap: clamp(6px, 1.4vw, 14px); padding: clamp(12px, 3.2vw, 40px); }
+      .detalle-texto p { margin: 0; max-width: 52ch; font-size: clamp(11px, 1.5vw, 17px); line-height: 1.5; opacity: 0.75; }
+      .volver { position: relative; align-self: flex-start; font-size: clamp(11px, 1.5vw, 15px); opacity: 0.8; }
+      @media (max-width: 599px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+      #reproducir { position: fixed; right: 12px; bottom: 12px; z-index: 20; font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 0; background: var(--ink); color: var(--cream); cursor: pointer; }
+      #reproducir[hidden] { display: none; }
+      .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <section class="page" id="proyectos" aria-labelledby="t-proyectos">
+      <header>
+        <span class="logo">alba</span>
+        <nav aria-label="Principal"><a href="#">Inicio</a><a href="#proyectos" aria-current="page">Proyectos</a></nav>
+      </header>
+      <h1 id="t-proyectos" tabindex="-1">Proyectos</h1>
+      <div class="grid">
+        <button class="card" type="button" data-i="0"><span class="card-img" style="background:#2b4f47"></span>Casa Lirio</button>
+        <button class="card" type="button" data-i="1"><span class="card-img" style="background:#c9a96e"></span>Ático Sur</button>
+        <button class="card" type="button" data-i="2"><span class="card-img" style="background:#e4572e"></span>Estudio Brasa</button>
+        <button class="card" type="button" data-i="3"><span class="card-img" style="background:#3d6b61"></span>Loft Ría</button>
+      </div>
+    </section>
+
+    <section class="page" id="detalle" aria-labelledby="t-detalle" hidden>
+      <div class="fondo"></div>
+      <div class="hero-img" aria-hidden="true"></div>
+      <div class="detalle-texto">
+        <a class="volver" href="#proyectos">← Proyectos</a>
+        <h1 id="t-detalle" tabindex="-1">Proyecto</h1>
+        <p>Reforma integral con luz natural, materiales cálidos y una distribución abierta que conecta cocina y salón.</p>
+      </div>
+    </section>
+
+    <button id="reproducir" type="button" hidden>Reproducir</button>
+    <p class="sr" aria-live="polite" id="aviso"></p>
+
+    <script>
+      (() => {
+        "use strict";
+        const params = { duration: 0.7, stagger: 0.06, ease: "cubic-bezier(0.76, 0, 0.24, 1)" };
+        const LIMITS = { duration: [0.3, 1.4], stagger: [0, 0.15] };
+        const EASES = ["cubic-bezier(0.76, 0, 0.24, 1)", "ease-in-out", "ease-out"];
+        const IDLE_MS = 1200;
+        const DEMO_CARD = 2;
+
+        const grid = document.getElementById("proyectos");
+        const detail = document.getElementById("detalle");
+        const fondo = detail.querySelector(".fondo");
+        const hero = detail.querySelector(".hero-img");
+        const title = document.getElementById("t-detalle");
+        const texts = [...detail.querySelectorAll(".volver, h1, p")];
+        const cards = [...document.querySelectorAll(".card")];
+        const playButton = document.getElementById("reproducir");
+        const aviso = document.getElementById("aviso");
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+        const autoplay = new URLSearchParams(location.search).get("loop") !== "0";
+
+        let open = -1; // tarjeta abierta (-1: ninguna)
+        let running = false;
+        let timer = 0;
+        let generation = 0;
+
+        const ms = (s) => s * 1000;
+
+        /* FLIP: posición inicial (First), la final (Last), la diferencia invertida (Invert) y animarla a cero (Play). */
+        function invert(from, to) {
+          return `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`;
+        }
+
+        function announce(fromUser, text, focusEl) {
+          if (!fromUser) return;
+          focusEl.focus({ preventScroll: true });
+          aviso.textContent = text;
+        }
+
+        async function expand(i, fromUser = false) {
+          if (running || open !== -1) return;
+          running = true;
+          clearTimeout(timer);
+          const id = ++generation;
+          const img = cards[i].querySelector(".card-img");
+          try {
+            const first = img.getBoundingClientRect();
+            hero.style.background = getComputedStyle(img).backgroundColor;
+            title.textContent = cards[i].textContent.trim();
+            detail.hidden = false;
+            open = i;
+            if (reduced.matches) {
+              await detail.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: "linear" }).finished;
+            } else {
+              const last = hero.getBoundingClientRect();
+              img.style.opacity = "0";
+              const timing = { duration: ms(params.duration), easing: params.ease, fill: "both" };
+              await Promise.all([
+                hero.animate([{ transform: invert(first, last) }, { transform: "none" }], timing).finished,
+                fondo.animate([{ opacity: 0 }, { opacity: 1 }], { ...timing, duration: ms(params.duration * 0.6) }).finished,
+                ...texts.map((el, k) =>
+                  el.animate([{ opacity: 0, transform: "translateY(16px)" }, { opacity: 1, transform: "none" }], {
+                    ...timing,
+                    delay: ms(params.duration * 0.45 + k * params.stagger),
+                  }).finished,
+                ),
+              ]);
+            }
+            if (id !== generation) return;
+            grid.hidden = true;
+            img.style.opacity = "";
+            announce(fromUser, `Proyecto ${title.textContent}`, title);
+          } catch {
+            /* cancelada por un replay */
+          } finally {
+            if (id === generation) { running = false; schedule(); }
+          }
+        }
+
+        async function collapse(fromUser = false) {
+          if (running || open === -1) return;
+          running = true;
+          clearTimeout(timer);
+          const id = ++generation;
+          const card = cards[open];
+          const img = card.querySelector(".card-img");
+          try {
+            grid.hidden = false;
+            if (reduced.matches) {
+              detail.hidden = true;
+              await grid.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: "linear" }).finished;
+            } else {
+              img.style.opacity = "0";
+              const first = hero.getBoundingClientRect();
+              const last = img.getBoundingClientRect();
+              detail.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+              const timing = { duration: ms(params.duration), easing: params.ease, fill: "both" };
+              await Promise.all([
+                hero.animate([{ transform: "none" }, { transform: invert(last, first) }], timing).finished,
+                fondo.animate([{ opacity: 1 }, { opacity: 0 }], { ...timing, duration: ms(params.duration * 0.6), delay: ms(params.duration * 0.4) }).finished,
+                ...texts.map((el) => el.animate([{ opacity: 1 }, { opacity: 0 }], { ...timing, duration: ms(params.duration * 0.3) }).finished),
+              ]);
+              if (id !== generation) return;
+              detail.hidden = true;
+              detail.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+              img.style.opacity = "";
+            }
+            open = -1;
+            announce(fromUser, "Proyectos", document.getElementById("t-proyectos"));
+          } catch {
+            /* cancelada por un replay */
+          } finally {
+            if (id === generation) { running = false; schedule(); }
+          }
+        }
+
+        function schedule() {
+          clearTimeout(timer);
+          if (!autoplay || reduced.matches) return;
+          timer = setTimeout(() => (open === -1 ? expand(DEMO_CARD) : collapse()), IDLE_MS);
+        }
+
+        function reset() {
+          generation++;
+          clearTimeout(timer);
+          document.getAnimations().forEach((a) => a.cancel());
+          cards.forEach((c) => (c.querySelector(".card-img").style.opacity = ""));
+          detail.hidden = true;
+          grid.hidden = false;
+          open = -1;
+          running = false;
+        }
+
+        function applyParams(next) {
+          if (!next || typeof next !== "object") return;
+          for (const key of ["duration", "stagger"]) {
+            const v = next[key];
+            if (typeof v === "number" && Number.isFinite(v)) params[key] = Math.min(LIMITS[key][1], Math.max(LIMITS[key][0], v));
+          }
+          if (typeof next.ease === "string" && EASES.includes(next.ease)) params.ease = next.ease;
+        }
+
+        addEventListener("message", (event) => {
+          const data = event.data;
+          if (!data || typeof data !== "object" || typeof data.type !== "string") return;
+          if (data.type === "kp:params") applyParams(data.params);
+          if (data.type === "kp:replay") { reset(); expand(DEMO_CARD); }
+        });
+
+        cards.forEach((card, i) => card.addEventListener("click", () => expand(i, true)));
+        detail.querySelector(".volver").addEventListener("click", (e) => { e.preventDefault(); collapse(true); });
+        document.querySelectorAll("nav a").forEach((a) => a.addEventListener("click", (e) => e.preventDefault()));
+        playButton.addEventListener("click", () => (open === -1 ? expand(DEMO_CARD, true) : collapse(true)));
+
+        function syncReduced() { playButton.hidden = !reduced.matches; schedule(); }
+        reduced.addEventListener("change", syncReduced);
+        syncReduced();
+      })();
+    </script>
+  </body>
+</html>
