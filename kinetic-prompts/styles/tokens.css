@@ -1,0 +1,99 @@
+/*
+ * Kinetic Prompts · tokens del sistema de diseño.
+ * Fuente: docs/PLAN.md, sección «Dirección estética». Es la única fuente de verdad del diseño:
+ * los componentes los usan a través de las clases de Tailwind que define app/globals.css (@theme).
+ * Fuera de este archivo están prohibidos los colores, tamaños, radios y sombras sueltos
+ * (lo comprueba styles/guardia.test.ts).
+ */
+
+:root {
+  color-scheme: dark;
+
+  /* ── Color (tema oscuro por defecto) ─────────────────────────────────────────── */
+  --bg: #0e0f12; /* fondo de la página (grafito, no negro puro) */
+  --surface: #16181d; /* tarjetas, paneles */
+  --surface-2: #1f2229; /* bloque del prompt, inputs, menús */
+  --border: #2a2e37; /* bordes de 1 px */
+  --text: #ecedef; /* texto principal */
+  --text-muted: #9095a0; /* texto secundario, metadatos */
+  --accent: #ff6b3d; /* único acento: Copiar, enlaces activos, foco */
+  --success: #3dd68c; /* «Copiado», estado VALIDADO */
+  --warning: #f5b841; /* límite de copias cerca */
+  --danger: #f2555a; /* errores */
+
+  /*
+   * Derivados para estados. No son colores nuevos: mezclas de los diez anteriores.
+   * - border-strong: el borde «se aclara» en hover (plan, «Movimiento de la propia interfaz»).
+   * - accent-hover / accent-press: hover y pulsado del botón primario, sin un segundo acento.
+   * - on-accent: texto sobre el acento. Es --bg (6,8:1); el blanco solo daría 2,8:1.
+   * - shimmer: brillo del estado «cargando» sobre --surface-2.
+   */
+  --border-strong: color-mix(in oklab, var(--border), var(--text) 18%);
+  --accent-hover: color-mix(in oklab, var(--accent), var(--text) 14%);
+  --accent-press: color-mix(in oklab, var(--accent), var(--bg) 14%);
+  --on-accent: var(--bg);
+  --shimmer: color-mix(in oklab, var(--surface-2), var(--text) 8%);
+
+  /* ── Tipografía ──────────────────────────────────────────────────────────────── */
+  /* Las familias las inyecta next/font en app/layout.tsx (--font-bricolage, …). */
+  --family-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --family-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --family-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+  --track-display: -0.02em; /* tracking −2 % de los títulos */
+
+  /* Escala: 12 · 14 · 16 · 20 · 28 · 40 · 64 px (en rem para respetar el tamaño del usuario). */
+  --fs-12: 0.75rem;
+  --fs-14: 0.875rem;
+  --fs-16: 1rem;
+  --fs-20: 1.25rem;
+  --fs-28: 1.75rem;
+  --fs-40: 2.5rem;
+  --fs-64: 4rem;
+  --lh-display: 1.1;
+  --lh-text: 1.5;
+  --lh-mono: 1.6; /* prompts y código */
+  --measure: 65ch; /* ancho máximo de párrafo */
+
+  /* ── Espaciado (múltiplos de 4 px: 4 · 8 · 12 · 16 · 24 · 32 · 48 · 64 · 96) ─── */
+  --space-unit: 4px;
+
+  /* ── Forma ───────────────────────────────────────────────────────────────────── */
+  --r-control: 6px; /* chips y botones */
+  --r-card: 12px; /* tarjetas */
+  --r-panel: 20px; /* paneles grandes */
+  --focus-w: 2px; /* anillo de foco en --accent */
+
+  /* ── Rejilla ─────────────────────────────────────────────────────────────────── */
+  --page-max: 1440px;
+  --gutter-mobile: 16px;
+  --gutter-desktop: 24px;
+  --reading-max: 680px; /* páginas legales */
+  --header-h: 64px;
+  --header-blur: 12px; /* única translucidez permitida: la cabecera al hacer scroll */
+
+  /* ── Iconos (Lucide) ─────────────────────────────────────────────────────────── */
+  --icon-size: 20px;
+  --icon-stroke: 1.5;
+
+  /* ── Movimiento ──────────────────────────────────────────────────────────────── */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1); /* easing único */
+  --dur-hover: 150ms; /* hover en tarjeta */
+  --dur-ui: 240ms; /* menús, chips, toasts, copiar */
+  --dur-signature: 600ms; /* tarjeta → ficha */
+  --dur-copied: 2000ms; /* «Copiado ✓» visible */
+  --lift: -2px; /* la tarjeta sube 2 px en hover */
+  --shift: 8px; /* desplazamiento de menús, chips y toasts al aparecer */
+  --press-scale: 0.98; /* estado activo (pulsado) */
+}
+
+/* Movimiento reducido: todo pasa a fundidos de 100 ms, sin desplazamientos ni escalas. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-hover: 100ms;
+    --dur-ui: 100ms;
+    --dur-signature: 100ms;
+    --lift: 0px;
+    --shift: 0px;
+    --press-scale: 1;
+  }
+}

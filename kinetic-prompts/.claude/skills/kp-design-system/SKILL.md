@@ -96,6 +96,38 @@ en `--accent`), activo, deshabilitado y cargando (shimmer sobre `--surface-2`).
 - Textos de la interfaz en otro idioma que no sea español.
 - Contenido de catálogo (títulos, prompts) escrito dentro de componentes: se lee de `content/`.
 
+## Cómo se usan en código (implementado en la Fase 1)
+
+- **Tokens:** `styles/tokens.css`. **Clases:** `@theme` de `app/globals.css` (Tailwind 4 no usa
+  `tailwind.config`). Los valores por defecto de Tailwind están vaciados: `bg-red-500`,
+  `shadow-lg` o `rounded-3xl` no generan nada.
+- **Colores:** `bg-bg`, `bg-surface`, `bg-surface-2`, `border-border`, `text-text`,
+  `text-text-muted`, `bg-accent` + `text-on-accent`, `text-success`, `text-warning`,
+  `text-danger`; derivados de estado `border-border-strong`, `bg-accent-hover`,
+  `bg-accent-press`.
+- **Tipografía:** `font-display` (+ `tracking-display`), `font-sans`, `font-mono`
+  (+ `leading-mono`); tamaños `text-12`, `text-14`, `text-16`, `text-20`, `text-28`,
+  `text-40` y `text-64`.
+- **Espaciado:** base de 4 px (`p-1` = 4 px). Solo los pasos 1, 2, 3, 4, 6, 8, 12, 16 y 24.
+- **Radios:** `rounded-control` (6), `rounded-card` (12), `rounded-panel` (20).
+- **Rejilla:** `max-w-page` (1440 px), `max-w-measure` (65ch), `max-w-reading` (680 px);
+  márgenes `px-4 md:px-6`.
+- **Movimiento:** `ease-kp`, `duration-(--dur-hover)`, `duration-(--dur-ui)`,
+  `duration-(--dur-signature)`, `translate-y-(--lift)`, `animate-pop-in` y
+  `animate-pop-out`. Con movimiento reducido los tokens pasan solos a 100 ms y a 0 px.
+- **Estados:** usa las variantes `kp-hover:`, `kp-focus:` y `kp-active:`, que además
+  aceptan `data-force="hover|focus|active"` para mostrarlos en `/design`. Las clases
+  comunes (`focusRing`, `stateTransition`, `disabledState`, `loadingState`, `fieldBase`)
+  están en `components/ui/styles.ts`.
+- **Cargando ≠ deshabilitado:** cargando mantiene el color, muestra `Spinner`, `aria-busy`
+  y no ejecuta la acción; deshabilitado baja al 50 %.
+- **Iconos:** `<Icon icon={…} />` (20 px, trazo de 1,5 px reales).
+- **Guardia:** `styles/guardia.test.ts` falla con hex, funciones de color, valores
+  arbitrarios con unidades, sombras, degradados, paleta por defecto, emojis o espaciado
+  fuera de la escala. Un hex de contenido se permite con el comentario `kp-permitir-hex`.
+- **Catálogo vivo:** `/design` (solo en desarrollo). Cada componente nuevo se añade allí
+  con su matriz de estados.
+
 ## Al terminar
 
 Comprueba el componente con teclado, con `prefers-reduced-motion` y a 375 y 1440 px.

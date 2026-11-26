@@ -1,1 +1,230 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
+
+/*
+ * Conexión de los tokens con Tailwind (Tailwind 4 no usa tailwind.config: el tema vive aquí).
+ * Se vacían los valores por defecto de Tailwind para que solo existan clases de los tokens:
+ * `bg-red-500`, `shadow-lg` o `rounded-3xl` no generan nada.
+ */
+@theme inline {
+  --color-*: initial;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-press: var(--accent-press);
+  --color-on-accent: var(--on-accent);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --font-*: initial;
+  --font-display: var(--family-display);
+  --font-sans: var(--family-sans);
+  --font-mono: var(--family-mono);
+
+  --text-*: initial;
+  --text-12: var(--fs-12);
+  --text-12--line-height: var(--lh-text);
+  --text-14: var(--fs-14);
+  --text-14--line-height: var(--lh-text);
+  --text-16: var(--fs-16);
+  --text-16--line-height: var(--lh-text);
+  --text-20: var(--fs-20);
+  --text-20--line-height: var(--lh-text);
+  --text-28: var(--fs-28);
+  --text-28--line-height: var(--lh-display);
+  --text-40: var(--fs-40);
+  --text-40--line-height: var(--lh-display);
+  --text-64: var(--fs-64);
+  --text-64--line-height: var(--lh-display);
+
+  --leading-*: initial;
+  --leading-display: var(--lh-display);
+  --leading-text: var(--lh-text);
+  --leading-mono: var(--lh-mono);
+
+  --tracking-*: initial;
+  --tracking-display: var(--track-display);
+  --tracking-normal: 0em;
+
+  --spacing: var(--space-unit);
+
+  --radius-*: initial;
+  --radius-control: var(--r-control);
+  --radius-card: var(--r-card);
+  --radius-panel: var(--r-panel);
+
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --text-shadow-*: initial;
+
+  --blur-*: initial;
+  --blur-header: var(--header-blur);
+
+  --container-*: initial;
+  --container-page: var(--page-max);
+  --container-measure: var(--measure);
+  --container-reading: var(--reading-max);
+
+  --ease-*: initial;
+  --ease-kp: var(--ease);
+
+  --animate-pop-in: kp-pop-in var(--dur-ui) var(--ease) both;
+  --animate-pop-out: kp-pop-out var(--dur-ui) var(--ease) both;
+}
+
+/*
+ * Estados forzables. Las variantes kp-hover, kp-focus y kp-active aplican el estado real
+ * (:hover, :focus-visible, :active) y también el atributo data-force="hover|focus|active",
+ * que usa /design para mostrar todos los estados a la vez.
+ */
+@custom-variant kp-hover {
+  @media (hover: hover) {
+    &:hover:not(:disabled, [aria-disabled="true"]) {
+      @slot;
+    }
+  }
+  &[data-force~="hover"] {
+    @slot;
+  }
+}
+
+@custom-variant kp-focus {
+  &:focus-visible {
+    @slot;
+  }
+  &[data-force~="focus"] {
+    @slot;
+  }
+}
+
+@custom-variant kp-active {
+  &:active:not(:disabled, [aria-disabled="true"]) {
+    @slot;
+  }
+  &[data-force~="active"] {
+    @slot;
+  }
+}
+
+@keyframes kp-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--shift));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes kp-pop-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(var(--shift));
+  }
+}
+
+@keyframes kp-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@layer base {
+  html {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--family-sans);
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--bg);
+    font-size: var(--fs-16);
+    line-height: var(--lh-text);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--family-display);
+    font-weight: 700;
+    letter-spacing: var(--track-display);
+    line-height: var(--lh-display);
+    text-wrap: balance;
+  }
+
+  p {
+    max-width: var(--measure);
+  }
+
+  code,
+  kbd,
+  pre {
+    font-family: var(--family-mono);
+  }
+
+  /* Los nombres de tokens y rutas no se parten por el guion. */
+  :not(pre) > code {
+    white-space: nowrap;
+  }
+
+  /* Respaldo de foco visible para cualquier elemento sin estilo propio. */
+  :focus-visible {
+    outline: var(--focus-w) solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Iconos Lucide: 20 px y trazo de 1,5 px reales, sin depender del viewBox. */
+  .kp-icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    flex-shrink: 0;
+    stroke-width: var(--icon-stroke);
+  }
+
+  .kp-icon * {
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Estado «cargando»: brillo que recorre --surface-2. Es el único degradado de la interfaz
+     y es funcional, no decorativo. Con movimiento reducido queda quieto. */
+  .kp-shimmer {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--surface-2);
+  }
+
+  .kp-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg, transparent, var(--shimmer), transparent);
+    animation: kp-shimmer 1.4s var(--ease) infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kp-shimmer::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}

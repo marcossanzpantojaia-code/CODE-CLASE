@@ -561,6 +561,8 @@ Criterios de cierre:
 - Contraste de texto mínimo 4,5:1 (comprueba --text-muted sobre --surface).
 ```
 
+**Notas de implementación (2026-11-26)** · Tailwind 4 no usa `tailwind.config`: los tokens de `styles/tokens.css` se conectan a las clases con `@theme` en `app/globals.css`, que además vacía los valores por defecto de Tailwind. Las clases y las variantes de estado (`kp-hover`, `kp-focus`, `kp-active`) están documentadas en la Skill `kp-design-system`. `styles/guardia.test.ts` comprueba la lista «Prohibido» en cada `npm run test`.
+
 ### Fase 2: Inicio y galerías de Webs y Animaciones
 
 ```text
