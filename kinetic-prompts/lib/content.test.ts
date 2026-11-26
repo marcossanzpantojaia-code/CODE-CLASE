@@ -118,3 +118,16 @@ describe("selectStack", () => {
     },
   );
 });
+
+/* Regla del 2026-11-26 (docs/PLAN.md, «Todo efecto se puede cambiar de color»): cada efecto tiene al menos
+ * una opción de color. Estos dos están pendientes de añadirla; al hacerlo, se quitan de la lista. */
+const COLOR_PENDIENTE = ["page-transition-fade", "page-transition-card-expand"];
+
+describe("todo efecto se puede cambiar de color", () => {
+  test.each(items.map((i) => [i.slug, i] as const))("%s tiene una opción de color", (slug, item) => {
+    const hasColor = item.params.some((p) => p.type === "color" || p.type === "palette");
+    if (COLOR_PENDIENTE.includes(slug))
+      expect(hasColor, `${slug} ya tiene color: quítalo de COLOR_PENDIENTE`).toBe(false);
+    else expect(hasColor, `${slug} necesita al menos un parámetro de color`).toBe(true);
+  });
+});

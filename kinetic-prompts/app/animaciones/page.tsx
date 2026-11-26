@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { AnimationsGallery } from "@/components/catalog/animations-gallery";
 import { SiteHeader } from "@/components/site/site-header";
 import { Stat } from "@/components/site/stat";
+import { APARTADOS } from "@/lib/apartados";
 import { knowledgeCount } from "@/lib/content";
 import { getGalleryItems, sourcesUsed } from "@/lib/gallery";
 
@@ -31,7 +32,10 @@ export default function AnimacionesPage() {
           </div>
           <div className="flex flex-wrap gap-8">
             <Stat value={items.length} label="efectos validados" />
-            <Stat value={new Set(items.map((i) => i.category)).size} label="apartados con efectos de 7" />
+            <Stat
+              value={new Set(items.map((i) => i.category)).size}
+              label={`apartados con efectos de ${APARTADOS.length}`}
+            />
             <Stat
               value={sourcesUsed()}
               label={`fichas de la biblioteca consultadas de ${knowledgeCount()}`}

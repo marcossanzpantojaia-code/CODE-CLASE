@@ -1,4 +1,13 @@
-import { ArrowLeftRight, Box, MousePointerClick, PanelTop, ScrollText, Type, Waves } from "lucide-react";
+import {
+  ArrowLeftRight,
+  Box,
+  MousePointerClick,
+  PanelTop,
+  ScrollText,
+  Shapes,
+  Type,
+  Waves,
+} from "lucide-react";
 
 import { Icon } from "@/components/ui/icon";
 import type { ApartadoId } from "@/lib/apartados";
@@ -6,6 +15,7 @@ import type { ApartadoId } from "@/lib/apartados";
 const ICONS = {
   fondos: Waves,
   transiciones: ArrowLeftRight,
+  objetos: Shapes,
   texto: Type,
   heros: PanelTop,
   scroll: ScrollText,

@@ -77,7 +77,7 @@ La app tiene que ser muy, muy fácil de usar y facilitar de verdad la creación 
 
 Esto es lo que diferencia a Kinetic Prompts: la app programa webs solo con elegir las partes. *(Decisión del 2026-11-26.)*
 
-- **Apartados:** Fondos, Transiciones, Letras (tipografía y animación de texto), Heros, Scroll, Microinteracciones y 3D. Cada pieza es una tarjeta-botón que se ve y se copia sola, como en la galería.
+- **Apartados:** Fondos, Transiciones de página, Transiciones de objetos, Letras (tipografía y animación de texto), Heros, Scroll, Microinteracciones y 3D. Cada pieza es una tarjeta-botón que se ve y se copia sola, como en la galería.
 - **Constructor (`/crear`):**
   - Se recorre un apartado por paso. En cada uno se elige una pieza o «Ninguna», con la misma tarjeta.
   - Un resumen «Tu web» va mostrando lo elegido.
@@ -125,6 +125,7 @@ La app se divide en dos apartados con su propia galería, sus filtros y su plant
 | Microinteracciones | Botón magnético, cursor personalizado, hover con imagen |
 | 3D / WebGL | Escena de producto, foto con volumen, configurador |
 | Fondos | Shader de fondo, ruido, partículas, color en movimiento |
+| Transiciones de objetos | Un producto que viaja entre secciones, objeto que se transforma, morph de formas, transformación por partículas |
 
 Los dos apartados están conectados. Cada web enumera las animaciones que usa, con un enlace a su ficha en Animaciones, y cada animación muestra en qué webs aparece.
 
@@ -788,6 +789,26 @@ Criterios de cierre:
 
 - «Alguna más»: las transiciones que no tengan ficha necesitan investigarse antes, y añadir fichas a `knowledge/` requiere permiso del usuario.
 - Las de página siguen el patrón **cubrir → cambiar → descubrir**, que encaja con cualquier enrutador: la capa tapa la página al pulsar un enlace, se navega y se destapa al cargar la nueva.
+
+**Pendientes apuntados por el usuario (2026-11-26):**
+
+- **Transiciones de objetos.** Es un apartado propio (`objetos`), distinto de las transiciones de página: un objeto que viaja, se transforma o une dos secciones. La biblioteca tiene buen material, cuatro de ellas en estado IMPLEMENTADO:
+
+  | Ficha | Qué aporta |
+  |---|---|
+  | CONT-001 | Continuidad del protagonista entre escenas (IMPLEMENTADO) |
+  | REC-001 | Objeto que conecta dos secciones (IMPLEMENTADO) |
+  | REC-002 | Transformación por partículas (IMPLEMENTADO) |
+  | REC-003 | Producto fijo con el entorno cambiante (IMPLEMENTADO) |
+  | TRN-001 | Matriz de transformaciones de producto y escena |
+  | MORPH-001 | Morph de formas SVG |
+  | SEQ-001 y SEQ-003 | Objeto continuo con secuencia de fotogramas |
+  | MOT-002 | Movimiento de producto cinematográfico |
+
+  Orden propuesto: REC-001 y CONT-001 primero (intermedio), luego MORPH-001 (básico o intermedio) y REC-002 (avanzado).
+- **Todo efecto se puede cambiar de color.** Cada elemento del catálogo tiene al menos una opción de tipo `color` o `palette`; lo comprueba `lib/content.test.ts`. Pendientes de añadirla:
+  - «Fundido nativo»: fundir a través de un color.
+  - «Tarjeta que se convierte en página»: color de fondo de la página de detalle.
 
 **Notas aprobadas (2026-11-26)** · candidatas de `docs/BIBLIOTECA_FASE0.md`, para proponer la lista del paso 2:
 

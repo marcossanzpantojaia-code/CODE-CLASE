@@ -14,6 +14,12 @@ export const APARTADOS = [
     description: "Cómo se pasa de una página a otra: fundidos, cortinas, persianas y más.",
   },
   {
+    id: "objetos",
+    label: "Transiciones de objetos",
+    description:
+      "Un objeto que viaja, se transforma o une dos secciones: el mismo producto de una escena a otra.",
+  },
+  {
     id: "texto",
     label: "Letras",
     description: "Titulares y párrafos que se revelan, se dividen o se descifran.",

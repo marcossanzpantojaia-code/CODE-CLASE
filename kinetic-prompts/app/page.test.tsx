@@ -6,7 +6,7 @@ import { APARTADOS } from "@/lib/apartados";
 
 import Home from "./page";
 
-test("el inicio presenta la app, enlaza la galería y muestra los 7 apartados", () => {
+test("el inicio presenta la app, enlaza la galería y muestra todos los apartados", () => {
   render(
     <UIProviders>
       <Home />
