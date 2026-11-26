@@ -11,12 +11,19 @@ prompt» de `docs/PLAN.md`.
 
 ## 1. Elegir la ficha
 
-1. Abre `knowledge/KNOWLEDGE_INDEX.md`. No cargues la biblioteca entera.
-2. Elige una ficha en estado INVESTIGADO o PROPUESTO que encaje con lo pedido.
-   Si no hay ninguna, dilo y para: no inventes una animación sin ficha.
-3. Lee solo esa ficha y las que enlace. Anota su ruta para `knowledgeRefs`.
+Sigue el procedimiento de `docs/BIBLIOTECA_CONSULTA.md` (orden de consulta, incompatibilidades,
+licencias y registro). En resumen:
+
+1. `knowledge/KNOWLEDGE_INDEX.md` → «Búsqueda por necesidad»; después
+   `knowledge/integration/LIBRARY_MANIFEST.json` filtrado por categoría, perfil y estado.
+   No cargues la biblioteca entera.
+2. Elige una ficha que encaje con lo pedido (prioriza IMPLEMENTADO y las que tengan código o
+   demo medida). Si no hay ninguna, dilo y para: no inventes una animación sin ficha.
+3. Lee esa ficha y las que enlace (máximo 12). Anota sus rutas para `knowledgeRefs`
+   (p. ej. `knowledge/transitions/MENU-001-menu-curvo-svg.md`).
 4. Elige un `slug` en kebab-case, en inglés, que describa el efecto
    (`page-transition-curtain`, `text-split-reveal`).
+5. Rellena `CONSULTA_BIBLIOTECA.md` en la carpeta del elemento (apartado 6 del procedimiento).
 
 ## 2. Estructura de la carpeta
 
@@ -33,7 +40,9 @@ content/animaciones/<slug>/
 
 - Autocontenida: HTML, CSS y JS en la carpeta `preview/`. Las librerías (GSAP, Lenis,
   Three.js) se cargan con versión exacta, nunca «latest».
-- Impleméntala a partir del procedimiento de la ficha. **No copies código de tutoriales.**
+- Impleméntala desde cero a partir del procedimiento de la ficha. **No copies código de la
+  fuente, aunque tenga licencia MIT** (apartado 5 de `docs/BIBLIOTECA_CONSULTA.md`).
+- Repasa las incompatibilidades conocidas (apartado 4) antes de escribir la demo.
 - Se ejecutará en un iframe con `sandbox`: no uses cookies, `localStorage` de la app ni
   `window.top`.
 - Debe reproducirse en bucle (o tener disparador repetible) y funcionar a 390 px de ancho.

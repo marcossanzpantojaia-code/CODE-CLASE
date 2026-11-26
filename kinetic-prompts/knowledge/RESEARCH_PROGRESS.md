@@ -864,3 +864,11 @@ IMG-001 (imágenes responsive), CSS-004 (container queries), TYPE-001 (tipograf�
 - **Ampliadas:** MBLUR-001 (rendimiento: JS p95 de 28,6 → 5,3 ms), EDIT-001, TRN-001 (técnicas WebGL de Artiukh, PROPUESTAS) y AIIMG-001.
 - **Microprueba ROSSO/CREMA:** mecánica conservada; sombra coherente; profundidad medida; coste con CPU × 1 ≤ 2 fotogramas > 33 ms. Con CPU × 4 no cabe (degradación pendiente). 3 defectos corregidos.
 - **Totales:** 162 fichas, 43 TUT, 263 entradas. **Vídeos de YouTube estudiados: 27.**
+
+## Integración en Kinetic Prompts (2026-11-26) — sin cambio de versión (v0.32.0)
+- **Copia:** la biblioteca v0.32.0 se copió desde Google Drive a `kinetic-prompts/knowledge/` con su estructura de carpetas: 686 archivos de texto, tamaño comprobado archivo a archivo. Las 417 imágenes y vídeos de `evidence/` y `_origen/` (59,1 MB) siguen en Drive; lista en `kinetic-prompts/docs/BIBLIOTECA_OMITIDOS.md`. Ninguna ficha modificada.
+- **Skills:** el espejo `.claude/skills/` se movió a `_skills_propuestas/` (mismo contenido, idéntico a `skills/`) para que Claude Code no las descubra ni las active solas dentro del proyecto. Las copias canónicas de `skills/` no cambian. Siguen en estado PROPUESTO.
+- **Efecto conocido:** `integration/tools/library_check.py` comprueba el espejo en `.claude/skills/` y lo dará por ausente; `INTEGRATION_GUIDE.md`, `MANTENIMIENTO.md` y `MINIMAL_INTEGRATION_TEST.md` siguen citando esa ruta. No se han tocado (biblioteca de solo lectura).
+- **Aprovechamiento:** el orden de consulta de `web-library-router` (índice → ARCH-001 → `LIBRARY_MANIFEST.json` → fichas), la cobertura por áreas, el mapa por elemento, las incompatibilidades conocidas y las reglas de licencias se incorporaron a las Skills del proyecto `kp-crear-animacion` y `kp-crear-web` a través de `kinetic-prompts/docs/BIBLIOTECA_CONSULTA.md`.
+- **Regla del proyecto:** las demos de `preview/` se implementan desde cero a partir del procedimiento de cada ficha, sin copiar código de las fuentes aunque tengan licencia MIT.
+- **Estados:** sin cambios (142 INVESTIGADO, 5 PROPUESTO, 15 IMPLEMENTADO, 0 VALIDADO).

@@ -57,7 +57,7 @@ La app se divide en dos apartados con su propia galería, sus filtros y su plant
 | Transiciones de página | Cortina, fundido, morph de tarjeta a página, barrido diagonal |
 | Scroll | Pin con progreso, parallax por capas, scroll horizontal, storytelling |
 | Heros | Tipografía animada, vídeo enmascarado, objeto 3D |
-| Texto | Split text, revelado por líneas, scramble, contador |
+| Texto | Split text, revelado por líneas, scramble |
 | Microinteracciones | Botón magnético, cursor personalizado, hover con imagen |
 | 3D / WebGL | Escena de producto, shader de fondo, configurador |
 
@@ -248,6 +248,8 @@ Cada elemento del catálogo es una carpeta dentro de su apartado: `content/webs/
 - `preview/`: la demo en vivo. En Webs es la web completa, con todas sus páginas.
 - `media/`: el vídeo en bucle y el póster.
 
+Además, cada carpeta lleva un `CONSULTA_BIBLIOTECA.md` con las fichas leídas y la decisión que salió de cada una (ver `docs/BIBLIOTECA_CONSULTA.md`). La app no lo lee.
+
 La app lee esas carpetas; no hay contenido escrito a mano dentro de los componentes.
 
 ### Modelo de datos de una animación (`item.json`)
@@ -262,7 +264,7 @@ La app lee esas carpetas; no hay contenido escrito a mano dentro de los componen
   "difficulty": 2,
   "performance": "ligero",
   "status": "VALIDADO",
-  "knowledgeRefs": ["knowledge/transitions/curtain.md"],
+  "knowledgeRefs": ["knowledge/transitions/MENU-001-menu-curvo-svg.md"],
   "usedIn": ["barberia-norte"],
   "params": [
     { "id": "duration", "label": "Duración", "type": "range", "min": 0.4, "max": 1.6, "step": 0.1, "default": 0.9, "unit": "s" },
@@ -288,7 +290,7 @@ La app lee esas carpetas; no hay contenido escrito a mano dentro de los componen
   "animations": ["page-transition-curtain", "text-split-reveal", "button-magnetic"],
   "tech": ["Next.js", "Tailwind", "GSAP"],
   "status": "VALIDADO",
-  "knowledgeRefs": ["knowledge/complete-projects/barberia.md"],
+  "knowledgeRefs": ["knowledge/architecture/ARCH-001-receta-pagina-completa.md", "knowledge/ux/UX-002-pagina-de-inicio-de-negocio.md"],
   "params": [
     { "id": "businessName", "label": "Nombre del negocio", "type": "text", "default": "Barbería Norte" },
     { "id": "city", "label": "Ciudad", "type": "text", "default": "Madrid" },
@@ -405,7 +407,7 @@ Comprobaciones para dar la web por terminada.
 
 - **Frases imperativas y concretas:** «Anima `y` de 100 % a 0 % en 0,9 s», no «haz una animación bonita».
 - **Valores con unidades** siempre.
-- **Sin código copiado de tutoriales:** el prompt describe; el código lo genera la IA del usuario.
+- **Sin código copiado de tutoriales:** el prompt describe; el código lo genera la IA del usuario. Las demos de `preview/` tampoco copian código: se implementan desde cero a partir del procedimiento de la ficha, aunque la fuente tenga licencia MIT.
 - **Fuentes:** cada prompt enlaza internamente a su ficha de la biblioteca (`knowledgeRefs`), que conserva las referencias a las fuentes originales.
 
 ## Stack y arquitectura
@@ -460,6 +462,10 @@ La app va en Next.js con TypeScript y Tailwind. Usa Supabase para el login y los
 
 Claude Code no carga la biblioteca entera. Lee `knowledge/KNOWLEDGE_INDEX.md`, localiza la ficha que necesita y solo abre esa. Las instrucciones especializadas van en Skills que se cargan bajo demanda.
 
+El orden de consulta (índice → ARCH-001 → `integration/LIBRARY_MANIFEST.json` → fichas), las incompatibilidades conocidas y las reglas de licencias están en `docs/BIBLIOTECA_CONSULTA.md`, adaptados de la Skill `web-library-router` de la biblioteca. Las Skills propias de la biblioteca están en `knowledge/_skills_propuestas/`, fuera de `.claude/`, para que no se activen solas.
+
+Carpetas de la biblioteca que usa el apartado Webs: `architecture/` y `recetas/` (proyectos completos, casos y recetas), `ux/` (UI/UX), `seo/` y `accessibility/`.
+
 ### CLAUDE.md del proyecto (corto, unas 30 líneas)
 
 ```markdown
@@ -491,7 +497,7 @@ Claude Code no carga la biblioteca entera. Lee `knowledge/KNOWLEDGE_INDEX.md`, l
 
 ### Flujo para cada web o animación nueva
 
-1. Elige una ficha de la biblioteca en estado INVESTIGADO o PROPUESTO. Para una web, una ficha de `complete-projects/` o un sector de los dos niveles de producción.
+1. Elige una ficha de la biblioteca en estado INVESTIGADO, PROPUESTO o IMPLEMENTADO. Para una web, una ficha de `architecture/` o `recetas/` (casos, recetas y la receta de página completa ARCH-001) o un sector de los dos niveles de producción.
 2. Usa `kp-crear-animacion` o `kp-crear-web`: implementa la demo y escribe los prompts (estado IMPLEMENTADO).
 3. `kp-validar`: pruebas, vídeo y póster (estado VALIDADO, o NO VERIFICADO con el motivo en `statusReason`).
 4. Anota el resultado en `knowledge/RESEARCH_PROGRESS.md`.
@@ -517,7 +523,7 @@ Tarea de esta fase:
    en .claude/skills/, cada una con su SKILL.md. Redacta sus instrucciones a partir de este plan.
 5. Lee knowledge/KNOWLEDGE_INDEX.md y dame un resumen en dos bloques:
    - Fichas útiles para Animaciones, por categoría.
-   - Fichas útiles para Webs (complete-projects, ui-ux, seo).
+   - Fichas útiles para Webs (architecture/ y recetas/, ux/, seo/).
    Incluye cuántas hay en cada estado (INVESTIGADO, PROPUESTO, IMPLEMENTADO, VALIDADO, NO VERIFICADO).
 6. Configura Vitest y Playwright con un test de humo que abra la página de inicio.
 
@@ -675,6 +681,21 @@ Criterios de cierre:
 - Tabla final con cada animación, su estado, el peso del vídeo y las incidencias.
 ```
 
+**Notas aprobadas (2026-11-26)** · candidatas de `docs/BIBLIOTECA_FASE0.md`, para proponer la lista del paso 2:
+
+| Hueco | Candidatas |
+|---|---|
+| Transiciones (3) | MASK-002 (barrido de persianas), FLIP-001 (morph de tarjeta a página), CSS-002 (fundido), MENU-001 (cortina con borde curvo) |
+| Scroll (2) | GS-005 (pin con progreso), ZOOM-001 (zoom parallax), CARD-001 (pila de tarjetas) |
+| Texto (2) | TXT-002 (revelado por líneas, con TXT-001 para la división) y **TXT-003 (scramble) como segunda animación de texto** |
+| Hero (1) | MASK-001 (imagen o vídeo enmascarado), TXT3D-001 (tipografía 3D) |
+| Microinteracción (1) | HOV-001 (botón magnético) |
+| 3D / WebGL (1) | GL-003 (foto con volumen), GL-002 (transición de imagen con shader) |
+
+- «Contador» no forma parte de las animaciones de texto.
+- Las demos de `preview/` se implementan desde cero a partir del procedimiento de la ficha, sin copiar código de la fuente, aunque tenga licencia MIT; con las fuentes sin licencia, ni fragmentos.
+- La consulta de cada ficha sigue `docs/BIBLIOTECA_CONSULTA.md`.
+
 ### Fase 5: Las primeras 4 webs
 
 ```text
@@ -688,7 +709,7 @@ cada web tiene su propia identidad visual).
    Para cada una, dame nombre ficticio, sector, paleta, tipografías, páginas
    y animaciones del catálogo que usará.
 3. Para cada web aprobada, de una en una:
-   a. Consulta en la biblioteca las fichas de complete-projects/, ui-ux/, seo/ y accessibility/ que apliquen.
+   a. Consulta en la biblioteca las fichas de architecture/, recetas/, ux/, seo/ y accessibility/ que apliquen.
    b. Construye la web completa en preview/, con todas sus páginas. Reutiliza las animaciones validadas
       del apartado Animaciones y anota sus slugs en item.json (animations) y en su usedIn.
       Debe escuchar postMessage para los parámetros (nombre, ciudad, paleta, tipografías)
@@ -711,6 +732,14 @@ Criterios de cierre:
 - Las 4 webs en estado VALIDADO.
 - Para cada web, captura de preview/ y del resultado de seguir el prompt maestro, lado a lado.
 ```
+
+**Notas aprobadas (2026-11-26)** · candidatas por web en `docs/BIBLIOTECA_FASE0.md`.
+
+- **Orden:** barbería, clínica, estudio creativo y, la última, la landing de producto 3D.
+- **Barbería:** criterio de cierre adicional: un test e2e del menú móvil a 375 px (abre, navega, cierra con teclado y no tapa el contenido). El prototipo n.º 1 de la biblioteca falló justo en la cabecera móvil (UX-004).
+- **Clínica:** el formulario no pide datos de salud: solo nombre, contacto y un motivo general de la consulta. La analítica solo se carga después del consentimiento de cookies (LEGAL-001, ANALYTICS-001).
+- **Producto 3D:** solo modelos y texturas con licencia CC0 (por ejemplo, Poly Haven), con la fuente anotada. Si no alcanza la calidad visual (criterios C1 y C3 de EVAL-001), se avisa al usuario y se cambia la web antes de seguir.
+- Las demos de `preview/` se implementan desde cero, sin copiar código de las fuentes.
 
 ### Fase 6: Login, favoritos y límite de copias
 

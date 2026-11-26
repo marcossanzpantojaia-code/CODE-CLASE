@@ -26,9 +26,17 @@ Antes de construir nada, presenta:
 
 ## 2. Investigar
 
-Abre `knowledge/KNOWLEDGE_INDEX.md` y lee solo las fichas que apliquen de
-`complete-projects/`, `ui-ux/`, `seo/` y `accessibility/`. Anota sus rutas para
-`knowledgeRefs`.
+Sigue el procedimiento de `docs/BIBLIOTECA_CONSULTA.md`. En resumen:
+
+1. `knowledge/KNOWLEDGE_INDEX.md` → `knowledge/architecture/ARCH-001-receta-pagina-completa.md`
+   (orden de decisiones) → `knowledge/integration/LIBRARY_MANIFEST.json` filtrado por perfil y
+   estado.
+2. Lee las fichas que apliquen de `architecture/` y `recetas/` (casos y proyectos completos),
+   `ux/`, `seo/` y `accessibility/`, y al menos una de cada área que toque el encargo, aunque
+   la descartes (apartado 2 del procedimiento). En nivel cinematográfico, usa el mapa por
+   elemento (apartado 3).
+3. Anota sus rutas para `knowledgeRefs` y rellena `CONSULTA_BIBLIOTECA.md` en la carpeta de
+   la web, con la decisión creativa que salió de cada ficha.
 
 ## 3. Estructura de la carpeta
 
@@ -45,6 +53,8 @@ content/webs/<slug>/
 ## 4. Construir la web en `preview/`
 
 - Todas las páginas de `pages`, navegables entre sí con rutas relativas.
+- Se implementa desde cero a partir de los procedimientos de las fichas: **no copies código de
+  las fuentes, aunque tengan licencia MIT** (apartado 5 de `docs/BIBLIOTECA_CONSULTA.md`).
 - Reutiliza las animaciones validadas del apartado Animaciones siguiendo su `prompt.md`.
   Anota sus slugs en `animations` de la web y añade el slug de la web en `usedIn` de cada
   animación.
