@@ -872,3 +872,10 @@ IMG-001 (imágenes responsive), CSS-004 (container queries), TYPE-001 (tipograf�
 - **Aprovechamiento:** el orden de consulta de `web-library-router` (índice → ARCH-001 → `LIBRARY_MANIFEST.json` → fichas), la cobertura por áreas, el mapa por elemento, las incompatibilidades conocidas y las reglas de licencias se incorporaron a las Skills del proyecto `kp-crear-animacion` y `kp-crear-web` a través de `kinetic-prompts/docs/BIBLIOTECA_CONSULTA.md`.
 - **Regla del proyecto:** las demos de `preview/` se implementan desde cero a partir del procedimiento de cada ficha, sin copiar código de las fuentes aunque tengan licencia MIT.
 - **Estados:** sin cambios (142 INVESTIGADO, 5 PROPUESTO, 15 IMPLEMENTADO, 0 VALIDADO).
+
+### Kinetic Prompts · validaciones (kp-validar)
+
+| Fecha | Sección | Slug | Ficha de origen | Estado | Vídeo | Póster | Incidencias |
+|---|---|---|---|---|---|---|---|
+| 2026-11-26 | animaciones | page-transition-blinds | MASK-002 (+ PT-001, A11Y-001, UX-001) | VALIDADO (Chromium) | WebM 336 KB · MP4 251 KB | 18 KB | Safari y Firefox sin probar; adaptación con `transform` en vez de máscara SVG |
+| 2026-11-26 | animaciones | page-transition-fade | CSS-002 (+ A11Y-001, UX-001) | VALIDADO (Chromium) | WebM 252 KB · MP4 224 KB | 11 KB | Safari y Firefox sin probar |

@@ -6,7 +6,9 @@
     "node": ">=20.9.0"
   },
   "scripts": {
+    "predev": "node scripts/sync-content.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/sync-content.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
@@ -15,7 +17,9 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "contenido": "node scripts/sync-content.mjs",
+    "contenido:watch": "node scripts/sync-content.mjs --watch"
   },
   "dependencies": {
     "lucide-react": "1.81.0",

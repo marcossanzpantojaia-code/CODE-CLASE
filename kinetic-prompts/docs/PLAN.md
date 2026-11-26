@@ -50,6 +50,51 @@ Toda la app se construye sobre un mismo botón. Cada efecto, cada web y cada sec
   - Cada copia, también la de una tarjeta, cuenta para el límite mensual (10 en el plan gratuito).
 - **El prompt puede llegar del servidor sin perder el clic.** `lib/clipboard.ts` usa `ClipboardItem` con una promesa mientras responde POST /api/copy, y tiene `writeText` y `execCommand` como respaldo.
 
+### Principio: muy, muy fácil de usar
+
+La app tiene que ser muy, muy fácil de usar y facilitar de verdad la creación de la web. Si una decisión complica el camino de «veo el efecto» a «lo tengo en mi web», se descarta. *(Decisión del 2026-11-26.)*
+
+- **Ver y copiar a la vez.** Pulsar el botón de un efecto reproduce el ejemplo en ese momento y copia su prompt. No hay que abrir nada para llevárselo.
+- **Dos clics como máximo** desde el inicio hasta tener un prompt copiado: «Animaciones» → botón.
+- **Nombres llanos y en español:** «Persianas desde el centro», no «MASK-002». Los identificadores de la biblioteca nunca se ven en la interfaz.
+- **Nivel a la vista:** cada efecto muestra si es básico, intermedio o avanzado (ver «Niveles de complejidad»), y la galería filtra por nivel.
+- **Valores por defecto listos:** el prompt copiado funciona tal cual. Los parámetros son opcionales, no un formulario que haya que rellenar.
+- **Cómo usarlo en tres pasos**, visibles en la galería: Elige el efecto · Pulsa Copiar · Pégalo en tu IA (Claude Code, Cursor…) dentro de tu proyecto.
+- **Sin botones muertos:** lo que todavía no funciona (favoritos, cuenta) no aparece hasta su fase.
+- **Prompts que se integran solos:** cada prompt dice a la IA que mire primero el proyecto (Next.js, Astro, HTML…) y cómo encajar el efecto en cada caso (ver «Reglas de redacción de los prompts»).
+
+### Niveles de complejidad
+
+| Nivel | `difficulty` | Qué significa | Ejemplos de transición |
+|---|---|---|---|
+| Básico | 1 | Solo CSS o API nativa del navegador; se pega en cualquier web en minutos | Fundido nativo entre páginas |
+| Intermedio | 2 | JavaScript propio o GSAP básico, sin 3D; necesita enganchar la navegación | Persianas desde el centro, cortina con borde curvo, pixelada |
+| Avanzado | 3 | Coordina varias piezas (Flip, páginas en paralelo, WebGL) | Tarjeta que se convierte en página, páginas en paralelo, imagen con shader |
+
+### Constructor de webs por partes
+
+Esto es lo que diferencia a Kinetic Prompts: la app programa webs solo con elegir las partes. *(Decisión del 2026-11-26.)*
+
+- **Apartados:** Fondos, Transiciones, Letras (tipografía y animación de texto), Heros, Scroll, Microinteracciones y 3D. Cada pieza es una tarjeta-botón que se ve y se copia sola, como en la galería.
+- **Constructor (`/crear`):**
+  - Se recorre un apartado por paso. En cada uno se elige una pieza o «Ninguna», con la misma tarjeta.
+  - Un resumen «Tu web» va mostrando lo elegido.
+  - Al final, un solo botón: **«Copiar el prompt de mi web»**.
+- **El prompt de la web** se compone a partir de las piezas:
+  - Un brief opcional (nombre del negocio y sector).
+  - Cómo mirar el proyecto e integrar todo.
+  - Una sección por pieza, con su prompt rellenado con los valores elegidos.
+  - Reglas de convivencia: una sola transición de página y un solo fondo, un solo `prefers-reduced-motion` para todo, orden de carga y presupuesto de rendimiento.
+- **Requisito para el contenido:** cada `prompt.md` tiene que poder incrustarse. El compositor quita su título y su línea de introducción, y baja sus `##` a `###` bajo «Pieza: …». Un test comprobará que el prompt compuesto no deja `{{variables}}` y contiene todas las piezas.
+- **Letras** necesita un tipo de pieza nuevo, las parejas tipográficas (Google Fonts gratuitas), además de las animaciones de texto. Hay que investigarlas antes, con permiso para añadir fichas a `knowledge/`.
+- **Orden propuesto:**
+  1. Transiciones (en curso).
+  2. Fondos.
+  3. Letras.
+  4. Constructor v1 en cuanto haya piezas en tres apartados.
+  5. El resto de apartados se van sumando al constructor según existan.
+- **Aspecto:** las tarjetas grandes que son el propio botón siguen el concepto de la referencia del usuario (The Prompts Factory), con la identidad visual propia de la «Regla de identidad».
+
 ### Los dos apartados
 
 La app se divide en dos apartados con su propia galería, sus filtros y su plantilla de prompt. La navegación principal los muestra siempre: **Webs** y **Animaciones**.
@@ -74,7 +119,7 @@ La app se divide en dos apartados con su propia galería, sus filtros y su plant
 | Transiciones de página | Cortina, fundido, morph de tarjeta a página, barrido diagonal |
 | Scroll | Pin con progreso, parallax por capas, scroll horizontal, storytelling |
 | Heros | Tipografía animada, vídeo enmascarado, objeto 3D |
-| Texto | Split text, revelado por líneas, scramble |
+| Letras (texto) | Split text, revelado por líneas, scramble; en el constructor, también parejas tipográficas |
 | Microinteracciones | Botón magnético, cursor personalizado, hover con imagen |
 | 3D / WebGL | Escena de producto, foto con volumen, configurador |
 | Fondos | Shader de fondo, ruido, partículas, color en movimiento |
@@ -279,6 +324,7 @@ La app lee esas carpetas; no hay contenido escrito a mano dentro de los componen
   "section": "animaciones",
   "slug": "page-transition-curtain",
   "title": "Transición cortina",
+  "summary": "Una cortina de color sube con el borde curvo y deja ver la página nueva.",
   "category": "transiciones",
   "tech": ["GSAP", "Next.js"],
   "difficulty": 2,
@@ -291,7 +337,7 @@ La app lee esas carpetas; no hay contenido escrito a mano dentro de los componen
     { "id": "color", "label": "Color de la cortina", "type": "color", "default": "#FF6B3D" },
     { "id": "ease", "label": "Easing", "type": "select", "options": ["power3.inOut", "expo.inOut", "sine.inOut"], "default": "power3.inOut" }
   ],
-  "media": { "video": "media/loop.webm", "poster": "media/poster.webp" },
+  "media": { "video": "media/loop.webm", "videoMp4": "media/loop.mp4", "poster": "media/poster.webp" },
   "createdAt": "2026-11-26"
 }
 ```
@@ -429,6 +475,8 @@ Comprobaciones para dar la web por terminada.
 - **Valores con unidades** siempre.
 - **Sin código copiado de tutoriales:** el prompt describe; el código lo genera la IA del usuario. Las demos de `preview/` tampoco copian código: se implementan desde cero a partir del procedimiento de la ficha, aunque la fuente tenga licencia MIT.
 - **Fuentes:** cada prompt enlaza internamente a su ficha de la biblioteca (`knowledgeRefs`), que conserva las referencias a las fuentes originales.
+- **Integración según el proyecto:** el apartado «Estructura» empieza pidiendo a la IA que mire el proyecto (framework, enrutado, si ya hay GSAP) y dice cómo encajar el efecto en cada caso: Next.js (App Router), Astro y HTML de varias páginas. Así el usuario no tiene que traducir nada.
+- **Sin dependencias si se puede:** si el efecto sale bien con CSS o JavaScript propio, el prompt no pide librerías; si las pide, con versión exacta.
 
 ## Stack y arquitectura
 
@@ -717,6 +765,25 @@ Criterios de cierre:
 - Al menos 8 de 10 animaciones en estado VALIDADO.
 - Tabla final con cada animación, su estado, el peso del vídeo y las incidencias.
 ```
+
+**Transiciones primero (2026-11-26).** Por decisión del usuario, estos días se adelantan las transiciones. Son de varios niveles de complejidad: las de la biblioteca y alguna más. El orden lo elige Claude Code.
+
+- Se construye una **galería mínima** de `/animaciones`, que es un adelanto de la fase 2. Tiene tarjetas que se ven y se copian, filtro por nivel y los tres pasos de uso. Cada transición validada aparece ahí.
+- Hoja de ruta:
+
+  | Nivel | Transición | Ficha |
+  |---|---|---|
+  | Intermedio | Persianas desde el centro | MASK-002 (IMPLEMENTADO en la biblioteca) |
+  | Básico | Fundido nativo entre páginas | CSS-002 |
+  | Avanzado | Tarjeta que se convierte en página | FLIP-001 |
+  | Intermedio | Cortina con borde curvo | MENU-001 |
+  | Intermedio | Pixelada | PIX-001 |
+  | Avanzado | Páginas en paralelo | PT-001 |
+  | Avanzado | Escala y giro entre secciones | SECT-001 |
+  | Avanzado | Imagen con shader | GL-002 |
+
+- «Alguna más»: las transiciones que no tengan ficha necesitan investigarse antes, y añadir fichas a `knowledge/` requiere permiso del usuario.
+- Las de página siguen el patrón **cubrir → cambiar → descubrir**, que encaja con cualquier enrutador: la capa tapa la página al pulsar un enlace, se navega y se destapa al cargar la nueva.
 
 **Notas aprobadas (2026-11-26)** · candidatas de `docs/BIBLIOTECA_FASE0.md`, para proponer la lista del paso 2:
 

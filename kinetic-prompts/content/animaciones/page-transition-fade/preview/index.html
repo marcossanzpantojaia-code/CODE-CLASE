@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fundido nativo entre páginas · demo</title>
+    <style>
+      /* Demo de Kinetic Prompts: identidad propia (no usa los tokens de la app). */
+      :root {
+        --cream: #f3eee6;
+        --ink: #1c1b19;
+        --forest: #16302b;
+        --ease: cubic-bezier(0.65, 0, 0.35, 1);
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; }
+      body { background: var(--cream); color: var(--ink); }
+      .page {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        padding: clamp(12px, 3.2vw, 40px);
+        gap: clamp(8px, 2.4vw, 28px);
+      }
+      .page[hidden] { display: none; }
+      #inicio { background: var(--cream); color: var(--ink); }
+      #proyectos { background: var(--forest); color: var(--cream); }
+      header { display: flex; align-items: center; justify-content: space-between; font-size: clamp(11px, 1.6vw, 16px); }
+      .logo { font-weight: 800; letter-spacing: -0.04em; font-size: 1.4em; }
+      nav { display: flex; gap: 1.4em; }
+      nav a { color: inherit; text-decoration: none; opacity: 0.6; padding-block: 0.2em; border-bottom: 2px solid transparent; }
+      nav a[aria-current="page"] { opacity: 1; border-color: currentColor; }
+      nav a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+      .eyebrow { margin: auto 0 0; font-size: clamp(10px, 1.4vw, 15px); text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.7; }
+      h1 { margin: 0; font-size: clamp(30px, 9.5vw, 132px); line-height: 0.92; letter-spacing: -0.05em; font-weight: 800; }
+      h1:focus { outline: none; }
+      .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(6px, 1.2vw, 16px); height: 22%; }
+      .tiles span { border-radius: clamp(4px, 0.8vw, 10px); }
+      #inicio .tiles span:nth-child(1) { background: #d9cfc1; }
+      #inicio .tiles span:nth-child(2) { background: #c4b5a0; }
+      #inicio .tiles span:nth-child(3) { background: #e4572e; }
+      #inicio .tiles span:nth-child(4) { background: #1c1b19; }
+      #proyectos .tiles { height: 34%; }
+      #proyectos .tiles span:nth-child(1) { background: #2b4f47; }
+      #proyectos .tiles span:nth-child(2) { background: #3d6b61; }
+      #proyectos .tiles span:nth-child(3) { background: #c9a96e; }
+      #proyectos .tiles span:nth-child(4) { background: #f3eee6; }
+
+      @media (max-width: 599px) {
+        .tiles, #proyectos .tiles { grid-template-columns: repeat(2, 1fr); height: 38%; }
+      }
+
+      /* Fundido nativo: View Transitions API. Parámetros como variables CSS. */
+      :root { --dur: 350ms; --shift: 16px; --ease-vt: ease-out; }
+      ::view-transition-group(root) { animation: none; }
+      ::view-transition-old(root) { animation: var(--dur) var(--ease-vt) both kp-salida; }
+      ::view-transition-new(root) { animation: var(--dur) var(--ease-vt) both kp-entrada; }
+      @keyframes kp-salida { to { opacity: 0; transform: translateY(calc(var(--shift) * -0.5)); } }
+      @keyframes kp-entrada { from { opacity: 0; transform: translateY(var(--shift)); } }
+      /* Movimiento reducido: solo opacidad, 150 ms. */
+      @keyframes kp-solo-opacidad { from { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) {
+        :root { --dur: 150ms; }
+        ::view-transition-old(root) { animation: none; opacity: 0; }
+        ::view-transition-new(root) { animation: 150ms linear both kp-solo-opacidad; }
+      }
+
+      #reproducir {
+        position: fixed; right: 12px; bottom: 12px; z-index: 20;
+        font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px;
+        border: 0; background: var(--ink); color: var(--cream); cursor: pointer;
+      }
+      #reproducir[hidden] { display: none; }
+      #reproducir:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+      .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <section class="page" id="inicio" aria-labelledby="t-inicio">
+      <header>
+        <span class="logo">alba</span>
+        <nav aria-label="Principal">
+          <a href="#inicio" aria-current="page">Inicio</a>
+          <a href="#proyectos">Proyectos</a>
+        </nav>
+      </header>
+      <p class="eyebrow">Estudio Alba · diseño de interiores</p>
+      <h1 id="t-inicio" tabindex="-1">Espacios<br />que respiran</h1>
+      <div class="tiles" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="page" id="proyectos" aria-labelledby="t-proyectos" hidden>
+      <header>
+        <span class="logo">alba</span>
+        <nav aria-label="Principal">
+          <a href="#inicio">Inicio</a>
+          <a href="#proyectos" aria-current="page">Proyectos</a>
+        </nav>
+      </header>
+      <p class="eyebrow">12 proyectos · 2021–2026</p>
+      <h1 id="t-proyectos" tabindex="-1">Proyectos</h1>
+      <div class="tiles" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <button id="reproducir" type="button" hidden>Reproducir</button>
+    <p class="sr" aria-live="polite" id="aviso"></p>
+
+    <script>
+      (() => {
+        "use strict";
+
+        const params = { duration: 0.35, shift: 16, ease: "ease-out" };
+        const LIMITS = { duration: [0.15, 0.8], shift: [0, 48] };
+        const EASES = ["ease-out", "ease-in-out", "linear"];
+        const IDLE_MS = 1200;
+
+        const root = document.documentElement;
+        const pages = { inicio: document.getElementById("inicio"), proyectos: document.getElementById("proyectos") };
+        const playButton = document.getElementById("reproducir");
+        const aviso = document.getElementById("aviso");
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+        const autoplay = new URLSearchParams(location.search).get("loop") !== "0";
+        const supported = typeof document.startViewTransition === "function";
+
+        let current = "inicio";
+        let transition = null;
+        let timer = 0;
+
+        function applyCss() {
+          root.style.setProperty("--dur", `${Math.round(params.duration * 1000)}ms`);
+          root.style.setProperty("--shift", `${params.shift}px`);
+          root.style.setProperty("--ease-vt", params.ease);
+          // Con movimiento reducido manda la media query: fundido de 150 ms sin desplazamiento.
+          if (reduced.matches) root.style.removeProperty("--dur");
+        }
+
+        /* Solo con un clic real se mueve el foco y se anuncia: el bucle no roba el foco. */
+        function show(name, fromUser) {
+          for (const [key, el] of Object.entries(pages)) el.hidden = key !== name;
+          current = name;
+          if (!fromUser) return;
+          const title = pages[name].querySelector("h1");
+          title.focus({ preventScroll: true });
+          aviso.textContent = `Página ${title.textContent.replace(/\s+/g, " ")}`;
+        }
+
+        function go(to, fromUser = false) {
+          if (transition || to === current) return;
+          clearTimeout(timer);
+          if (!supported) {
+            // Sin soporte, el cambio ocurre igual, sin animación (mejora progresiva).
+            show(to, fromUser);
+            schedule();
+            return;
+          }
+          transition = document.startViewTransition(() => show(to, fromUser));
+          transition.finished.finally(() => {
+            transition = null;
+            schedule();
+          });
+        }
+
+        function schedule() {
+          clearTimeout(timer);
+          if (autoplay && !reduced.matches) timer = setTimeout(() => go(current === "inicio" ? "proyectos" : "inicio"), IDLE_MS);
+        }
+
+        function replay() {
+          clearTimeout(timer);
+          if (transition) transition.skipTransition();
+          transition = null;
+          show("inicio");
+          // Un fotograma para que el navegador pinte la página de inicio antes de capturarla.
+          requestAnimationFrame(() => go("proyectos"));
+        }
+
+        function applyParams(next) {
+          if (!next || typeof next !== "object") return;
+          for (const key of ["duration", "shift"]) {
+            const value = next[key];
+            if (typeof value === "number" && Number.isFinite(value)) {
+              const [min, max] = LIMITS[key];
+              params[key] = Math.min(max, Math.max(min, value));
+            }
+          }
+          if (typeof next.ease === "string" && EASES.includes(next.ease)) params.ease = next.ease;
+          applyCss();
+        }
+
+        addEventListener("message", (event) => {
+          const data = event.data;
+          if (!data || typeof data !== "object" || typeof data.type !== "string") return;
+          if (data.type === "kp:params") applyParams(data.params);
+          if (data.type === "kp:replay") replay();
+        });
+
+        document.addEventListener("click", (event) => {
+          const link = event.target.closest('nav a[href^="#"]');
+          if (!link) return;
+          event.preventDefault();
+          go(link.getAttribute("href").slice(1), true);
+        });
+
+        playButton.addEventListener("click", () => go(current === "inicio" ? "proyectos" : "inicio", true));
+
+        function syncReduced() {
+          playButton.hidden = !reduced.matches;
+          applyCss();
+          schedule();
+        }
+        reduced.addEventListener("change", syncReduced);
+        syncReduced();
+      })();
+    </script>
+  </body>
+</html>

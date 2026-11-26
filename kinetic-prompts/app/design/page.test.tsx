@@ -37,6 +37,7 @@ describe("/design", () => {
     for (const component of [
       "CopyButton · tarjeta",
       "CopyButton · ficha",
+      "EffectTile · galería",
       "Button · primario",
       "Button · secundario",
       "Button · fantasma",

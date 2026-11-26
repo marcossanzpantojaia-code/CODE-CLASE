@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Persianas desde el centro · demo</title>
+    <style>
+      /* Demo de Kinetic Prompts: identidad propia (no usa los tokens de la app). */
+      :root {
+        --cream: #f3eee6;
+        --ink: #1c1b19;
+        --forest: #16302b;
+        --strip: #e4572e;
+        --ease: cubic-bezier(0.65, 0, 0.35, 1);
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; }
+      body { background: var(--cream); color: var(--ink); }
+      .page {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        padding: clamp(12px, 3.2vw, 40px);
+        gap: clamp(8px, 2.4vw, 28px);
+      }
+      .page[hidden] { display: none; }
+      #inicio { background: var(--cream); color: var(--ink); }
+      #proyectos { background: var(--forest); color: var(--cream); }
+      header { display: flex; align-items: center; justify-content: space-between; font-size: clamp(11px, 1.6vw, 16px); }
+      .logo { font-weight: 800; letter-spacing: -0.04em; font-size: 1.4em; }
+      nav { display: flex; gap: 1.4em; }
+      nav a { color: inherit; text-decoration: none; opacity: 0.6; padding-block: 0.2em; border-bottom: 2px solid transparent; }
+      nav a[aria-current="page"] { opacity: 1; border-color: currentColor; }
+      nav a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+      .eyebrow { margin: auto 0 0; font-size: clamp(10px, 1.4vw, 15px); text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.7; }
+      h1 { margin: 0; font-size: clamp(30px, 9.5vw, 132px); line-height: 0.92; letter-spacing: -0.05em; font-weight: 800; }
+      h1:focus { outline: none; }
+      .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(6px, 1.2vw, 16px); height: 22%; }
+      .tiles span { border-radius: clamp(4px, 0.8vw, 10px); }
+      #inicio .tiles span:nth-child(1) { background: #d9cfc1; }
+      #inicio .tiles span:nth-child(2) { background: #c4b5a0; }
+      #inicio .tiles span:nth-child(3) { background: #e4572e; }
+      #inicio .tiles span:nth-child(4) { background: #1c1b19; }
+      #proyectos .tiles { height: 34%; }
+      #proyectos .tiles span:nth-child(1) { background: #2b4f47; }
+      #proyectos .tiles span:nth-child(2) { background: #3d6b61; }
+      #proyectos .tiles span:nth-child(3) { background: #c9a96e; }
+      #proyectos .tiles span:nth-child(4) { background: #f3eee6; }
+
+      /* Capa de persianas: por encima de todo y sin capturar clics. */
+      #persianas { position: fixed; inset: 0; pointer-events: none; z-index: 10; overflow: hidden; }
+      .tira { position: absolute; background: var(--strip); will-change: transform; }
+      #reproducir {
+        position: fixed; right: 12px; bottom: 12px; z-index: 20;
+        font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px;
+        border: 0; background: var(--ink); color: var(--cream); cursor: pointer;
+      }
+      #reproducir[hidden] { display: none; }
+      #reproducir:focus-visible { outline: 2px solid var(--strip); outline-offset: 2px; }
+      @media (max-width: 599px) {
+        .tiles, #proyectos .tiles { grid-template-columns: repeat(2, 1fr); height: 38%; }
+      }
+      .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <section class="page" id="inicio" aria-labelledby="t-inicio">
+      <header>
+        <span class="logo">alba</span>
+        <nav aria-label="Principal">
+          <a href="#inicio" aria-current="page">Inicio</a>
+          <a href="#proyectos">Proyectos</a>
+        </nav>
+      </header>
+      <p class="eyebrow">Estudio Alba · diseño de interiores</p>
+      <h1 id="t-inicio" tabindex="-1">Espacios<br />que respiran</h1>
+      <div class="tiles" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="page" id="proyectos" aria-labelledby="t-proyectos" hidden>
+      <header>
+        <span class="logo">alba</span>
+        <nav aria-label="Principal">
+          <a href="#inicio">Inicio</a>
+          <a href="#proyectos" aria-current="page">Proyectos</a>
+        </nav>
+      </header>
+      <p class="eyebrow">12 proyectos · 2021–2026</p>
+      <h1 id="t-proyectos" tabindex="-1">Proyectos</h1>
+      <div class="tiles" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <div id="persianas" aria-hidden="true"></div>
+    <button id="reproducir" type="button" hidden>Reproducir</button>
+    <p class="sr" aria-live="polite" id="aviso"></p>
+
+    <script>
+      (() => {
+        "use strict";
+
+        /* Parámetros (los mismos ids que item.json). */
+        const params = { strips: 24, duration: 0.55, stagger: 0.015, color: "#e4572e", direction: "horizontales" };
+        const LIMITS = { strips: [6, 40], duration: [0.3, 1.2], stagger: [0, 0.05] };
+        const DIRECTIONS = ["horizontales", "verticales"];
+        const EASE = "cubic-bezier(0.65, 0, 0.35, 1)";
+        const IDLE_MS = 1200;
+
+        const pages = { inicio: document.getElementById("inicio"), proyectos: document.getElementById("proyectos") };
+        const overlay = document.getElementById("persianas");
+        const playButton = document.getElementById("reproducir");
+        const aviso = document.getElementById("aviso");
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+        const autoplay = new URLSearchParams(location.search).get("loop") !== "0";
+
+        let current = "inicio";
+        let running = false;
+        let timer = 0;
+        let strips = [];
+        let generation = 0; // invalida transiciones en curso tras un replay
+
+        /* En pantallas estrechas, la mitad de tiras para que el escalonado se lea. */
+        function stripCount() {
+          return innerWidth < 600 ? Math.max(6, Math.round(params.strips / 2)) : params.strips;
+        }
+
+        /* Tiras contiguas con 1 px de solape por cada lado: sin costuras aunque la altura no sea entera. */
+        function build() {
+          const n = stripCount();
+          const horizontal = params.direction === "horizontales";
+          overlay.replaceChildren();
+          strips = Array.from({ length: n }, (_, i) => {
+            const el = document.createElement("div");
+            el.className = "tira";
+            el.style.background = params.color;
+            const start = `calc(${(i * 100) / n}% - 1px)`;
+            const size = `calc(${100 / n}% + 2px)`;
+            if (horizontal) Object.assign(el.style, { left: "0", right: "0", top: start, height: size });
+            else Object.assign(el.style, { top: "0", bottom: "0", left: start, width: size });
+            el.style.transform = horizontal ? "scaleY(0)" : "scaleX(0)";
+            overlay.append(el);
+            return el;
+          });
+        }
+
+        /* Cada tira espera según su distancia al centro: se abre y se cierra desde el centro. */
+        function animateStrips(from, to) {
+          const n = strips.length;
+          const center = (n - 1) / 2;
+          const axis = params.direction === "horizontales" ? "scaleY" : "scaleX";
+          return Promise.all(
+            strips.map((el, i) => {
+              const animation = el.animate(
+                [{ transform: `${axis}(${from})` }, { transform: `${axis}(${to})` }],
+                {
+                  duration: params.duration * 1000,
+                  delay: Math.abs(i - center) * params.stagger * 1000,
+                  easing: EASE,
+                  fill: "forwards",
+                },
+              );
+              return animation.finished;
+            }),
+          );
+        }
+
+        /* Solo se mueve el foco y se anuncia si la persona ha pulsado un enlace: el bucle
+         * automático no debe robar el foco a la página que contiene la demo. */
+        function show(name, fromUser) {
+          for (const [key, el] of Object.entries(pages)) el.hidden = key !== name;
+          current = name;
+          if (!fromUser) return;
+          const title = pages[name].querySelector("h1");
+          title.focus({ preventScroll: true });
+          aviso.textContent = `Página ${title.textContent.replace(/\s+/g, " ")}`;
+        }
+
+        async function go(to, fromUser = false) {
+          if (running || to === current) return;
+          running = true;
+          clearTimeout(timer);
+          const id = ++generation;
+          try {
+            if (reduced.matches) {
+              /* Movimiento reducido: fundido corto, sin persianas. */
+              show(to, fromUser);
+              await pages[to].animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: "linear" }).finished;
+            } else {
+              await animateStrips(0, 1); // cubrir
+              if (id !== generation) return;
+              show(to, fromUser); // cambiar
+              await animateStrips(1, 0); // descubrir
+            }
+          } catch {
+            /* animación cancelada por un replay */
+          } finally {
+            if (id === generation) {
+              running = false;
+              schedule();
+            }
+          }
+        }
+
+        function schedule() {
+          clearTimeout(timer);
+          if (autoplay && !reduced.matches) timer = setTimeout(() => go(current === "inicio" ? "proyectos" : "inicio"), IDLE_MS);
+        }
+
+        /* Reinicia: página de inicio, persianas recogidas y una transición desde el principio. */
+        function replay() {
+          generation++;
+          clearTimeout(timer);
+          document.getAnimations().forEach((a) => a.cancel());
+          running = false;
+          build();
+          show("inicio");
+          go("proyectos");
+        }
+
+        function applyParams(next) {
+          if (!next || typeof next !== "object") return;
+          for (const key of ["strips", "duration", "stagger"]) {
+            const value = next[key];
+            if (typeof value === "number" && Number.isFinite(value)) {
+              const [min, max] = LIMITS[key];
+              params[key] = Math.min(max, Math.max(min, key === "strips" ? Math.round(value) : value));
+            }
+          }
+          if (typeof next.color === "string" && /^#[0-9a-f]{6}$/i.test(next.color)) params.color = next.color;
+          if (typeof next.direction === "string" && DIRECTIONS.includes(next.direction)) params.direction = next.direction;
+          build();
+        }
+
+        /* Contrato con la app: kp:params y kp:replay (docs de kp-crear-animacion). */
+        addEventListener("message", (event) => {
+          const data = event.data;
+          if (!data || typeof data !== "object" || typeof data.type !== "string") return;
+          if (data.type === "kp:params") applyParams(data.params);
+          if (data.type === "kp:replay") replay();
+        });
+
+        /* Los enlaces son reales: sin JavaScript también llevan a su sección. */
+        document.addEventListener("click", (event) => {
+          const link = event.target.closest('nav a[href^="#"]');
+          if (!link) return;
+          event.preventDefault();
+          go(link.getAttribute("href").slice(1), true);
+        });
+
+        playButton.addEventListener("click", () => go(current === "inicio" ? "proyectos" : "inicio", true));
+
+        function syncReduced() {
+          playButton.hidden = !reduced.matches;
+          schedule();
+        }
+        reduced.addEventListener("change", syncReduced);
+
+        let resizeTimer = 0;
+        let lastCount = 0;
+        addEventListener("resize", () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => {
+            if (!running && stripCount() !== lastCount) {
+              lastCount = stripCount();
+              build();
+            }
+          }, 150);
+        });
+
+        build();
+        lastCount = stripCount();
+        syncReduced();
+      })();
+    </script>
+  </body>
+</html>

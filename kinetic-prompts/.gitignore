@@ -48,3 +48,6 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# copia generada de content/ (scripts/sync-content.mjs)
+/public/contenido/

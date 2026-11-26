@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { EffectTile } from "@/components/catalog/effect-tile";
+import type { GalleryItem } from "@/components/catalog/types";
 import { Chip } from "@/components/ui/chip";
 import { CopyButton, type CopyStatus } from "@/components/ui/copy-button";
 import { CopyBlockedError, type PromptSource } from "@/lib/clipboard";
@@ -45,6 +47,31 @@ function sourceFor(prompt: string, mode: Mode): PromptSource {
 
 const SAMPLE = BOTONERA[1]!.prompt;
 
+const TILE_STATES = ["Reposo", "Hover", "Foco", "Activo", "Copiando", "Copiado", "Error"] as const;
+type TileState = (typeof TILE_STATES)[number];
+
+function tileStateProps(state: TileState): { forceStatus?: CopyStatus; "data-force"?: string } {
+  if (state === "Hover") return { "data-force": "hover" };
+  if (state === "Foco") return { "data-force": "focus" };
+  if (state === "Activo") return { "data-force": "active" };
+  if (state === "Copiando") return { forceStatus: "copiando" };
+  if (state === "Copiado") return { forceStatus: "copiado" };
+  if (state === "Error") return { forceStatus: "error" };
+  return {};
+}
+
+const TILE_SAMPLE: GalleryItem = {
+  slug: "muestra",
+  title: BOTONERA[1]!.titulo,
+  summary: "Tarjeta de muestra para el sistema de diseño.",
+  category: "transiciones",
+  categoryLabel: BOTONERA[1]!.categoria,
+  level: 2,
+  levelLabel: "Intermedio",
+  tech: ["JavaScript", "CSS"],
+  prompt: SAMPLE,
+};
+
 /** El cimiento de la app: un botón que copia el prompt con un clic, igual en todas partes. */
 export function CopySection() {
   const [mode, setMode] = useState<Mode>("directo");
@@ -70,6 +97,14 @@ export function CopySection() {
         states={COPY_STATES}
         wide
         render={(s) => <CopyButton source={SAMPLE} size="lg" {...copyStateProps(s)} />}
+      />
+
+      <StateMatrix
+        title="EffectTile · galería"
+        description="Toda la tarjeta es el botón: un clic reproduce el ejemplo y copia el prompt. Aquí sin vídeo; en la galería lleva el póster y el bucle."
+        states={TILE_STATES}
+        wide
+        render={(s) => <EffectTile item={TILE_SAMPLE} {...tileStateProps(s)} />}
       />
 
       <SubHeading>Botonera de prueba</SubHeading>

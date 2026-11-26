@@ -1,0 +1,76 @@
+{
+  "section": "animaciones",
+  "slug": "page-transition-blinds",
+  "title": "Persianas desde el centro",
+  "summary": "Unas tiras de color tapan la página desde el centro, cambia la página y se recogen igual.",
+  "category": "transiciones",
+  "tech": [
+    "JavaScript",
+    "Web Animations",
+    "CSS"
+  ],
+  "difficulty": 2,
+  "performance": "ligero",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/transitions/MASK-002-mascaras-svg-de-persianas-y-rejillas.md",
+    "knowledge/transitions/PT-001-transiciones-de-pagina-paralelas.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md",
+    "knowledge/ux/UX-001-duracion-y-easing.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "strips",
+      "label": "Número de tiras",
+      "type": "range",
+      "min": 6,
+      "max": 40,
+      "step": 1,
+      "default": 24,
+      "unit": "tiras"
+    },
+    {
+      "id": "duration",
+      "label": "Duración de cada fase",
+      "type": "range",
+      "min": 0.3,
+      "max": 1.2,
+      "step": 0.05,
+      "default": 0.55,
+      "unit": "s"
+    },
+    {
+      "id": "stagger",
+      "label": "Escalonado entre tiras",
+      "type": "range",
+      "min": 0,
+      "max": 0.05,
+      "step": 0.005,
+      "default": 0.015,
+      "unit": "s"
+    },
+    {
+      "id": "color",
+      "label": "Color de las tiras",
+      "type": "color",
+      "default": "#e4572e"
+    },
+    {
+      "id": "direction",
+      "label": "Dirección",
+      "type": "select",
+      "options": [
+        "horizontales",
+        "verticales"
+      ],
+      "default": "horizontales"
+    }
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-26"
+}

@@ -1,0 +1,59 @@
+{
+  "section": "animaciones",
+  "slug": "page-transition-fade",
+  "title": "Fundido nativo entre páginas",
+  "summary": "La página vieja se desvanece y la nueva aparece subiendo un poco. Lo hace el navegador, casi sin código.",
+  "category": "transiciones",
+  "tech": [
+    "CSS",
+    "View Transitions"
+  ],
+  "difficulty": 1,
+  "performance": "ligero",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/css/CSS-002-view-transitions.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md",
+    "knowledge/ux/UX-001-duracion-y-easing.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "duration",
+      "label": "Duración",
+      "type": "range",
+      "min": 0.15,
+      "max": 0.8,
+      "step": 0.05,
+      "default": 0.35,
+      "unit": "s"
+    },
+    {
+      "id": "shift",
+      "label": "Desplazamiento de la página nueva",
+      "type": "range",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "id": "ease",
+      "label": "Easing",
+      "type": "select",
+      "options": [
+        "ease-out",
+        "ease-in-out",
+        "linear"
+      ],
+      "default": "ease-out"
+    }
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-26"
+}

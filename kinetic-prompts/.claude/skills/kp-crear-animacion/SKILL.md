@@ -46,6 +46,13 @@ content/animaciones/<slug>/
 - Se ejecutará en un iframe con `sandbox`: no uses cookies, `localStorage` de la app ni
   `window.top`.
 - Debe reproducirse en bucle (o tener disparador repetible) y funcionar a 390 px de ancho.
+- Las transiciones de página usan la misma maqueta (la web ficticia «alba» con Inicio y Proyectos de
+  `page-transition-blinds`) para que se comparen sobre las mismas dos páginas.
+- `?loop=0` desactiva el bucle automático: la demo espera a `kp:replay`.
+- Solo se mueve el foco o se anuncia algo tras un clic real dentro de la demo; el bucle no
+  puede robar el foco a la página que la contiene.
+- Anima con Web Animations o CSS siempre que se pueda: el validador congela las animaciones
+  con `document.getAnimations()` para comparar fotogramas exactos.
 - Escucha `postMessage` para aplicar los parámetros sin recargar. Contrato propuesto
   (se fija en la Fase 3; si allí cambia, actualiza esta skill):
   - `{ "type": "kp:params", "params": { "<id>": <valor>, … } }` aplica los valores.
@@ -68,7 +75,8 @@ Sigue el modelo de datos de animación de `docs/PLAN.md`:
 - `knowledgeRefs` con la ruta de la ficha, `usedIn` con los slugs de webs que la usan.
 - `params`: cada uno con `id`, `label`, `type` (`range`, `color`, `select`, `text`,
   `palette`) y `default`; los `range` llevan `min`, `max`, `step` y `unit`.
-- `media` y `createdAt` (AAAA-MM-DD).
+- `summary`: una frase que dice qué se ve (va en la tarjeta para lectores de pantalla).
+- `media` (la rellena el validador) y `createdAt` (AAAA-MM-DD).
 
 ## 5. `prompt.md`
 
@@ -93,6 +101,10 @@ Reglas de redacción:
   del prompt existe en `params` (o es `title`).
 - El prompt describe; el código lo genera la IA del usuario. Nada de código copiado.
 - Las versiones del stack coinciden con las que usa la demo.
+- El apartado «Estructura» empieza pidiendo a la IA que mire el proyecto y dice cómo integrarlo en
+  Next.js (App Router), Astro y HTML de varias páginas (principio «muy, muy fácil de usar»).
+- Debe poder incrustarse en el prompt de una web del constructor: sin referencias a «este prompt»
+  ni pasos que dependan de ser el único efecto.
 
 ## 6. Cierre
 

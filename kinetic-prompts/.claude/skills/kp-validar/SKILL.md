@@ -12,6 +12,20 @@ IMPLEMENTADO. Salida: `media/` generada, estado actualizado y una línea en
 **Nunca marques VALIDADO algo que no hayas ejecutado y comprobado en esta sesión.**
 Si una comprobación no se puede ejecutar, el estado es NO VERIFICADO y el motivo lo dice.
 
+## Cómo se ejecuta (animaciones)
+
+```bash
+node scripts/validar-animacion.mjs <slug>
+```
+
+Hace todas las comprobaciones de la tabla que aplican a una animación, graba `media/loop.webm` y
+`media/loop.mp4` (para Safari), saca `media/poster.webp`, escribe `VALIDACION.md` y el estado en
+`item.json`. Las capturas quedan en `tests/visual/validacion/<slug>/`: **míralas tú** antes de dar
+el elemento por bueno (calidad visual, póster representativo). Las comprobaciones propias de cada
+demo y sus tiempos (inicio y duración del bucle, instante del póster) van en
+`content/animaciones/<slug>/validar.mjs`. Después: `npm run contenido` para copiar la media a
+`public/`, y la línea de `knowledge/RESEARCH_PROGRESS.md`.
+
 ## Comprobaciones
 
 Sirve `preview/` con un servidor estático local y ábrelo con Playwright (Chromium).
