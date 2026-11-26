@@ -301,6 +301,22 @@ La app lee esas carpetas; no hay contenido escrito a mano dentro de los componen
 }
 ```
 
+### Estado y `statusReason`
+
+Los dos modelos comparten estos campos de estado:
+
+- `status`: `IMPLEMENTADO` (demo y prompts escritos, sin validar), `VALIDADO` (pasa `kp-validar`) o `NO VERIFICADO` (no pasa, o no se ha podido comprobar). Solo `kp-validar` pone `VALIDADO` o `NO VERIFICADO`.
+- `statusReason` (texto): obligatorio cuando `status` es `NO VERIFICADO`; explica qué falló o qué no se pudo comprobar, y qué haría falta. Se omite en los demás estados.
+
+Ejemplo de un elemento que no pasa la validación:
+
+```json
+{
+  "status": "NO VERIFICADO",
+  "statusReason": "El vídeo pesa 740 KB (límite 600 KB) incluso a 960×600; hace falta acortar el bucle a 5 s."
+}
+```
+
 ### Plantilla de prompt para animaciones (`prompt.md`)
 
 Todas las animaciones siguen estas nueve secciones, en este orden. Las variables entre `{{ }}` se sustituyen con los parámetros que elige el usuario.
@@ -477,7 +493,7 @@ Claude Code no carga la biblioteca entera. Lee `knowledge/KNOWLEDGE_INDEX.md`, l
 
 1. Elige una ficha de la biblioteca en estado INVESTIGADO o PROPUESTO. Para una web, una ficha de `complete-projects/` o un sector de los dos niveles de producción.
 2. Usa `kp-crear-animacion` o `kp-crear-web`: implementa la demo y escribe los prompts (estado IMPLEMENTADO).
-3. `kp-validar`: pruebas, vídeo y póster (estado VALIDADO, o NO VERIFICADO con el motivo).
+3. `kp-validar`: pruebas, vídeo y póster (estado VALIDADO, o NO VERIFICADO con el motivo en `statusReason`).
 4. Anota el resultado en `knowledge/RESEARCH_PROGRESS.md`.
 5. Solo los elementos VALIDADO aparecen en las galerías.
 
@@ -650,7 +666,7 @@ Usa las skills kp-crear-animacion y kp-validar.
       - Graba con Playwright un bucle de 4–8 s en WebM, de menos de 600 KB.
       - Saca un póster WebP de menos de 80 KB.
       - Comprueba prefers-reduced-motion y que la consola no tenga errores.
-   e. Si pasa, pon status VALIDADO. Si no, NO VERIFICADO con el motivo.
+   e. Si pasa, pon status VALIDADO. Si no, NO VERIFICADO con el motivo en statusReason.
    f. Actualiza knowledge/RESEARCH_PROGRESS.md.
 4. No copies código de tutoriales: impleméntalo a partir del procedimiento de la ficha.
 
@@ -689,7 +705,7 @@ cada web tiene su propia identidad visual).
       - Graba un vídeo de 8–12 s haciendo scroll por la home, de menos de 900 KB.
       - Saca un póster.
       - Pasa Lighthouse móvil a la web: Rendimiento 90 o más, Accesibilidad 95 o más.
-   g. Pon status VALIDADO o NO VERIFICADO con el motivo, y actualiza RESEARCH_PROGRESS.md.
+   g. Pon status VALIDADO o NO VERIFICADO con el motivo en statusReason, y actualiza RESEARCH_PROGRESS.md.
 
 Criterios de cierre:
 - Las 4 webs en estado VALIDADO.

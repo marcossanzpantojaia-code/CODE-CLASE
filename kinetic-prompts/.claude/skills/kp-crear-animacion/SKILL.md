@@ -54,7 +54,8 @@ Sigue el modelo de datos de animación de `docs/PLAN.md`:
 - `section: "animaciones"`, `slug`, `title` (en español), `category` (transiciones,
   scroll, heros, texto, microinteracciones, 3d-webgl), `tech` (máximo 3 en la tarjeta),
   `difficulty` (1–3), `performance` (ligero, medio, pesado).
-- `status: "IMPLEMENTADO"`. Solo `kp-validar` lo pasa a VALIDADO o NO VERIFICADO.
+- `status: "IMPLEMENTADO"`. Solo `kp-validar` lo pasa a VALIDADO o NO VERIFICADO (este
+  último, con `statusReason`; ver «Estado y `statusReason`» en `docs/PLAN.md`).
 - `knowledgeRefs` con la ruta de la ficha, `usedIn` con los slugs de webs que la usan.
 - `params`: cada uno con `id`, `label`, `type` (`range`, `color`, `select`, `text`,
   `palette`) y `default`; los `range` llevan `min`, `max`, `step` y `unit`.

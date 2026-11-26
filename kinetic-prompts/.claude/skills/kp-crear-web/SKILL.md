@@ -68,7 +68,8 @@ content/webs/<slug>/
 Modelo de datos de web de `docs/PLAN.md`: `section: "webs"`, `slug`, `title`, `sector`,
 `level`, `pages`, `sections`, `animations`, `tech`, `status: "IMPLEMENTADO"`,
 `knowledgeRefs`, `params` (`businessName`, `city`, `palette`, `fonts`, `language`),
-`media` y `createdAt`.
+`media` y `createdAt`. Solo `kp-validar` cambia el estado a VALIDADO o NO VERIFICADO
+(este último, con `statusReason`; ver «Estado y `statusReason`» en `docs/PLAN.md`).
 
 ## 6. Prompts
 
