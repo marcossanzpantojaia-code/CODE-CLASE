@@ -1,0 +1,69 @@
+{
+  "section": "animaciones",
+  "slug": "object-transition-pour",
+  "title": "Objeto que une dos secciones",
+  "summary": "Al bajar, una jarra llega en arco, se inclina y vierte un chorro que cruza el cambio de sección hasta la taza, mientras el fondo y el titular cambian.",
+  "category": "objetos",
+  "tech": [
+    "JavaScript",
+    "SVG",
+    "Scroll"
+  ],
+  "difficulty": 3,
+  "performance": "medio",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/recetas/REC-001-objeto-que-conecta-dos-secciones.md",
+    "knowledge/animations/CONT-001-continuidad-de-objeto-entre-escenas.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "streamColor",
+      "label": "Color del chorro",
+      "type": "color",
+      "default": "#5a3418"
+    },
+    {
+      "id": "panelColor",
+      "label": "Color de la segunda sección",
+      "type": "color",
+      "default": "#c98b4f"
+    },
+    {
+      "id": "tilt",
+      "label": "Inclinación al verter",
+      "type": "range",
+      "min": -60,
+      "max": -20,
+      "step": 1,
+      "default": -38,
+      "unit": "°"
+    },
+    {
+      "id": "distance",
+      "label": "Recorrido de scroll",
+      "type": "range",
+      "min": 200,
+      "max": 500,
+      "step": 50,
+      "default": 300,
+      "unit": "% de la pantalla"
+    }
+  ],
+  "tips": [
+    "El objeto no se va nunca del encuadre: lo que cambia es el fondo, el texto y la composición a su alrededor. Eso es lo que da continuidad.",
+    "Calcula el chorro en el mismo fotograma y después de mover el objeto; si no, se despega del pico.",
+    "Corta el chorro desde arriba, como cuando se deja de verter; cortarlo desde abajo parece rebobinar.",
+    "Deja una meseta en cada titular y no apagues el de salida hasta que el nuevo se lea.",
+    "Antes de girar, una anticipación de 3° y un arco al llegar: el movimiento en línea recta a velocidad constante parece artificial.",
+    "Con un producto real, usa un recurso con fondo transparente y la misma luz que la escena; si gira más de 15°, mejor una secuencia de fotogramas."
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-26"
+}

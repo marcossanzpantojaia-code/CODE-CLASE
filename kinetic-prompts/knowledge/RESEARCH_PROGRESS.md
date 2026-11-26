@@ -883,3 +883,4 @@ IMG-001 (imágenes responsive), CSS-004 (container queries), TYPE-001 (tipograf�
 | 2026-11-26 | animaciones | page-transition-card-expand | FLIP-001 (+ CSS-002, A11Y-001, UX-001) | VALIDADO (Chromium) | WebM 74 KB · MP4 81 KB | 3 KB | Variantes de Next.js, Astro y GSAP del prompt sin ejecutar; Safari y Firefox sin probar |
 | 2026-11-26 | animaciones | page-transition-fade | CSS-002 (revalidación: color del fundido) | VALIDADO (Chromium) | WebM 156 KB · MP4 144 KB | 7 KB | Funde a través de un color (`::view-transition` con fondo) |
 | 2026-11-26 | animaciones | page-transition-card-expand | FLIP-001 (revalidación: color del detalle) | VALIDADO (Chromium) | WebM 89 KB · MP4 92 KB | 3 KB | Texto blanco o negro según el contraste |
+| 2026-11-26 | animaciones | object-transition-pour | REC-001 (+ CONT-001, A11Y-001) | VALIDADO (Chromium) | WebM 146 KB · MP4 127 KB | 13 KB | Reversibilidad 0,000 %; objetos SVG procedurales (sin C1/C3); Safari y Firefox sin probar |

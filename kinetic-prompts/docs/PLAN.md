@@ -805,7 +805,7 @@ Criterios de cierre:
   | SEQ-001 y SEQ-003 | Objeto continuo con secuencia de fotogramas |
   | MOT-002 | Movimiento de producto cinematográfico |
 
-  Orden propuesto: REC-001 y CONT-001 primero (intermedio), luego MORPH-001 (básico o intermedio) y REC-002 (avanzado).
+  Hecho: «Objeto que une dos secciones» (REC-001 + CONT-001, avanzado, VALIDADO). Siguen MORPH-001 (morph de formas, básico o intermedio), REC-003 (producto fijo, entorno cambiante) y REC-002 (partículas, avanzado).
 - **Todo efecto se puede cambiar de color.** Cada elemento del catálogo tiene al menos una opción de tipo `color` o `palette`; lo comprueba `lib/content.test.ts`. Hecho en los cuatro efectos actuales: el fundido nativo funde a través de un color y la tarjeta que se convierte en página elige el color de su detalle.
 
 **Notas aprobadas (2026-11-26)** · candidatas de `docs/BIBLIOTECA_FASE0.md`, para proponer la lista del paso 2:
