@@ -54,6 +54,10 @@ TEST_DATABASE_URL=... npm run test:e2e
 
 > Para añadir o actualizar dependencias usa npm ≥ 11 (`npx npm@11 install …`): npm 10.9 falla al resolver los *peers* de Vitest 4.1. `npm ci` funciona con npm 10.
 
+## Otros proyectos en este repositorio
+
+- [`kinetic-prompts/`](kinetic-prompts/README.md): biblioteca de prompts de webs y animaciones (Next.js). Es independiente: tiene su propio `package.json`, ESLint y tests, y no entra en la imagen Docker de la recepcionista.
+
 ## Documentación
 
 | Documento | Contenido |

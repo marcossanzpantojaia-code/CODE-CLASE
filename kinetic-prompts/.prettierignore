@@ -1,0 +1,13 @@
+# Contenido del catálogo y biblioteca: se escriben a mano y no se reformatean
+knowledge/
+content/
+docs/PLAN.md
+# Generados
+.next/
+node_modules/
+package-lock.json
+next-env.d.ts
+test-results/
+playwright-report/
+blob-report/
+tests/visual/

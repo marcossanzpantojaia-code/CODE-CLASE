@@ -3,7 +3,8 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist/**', 'node_modules/**', 'coverage/**'] },
+  // kinetic-prompts/ es un proyecto independiente con su propio ESLint.
+  { ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'kinetic-prompts/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
