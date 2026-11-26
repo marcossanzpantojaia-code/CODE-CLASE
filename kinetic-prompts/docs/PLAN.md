@@ -792,6 +792,8 @@ Criterios de cierre:
 
 **Pendientes apuntados por el usuario (2026-11-26):**
 
+- **Permiso para ampliar la biblioteca (2026-11-26).** Se pueden añadir fichas nuevas a `knowledge/` (con la plantilla `_templates/FICHA_TECNICA.md`, fuentes conservadas y estado INVESTIGADO o PROPUESTO) para Fondos, Letras y transiciones que no tengan ficha. Las fichas existentes no se modifican.
+
 - **Transiciones de objetos.** Es un apartado propio (`objetos`), distinto de las transiciones de página: un objeto que viaja, se transforma o une dos secciones. La biblioteca tiene buen material, cuatro de ellas en estado IMPLEMENTADO:
 
   | Ficha | Qué aporta |
@@ -805,7 +807,7 @@ Criterios de cierre:
   | SEQ-001 y SEQ-003 | Objeto continuo con secuencia de fotogramas |
   | MOT-002 | Movimiento de producto cinematográfico |
 
-  Hecho: «Objeto que une dos secciones» (REC-001 + CONT-001, avanzado, VALIDADO). Siguen MORPH-001 (morph de formas, básico o intermedio), REC-003 (producto fijo, entorno cambiante) y REC-002 (partículas, avanzado).
+  Hecho: «Objeto que une dos secciones» (REC-001 + CONT-001, avanzado, VALIDADO). **Mejora pedida:** sustituir los SVG por imágenes reales generadas con IA por el usuario (encargo en `docs/ENCARGO_IMAGENES_REC001.md`). Siguen MORPH-001 (morph de formas, básico o intermedio), REC-003 (producto fijo, entorno cambiante) y REC-002 (partículas, avanzado).
 - **Todo efecto se puede cambiar de color.** Cada elemento del catálogo tiene al menos una opción de tipo `color` o `palette`; lo comprueba `lib/content.test.ts`. Hecho en los cuatro efectos actuales: el fundido nativo funde a través de un color y la tarjeta que se convierte en página elige el color de su detalle.
 
 **Notas aprobadas (2026-11-26)** · candidatas de `docs/BIBLIOTECA_FASE0.md`, para proponer la lista del paso 2:

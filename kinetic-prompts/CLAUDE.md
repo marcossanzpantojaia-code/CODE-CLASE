@@ -4,7 +4,9 @@
 - La app tiene dos apartados: Webs y Animaciones. Cada elemento vive en
   content/webs/<slug>/ o content/animaciones/<slug>/. Nunca escribas prompts dentro de componentes.
 - Biblioteca: knowledge/. Empieza siempre por knowledge/KNOWLEDGE_INDEX.md.
-  No la cargues entera. Es de solo lectura: no la modifiques salvo RESEARCH_PROGRESS.md.
+  No la cargues entera. No modifiques las fichas existentes. Con permiso del usuario (2026-11-26) se
+  pueden añadir fichas nuevas con knowledge/_templates/FICHA_TECNICA.md y actualizar KNOWLEDGE_INDEX.md
+  y RESEARCH_PROGRESS.md.
 - Diseño: usa solo los tokens de styles/tokens.css. Prohibido escribir colores o tamaños sueltos.
 - Cimiento: todo prompt se copia con un clic con CopyButton (components/ui/copy-button.tsx),
   en tarjetas, fichas y secciones de web. No escribas otro código de portapapeles.
