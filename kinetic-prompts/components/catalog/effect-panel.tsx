@@ -104,7 +104,7 @@ export function EffectPanel({ item }: { item: GalleryItem }) {
             </Dialog.Close>
           </header>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:grid-rows-[auto_1fr]">
             <section className="flex flex-col gap-4 lg:col-span-3" aria-label="Demo en vivo">
               <div className="relative aspect-16/10 overflow-hidden rounded-card border border-border bg-surface-2">
                 {item.demo ? (
