@@ -25,7 +25,11 @@ export type SliderProps = {
   "data-force"?: string;
 };
 
-const formatter = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 2 });
+/** Tantos decimales como tenga el paso (0,005 → 3), para que el valor coincida con el del prompt. */
+function formatterFor(step: number) {
+  const decimals = Math.min(4, (String(step).split(".")[1] ?? "").length);
+  return new Intl.NumberFormat("es-ES", { maximumFractionDigits: Math.max(2, decimals) });
+}
 
 /** Control deslizante (Radix Slider) con etiqueta y valor visibles. */
 export function Slider({
@@ -45,7 +49,7 @@ export function Slider({
   const labelId = useId();
   const [internal, setInternal] = useState(defaultValue ?? min);
   const current = value ?? internal;
-  const shown = `${formatter.format(current)}${unit ? ` ${unit}` : ""}`;
+  const shown = `${formatterFor(step).format(current)}${unit ? ` ${unit}` : ""}`;
   const inactive = disabled || loading;
 
   return (

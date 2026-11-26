@@ -67,6 +67,13 @@
       "default": "horizontales"
     }
   ],
+  "tips": [
+    "Prueba a 1366 × 768 y en un móvil: si la altura de una tira no es un número entero de píxeles, aparecen líneas de 1 px entre tiras. Un solape de 1 px por lado las elimina.",
+    "En móvil usa la mitad de tiras: con muchas, el escalonado desde el centro no se lee.",
+    "Un barrido grande puede marear: con movimiento reducido, cámbialo por un fundido corto.",
+    "Las transiciones no mueven el foco solas: llévalo al título de la página nueva y anúncialo.",
+    "Una animación de interfaz dura 200–400 ms; esta es de marca y puede durar más, pero no pases de 1,5 s en total."
+  ],
   "media": {
     "video": "media/loop.webm",
     "videoMp4": "media/loop.mp4",

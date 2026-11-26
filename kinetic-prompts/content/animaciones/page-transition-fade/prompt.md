@@ -9,16 +9,24 @@ Al cambiar de página, la página vieja se desvanece mientras sube un poco y la 
 ## 2. Stack
 
 - Sin dependencias: CSS y la View Transitions API del navegador.
+<!-- solo: nextjs -->
 - Next.js 16 (App Router): el componente `<ViewTransition>` de React 19.3, que funciona sin configuración.
+<!-- fin -->
+<!-- solo: astro, html -->
 - Astro y webs de HTML con varias páginas: transiciones entre documentos con la regla CSS `@view-transition`.
+<!-- fin -->
 - Es mejora progresiva: en un navegador sin soporte, la página cambia igual, sin animación.
 
 ## 3. Estructura
 
 Antes de escribir código, mira el proyecto: qué framework usa y dónde están los estilos globales. Después, según el caso:
 
+<!-- solo: nextjs -->
 - **Next.js (App Router):** envuelve el contenido de cada `page.tsx` (no el layout, que no se desmonta al navegar) en `<ViewTransition>` de React, con `enter` y `exit` iguales a una clase propia, por ejemplo `kp-fade`, y `default="none"`. Define las animaciones de esa clase en los estilos globales con `::view-transition-old(.kp-fade)` y `::view-transition-new(.kp-fade)`.
+<!-- fin -->
+<!-- solo: astro, html -->
 - **Astro o HTML de varias páginas:** añade `@view-transition { navigation: auto; }` a los estilos globales de todas las páginas y anima `::view-transition-old(root)` y `::view-transition-new(root)`. Las dos páginas tienen que ser del mismo dominio.
+<!-- fin -->
 - **Cambios dentro de una misma página** (pestañas, filtros): envuelve el cambio en `document.startViewTransition(() => actualizar())` y, si no existe, llama a `actualizar()` sin más.
 
 ## 4. Comportamiento paso a paso
@@ -44,7 +52,10 @@ Guárdalos como variables CSS en `:root` (`--vt-duracion`, `--vt-desplazamiento`
 ## 7. Accesibilidad
 
 - Con `prefers-reduced-motion: reduce`, sin desplazamiento: solo un fundido de opacidad de 150 ms en la página nueva.
-- Tras navegar, el foco va al `<h1>` de la página nueva (con `tabindex="-1"`) y su título se anuncia en una región `aria-live="polite"`. En Next.js, hazlo en un efecto que dependa de `usePathname()`.
+- Tras navegar, el foco va al `<h1>` de la página nueva (con `tabindex="-1"`) y su título se anuncia en una región `aria-live="polite"`.
+<!-- solo: nextjs -->
+- En Next.js, mueve el foco en un efecto que dependa de `usePathname()`.
+<!-- fin -->
 
 ## 8. Rendimiento
 

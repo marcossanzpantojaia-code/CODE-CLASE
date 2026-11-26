@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { AnimationsGallery } from "@/components/catalog/animations-gallery";
 import type { GalleryItem } from "@/components/catalog/types";
-import { CATEGORIES, LEVELS, contentUrl, defaultPrompt, getPublishedAnimations } from "@/lib/content";
+import { CATEGORIES, LEVELS, contentUrl, getPublishedAnimations, knowledgeTitles } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Animaciones · Kinetic Prompts",
@@ -27,7 +27,11 @@ export default function AnimacionesPage() {
     level: item.difficulty,
     levelLabel: LEVELS[item.difficulty],
     tech: item.tech,
-    prompt: defaultPrompt(item),
+    params: item.params,
+    promptTemplate: item.promptTemplate,
+    tips: item.tips,
+    sources: knowledgeTitles(item.knowledgeRefs),
+    demo: contentUrl(item, "preview/index.html"),
     poster: item.media.poster ? contentUrl(item, item.media.poster) : undefined,
     video: item.media.video ? contentUrl(item, item.media.video) : undefined,
     videoMp4: item.media.videoMp4 ? contentUrl(item, item.media.videoMp4) : undefined,

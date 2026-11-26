@@ -25,3 +25,26 @@ export function formatValue(value: ParamValue): string {
 export function renderPrompt(template: string, values: Record<string, ParamValue>): string {
   return template.replace(VARIABLE, (match, id: string) => (id in values ? formatValue(values[id]!) : match));
 }
+
+/** Tipos de proyecto para los que un prompt puede dar instrucciones de integración. */
+export const STACKS = [
+  { id: "auto", label: "Que lo detecte mi IA" },
+  { id: "nextjs", label: "Next.js" },
+  { id: "astro", label: "Astro" },
+  { id: "html", label: "HTML" },
+] as const;
+export type StackId = (typeof STACKS)[number]["id"];
+
+const STACK_BLOCK = /<!--\s*solo:\s*([a-z,\s]+?)\s*-->\n?([\s\S]*?)<!--\s*fin\s*-->\n?/g;
+
+/**
+ * Deja solo las instrucciones del tipo de proyecto elegido. En prompt.md, cada bloque propio de
+ * un stack va entre `<!-- solo: nextjs -->` (o `astro, html`) y `<!-- fin -->`. Con «auto» se
+ * quedan todos los bloques y la IA elige según el proyecto.
+ */
+export function selectStack(template: string, stack: StackId): string {
+  return template.replace(STACK_BLOCK, (_, list: string, body: string) => {
+    const ids = list.split(",").map((s) => s.trim());
+    return stack === "auto" || ids.includes(stack) ? body : "";
+  });
+}

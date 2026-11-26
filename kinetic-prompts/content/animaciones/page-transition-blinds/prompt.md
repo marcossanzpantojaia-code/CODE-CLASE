@@ -20,8 +20,12 @@ Antes de escribir código, mira el proyecto: qué framework usa, cómo navega en
 2. Cada tira mide 100 % / {{strips}} de alto (de ancho si son verticales) más 2 px, y empieza 1 px antes de su sitio. Ese solape evita la línea de 1 px que aparece entre tiras cuando la medida no es un número entero de píxeles.
 3. Pon la capa en el layout común para que exista en todas las páginas.
 4. Engancha la navegación según el proyecto:
+<!-- solo: nextjs -->
    - **Next.js (App Router):** un componente cliente `TransitionLink` que envuelve `next/link`. En un clic izquierdo sin teclas modificadoras sobre un enlace interno, cancela la navegación por defecto, cubre, llama a `router.push(href)` y destapa cuando cambie `usePathname()`. Monta la capa en `app/layout.tsx`.
+<!-- fin -->
+<!-- solo: astro, html -->
    - **Astro o HTML de varias páginas:** intercepta los clics en enlaces internos, cubre, guarda una marca en `sessionStorage` y navega con `location.href`. En la página nueva, un script pequeño en el `<head>` deja la capa cubierta si encuentra la marca, antes del primer pintado. Al cargar, destapa y borra la marca.
+<!-- fin -->
 5. Los enlaces siguen siendo `<a href>` reales: sin JavaScript tienen que funcionar igual.
 
 ## 4. Comportamiento paso a paso

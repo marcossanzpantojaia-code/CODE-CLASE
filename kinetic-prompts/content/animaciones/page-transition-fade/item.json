@@ -50,6 +50,13 @@
       "default": "ease-out"
     }
   ],
+  "tips": [
+    "Si el navegador no tiene View Transitions, la página cambia igual: es mejora progresiva y no hace falta un plan B.",
+    "En Next.js, envuelve cada página y no el layout: el layout no se desmonta al navegar y no se animaría.",
+    "No repitas un mismo view-transition-name en una página: el navegador cancela la transición.",
+    "Entre 200 y 400 ms con ease-out se nota sin hacer esperar.",
+    "Las capturas de la transición ocupan memoria: mantenla corta."
+  ],
   "media": {
     "video": "media/loop.webm",
     "videoMp4": "media/loop.mp4",

@@ -6,7 +6,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { type ParamValue, promptVariables, renderPrompt } from "./prompt-render";
+import { type ParamValue, promptVariables, renderPrompt, selectStack, type StackId } from "./prompt-render";
 
 export const CATEGORIES = {
   transiciones: "Transiciones de página",
@@ -60,6 +60,8 @@ export type AnimationItem = {
   media: { video?: string; videoMp4?: string; poster?: string };
   createdAt: string;
   demo?: boolean;
+  /** Consejos sacados de las fichas de la biblioteca, en lenguaje llano (se ven en el panel). */
+  tips: string[];
   /** Plantilla de prompt.md, con {{variables}}. */
   promptTemplate: string;
 };
@@ -148,6 +150,8 @@ export function parseAnimation(raw: unknown, promptTemplate: string, file: strin
   if (!Array.isArray(d.params)) fail(file, "params debe ser una lista");
   const params = d.params.map((p) => parseParam(p, file));
   if (!d.media || typeof d.media !== "object") fail(file, "falta media");
+  if (d.tips !== undefined && (!Array.isArray(d.tips) || !d.tips.every(isString)))
+    fail(file, "tips debe ser una lista de frases");
   if (!isString(d.createdAt) || !/^\d{4}-\d{2}-\d{2}$/.test(d.createdAt))
     fail(file, "createdAt debe ser AAAA-MM-DD");
   if (!isString(promptTemplate)) fail(file, "prompt.md está vacío");
@@ -156,7 +160,12 @@ export function parseAnimation(raw: unknown, promptTemplate: string, file: strin
   const unknown = promptVariables(promptTemplate).filter((v) => !known.has(v));
   if (unknown.length) fail(file, `el prompt usa variables sin parámetro: ${unknown.join(", ")}`);
 
-  return { ...(d as unknown as AnimationItem), params, promptTemplate };
+  return {
+    ...(d as unknown as AnimationItem),
+    params,
+    tips: (d.tips as string[] | undefined) ?? [],
+    promptTemplate,
+  };
 }
 
 /** Todos los elementos, de más nuevo a más antiguo. */
@@ -187,9 +196,22 @@ export function defaultValues(item: Pick<AnimationItem, "params" | "title">): Re
   return Object.fromEntries([["title", item.title], ...item.params.map((p) => [p.id, p.default])]);
 }
 
-/** El prompt con los valores por defecto: lo que copia la tarjeta. */
-export function defaultPrompt(item: AnimationItem): string {
-  return renderPrompt(item.promptTemplate, defaultValues(item));
+/** El prompt con los valores por defecto y las instrucciones de todos los tipos de proyecto. */
+export function defaultPrompt(item: AnimationItem, stack: StackId = "auto"): string {
+  return renderPrompt(selectStack(item.promptTemplate, stack), defaultValues(item));
+}
+
+type Manifest = { columnas: string[]; fichas: string[][] };
+
+/** Títulos de las fichas citadas, leídos del manifiesto de la biblioteca (sin cargar las fichas). */
+export function knowledgeTitles(refs: string[]): string[] {
+  const path = join(process.cwd(), "knowledge", "integration", "LIBRARY_MANIFEST.json");
+  if (!existsSync(path)) return [];
+  const manifest = JSON.parse(readFileSync(path, "utf8")) as Manifest;
+  const ruta = manifest.columnas.indexOf("ruta");
+  const titulo = manifest.columnas.indexOf("titulo");
+  const byPath = new Map(manifest.fichas.map((f) => [`knowledge/${f[ruta]}`, f[titulo]!]));
+  return refs.map((ref) => byPath.get(ref)).filter((t): t is string => Boolean(t));
 }
 
 /** URL pública de un archivo de preview/ o media/ (copiado por scripts/sync-content.mjs). */

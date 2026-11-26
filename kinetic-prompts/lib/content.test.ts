@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 
 import { defaultPrompt, getAnimations, getPublishedAnimations, parseAnimation } from "./content";
-import { promptVariables, renderPrompt } from "./prompt-render";
+import { promptVariables, renderPrompt, selectStack } from "./prompt-render";
 
 const items = getAnimations();
 
@@ -97,4 +97,24 @@ describe("renderPrompt", () => {
       "0,55 s · #e4572e · {{c}}",
     );
   });
+});
+
+describe("selectStack", () => {
+  const template =
+    "A\n<!-- solo: nextjs -->\nN\n<!-- fin -->\n<!-- solo: astro, html -->\nH\n<!-- fin -->\nZ";
+  test("con «auto» deja todos los bloques y quita las marcas", () => {
+    expect(selectStack(template, "auto")).toBe("A\nN\nH\nZ");
+  });
+  test("con un tipo de proyecto deja solo sus bloques", () => {
+    expect(selectStack(template, "nextjs")).toBe("A\nN\nZ");
+    expect(selectStack(template, "html")).toBe("A\nH\nZ");
+  });
+  test.each(items.map((i) => [i.slug, i] as const))(
+    "%s: ningún tipo de proyecto deja marcas sueltas",
+    (_, item) => {
+      for (const stack of ["auto", "nextjs", "astro", "html"] as const) {
+        expect(selectStack(item.promptTemplate, stack)).not.toMatch(/<!--/);
+      }
+    },
+  );
 });

@@ -1,6 +1,6 @@
 import { type Page, expect, test } from "@playwright/test";
 
-import { defaultPrompt, getPublishedAnimations } from "../../lib/content";
+import { getPublishedAnimations } from "../../lib/content";
 
 function watchConsole(page: Page) {
   const messages: string[] = [];
@@ -10,6 +10,7 @@ function watchConsole(page: Page) {
 }
 
 const published = getPublishedAnimations();
+const blinds = published.find((i) => i.slug === "page-transition-blinds")!;
 
 test.describe("/animaciones", () => {
   test("muestra las animaciones publicadas sin errores ni scroll horizontal", async ({ page }) => {
@@ -23,41 +24,65 @@ test.describe("/animaciones", () => {
     expect(messages).toEqual([]);
   });
 
-  test("un clic en la tarjeta copia su prompt, reproduce el ejemplo y vuelve a reposo", async ({
+  test("al pulsar una tarjeta se abre el panel con la demo, las opciones y el prompt", async ({
     page,
     context,
   }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-    const item = published[0]!;
+    const messages = watchConsole(page);
     await page.goto("/animaciones");
-    const tile = page.getByRole("button", { name: new RegExp(`^Copiar prompt: ${item.title}`) });
+    const tile = page.getByRole("button", { name: new RegExp(`^${blinds.title}, nivel`) });
     await tile.click();
-    await expect(page.getByRole("button", { name: new RegExp(`^Copiado: ${item.title}`) })).toBeVisible();
-    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(defaultPrompt(item));
-    const playing = await page.evaluate(() => {
-      const video = document.querySelector("[data-galeria] video") as HTMLVideoElement | null;
-      return video ? !video.paused : false;
-    });
-    expect(playing).toBe(true);
-    await expect(page.getByRole("button", { name: new RegExp(`^Copiar prompt: ${item.title}`) })).toBeVisible(
-      {
-        timeout: 3000,
-      },
-    );
+    const dialog = page.getByRole("dialog", { name: blinds.title });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator("iframe")).toHaveAttribute("sandbox", "allow-scripts");
+    const demo = page.frames().find((f) => f.url().includes(`${blinds.slug}/preview`));
+    expect(demo).toBeTruthy();
+    await demo!.waitForLoadState("load");
+    const before = await demo!.evaluate(() => document.querySelectorAll(".tira").length);
+
+    // Cambiar una opción reescribe el prompt y actualiza la demo en vivo.
+    const prompt = dialog.locator("[data-prompt]");
+    await expect(prompt).toContainText("24 tiras");
+    await dialog.getByRole("slider", { name: "Número de tiras" }).focus();
+    await page.keyboard.press("ArrowRight");
+    await expect(prompt).toContainText("25 tiras");
+    await expect.poll(() => demo!.evaluate(() => document.querySelectorAll(".tira").length)).not.toBe(before);
+
+    // «Tu proyecto» deja solo las instrucciones de ese tipo de proyecto.
+    await dialog.getByRole("button", { name: "Next.js", exact: true }).click();
+    await expect(prompt).toContainText("TransitionLink");
+    await expect(prompt).not.toContainText("Astro o HTML de varias páginas");
+
+    // Lo copiado es exactamente lo que se ve.
+    await dialog.getByRole("button", { name: "Copiar prompt" }).click();
+    await expect(dialog.getByRole("button", { name: "Copiado" })).toBeVisible();
+    const shown = await prompt.textContent();
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(shown);
+
+    // Escape cierra y el foco vuelve a la tarjeta.
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(tile).toBeFocused();
+    expect(messages).toEqual([]);
   });
 
-  test("con movimiento reducido copia pero no reproduce el vídeo", async ({ browser }) => {
-    const context = await browser.newContext({ reducedMotion: "reduce" });
+  test("cada elemento publicado abre su panel y copia un prompt sin {{variables}}", async ({
+    page,
+    context,
+  }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-    const page = await context.newPage();
     await page.goto("/animaciones");
-    await page.locator("[data-galeria] button").first().click();
-    await expect(page.locator("[data-galeria] button").first()).toHaveAttribute("data-estado", "copiado");
-    const paused = await page.evaluate(
-      () => (document.querySelector("[data-galeria] video") as HTMLVideoElement).paused,
-    );
-    expect(paused).toBe(true);
-    await context.close();
+    for (const item of published) {
+      await page.getByRole("button", { name: new RegExp(`^${item.title}, nivel`) }).click();
+      const dialog = page.getByRole("dialog", { name: item.title });
+      await dialog.getByRole("button", { name: "Copiar prompt" }).click();
+      const text = await page.evaluate(() => navigator.clipboard.readText());
+      expect(text.startsWith(`# ${item.title}`)).toBe(true);
+      expect(text).not.toMatch(/\{\{|<!--/);
+      await page.keyboard.press("Escape");
+      await expect(dialog).toBeHidden();
+    }
   });
 
   test("el inicio lleva a la galería", async ({ page }) => {

@@ -54,12 +54,14 @@ Toda la app se construye sobre un mismo botón. Cada efecto, cada web y cada sec
 
 La app tiene que ser muy, muy fácil de usar y facilitar de verdad la creación de la web. Si una decisión complica el camino de «veo el efecto» a «lo tengo en mi web», se descarta. *(Decisión del 2026-11-26.)*
 
-- **Ver y copiar a la vez.** Pulsar el botón de un efecto reproduce el ejemplo en ese momento y copia su prompt. No hay que abrir nada para llevárselo.
-- **Dos clics como máximo** desde el inicio hasta tener un prompt copiado: «Animaciones» → botón.
+- **Pulsar, elegir y copiar.** Pulsar la tarjeta de un efecto abre su panel con la demo en vivo, las opciones (tipo de proyecto y parámetros), el prompt y los consejos de la biblioteca. Cada opción actualiza la demo y el prompt al momento, y «Copiar prompt» se lleva exactamente lo que se ve. *(Cambio del 2026-11-26: sustituye a la copia instantánea al pulsar la tarjeta.)*
+- **Tres clics como máximo** desde el inicio hasta tener un prompt copiado: «Animaciones» → tarjeta → «Copiar prompt».
 - **Nombres llanos y en español:** «Persianas desde el centro», no «MASK-002». Los identificadores de la biblioteca nunca se ven en la interfaz.
 - **Nivel a la vista:** cada efecto muestra si es básico, intermedio o avanzado (ver «Niveles de complejidad»), y la galería filtra por nivel.
 - **Valores por defecto listos:** el prompt copiado funciona tal cual. Los parámetros son opcionales, no un formulario que haya que rellenar.
-- **Cómo usarlo en tres pasos**, visibles en la galería: Elige el efecto · Pulsa Copiar · Pégalo en tu IA (Claude Code, Cursor…) dentro de tu proyecto.
+- **Cómo usarlo en tres pasos**, visibles en la galería: Pulsa un efecto · Elige tus opciones · Copia el prompt y pégalo en tu IA.
+- **Una app nutrida de conocimiento:** cada efecto muestra los consejos de la biblioteca en lenguaje llano (`tips` en `item.json`) y las fichas en las que se basa.
+- **Tu proyecto:** el panel deja elegir Next.js, Astro, HTML o «Que lo detecte mi IA». En `prompt.md`, las instrucciones propias de cada uno van entre `<!-- solo: nextjs -->` y `<!-- fin -->` (`selectStack` en `lib/prompt-render.ts`).
 - **Sin botones muertos:** lo que todavía no funciona (favoritos, cuenta) no aparece hasta su fase.
 - **Prompts que se integran solos:** cada prompt dice a la IA que mire primero el proyecto (Next.js, Astro, HTML…) y cómo encajar el efecto en cada caso (ver «Reglas de redacción de los prompts»).
 
