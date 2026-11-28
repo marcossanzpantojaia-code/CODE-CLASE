@@ -85,6 +85,23 @@ test.describe("/animaciones", () => {
     }
   });
 
+  test("en el panel, cada demo carga todas sus imágenes", async ({ page }) => {
+    await page.goto("/animaciones");
+    for (const item of published) {
+      await page.getByRole("button", { name: new RegExp(`^${item.title}, nivel`) }).click();
+      const dialog = page.getByRole("dialog", { name: item.title });
+      await expect(dialog.locator("iframe")).toBeVisible();
+      const demo = page.frames().find((f) => f.url().includes(`${item.slug}/preview`))!;
+      await demo.waitForLoadState("load");
+      const broken = await demo.evaluate(() =>
+        [...document.images].filter((img) => !img.complete || img.naturalWidth === 0).map((img) => img.src),
+      );
+      expect(broken, `${item.slug}: imágenes sin cargar`).toEqual([]);
+      await page.keyboard.press("Escape");
+      await expect(dialog).toBeHidden();
+    }
+  });
+
   test("el inicio lleva a la galería", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("link", { name: "Ver animaciones" }).click();
