@@ -6,19 +6,24 @@
     <title>Objeto que une dos secciones · demo</title>
     <style>
       /* Demo de Kinetic Prompts: identidad propia, no usa los tokens de la app. */
-      :root { --crema: #f3eee6; --tinta: #1c1b19; --panel: #c98b4f; --chorro: #5a3418; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      :root { --crema: #f3eee6; --latte: #d8c3a5; --tinta: #1c1b19; --panel: #c98b4f; --texto2: #1c1b19; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
       * { box-sizing: border-box; }
-      html, body { margin: 0; background: var(--crema); color: var(--tinta); }
+      html, body { margin: 0; background: var(--latte); color: var(--tinta); }
       #acto { position: relative; height: 400vh; }
-      .escenario { position: sticky; top: 0; height: 100vh; overflow: hidden; isolation: isolate; background: var(--crema); }
-      .panel { position: absolute; inset: 0; background: var(--panel); transform: translateY(100%); will-change: transform; z-index: 1; }
+      .escenario { position: sticky; top: 0; height: 100vh; overflow: hidden; isolation: isolate; background: var(--latte); }
+      .panel { position: absolute; inset: 0; background: #2a1a10 url("recursos/granos.webp") center / cover; transform: translateY(100%); will-change: transform; z-index: 1; }
+      /* Velo del color elegido sobre los granos (sin mix-blend: la capa se mueve, AIIMG-001). */
+      .panel::after { content: ""; position: absolute; inset: 0; background: var(--panel); opacity: 0.72; }
+      .t2 { color: var(--texto2); }
       .titular { position: absolute; left: 6%; z-index: 3; margin: 0; font-weight: 800; letter-spacing: -0.05em; line-height: 0.95; font-size: clamp(26px, 7vw, 96px); }
       .t1 { top: 12%; }
       .t2 { top: 56%; }
       .linea { display: block; overflow: hidden; padding-bottom: 0.06em; }
       .linea > span { display: block; will-change: transform; }
       .marca { position: absolute; top: 4%; left: 6%; z-index: 3; font-weight: 800; letter-spacing: -0.04em; font-size: clamp(12px, 1.8vw, 20px); }
-      svg.objeto { position: absolute; left: 0; top: 0; z-index: 4; overflow: visible; will-change: transform; }
+      .objeto { position: absolute; left: 0; top: 0; z-index: 4; will-change: transform; }
+      .objeto img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+      .ancla { position: absolute; width: 2px; height: 2px; margin: -1px 0 0 -1px; }
       #chorros { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; overflow: visible; }
       #reproducir { position: fixed; right: 12px; bottom: 12px; z-index: 20; font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 0; background: var(--tinta); color: var(--crema); cursor: pointer; }
       #reproducir[hidden] { display: none; }
@@ -33,19 +38,14 @@
         <span class="marca">brota café</span>
         <h1 class="titular t1"><span class="linea"><span>Deja que</span></span><span class="linea"><span>florezca.</span></span></h1>
         <h2 class="titular t2" aria-hidden="true"><span class="linea"><span>Sirve</span></span><span class="linea"><span>sin prisa.</span></span></h2>
-        <svg class="objeto" id="jarra" viewBox="0 0 100 120" aria-hidden="true">
-          <path d="M22 18 L78 18 L86 112 Q86 118 80 118 L20 118 Q14 118 14 112 Z" fill="#e7dfd2" stroke="#1c1b19" stroke-width="3" />
-          <path d="M22 18 L8 6 L26 10 Z" fill="#e7dfd2" stroke="#1c1b19" stroke-width="3" stroke-linejoin="round" />
-          <path d="M80 34 Q100 40 96 66 Q93 86 82 88" fill="none" stroke="#1c1b19" stroke-width="5" stroke-linecap="round" />
-          <path d="M20 70 L80 70 L84 112 Q84 116 80 116 L20 116 Q16 116 16 112 Z" fill="#5a3418" opacity="0.85" />
-          <circle id="pico" cx="9" cy="7" r="1" fill="none" />
-        </svg>
-        <svg class="objeto" id="taza" viewBox="0 0 100 80" aria-hidden="true">
-          <path d="M10 10 L82 10 L76 62 Q75 72 64 72 L28 72 Q17 72 16 62 Z" fill="#f8f5ef" stroke="#1c1b19" stroke-width="3" />
-          <path d="M80 22 Q98 22 96 38 Q94 52 78 52" fill="none" stroke="#1c1b19" stroke-width="4" />
-          <ellipse cx="46" cy="10" rx="36" ry="5" fill="#5a3418" stroke="#1c1b19" stroke-width="2" />
-          <circle id="boca" cx="46" cy="10" r="1" fill="none" />
-        </svg>
+        <div class="objeto" id="jarra" aria-hidden="true">
+          <img src="recursos/jarra.webp" width="900" height="670" alt="" decoding="async" />
+          <span class="ancla" id="pico" style="left: 0.74%; top: 13.47%"></span>
+        </div>
+        <div class="objeto" id="taza" aria-hidden="true">
+          <img src="recursos/taza.webp" width="900" height="744" alt="" decoding="async" />
+          <span class="ancla" id="boca" style="left: 41.5%; top: 17.3%"></span>
+        </div>
         <svg id="chorros" aria-hidden="true"><path id="chorro" fill="none" stroke-linecap="round" /></svg>
         <i id="reloj" aria-hidden="true"></i>
       </div>
@@ -55,7 +55,7 @@
     <script>
       (() => {
         "use strict";
-        const params = { streamColor: "#5a3418", panelColor: "#c98b4f", tilt: -38, distance: 300 };
+        const params = { streamColor: "#3b2412", panelColor: "#c98b4f", tilt: -38, distance: 300 };
         const LIMITS = { tilt: [-60, -20], distance: [200, 500] };
         const root = document.documentElement;
         const acto = document.getElementById("acto");
@@ -86,16 +86,16 @@
         function aplica(p) {
           const W = escenario.clientWidth, H = escenario.clientHeight;
           const narrow = W < 600;
-          const size = Math.min(W * (narrow ? 0.42 : 0.24), H * 0.42);
+          const size = Math.min(W * (narrow ? 0.5 : 0.32), H * 0.55); // protagonista ≥ 30 % del ancho (REC-001 §5)
           jarra.style.width = `${size}px`;
-          taza.style.width = `${size * 0.95}px`;
+          taza.style.width = `${size * 0.8}px`;
           // Jarra: llega en arco (p 0–0,5), anticipa 3° y se inclina (0,5–0,58), meseta, se endereza (0,85–1).
           const go = seg(p, 0, 0.5);
           const k = narrow
             ? { x0: 0.62, y0: 0.62, x1: 0.56, y1: 0.42, cx: 0.22, cy: 0.86 }
             : { x0: 0.78, y0: 0.5, x1: 0.68, y1: 0.3, cx: 0.55, cy: 0.8 };
           const jx = mix(k.x0, k.x1, go) * W - size / 2;
-          const jy = (mix(k.y0, k.y1, go) - Math.sin(go * Math.PI) * 0.06) * H - size * 0.6;
+          const jy = (mix(k.y0, k.y1, go) - Math.sin(go * Math.PI) * 0.06) * H - size * 0.37;
           const angle =
             p < 0.5 ? 0 :
             p < 0.53 ? mix(0, 3, seg(p, 0.5, 0.53)) :
@@ -106,8 +106,8 @@
           jarra.style.transformOrigin = "50% 55%";
           // Taza: entra por abajo (0,3–0,55).
           const cupIn = seg(p, 0.3, 0.55);
-          const cx = k.cx * W - (size * 0.95) / 2;
-          const cy = mix(H * 1.25, k.cy * H - size * 0.38, cupIn);
+          const cx = k.cx * W - (size * 0.8) / 2;
+          const cy = mix(H * 1.25, k.cy * H - size * 0.33, cupIn);
           taza.style.transform = `translate(${cx}px, ${cy}px)`;
           // Panel de la segunda sección (0,6–0,8) y titulares.
           panel.style.transform = `translateY(${mix(100, 0, seg(p, 0.6, 0.8))}%)`;
@@ -119,7 +119,7 @@
           const x2 = b.left + b.width / 2 - s.left, y2 = b.top + b.height / 2 - s.top;
           chorro.setAttribute("d", `M${x1} ${y1} Q${x1 - (x1 - x2) * 0.15} ${(y1 + y2) / 2} ${x2} ${y2}`);
           chorro.setAttribute("stroke", params.streamColor);
-          chorro.setAttribute("stroke-width", String(Math.max(3, size * 0.05)));
+          chorro.setAttribute("stroke-width", String(Math.max(3, size * 0.035)));
           const L = chorro.getTotalLength();
           const draw = seg(p, 0.6, 0.66), cut = seg(p, 0.86, 0.98);
           chorro.style.strokeDasharray = `${L} ${L}`;
@@ -163,6 +163,13 @@
         addEventListener("touchmove", toScroll, { passive: true });
         addEventListener("keydown", (e) => { if (["ArrowDown", "PageDown", " ", "End"].includes(e.key)) toScroll(); });
 
+        /* Texto de la segunda sección en blanco o en negro según el contraste con su color. */
+        function textColor(hex) {
+          const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+          const l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          return 1.05 / (l + 0.05) >= (l + 0.05) / 0.05 ? "#f3eee6" : "#1c1b19";
+        }
+
         function applyParams(next) {
           if (!next || typeof next !== "object") return;
           for (const key of ["tilt", "distance"]) {
@@ -172,6 +179,7 @@
           for (const key of ["streamColor", "panelColor"])
             if (typeof next[key] === "string" && /^#[0-9a-f]{6}$/i.test(next[key])) params[key] = next[key];
           root.style.setProperty("--panel", params.panelColor);
+          root.style.setProperty("--texto2", textColor(params.panelColor));
           acto.style.height = `${params.distance + 100}vh`;
         }
 
@@ -195,8 +203,11 @@
         }
         reduced.addEventListener("change", syncReduced);
         applyParams({});
-        syncReduced();
-        requestAnimationFrame(frame);
+        // Las imágenes se decodifican antes de arrancar la escena, para que no aparezcan a medias (AIIMG-001).
+        Promise.all([...document.images].map((img) => img.decode().catch(() => {}))).then(() => {
+          syncReduced();
+          requestAnimationFrame(frame);
+        });
       })();
     </script>
   </body>

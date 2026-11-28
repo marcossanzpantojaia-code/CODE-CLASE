@@ -6,7 +6,7 @@
   "category": "objetos",
   "tech": [
     "JavaScript",
-    "SVG",
+    "Imágenes con alfa",
     "Scroll"
   ],
   "difficulty": 3,
@@ -15,6 +15,7 @@
   "knowledgeRefs": [
     "knowledge/recetas/REC-001-objeto-que-conecta-dos-secciones.md",
     "knowledge/animations/CONT-001-continuidad-de-objeto-entre-escenas.md",
+    "knowledge/frontend/AIIMG-001-integracion-de-imagenes-generadas-por-ia-en-escenas-2-5d.md",
     "knowledge/accessibility/A11Y-001-reduced-motion.md"
   ],
   "usedIn": [],
@@ -23,7 +24,7 @@
       "id": "streamColor",
       "label": "Color del chorro",
       "type": "color",
-      "default": "#5a3418"
+      "default": "#3b2412"
     },
     {
       "id": "panelColor",
@@ -58,7 +59,8 @@
     "Corta el chorro desde arriba, como cuando se deja de verter; cortarlo desde abajo parece rebobinar.",
     "Deja una meseta en cada titular y no apagues el de salida hasta que el nuevo se lea.",
     "Antes de girar, una anticipación de 3° y un arco al llegar: el movimiento en línea recta a velocidad constante parece artificial.",
-    "Con un producto real, usa un recurso con fondo transparente y la misma luz que la escena; si gira más de 15°, mejor una secuencia de fotogramas."
+    "Con imágenes generadas por IA: pídelas con la misma luz y la misma cámara, sobre un fondo liso que contraste con el borde (o con transparencia), y quita el color del fondo que queda en el borde para que no haya halo.",
+    "Decodifica las imágenes (img.decode()) antes de arrancar la escena, para que no aparezcan a medias."
   ],
   "media": {
     "video": "media/loop.webm",

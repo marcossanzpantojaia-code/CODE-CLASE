@@ -5,7 +5,7 @@
 - Descripción breve: transición de objeto de nivel avanzado. Al bajar, una jarra llega en arco, se inclina y vierte un chorro que cruza el cambio de sección hasta la taza; el fondo y el titular cambian.
 - Perfil (A/B) y motivo: cinematográfico (y héroe de webs comerciales de restauración y producto).
 - Versión de la biblioteca: 0.32.0 · Lotes 0–32 · 2026-11-04.
-- Stack y versiones: JavaScript sin dependencias, escenario `sticky` y bucle `requestAnimationFrame`; objetos en SVG propios. Comprobado en Chromium (Playwright 1.63.0).
+- Stack y versiones: JavaScript sin dependencias, escenario `sticky` y bucle `requestAnimationFrame`. Objetos: imágenes generadas con IA por el usuario (2026-11-28) y preparadas con `scripts/preparar-recursos.mjs` (ver `preview/recursos/RECURSOS.md`). Comprobado en Chromium (Playwright 1.63.0).
 
 ## 2. Necesidades → fichas
 
@@ -13,6 +13,7 @@
 |---|---|---|---|---|
 | Receta del objeto que une dos secciones (estados, capas, conector) | REC-001 | knowledge/recetas/REC-001-objeto-que-conecta-dos-secciones.md | IMPLEMENTADO | JS nativo en la microdemo, igual que aquí |
 | Continuidad del protagonista entre escenas | CONT-001 | knowledge/animations/CONT-001-continuidad-de-objeto-entre-escenas.md | IMPLEMENTADO | — |
+| Imágenes de IA integradas en la escena (fondo para recortar, descontaminación, carga) | AIIMG-001 (leída en parte: tabla de §2) | knowledge/frontend/AIIMG-001-integracion-de-imagenes-generadas-por-ia-en-escenas-2-5d.md | IMPLEMENTADO | Pillow/OpenCV en la ficha; aquí, sharp (Node) |
 | Movimiento reducido | A11Y-001 | knowledge/accessibility/A11Y-001-reduced-motion.md | INVESTIGADO | — |
 
 ## 3. Aplicación
@@ -25,6 +26,7 @@
 | REC-001 §7b | Meseta legible: el titular de salida no se apaga hasta que llega el panel; anticipación de 3° y arco | preview/index.html (`aplica`), prompt.md §4 | No | Sí |
 | REC-001 §5 | Panel de la segunda sección con `transform` en vez de `clip-path` (solo compositor) | preview/index.html | No | Sí |
 | CONT-001 | El objeto no sale nunca del encuadre; coordenadas compartidas con `getBoundingClientRect` | preview/index.html | No | No |
+| AIIMG-001 §2 | Fondo liso (desviación < 6), llave de color, descontaminación del borde, WebP con alfa y `img.decode()` antes de arrancar; sin blend ni filtros en capas que se mueven | scripts/preparar-recursos.mjs, preview/index.html | No | Sí: script propio en Node |
 | A11Y-001 | Con movimiento reducido, las dos secciones fijas; «Reproducir» alterna con un fundido | preview/index.html | No | Sí |
 | — | Para la tarjeta y el vídeo, el progreso sale de un «reloj» de Web Animations; con scroll real, manda el scroll | preview/index.html (`startClock`, `frame`) | No | Sí |
 
@@ -48,7 +50,7 @@
 | El chorro une el pico y la boca | Playwright | 0,00 px de error | VALIDACION.md |
 | Con scroll real, el estado sigue al scroll | Playwright | giro −38,0° al 78 % | VALIDACION.md |
 | Consola, anchos, parámetros, movimiento reducido | scripts/validar-animacion.mjs | 22/22 | VALIDACION.md |
-| C1/C3 con recursos reales (REC-001 §8) | — | No aplicable: objetos SVG procedurales | — |
+| C1/C3 con recursos reales (REC-001 §8) | Revisión de capturas por Claude Code | Recorte sin halo, luz coherente; falta la rúbrica C3 puntuada por una persona | RECURSOS.md |
 | Safari y Firefox | — | No probado | Pendiente de prueba manual |
 
 ## 7. Propuestas para la biblioteca (no aplicar desde el proyecto)

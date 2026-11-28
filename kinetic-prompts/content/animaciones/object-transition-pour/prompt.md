@@ -4,29 +4,30 @@ Transición de objeto de nivel avanzado. Pégalo en tu IA (Claude Code, Cursor�
 
 ## 1. Objetivo visual
 
-Al bajar por la página, un objeto (en el ejemplo, una jarra) llega en arco a su sitio, se inclina {{tilt}}° y vierte un chorro de color {{streamColor}} que cruza el cambio de sección hasta otro objeto (una taza). Mientras tanto sube la segunda sección, de color {{panelColor}}, y el titular cambia línea a línea. El objeto no sale nunca del encuadre: es el hilo que une las dos secciones.
+Al bajar por la página, un objeto fotografiado (en el ejemplo, una jarra de cerámica) llega en arco a su sitio, se inclina {{tilt}}° y vierte un chorro de color {{streamColor}} que cruza el cambio de sección hasta otro objeto (una taza). Mientras tanto sube la segunda sección, de color {{panelColor}}, y el titular cambia línea a línea. El objeto no sale nunca del encuadre: es el hilo que une las dos secciones.
 
 ## 2. Stack
 
 - JavaScript sin dependencias: un escenario `position: sticky` y una función que pinta cada estado según el progreso del scroll, en `requestAnimationFrame`.
 - Si el proyecto ya usa GSAP, una timeline con ScrollTrigger (`pin`, `scrub`) hace lo mismo; no lo instales solo para esto.
-- Los objetos pueden ser SVG o imágenes con fondo transparente.
+- Los objetos son imágenes con fondo transparente (WebP o PNG con alfa), con la misma luz y la misma cámara. Si vienen de una IA sobre un fondo liso, recórtalas y quita el color del fondo del borde para que no quede halo.
 
 ## 3. Estructura
 
 Antes de escribir código, mira el proyecto y elige dónde va la escena (normalmente entre la portada y la siguiente sección). Después:
 
 1. Una sección de {{distance}} % de la altura de la pantalla más una pantalla. Dentro, un escenario `sticky` de 100 vh con `overflow: hidden` e `isolation: isolate`.
-2. Capas del escenario, de atrás adelante: el fondo de la primera sección; el panel de la segunda sección, de color {{panelColor}}, fuera por abajo con `transform: translateY(100%)`; los dos titulares, cada línea dentro de una máscara con `overflow: hidden`; los dos objetos; y un SVG a pantalla completa con el trazo del chorro.
-3. Marca dos puntos: el pico del objeto que vierte y la boca del que recibe (dos elementos pequeños dentro de sus SVG). El chorro se calcula entre ellos.
+2. Capas del escenario, de atrás adelante: el fondo de la primera sección; el panel de la segunda sección (una foto de fondo con un velo de color {{panelColor}} al 70 % y el texto en blanco o negro según el contraste), fuera por abajo con `transform: translateY(100%)`; los dos titulares, cada línea dentro de una máscara con `overflow: hidden`; los dos objetos; y un SVG a pantalla completa con el trazo del chorro.
+3. Marca dos puntos como anclas en porcentaje de cada imagen: el pico del objeto que vierte y la superficie del líquido del que recibe (dos elementos pequeños posicionados dentro del contenedor de cada imagen). El chorro se calcula entre ellos.
+4. Decodifica las imágenes con `img.decode()` antes de arrancar la escena.
 <!-- solo: nextjs -->
-4. **Next.js:** un componente cliente (`"use client"`) con `useRef` para cada capa y un `useEffect` que arranca el bucle y lo limpia al desmontar (`cancelAnimationFrame` y quitar los listeners). Si usas GSAP, `useGSAP`.
+5. **Next.js:** un componente cliente (`"use client"`) con `useRef` para cada capa y un `useEffect` que arranca el bucle y lo limpia al desmontar (`cancelAnimationFrame` y quitar los listeners). Si usas GSAP, `useGSAP`.
 <!-- fin -->
 <!-- solo: astro -->
-4. **Astro:** un componente con el marcado y un `<script>` que arranca el bucle; con View Transitions de Astro, vuelve a arrancarlo en `astro:page-load`.
+5. **Astro:** un componente con el marcado y un `<script>` que arranca el bucle; con View Transitions de Astro, vuelve a arrancarlo en `astro:page-load`.
 <!-- fin -->
 <!-- solo: html -->
-4. **HTML:** el marcado en la página y un script con `defer` que arranca el bucle.
+5. **HTML:** el marcado en la página y un script con `defer` que arranca el bucle.
 <!-- fin -->
 
 ## 4. Comportamiento paso a paso
@@ -62,7 +63,7 @@ El progreso p va de 0 a 1 a lo largo del recorrido de scroll. Cada tramo usa un 
 
 ## 8. Rendimiento
 
-- Mueve los objetos, el panel y las líneas solo con `transform`. El chorro es un trazo SVG que se redibuja en cada fotograma: mantenlo en un solo `path`.
+- Mueve los objetos, el panel y las líneas solo con `transform`. Nada de `mix-blend-mode` ni filtros en capas que se mueven. Exporta las imágenes en WebP o AVIF al tamaño en el que se muestran (×2 para pantallas retina, como máximo). El chorro es un trazo SVG que se redibuja en cada fotograma: mantenlo en un solo `path`.
 - Un solo bucle `requestAnimationFrame` y nada de cálculos de layout fuera de él. Lee las posiciones del pico y la boca una vez por fotograma.
 
 ## 9. Criterios de validación

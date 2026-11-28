@@ -1,6 +1,6 @@
 # Validación de Objeto que une dos secciones (object-transition-pour)
 
-Fecha: 2026-11-26 · Herramienta: scripts/validar-animacion.mjs (Playwright + Chromium) · Estado: **VALIDADO**
+Fecha: 2026-11-28 · Herramienta: scripts/validar-animacion.mjs (Playwright + Chromium) · Estado: **VALIDADO**
 
 | Comprobación | Resultado | Detalle |
 |---|---|---|
@@ -22,11 +22,11 @@ Fecha: 2026-11-26 · Herramienta: scripts/validar-animacion.mjs (Playwright + Ch
 | Con movimiento reducido, «Reproducir» usa un fundido | ✓ | offset, easing, composite, opacity, computedOffset |
 | El prompt tiene las 9 secciones de la plantilla en orden | ✓ |  |
 | Cada {{variable}} existe en params y cada parámetro sale en el prompt | ✓ |  |
-| Vídeo WebM de 4–8 s | ✓ | 5.53 s |
-| Vídeo WebM < 600 KB | ✓ | 146 KB |
-| Vídeo MP4 (Safari) < 600 KB | ✓ | 127 KB |
-| Póster WebP < 80 KB | ✓ | 13 KB |
+| Vídeo WebM de 4–8 s | ✓ | 5.57 s |
+| Vídeo WebM < 600 KB | ✓ | 179 KB |
+| Vídeo MP4 (Safari) < 600 KB | ✓ | 296 KB |
+| Póster WebP < 80 KB | ✓ | 37 KB |
 
-Pesos: loop.webm 146 KB · loop.mp4 127 KB · poster.webp 13 KB
+Pesos: loop.webm 179 KB · loop.mp4 296 KB · poster.webp 37 KB
 
 Comprobado ejecutando la demo en Chromium. No comprobado aquí: Safari y Firefox (pendiente de prueba manual).

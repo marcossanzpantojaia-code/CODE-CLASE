@@ -807,7 +807,7 @@ Criterios de cierre:
   | SEQ-001 y SEQ-003 | Objeto continuo con secuencia de fotogramas |
   | MOT-002 | Movimiento de producto cinematográfico |
 
-  Hecho: «Objeto que une dos secciones» (REC-001 + CONT-001, avanzado, VALIDADO). **Mejora pedida:** sustituir los SVG por imágenes reales generadas con IA por el usuario (encargo en `docs/ENCARGO_IMAGENES_REC001.md`). Siguen MORPH-001 (morph de formas, básico o intermedio), REC-003 (producto fijo, entorno cambiante) y REC-002 (partículas, avanzado).
+  Hecho: «Objeto que une dos secciones» (REC-001 + CONT-001, avanzado, VALIDADO). Ya con imágenes reales generadas con IA por el usuario (encargo en `docs/ENCARGO_IMAGENES_REC001.md`; recursos en `preview/recursos/`). Siguen MORPH-001 (morph de formas, básico o intermedio), REC-003 (producto fijo, entorno cambiante) y REC-002 (partículas, avanzado).
 - **Todo efecto se puede cambiar de color.** Cada elemento del catálogo tiene al menos una opción de tipo `color` o `palette`; lo comprueba `lib/content.test.ts`. Hecho en los cuatro efectos actuales: el fundido nativo funde a través de un color y la tarjeta que se convierte en página elige el color de su detalle.
 
 **Notas aprobadas (2026-11-26)** · candidatas de `docs/BIBLIOTECA_FASE0.md`, para proponer la lista del paso 2:
