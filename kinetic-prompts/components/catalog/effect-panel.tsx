@@ -6,59 +6,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
-import { ColorPicker } from "@/components/ui/color-picker";
 import { CopyButton } from "@/components/ui/copy-button";
 import { IconButton } from "@/components/ui/icon-button";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 import type { Param } from "@/lib/content";
 import { type ParamValue, renderPrompt, selectStack, STACKS, type StackId } from "@/lib/prompt-render";
 
+import { ParamControl } from "./param-control";
 import type { GalleryItem } from "./types";
 
 function defaults(params: Param[]): Record<string, ParamValue> {
   return Object.fromEntries(params.map((p) => [p.id, p.default]));
-}
-
-function ParamControl({
-  param,
-  value,
-  onChange,
-}: {
-  param: Param;
-  value: ParamValue;
-  onChange: (value: ParamValue) => void;
-}) {
-  switch (param.type) {
-    case "range":
-      return (
-        <Slider
-          label={param.label}
-          min={param.min}
-          max={param.max}
-          step={param.step}
-          unit={param.unit}
-          value={value as number}
-          onValueChange={onChange}
-        />
-      );
-    case "color":
-      return <ColorPicker label={param.label} value={value as string} onValueChange={onChange} />;
-    case "select":
-      return (
-        <Select
-          label={param.label}
-          options={param.options.map((o) => ({ value: o, label: o }))}
-          value={value as string}
-          onValueChange={onChange}
-        />
-      );
-    case "text":
-      return <Input label={param.label} value={value as string} onChange={(e) => onChange(e.target.value)} />;
-    default:
-      return null;
-  }
 }
 
 /**

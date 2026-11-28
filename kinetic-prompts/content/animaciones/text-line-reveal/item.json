@@ -52,6 +52,7 @@
       "unit": "s"
     }
   ],
+  "brandParam": "color",
   "tips": [
     "Divide en líneas después de cargar las fuentes y vuelve a dividir al cambiar el ancho: si no, las líneas no coinciden con las reales.",
     "No combines la división con text-wrap: balance, que cambia los cortes de línea después.",

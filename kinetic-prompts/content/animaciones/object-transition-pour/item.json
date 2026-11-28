@@ -53,6 +53,7 @@
       "unit": "% de la pantalla"
     }
   ],
+  "brandParam": "panelColor",
   "tips": [
     "El objeto no se va nunca del encuadre: lo que cambia es el fondo, el texto y la composición a su alrededor. Eso es lo que da continuidad.",
     "Calcula el chorro en el mismo fotograma y después de mover el objeto; si no, se despega del pico.",

@@ -1,17 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Palette } from "lucide-react";
+import { useState } from "react";
 
+import { ParamControl } from "@/components/catalog/param-control";
 import type { GalleryItem } from "@/components/catalog/types";
 import { ApartadoIcon } from "@/components/site/apartado-icon";
+import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
+import { ColorPicker } from "@/components/ui/color-picker";
 import { CopyButton } from "@/components/ui/copy-button";
 import { Input } from "@/components/ui/input";
 import { APARTADOS } from "@/lib/apartados";
 import { BUILD_ORDER, composeWebPrompt, paramDefaults } from "@/lib/compose";
-import { STACKS, type StackId } from "@/lib/prompt-render";
+import { type ParamValue, STACKS, type StackId } from "@/lib/prompt-render";
 
 import { PieceOption } from "./piece-option";
+import { PiecePreview } from "./piece-preview";
 
 const NONE = "ninguna";
 
@@ -25,32 +30,45 @@ export function WebBuilder({ items }: { items: GalleryItem[] }) {
   const [stack, setStack] = useState<StackId>("auto");
   const [name, setName] = useState("");
   const [sector, setSector] = useState("");
-
-  const chosen = useMemo(
-    () =>
-      steps
-        .map((s) => items.find((i) => i.slug === choice[s.id]))
-        .filter((i): i is GalleryItem => Boolean(i))
-        .sort((a, b) => BUILD_ORDER.indexOf(a.category) - BUILD_ORDER.indexOf(b.category)),
-    [choice, items, steps],
+  // Opciones de cada pieza (empiezan con sus valores por defecto) y color de marca.
+  const [values, setValues] = useState<Record<string, Record<string, ParamValue>>>(() =>
+    Object.fromEntries(items.map((i) => [i.slug, paramDefaults(i.params)])),
   );
+  const [brand, setBrand] = useState("#ff6b3d"); // kp-permitir-hex: valor inicial del selector, contenido del usuario
+  const [brandApplied, setBrandApplied] = useState<string[]>([]);
 
-  const prompt = useMemo(
-    () =>
-      composeWebPrompt({
-        stack,
-        brief: { name, sector },
-        pieces: chosen.map((i) => ({
-          slug: i.slug,
-          title: i.title,
-          category: i.category,
-          categoryLabel: i.categoryLabel,
-          promptTemplate: i.promptTemplate,
-          values: paramDefaults(i.params),
-        })),
-      }),
-    [chosen, name, sector, stack],
-  );
+  const setValue = (slug: string, id: string, value: ParamValue) =>
+    setValues((v) => ({ ...v, [slug]: { ...v[slug], [id]: value } }));
+
+  // El compilador de React memoiza solo: no hace falta useMemo.
+  const chosen = steps
+    .map((s) => items.find((i) => i.slug === choice[s.id]))
+    .filter((i): i is GalleryItem => Boolean(i))
+    .sort((a, b) => BUILD_ORDER.indexOf(a.category) - BUILD_ORDER.indexOf(b.category));
+
+  /** Pone el color de marca en el color principal de cada pieza elegida que lo tenga. */
+  function applyBrand() {
+    const targets = chosen.filter((item) => item.brandParam);
+    setValues((v) => {
+      const next = { ...v };
+      for (const item of targets) next[item.slug] = { ...next[item.slug], [item.brandParam!]: brand };
+      return next;
+    });
+    setBrandApplied(targets.map((t) => t.title));
+  }
+
+  const prompt = composeWebPrompt({
+    stack,
+    brief: { name, sector },
+    pieces: chosen.map((i) => ({
+      slug: i.slug,
+      title: i.title,
+      category: i.category,
+      categoryLabel: i.categoryLabel,
+      promptTemplate: i.promptTemplate,
+      values: values[i.slug] ?? paramDefaults(i.params),
+    })),
+  });
 
   const copy = (
     <CopyButton
@@ -107,8 +125,58 @@ export function WebBuilder({ items }: { items: GalleryItem[] }) {
                 meta="Sin pieza de este apartado"
               />
             </div>
+            {(() => {
+              const item = items.find((i) => i.slug === choice[step.id]);
+              if (!item || item.params.length === 0) return null;
+              return (
+                <details className="rounded-card border border-border bg-surface" data-opciones={step.id}>
+                  <summary className="cursor-pointer rounded-card px-4 py-3 text-14 font-medium outline-none kp-focus:outline-(length:--focus-w) kp-focus:outline-offset-2 kp-focus:outline-accent kp-focus:outline-solid">
+                    Opciones de «{item.title}»
+                  </summary>
+                  <div className="grid grid-cols-1 gap-4 px-4 pb-4 md:grid-cols-2">
+                    {item.params.map((param) => (
+                      <ParamControl
+                        key={param.id}
+                        param={param}
+                        value={values[item.slug]?.[param.id] ?? param.default}
+                        onChange={(value) => setValue(item.slug, param.id, value)}
+                      />
+                    ))}
+                  </div>
+                </details>
+              );
+            })()}
           </section>
         ))}
+        {chosen.length ? (
+          <section
+            aria-labelledby="en-marcha"
+            className="flex flex-col gap-4 border-t border-border pt-6"
+            data-en-marcha
+          >
+            <div className="flex flex-col gap-1">
+              <h2 id="en-marcha" className="text-28">
+                Tus piezas en marcha
+              </h2>
+              <p className="text-14 text-text-muted">
+                Cada pieza en su demo, con tus opciones y tu color de marca. Así ves si casan antes de copiar.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {chosen.map((item) =>
+                item.demo ? (
+                  <PiecePreview
+                    key={item.slug}
+                    title={item.title}
+                    label={item.categoryLabel}
+                    demo={item.demo}
+                    values={values[item.slug] ?? {}}
+                  />
+                ) : null,
+              )}
+            </div>
+          </section>
+        ) : null}
       </div>
 
       <aside
@@ -146,6 +214,17 @@ export function WebBuilder({ items }: { items: GalleryItem[] }) {
             onChange={(e) => setSector(e.target.value)}
             placeholder="Cafetería de especialidad"
           />
+        </div>
+        <div className="flex flex-col gap-3">
+          <ColorPicker label="Color de tu marca" value={brand} onValueChange={setBrand} />
+          <Button variant="secundario" icon={Palette} onClick={applyBrand} disabled={chosen.length === 0}>
+            Aplicar a todas las piezas
+          </Button>
+          <p className="text-12 text-text-muted" aria-live="polite" data-marca>
+            {brandApplied.length
+              ? `Aplicado a ${brandApplied.join(", ")}.`
+              : "Pone tu color en el color principal de cada pieza. Después puedes retocarlo en sus opciones."}
+          </p>
         </div>
         <div className="flex flex-col gap-2">
           <h3 className="font-sans text-16 font-semibold tracking-normal">Tu proyecto</h3>

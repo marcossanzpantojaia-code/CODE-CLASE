@@ -53,6 +53,7 @@
       "default": "alba"
     }
   ],
+  "brandParam": "color",
   "tips": [
     "Haz la curva con coordenadas relativas o con un lóbulo que se escala: así no hay que medir la ventana y no se rompe al cambiar de tamaño.",
     "Solapa la curva 1 px con el panel: si no, entre los dos asoma una línea de la página de debajo.",

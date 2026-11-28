@@ -58,6 +58,7 @@
       "default": "#f3eee6"
     }
   ],
+  "brandParam": "background",
   "tips": [
     "Guarda la posición de la tarjeta antes de tocar el DOM: sin ese «primer fotograma» no hay de dónde viajar.",
     "Cada pareja que viaja (miniatura y portada) necesita un nombre único en la página; dos iguales cancelan la transición.",

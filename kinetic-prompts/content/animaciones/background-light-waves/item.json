@@ -57,6 +57,7 @@
       "unit": "(0 a 1)"
     }
   ],
+  "brandParam": "color1",
   "tips": [
     "Pinta el búfer al 60 % del tamaño en pantalla y con un tope de 400 000 píxeles: un patrón suave no pierde calidad y en 4K no pintas 3 millones de píxeles por fotograma.",
     "Pide highp solo si existe (#ifdef GL_FRAGMENT_PRECISION_HIGH); si no, mediump. Sin la comprobación, hay móviles que se quedan en negro.",

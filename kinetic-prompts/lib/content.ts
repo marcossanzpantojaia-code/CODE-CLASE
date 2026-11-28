@@ -56,6 +56,8 @@ export type AnimationItem = {
   media: { video?: string; videoMp4?: string; poster?: string };
   createdAt: string;
   demo?: boolean;
+  /** Parámetro de color que toma el color de marca en el constructor (opcional). */
+  brandParam?: string;
   /** Consejos sacados de las fichas de la biblioteca, en lenguaje llano (se ven en el panel). */
   tips: string[];
   /** Plantilla de prompt.md, con {{variables}}. */
@@ -144,6 +146,8 @@ export function parseAnimation(raw: unknown, promptTemplate: string, file: strin
   if (!Array.isArray(d.params)) fail(file, "params debe ser una lista");
   const params = d.params.map((p) => parseParam(p, file));
   if (!d.media || typeof d.media !== "object") fail(file, "falta media");
+  if (d.brandParam !== undefined && !params.some((p) => p.id === d.brandParam && p.type === "color"))
+    fail(file, `brandParam (${String(d.brandParam)}) debe ser un parámetro de color`);
   if (d.tips !== undefined && (!Array.isArray(d.tips) || !d.tips.every(isString)))
     fail(file, "tips debe ser una lista de frases");
   if (!isString(d.createdAt) || !/^\d{4}-\d{2}-\d{2}$/.test(d.createdAt))

@@ -62,6 +62,7 @@
       "unit": "% de la pantalla"
     }
   ],
+  "brandParam": "color1",
   "tips": [
     "El difuminado va en el degradado (radial-gradient hasta transparent): nada de filter: blur() en capas que se mueven, que obliga a repintar en cada fotograma.",
     "Mueve las manchas solo con transform; así el navegador lo resuelve en el compositor, sin recalcular la página.",

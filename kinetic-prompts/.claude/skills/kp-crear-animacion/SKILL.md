@@ -73,6 +73,7 @@ Sigue el modelo de datos de animación de `docs/PLAN.md`:
 - `status: "IMPLEMENTADO"`. Solo `kp-validar` lo pasa a VALIDADO o NO VERIFICADO (este
   último, con `statusReason`; ver «Estado y `statusReason`» en `docs/PLAN.md`).
 - `knowledgeRefs` con la ruta de la ficha, `usedIn` con los slugs de webs que la usan.
+- `brandParam`: el id del parámetro de color que toma el color de marca en el constructor (el color principal de la pieza).
 - **Siempre al menos un parámetro de color** (`color` o `palette`): todo efecto se puede cambiar de
   color (regla del 2026-11-26; lo comprueba `lib/content.test.ts`).
 - `params`: cada uno con `id`, `label`, `type` (`range`, `color`, `select`, `text`,

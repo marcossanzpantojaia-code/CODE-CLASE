@@ -67,6 +67,7 @@
       "default": "horizontales"
     }
   ],
+  "brandParam": "color",
   "tips": [
     "Prueba a 1366 × 768 y en un móvil: si la altura de una tira no es un número entero de píxeles, aparecen líneas de 1 px entre tiras. Un solape de 1 px por lado las elimina.",
     "En móvil usa la mitad de tiras: con muchas, el escalonado desde el centro no se lee.",

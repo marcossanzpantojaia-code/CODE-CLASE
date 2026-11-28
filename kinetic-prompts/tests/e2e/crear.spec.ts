@@ -47,6 +47,38 @@ test.describe("/crear", () => {
     }
   });
 
+  test("las opciones de una pieza y el color de marca llegan al prompt y a las demos", async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto("/crear");
+    const prompt = page.locator("[data-prompt-web]");
+
+    // Opciones del fondo: cambiar su color de fondo por su campo hexadecimal.
+    const opciones = page.locator('[data-opciones="fondos"]');
+    await opciones.locator("summary").click();
+    const hex = opciones.getByLabel("Color de fondo", { exact: true });
+    await hex.fill("#123456");
+    await hex.blur();
+    await expect(prompt).toContainText("#123456");
+
+    // Color de marca: a todas las piezas que lo tengan.
+    const marca = page.getByRole("complementary").getByLabel("Color de tu marca", { exact: true });
+    await marca.fill("#a1b2c3");
+    await marca.blur();
+    await page.getByRole("button", { name: "Aplicar a todas las piezas" }).click();
+    await expect(page.locator("[data-marca]")).toContainText("Aplicado a");
+    const text = (await prompt.textContent()) ?? "";
+    expect(text.split("#a1b2c3").length - 1).toBeGreaterThanOrEqual(3);
+
+    // Las demos de las piezas elegidas, en marcha.
+    const demos = page.locator("[data-en-marcha] iframe");
+    await expect(demos).toHaveCount(
+      await page.locator("[data-resumen] li").filter({ hasNotText: "Ninguna" }).count(),
+    );
+  });
+
   test("las piezas se eligen con el teclado (grupo de radios)", async ({ page, isMobile }) => {
     test.skip(isMobile, "El teclado se prueba en escritorio.");
     await page.goto("/crear");

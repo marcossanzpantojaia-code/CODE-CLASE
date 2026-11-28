@@ -56,6 +56,7 @@
       "default": "letras"
     }
   ],
+  "brandParam": "accent",
   "tips": [
     "Usa una fuente monoespaciada: con una proporcional, el ancho salta en cada cambio y empuja lo que hay al lado.",
     "El texto real va en aria-label y las letras que cambian, en un hijo con aria-hidden: si no, un lector de pantalla leería basura.",

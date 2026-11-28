@@ -61,6 +61,7 @@
       "unit": "px"
     }
   ],
+  "brandParam": "color",
   "tips": [
     "Escala el lienzo con devicePixelRatio (ancho × dpr y ctx.scale): si no, en pantallas retina se ve borroso.",
     "Agrupa el dibujo: todos los puntos en un solo path y las líneas por niveles de opacidad, un stroke() por nivel.",

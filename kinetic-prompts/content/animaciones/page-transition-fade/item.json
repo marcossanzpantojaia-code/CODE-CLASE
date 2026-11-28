@@ -56,6 +56,7 @@
       "default": "#f3eee6"
     }
   ],
+  "brandParam": "tint",
   "tips": [
     "Si el navegador no tiene View Transitions, la página cambia igual: es mejora progresiva y no hace falta un plan B.",
     "En Next.js, envuelve cada página y no el layout: el layout no se desmonta al navegar y no se animaría.",
