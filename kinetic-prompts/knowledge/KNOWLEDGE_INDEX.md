@@ -10,7 +10,7 @@ Versión 0.32.0 · Lotes 0–32 · 2026-11-04 · **Presupuesto 0 €**: solo rec
 
 > **Empieza a construir por [ARCH-001](architecture/ARCH-001-receta-pagina-completa.md)**: orden de decisiones para una página completa y qué ficha consultar en cada paso.
 
-## Fichas por técnica y conocimiento (163)
+## Fichas por técnica y conocimiento (164)
 
 | ID | Técnica | Archivo | Perfil | Estado | Evidencia |
 |---|---|---|---|---|---|
@@ -177,6 +177,7 @@ Versión 0.32.0 · Lotes 0–32 · 2026-11-04 · **Presupuesto 0 €**: solo rec
 | MBLUR-001 | Motion blur en el navegador para recursos 2D: acumulación analítica en canvas (180° centrado, árbol 4×4 contra el sesgo de 8 bits, estela limitada); qué aproximación sirve para cada recurso | [animations/MBLUR-001](animations/MBLUR-001-motion-blur-por-acumulacion-analitica-en-canvas.md) | cinematográfico | IMPLEMENTADO | Medido frente a una referencia de 16 subfotogramas; scroll lento, rápido e inverso (lote 31) |
 | COMP-001 | Composición e iluminación de producto para web (gradientes, negros, sombra de contacto, coherencia) | [ux/COMP-001](ux/COMP-001-composicion-e-iluminacion-de-producto-para-web.md) | cinematográfico | INVESTIGADO | Karl Taylor (Fstoppers), J. Lenton (PetaPixel) |
 | FONDO-001 | Fondo de manchas de color en movimiento solo con CSS | [fondos/FONDO-001](fondos/FONDO-001-manchas-de-color-en-movimiento-css.md) | ambos | IMPLEMENTADO | MDN + web.dev + demo propia validada (Kinetic Prompts, 2026-11-28) |
+| FONDO-002 | Fondo de constelación de partículas en canvas 2D (líneas entre vecinos, cursor) | [fondos/FONDO-002](fondos/FONDO-002-constelacion-de-particulas-canvas.md) | ambos | IMPLEMENTADO | MDN (canvas) + demo propia validada (Kinetic Prompts, 2026-11-28) |
 
 ## Fichas por tutorial
 
@@ -276,6 +277,7 @@ Versión 0.32.0 · Lotes 0–32 · 2026-11-04 · **Presupuesto 0 €**: solo rec
 | La web tarda en responder al tocar | PERF-002 |
 | Modelo 3D muy pesado | GLTF-001 |
 | Fondo de color vivo y ligero para un hero, sin JS | FONDO-001 |
+| Fondo de red o constelación de partículas, que reacciona al cursor | FONDO-002 |
 | Mar, tela o terreno animado en shader | TSL-003, GL-004 |
 | Tarjetas que aparecen en grupo al hacer scroll | ST-005 |
 | Cumplir WCAG 2.2 (foco, arrastre, formularios) | A11Y-006 |

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Constelación de partículas · demo</title>
+    <style>
+      /* Demo de Kinetic Prompts: identidad propia, no usa los tokens de la app. */
+      :root { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #0e1417; color: #f2f4f1; }
+      canvas { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; display: block; }
+      .hero { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: clamp(10px, 2vw, 22px); padding: clamp(16px, 6vw, 96px); }
+      .eyebrow { margin: 0; font-size: clamp(11px, 1.4vw, 15px); letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.8; }
+      h1 { margin: 0; font-size: clamp(34px, 8.5vw, 128px); line-height: 0.92; letter-spacing: -0.05em; font-weight: 800; max-width: 11ch; }
+      .hero p { margin: 0; max-width: 42ch; font-size: clamp(13px, 1.7vw, 19px); line-height: 1.5; opacity: 0.85; }
+      #reproducir { position: fixed; right: 12px; bottom: 12px; z-index: 20; font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 0; background: #f2f4f1; color: #0e1417; cursor: pointer; }
+      #reproducir[hidden] { display: none; }
+      #reloj { position: absolute; width: 1px; height: 1px; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <canvas aria-hidden="true"></canvas>
+    <main class="hero">
+      <p class="eyebrow">Nodo · datos y producto</p>
+      <h1>Todo está conectado</h1>
+      <p>Unimos tus datos, tus equipos y tus clientes en un mismo producto.</p>
+    </main>
+    <button id="reproducir" type="button" hidden>Reproducir</button>
+    <i id="reloj" aria-hidden="true"></i>
+    <script>
+      (() => {
+        "use strict";
+        const PERIOD = 7000; // ms: el bucle cierra exacto en un periodo
+        const MAX = 150;
+        const params = { color: "#7fe0c2", base: "#0e1417", count: 70, linkDistance: 120, dotSize: 2 };
+        const LIMITS = { count: [20, 150], linkDistance: [60, 200], dotSize: [1, 4] };
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext("2d", { alpha: false }); // fondo liso pintado en el lienzo (MDN)
+        const reloj = document.getElementById("reloj");
+        const playButton = document.getElementById("reproducir");
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+        let clock = null;
+        let pointer = null;
+        let visible = true;
+        let W = 0, H = 0;
+
+        /* Semilla fija: las mismas partículas en cada carga. */
+        function rng(seed) {
+          return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+        }
+        const rand = rng(20261128);
+        const particles = Array.from({ length: MAX }, () => ({
+          bx: rand(), by: rand(), ax: 0.02 + rand() * 0.06, ay: 0.02 + rand() * 0.06,
+          kx: 1 + Math.floor(rand() * 2), ky: 1 + Math.floor(rand() * 2), px: rand() * Math.PI * 2, py: rand() * Math.PI * 2,
+        }));
+
+        /* Lienzo nítido en pantallas de alta densidad (MDN devicePixelRatio). */
+        function resize() {
+          const dpr = Math.min(2, window.devicePixelRatio || 1);
+          W = canvas.clientWidth; H = canvas.clientHeight;
+          canvas.width = Math.floor(W * dpr); canvas.height = Math.floor(H * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function positions(t) {
+          const phase = (2 * Math.PI * t) / PERIOD;
+          const n = Math.round(params.count);
+          const pts = [];
+          for (let i = 0; i < n; i++) {
+            const p = particles[i];
+            let x = (p.bx + p.ax * Math.sin(p.kx * phase + p.px)) * W;
+            let y = (p.by + p.ay * Math.sin(p.ky * phase + p.py)) * H;
+            // Repulsión suave del cursor (radio 140 px, hasta 28 px).
+            if (pointer && !reduced.matches) {
+              const dx = x - pointer.x, dy = y - pointer.y, d = Math.hypot(dx, dy);
+              if (d > 0 && d < 140) { const f = (1 - d / 140) * 28; x += (dx / d) * f; y += (dy / d) * f; }
+            }
+            pts.push(x, y);
+          }
+          return pts;
+        }
+
+        function draw(t) {
+          ctx.fillStyle = params.base;
+          ctx.fillRect(0, 0, W, H);
+          const pts = positions(t);
+          const L = params.linkDistance;
+          // Líneas agrupadas en 4 niveles de opacidad: un stroke() por nivel (MDN: «Batch canvas calls»).
+          const buckets = [[], [], [], []];
+          for (let i = 0; i < pts.length; i += 2) {
+            for (let j = i + 2; j < pts.length; j += 2) {
+              const d = Math.hypot(pts[i] - pts[j], pts[i + 1] - pts[j + 1]);
+              if (d < L) buckets[Math.min(3, Math.floor((d / L) * 4))].push(i, j);
+            }
+          }
+          ctx.strokeStyle = params.color;
+          ctx.lineWidth = 1;
+          buckets.forEach((pairs, level) => {
+            if (!pairs.length) return;
+            ctx.globalAlpha = 0.55 * (1 - level / 4);
+            ctx.beginPath();
+            for (let k = 0; k < pairs.length; k += 2) { const a = pairs[k], b = pairs[k + 1]; ctx.moveTo(pts[a], pts[a + 1]); ctx.lineTo(pts[b], pts[b + 1]); }
+            ctx.stroke();
+          });
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = params.color;
+          ctx.beginPath();
+          for (let i = 0; i < pts.length; i += 2) { ctx.moveTo(pts[i] + params.dotSize, pts[i + 1]); ctx.arc(pts[i], pts[i + 1], params.dotSize, 0, Math.PI * 2); }
+          ctx.fill();
+        }
+
+        /* Reloj de Web Animations: el tiempo t sale de su opacidad, así se puede pausar, rebobinar y grabar. */
+        function startClock() {
+          if (clock) clock.cancel();
+          clock = reloj.animate([{ opacity: 0 }, { opacity: 1 }], { duration: PERIOD, iterations: Infinity, easing: "linear" });
+        }
+
+        function frame() {
+          if (visible) draw(clock ? Number(getComputedStyle(reloj).opacity) * PERIOD : 0);
+          requestAnimationFrame(frame);
+        }
+
+        addEventListener("pointermove", (e) => { if (e.pointerType === "mouse") pointer = { x: e.clientX, y: e.clientY }; });
+        addEventListener("pointerleave", () => (pointer = null));
+        document.addEventListener("mouseleave", () => (pointer = null));
+        addEventListener("resize", resize);
+        new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(canvas);
+
+        addEventListener("message", (event) => {
+          const data = event.data;
+          if (!data || typeof data !== "object" || typeof data.type !== "string") return;
+          if (data.type === "kp:params" && data.params && typeof data.params === "object") {
+            for (const key of ["color", "base"]) { const v = data.params[key]; if (typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v)) params[key] = v; }
+            for (const key of ["count", "linkDistance", "dotSize"]) { const v = data.params[key]; if (typeof v === "number" && Number.isFinite(v)) params[key] = Math.min(LIMITS[key][1], Math.max(LIMITS[key][0], v)); }
+            document.body.style.background = params.base;
+          }
+          if (data.type === "kp:replay" && clock) clock.currentTime = 0;
+        });
+
+        /* Movimiento reducido: un fotograma quieto; «Reproducir» lo pone en marcha si la persona quiere. */
+        playButton.addEventListener("click", () => {
+          if (clock) { clock.cancel(); clock = null; playButton.textContent = "Reproducir"; }
+          else { startClock(); playButton.textContent = "Pausar"; }
+        });
+        function sync() {
+          playButton.hidden = !reduced.matches;
+          if (reduced.matches) { if (clock) clock.cancel(); clock = null; } else if (!clock) startClock();
+        }
+        reduced.addEventListener("change", sync);
+        resize();
+        sync();
+        requestAnimationFrame(frame);
+      })();
+    </script>
+  </body>
+</html>

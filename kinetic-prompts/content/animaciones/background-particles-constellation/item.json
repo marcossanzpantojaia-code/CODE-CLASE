@@ -1,0 +1,78 @@
+{
+  "section": "animaciones",
+  "slug": "background-particles-constellation",
+  "title": "Constelación de partículas",
+  "summary": "Puntos que derivan despacio y se unen con líneas finas cuando están cerca; se apartan al pasar el cursor. Canvas, sin librerías.",
+  "category": "fondos",
+  "tech": [
+    "Canvas 2D",
+    "JavaScript"
+  ],
+  "difficulty": 2,
+  "performance": "medio",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/fondos/FONDO-002-constelacion-de-particulas-canvas.md",
+    "knowledge/fondos/FONDO-001-manchas-de-color-en-movimiento-css.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "color",
+      "label": "Color de puntos y líneas",
+      "type": "color",
+      "default": "#7fe0c2"
+    },
+    {
+      "id": "base",
+      "label": "Color de fondo",
+      "type": "color",
+      "default": "#0e1417"
+    },
+    {
+      "id": "count",
+      "label": "Número de partículas",
+      "type": "range",
+      "min": 20,
+      "max": 150,
+      "step": 10,
+      "default": 70,
+      "unit": "puntos"
+    },
+    {
+      "id": "linkDistance",
+      "label": "Distancia de conexión",
+      "type": "range",
+      "min": 60,
+      "max": 200,
+      "step": 10,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "id": "dotSize",
+      "label": "Tamaño de los puntos",
+      "type": "range",
+      "min": 1,
+      "max": 4,
+      "step": 0.5,
+      "default": 2,
+      "unit": "px"
+    }
+  ],
+  "tips": [
+    "Escala el lienzo con devicePixelRatio (ancho × dpr y ctx.scale): si no, en pantallas retina se ve borroso.",
+    "Agrupa el dibujo: todos los puntos en un solo path y las líneas por niveles de opacidad, un stroke() por nivel.",
+    "Las líneas cuestan n²: con 150 puntos ya son unas 11 000 comprobaciones por fotograma. En móvil, la mitad de puntos.",
+    "Para el bucle cuando el lienzo no se ve (IntersectionObserver) y no uses shadowBlur.",
+    "Si la posición depende solo del tiempo (oscilaciones con periodo común), el bucle cierra exacto y se puede pausar o grabar.",
+    "Con movimiento reducido, un fotograma quieto y sin reacción al cursor."
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-28"
+}

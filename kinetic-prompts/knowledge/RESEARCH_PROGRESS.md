@@ -890,3 +890,5 @@ IMG-001 (imágenes responsive), CSS-004 (container queries), TYPE-001 (tipograf�
 ### Fichas nuevas añadidas desde Kinetic Prompts (permiso del usuario, 2026-11-26)
 
 - **2026-11-28 · FONDO-001** (`fondos/`, nueva categoría) — Fondo de manchas de color en movimiento solo con CSS. Fuentes: MDN radial-gradient, MDN prefers-reduced-motion, web.dev «Animations guide» (leídos el 2026-11-28). Estado IMPLEMENTADO por la demo `background-color-blobs`. Índice y manifiesto actualizados (163 fichas; `library_check.py --write-manifest`).
+| 2026-11-28 | animaciones | background-particles-constellation | FONDO-002 (nueva) (+ FONDO-001, A11Y-001) | VALIDADO (Chromium) | WebM 377 KB · MP4 367 KB | 23 KB | Bucle cerrado; nítido a DPR 2; rendimiento en móvil real sin medir |
+- **2026-11-28 · FONDO-002** (`fondos/`) — Constelación de partículas en canvas 2D. Fuentes: MDN «Basic animations», «Optimizing canvas», «Window: devicePixelRatio» (leídos el 2026-11-28). IMPLEMENTADO por la demo `background-particles-constellation`. Índice y manifiesto: 164 fichas.
