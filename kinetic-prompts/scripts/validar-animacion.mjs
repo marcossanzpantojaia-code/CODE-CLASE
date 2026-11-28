@@ -93,6 +93,7 @@ const base = `http://127.0.0.1:${server.address().port}/index.html`;
 
 /* ---------- utilidades ---------- */
 const results = [];
+const driverNotes = [];
 function record(name, ok, detail = "") {
   results.push({ name, ok, detail });
   console.log(`${ok ? "✓" : "✗"} ${name}${detail ? ` — ${detail}` : ""}`);
@@ -144,6 +145,24 @@ try {
     await page.goto(base, { waitUntil: "load" });
     await page.waitForTimeout(config.video.start * 1000 + config.video.seconds * 1000);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - innerWidth);
+    // La consola se revisa antes de capturar: leer los píxeles de un lienzo WebGL para la captura
+    // hace que el driver avise («GPU stall due to ReadPixels»), y eso es de la herramienta, no de la demo.
+    // Con una GPU por software (SwiftShader, la del entorno de pruebas), el proceso gráfico de Chromium
+    // emite avisos de rendimiento del driver al componer lienzos WebGL grandes. No salen del código de la
+    // demo y con una GPU real no ocurren: se apartan solo en ese caso y se anotan en el informe.
+    const renderer = await page.evaluate(() => {
+      const gl = document.createElement("canvas").getContext("webgl");
+      const info = gl?.getExtension("WEBGL_debug_renderer_info");
+      return info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : "";
+    });
+    const driverNoise = (m) =>
+      /SwiftShader/.test(renderer) && /GL Driver Message \(OpenGL, Performance/.test(m);
+    const ownProblems = problems.filter((m) => !driverNoise(m));
+    const noise = problems.length - ownProblems.length;
+    if (noise)
+      driverNotes.push(
+        `${viewport.width} px: ${noise} avisos de rendimiento del driver de SwiftShader (GPU por software del entorno de pruebas)`,
+      );
     mkdirSync(capturesDir, { recursive: true });
     await page.screenshot({ path: join(capturesDir, `reposo-${viewport.width}.png`) });
     await send(page, { type: "kp:replay" });
@@ -151,8 +170,8 @@ try {
     await page.screenshot({ path: join(capturesDir, `transicion-${viewport.width}.png`) });
     record(
       `Consola sin errores ni avisos a ${viewport.width} px`,
-      problems.length === 0,
-      problems.join(" | "),
+      ownProblems.length === 0,
+      ownProblems.join(" | "),
     );
     record(`Sin desborde horizontal a ${viewport.width} px`, overflow <= 0, `${overflow} px`);
     await context.close();
@@ -308,34 +327,37 @@ try {
     const start = (loadAt + config.video.start).toFixed(2);
     const seconds = config.video.seconds.toFixed(2);
     const common = ["-y", "-loglevel", "error", "-ss", start, "-t", seconds, "-i", raw, "-an", "-r", "30"];
-    execFileSync("ffmpeg", [
-      ...common,
-      "-c:v",
-      "libvpx-vp9",
-      "-b:v",
-      "0",
-      "-crf",
-      "38",
-      "-row-mt",
-      "1",
-      "-pix_fmt",
-      "yuv420p",
-      join(mediaDir, "loop.webm"),
-    ]);
-    execFileSync("ffmpeg", [
-      ...common,
-      "-c:v",
-      "libx264",
-      "-crf",
-      "27",
-      "-preset",
-      "slow",
-      "-pix_fmt",
-      "yuv420p",
-      "-movflags",
-      "+faststart",
-      join(mediaDir, "loop.mp4"),
-    ]);
+    // Si un vídeo pasa del límite, se baja la calidad en pasos pequeños (CRF +3) hasta entrar (kp-validar).
+    const encode = (file, args, crfs) => {
+      for (const crf of crfs) {
+        execFileSync("ffmpeg", [...common, ...args(String(crf)), join(mediaDir, file)]);
+        if (statSync(join(mediaDir, file)).size < LIMITS.video) return crf;
+      }
+      return crfs.at(-1);
+    };
+    config.crf = {
+      webm: encode(
+        "loop.webm",
+        (crf) => ["-c:v", "libvpx-vp9", "-b:v", "0", "-crf", crf, "-row-mt", "1", "-pix_fmt", "yuv420p"],
+        [38, 41, 44],
+      ),
+      mp4: encode(
+        "loop.mp4",
+        (crf) => [
+          "-c:v",
+          "libx264",
+          "-crf",
+          crf,
+          "-preset",
+          "slow",
+          "-pix_fmt",
+          "yuv420p",
+          "-movflags",
+          "+faststart",
+        ],
+        [27, 30, 33],
+      ),
+    };
 
     const posterContext = await browser.newContext({ viewport: size });
     const posterPage = await posterContext.newPage();
@@ -394,8 +416,10 @@ const report = [
   `Pesos: ${Object.entries(config.weights ?? {})
     .map(([k, v]) => `${k} ${v}`)
     .join(" · ")}`,
+  config.crf ? `Calidad de compresión: CRF ${config.crf.webm} (WebM) y ${config.crf.mp4} (MP4).` : "",
   "",
   "Comprobado ejecutando la demo en Chromium. No comprobado aquí: Safari y Firefox (pendiente de prueba manual).",
+  ...(driverNotes.length ? ["", `Avisos apartados (no salen de la demo): ${driverNotes.join("; ")}.`] : []),
   "",
 ].join("\n");
 writeFileSync(join(dir, "VALIDACION.md"), report);

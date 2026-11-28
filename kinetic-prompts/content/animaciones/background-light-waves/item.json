@@ -1,0 +1,74 @@
+{
+  "section": "animaciones",
+  "slug": "background-light-waves",
+  "title": "Olas de luz",
+  "summary": "Una superficie de color que ondula como agua o seda, con brillos que corren por las crestas. Shader de WebGL, sin librerías.",
+  "category": "fondos",
+  "tech": [
+    "WebGL",
+    "GLSL"
+  ],
+  "difficulty": 3,
+  "performance": "medio",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/fondos/FONDO-003-olas-de-luz-shader-webgl.md",
+    "knowledge/fondos/FONDO-001-manchas-de-color-en-movimiento-css.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "base",
+      "label": "Color de fondo",
+      "type": "color",
+      "default": "#071a1f"
+    },
+    {
+      "id": "color1",
+      "label": "Color del agua",
+      "type": "color",
+      "default": "#1d8f8a"
+    },
+    {
+      "id": "color2",
+      "label": "Color de los brillos",
+      "type": "color",
+      "default": "#f2c48d"
+    },
+    {
+      "id": "scale",
+      "label": "Tamaño de las olas",
+      "type": "range",
+      "min": 0.6,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.2,
+      "unit": "×"
+    },
+    {
+      "id": "intensity",
+      "label": "Intensidad de los brillos",
+      "type": "range",
+      "min": 0,
+      "max": 1,
+      "step": 0.05,
+      "default": 0.7,
+      "unit": "(0 a 1)"
+    }
+  ],
+  "tips": [
+    "Pinta el búfer al 60 % del tamaño en pantalla y con un tope de 400 000 píxeles: un patrón suave no pierde calidad y en 4K no pintas 3 millones de píxeles por fotograma.",
+    "Pide highp solo si existe (#ifdef GL_FRAGMENT_PRECISION_HIGH); si no, mediump. Sin la comprobación, hay móviles que se quedan en negro.",
+    "Atiende webglcontextlost y webglcontextrestored: sin eso, si la GPU se queda sin memoria, el fondo se congela.",
+    "Mete el tiempo en el shader como una fase multiplicada solo por enteros: el bucle cierra exacto.",
+    "En WebGL no uses alpha: false (es caro); al revés que en canvas 2D.",
+    "Ten un respaldo en CSS con los mismos colores para cuando no haya WebGL, y una zona tranquila para el texto."
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-28"
+}

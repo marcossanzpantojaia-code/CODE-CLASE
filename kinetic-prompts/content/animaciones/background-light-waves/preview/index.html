@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Olas de luz · demo</title>
+    <style>
+      /* Demo de Kinetic Prompts: identidad propia, no usa los tokens de la app. */
+      :root { --base: #071a1f; --c1: #1d8f8a; --c2: #f2c48d; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; color: #f6f1e9; }
+      /* Respaldo sin WebGL: los mismos colores, quietos. */
+      .fondo { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background: radial-gradient(ellipse at 80% 20%, var(--c2) 0%, transparent 35%), radial-gradient(ellipse at 70% 60%, var(--c1) 0%, transparent 60%), var(--base); }
+      canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+      .hero { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: clamp(10px, 2vw, 22px); padding: clamp(16px, 6vw, 96px); }
+      .eyebrow { margin: 0; font-size: clamp(11px, 1.4vw, 15px); letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; }
+      h1 { margin: 0; font-size: clamp(34px, 8.5vw, 128px); line-height: 0.92; letter-spacing: -0.05em; font-weight: 800; max-width: 10ch; }
+      .hero p { margin: 0; max-width: 40ch; font-size: clamp(13px, 1.7vw, 19px); line-height: 1.5; opacity: 0.9; }
+      #reproducir { position: fixed; right: 12px; bottom: 12px; z-index: 20; font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 0; background: #f6f1e9; color: #071a1f; cursor: pointer; }
+      #reproducir[hidden] { display: none; }
+      #reloj { position: absolute; width: 1px; height: 1px; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <div class="fondo" aria-hidden="true"><canvas></canvas></div>
+    <main class="hero">
+      <p class="eyebrow">Costa Lenta · hotel junto al mar</p>
+      <h1>El mar a tu ritmo</h1>
+      <p>Habitaciones frente al agua, mañanas sin prisa y atardeceres que no se repiten.</p>
+    </main>
+    <button id="reproducir" type="button" hidden>Reproducir</button>
+    <i id="reloj" aria-hidden="true"></i>
+    <script>
+      (() => {
+        "use strict";
+        const PERIOD = 7000;
+        const RENDER_SCALE = 0.6; // búfer al 60 % del tamaño CSS (MDN: «Consider reducing canvas.width and height»)
+        const MAX_PIXELS = 400000; // y nunca más de 400 000 píxeles (en 4K, el 60 % serían 3 millones)
+        const params = { base: "#071a1f", color1: "#1d8f8a", color2: "#f2c48d", scale: 1.2, intensity: 0.7 };
+        const LIMITS = { scale: [0.6, 2], intensity: [0, 1] };
+        const canvas = document.querySelector("canvas");
+        const reloj = document.getElementById("reloj");
+        const playButton = document.getElementById("reproducir");
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+        const root = document.documentElement;
+        let gl = null, program = null, loc = {}, clock = null, visible = true, lost = false;
+
+        const VS = "attribute vec2 a_pos; void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }";
+        const FS = `
+          #ifdef GL_FRAGMENT_PRECISION_HIGH
+          precision highp float;
+          #else
+          precision mediump float;
+          #endif
+          uniform vec2 u_res; uniform float u_phase; uniform vec3 u_base; uniform vec3 u_c1; uniform vec3 u_c2;
+          uniform float u_scale; uniform float u_intensity;
+          void main() {
+            vec2 uv = gl_FragCoord.xy / u_res;
+            vec2 q = (gl_FragCoord.xy - 0.5 * u_res) / u_res.y * (2.2 * u_scale);
+            float t = u_phase; // solo múltiplos enteros de la fase: el bucle cierra exacto
+            q.x += 0.6 * sin(q.y * 1.3 + t);
+            q.y += 0.5 * sin(q.x * 1.7 - 2.0 * t + 1.3);
+            float w = sin(q.x * 2.1 + sin(q.y * 1.4 + t) * 1.2 + t) * 0.5 + 0.5;
+            float v = sin(q.y * 2.6 - cos(q.x * 1.2 - 2.0 * t) * 1.1 - t) * 0.5 + 0.5;
+            float m = smoothstep(0.15, 0.95, w * 0.6 + v * 0.4);
+            vec3 col = mix(u_base, u_c1, m);
+            float h = pow(smoothstep(0.5, 1.0, w * v), 2.0) * u_intensity;
+            col = mix(col, u_c2, h);
+            // Zona tranquila abajo a la izquierda, donde va el texto.
+            float calm = smoothstep(0.0, 0.9, length(uv - vec2(0.15, 0.1)));
+            col = mix(u_base, col, 0.3 + 0.7 * calm);
+            gl_FragColor = vec4(col, 1.0);
+          }`;
+
+        const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
+
+        function init() {
+          gl = canvas.getContext("webgl", { antialias: false });
+          if (!gl) return false; // se queda el respaldo CSS
+          const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+          const vs = sh(gl.VERTEX_SHADER, VS), fs = sh(gl.FRAGMENT_SHADER, FS);
+          program = gl.createProgram();
+          gl.attachShader(program, vs); gl.attachShader(program, fs); gl.linkProgram(program);
+          // MDN: comprobar la compilación solo si falla el enlazado.
+          if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            console.warn(gl.getShaderInfoLog(fs) || gl.getProgramInfoLog(program));
+            gl = null; return false;
+          }
+          gl.useProgram(program);
+          const buf = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+          const aPos = gl.getAttribLocation(program, "a_pos");
+          gl.enableVertexAttribArray(aPos);
+          gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+          for (const name of ["u_res", "u_phase", "u_base", "u_c1", "u_c2", "u_scale", "u_intensity"]) loc[name] = gl.getUniformLocation(program, name);
+          return true;
+        }
+
+        function draw(phase) {
+          if (!gl || lost) return;
+          const cw = canvas.clientWidth, ch = canvas.clientHeight;
+          const scale = Math.min(RENDER_SCALE, Math.sqrt(MAX_PIXELS / Math.max(1, cw * ch)));
+          const w = Math.max(1, Math.round(cw * scale));
+          const h = Math.max(1, Math.round(ch * scale));
+          if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+          gl.viewport(0, 0, w, h);
+          gl.uniform2f(loc.u_res, w, h);
+          gl.uniform1f(loc.u_phase, phase);
+          gl.uniform3fv(loc.u_base, hex(params.base));
+          gl.uniform3fv(loc.u_c1, hex(params.color1));
+          gl.uniform3fv(loc.u_c2, hex(params.color2));
+          gl.uniform1f(loc.u_scale, params.scale);
+          gl.uniform1f(loc.u_intensity, params.intensity);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        }
+
+        /* Reloj de Web Animations: la fase sale de su opacidad; se puede pausar, rebobinar y grabar. */
+        function startClock() {
+          if (clock) clock.cancel();
+          clock = reloj.animate([{ opacity: 0 }, { opacity: 1 }], { duration: PERIOD, iterations: Infinity, easing: "linear" });
+        }
+        function frame() {
+          if (visible) draw(clock ? Number(getComputedStyle(reloj).opacity) * Math.PI * 2 : 0);
+          requestAnimationFrame(frame);
+        }
+
+        // Pérdida y recuperación del contexto (MDN: «Handle webglcontextlost events»).
+        canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); lost = true; });
+        canvas.addEventListener("webglcontextrestored", () => { lost = false; init(); });
+        new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(canvas);
+
+        function applyCss() {
+          root.style.setProperty("--base", params.base);
+          root.style.setProperty("--c1", params.color1);
+          root.style.setProperty("--c2", params.color2);
+        }
+
+        addEventListener("message", (event) => {
+          const data = event.data;
+          if (!data || typeof data !== "object" || typeof data.type !== "string") return;
+          if (data.type === "kp:params" && data.params && typeof data.params === "object") {
+            for (const key of ["base", "color1", "color2"]) { const v = data.params[key]; if (typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v)) params[key] = v; }
+            for (const key of ["scale", "intensity"]) { const v = data.params[key]; if (typeof v === "number" && Number.isFinite(v)) params[key] = Math.min(LIMITS[key][1], Math.max(LIMITS[key][0], v)); }
+            applyCss();
+          }
+          if (data.type === "kp:replay" && clock) clock.currentTime = 0;
+        });
+
+        playButton.addEventListener("click", () => {
+          if (clock) { clock.cancel(); clock = null; playButton.textContent = "Reproducir"; }
+          else { startClock(); playButton.textContent = "Pausar"; }
+        });
+        function sync() {
+          playButton.hidden = !reduced.matches;
+          if (reduced.matches) { if (clock) clock.cancel(); clock = null; } else if (!clock) startClock();
+        }
+        reduced.addEventListener("change", sync);
+        applyCss();
+        if (init()) requestAnimationFrame(frame);
+        sync();
+      })();
+    </script>
+  </body>
+</html>

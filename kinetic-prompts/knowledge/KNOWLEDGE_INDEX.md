@@ -10,7 +10,7 @@ Versión 0.32.0 · Lotes 0–32 · 2026-11-04 · **Presupuesto 0 €**: solo rec
 
 > **Empieza a construir por [ARCH-001](architecture/ARCH-001-receta-pagina-completa.md)**: orden de decisiones para una página completa y qué ficha consultar en cada paso.
 
-## Fichas por técnica y conocimiento (164)
+## Fichas por técnica y conocimiento (165)
 
 | ID | Técnica | Archivo | Perfil | Estado | Evidencia |
 |---|---|---|---|---|---|
@@ -178,6 +178,7 @@ Versión 0.32.0 · Lotes 0–32 · 2026-11-04 · **Presupuesto 0 €**: solo rec
 | COMP-001 | Composición e iluminación de producto para web (gradientes, negros, sombra de contacto, coherencia) | [ux/COMP-001](ux/COMP-001-composicion-e-iluminacion-de-producto-para-web.md) | cinematográfico | INVESTIGADO | Karl Taylor (Fstoppers), J. Lenton (PetaPixel) |
 | FONDO-001 | Fondo de manchas de color en movimiento solo con CSS | [fondos/FONDO-001](fondos/FONDO-001-manchas-de-color-en-movimiento-css.md) | ambos | IMPLEMENTADO | MDN + web.dev + demo propia validada (Kinetic Prompts, 2026-11-28) |
 | FONDO-002 | Fondo de constelación de partículas en canvas 2D (líneas entre vecinos, cursor) | [fondos/FONDO-002](fondos/FONDO-002-constelacion-de-particulas-canvas.md) | ambos | IMPLEMENTADO | MDN (canvas) + demo propia validada (Kinetic Prompts, 2026-11-28) |
+| FONDO-003 | Fondo de olas de luz con un shader WebGL puro (bucle exacto, búfer con tope, respaldo CSS) | [fondos/FONDO-003](fondos/FONDO-003-olas-de-luz-shader-webgl.md) | cinematográfico | IMPLEMENTADO | MDN (WebGL) + demo propia validada (Kinetic Prompts, 2026-11-28) |
 
 ## Fichas por tutorial
 
@@ -278,7 +279,7 @@ Versión 0.32.0 · Lotes 0–32 · 2026-11-04 · **Presupuesto 0 €**: solo rec
 | Modelo 3D muy pesado | GLTF-001 |
 | Fondo de color vivo y ligero para un hero, sin JS | FONDO-001 |
 | Fondo de red o constelación de partículas, que reacciona al cursor | FONDO-002 |
-| Mar, tela o terreno animado en shader | TSL-003, GL-004 |
+| Mar, tela o terreno animado en shader | TSL-003, GL-004, FONDO-003 (sin librerías) |
 | Tarjetas que aparecen en grupo al hacer scroll | ST-005 |
 | Cumplir WCAG 2.2 (foco, arrastre, formularios) | A11Y-006 |
 | Proteger datos en Next.js | SEC-003, NEXT-002 |
