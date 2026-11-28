@@ -792,6 +792,7 @@ Criterios de cierre:
 
 **Pendientes apuntados por el usuario (2026-11-26):**
 
+- **Letras, en marcha (2026-11-28).** «Texto que se descifra» (básico, TXT-003) y «Titular que emerge por líneas» (intermedio, TXT-002 + TXT-001). Pendiente: parejas tipográficas (necesitan ficha nueva) y una animación de texto avanzada.
 - **Fondos, en marcha (2026-11-28).** Primera pieza: «Manchas de color en movimiento» (básico, solo CSS, ficha nueva FONDO-001). Segunda: «Constelación de partículas» (intermedio, canvas 2D, ficha nueva FONDO-002). Tercera: «Olas de luz» (avanzado, shader WebGL sin librerías, ficha nueva FONDO-003). Fondos tiene ya los tres niveles.
 - **Permiso para ampliar la biblioteca (2026-11-26).** Se pueden añadir fichas nuevas a `knowledge/` (con la plantilla `_templates/FICHA_TECNICA.md`, fuentes conservadas y estado INVESTIGADO o PROPUESTO) para Fondos, Letras y transiciones que no tengan ficha. Las fichas existentes no se modifican.
 

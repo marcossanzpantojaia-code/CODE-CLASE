@@ -1,0 +1,72 @@
+{
+  "section": "animaciones",
+  "slug": "text-scramble",
+  "title": "Texto que se descifra",
+  "summary": "Las letras del titular cambian como un código hasta quedar fijas una a una, de izquierda a derecha. Se dispara al pasar el ratón o con el foco.",
+  "category": "texto",
+  "tech": [
+    "JavaScript"
+  ],
+  "difficulty": 1,
+  "performance": "ligero",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/animations/TXT-003-texto-scramble.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "color",
+      "label": "Color del texto",
+      "type": "color",
+      "default": "#e9f5d0"
+    },
+    {
+      "id": "accent",
+      "label": "Color de las letras cifradas",
+      "type": "color",
+      "default": "#b6f36a"
+    },
+    {
+      "id": "background",
+      "label": "Color de fondo",
+      "type": "color",
+      "default": "#0f1410"
+    },
+    {
+      "id": "duration",
+      "label": "Duración del descifrado",
+      "type": "range",
+      "min": 0.4,
+      "max": 2.5,
+      "step": 0.1,
+      "default": 1,
+      "unit": "s"
+    },
+    {
+      "id": "alphabet",
+      "label": "Caracteres del cifrado",
+      "type": "select",
+      "options": [
+        "letras",
+        "números y símbolos",
+        "binario"
+      ],
+      "default": "letras"
+    }
+  ],
+  "tips": [
+    "Usa una fuente monoespaciada: con una proporcional, el ancho salta en cada cambio y empuja lo que hay al lado.",
+    "El texto real va en aria-label y las letras que cambian, en un hijo con aria-hidden: si no, un lector de pantalla leería basura.",
+    "Dispáralo también con el foco si es un enlace, no solo con el ratón.",
+    "Con movimiento reducido, muestra el texto sin animar.",
+    "Para el cifrado cuando la pestaña está oculta; con requestAnimationFrame se para solo."
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-28"
+}

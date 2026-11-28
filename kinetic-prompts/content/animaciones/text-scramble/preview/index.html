@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Texto que se descifra · demo</title>
+    <style>
+      /* Demo de Kinetic Prompts: identidad propia, no usa los tokens de la app. */
+      :root { --texto: #e9f5d0; --fondo: #0f1410; --acento: #b6f36a; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; background: var(--fondo); color: var(--texto); }
+      main { height: 100%; display: flex; flex-direction: column; justify-content: center; gap: clamp(12px, 2.4vw, 28px); padding: clamp(16px, 6vw, 96px); }
+      .eyebrow { margin: 0; font-size: clamp(11px, 1.4vw, 15px); letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.7; }
+      /* Monoespaciada: el ancho no salta mientras cambian las letras (TXT-003 §7). */
+      h1 { margin: 0; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: clamp(30px, 7.5vw, 112px); line-height: 1; letter-spacing: -0.02em; font-weight: 700; }
+      h1 .cifrado { color: var(--acento); }
+      .hero p { margin: 0; max-width: 44ch; font-size: clamp(13px, 1.7vw, 19px); line-height: 1.5; opacity: 0.85; }
+      #reproducir { position: fixed; right: 12px; bottom: 12px; z-index: 20; font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 0; background: var(--texto); color: var(--fondo); cursor: pointer; }
+      #reproducir[hidden] { display: none; }
+      #reloj { position: absolute; width: 1px; height: 1px; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <main class="hero">
+      <p class="eyebrow">Nodo · seguridad digital</p>
+      <h1 id="titular" aria-label="DATOS SEGUROS" tabindex="0"><span aria-hidden="true" id="letras">DATOS SEGUROS</span></h1>
+      <p>Protegemos la información de tu empresa sin frenar a tu equipo.</p>
+    </main>
+    <button id="reproducir" type="button" hidden>Reproducir</button>
+    <i id="reloj" aria-hidden="true"></i>
+    <script>
+      (() => {
+        "use strict";
+        const ALPHABETS = { "letras": "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "números y símbolos": "0123456789#$%&*+=?<>", "binario": "01" };
+        const params = { color: "#e9f5d0", accent: "#b6f36a", background: "#0f1410", duration: 1, alphabet: "letras" };
+        const LIMITS = { duration: [0.4, 2.5] };
+        const TICK = 30; // ms por cambio de letra
+        const HOLD = 2600, GAP = 400; // bucle de 4 s con los valores por defecto
+        const h1 = document.getElementById("titular");
+        const out = document.getElementById("letras");
+        const text = h1.getAttribute("aria-label");
+        const reloj = document.getElementById("reloj");
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+        const playButton = document.getElementById("reproducir");
+        const autoplay = new URLSearchParams(location.search).get("loop") !== "0";
+        let clock = null, total = 0;
+
+        /* Letra «aleatoria» que depende solo de la posición y del tic: el mismo instante se ve igual siempre. */
+        const pick = (i, k) => { const a = ALPHABETS[params.alphabet]; let h = (i * 374761393 + k * 668265263) | 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return a[((h ^ (h >>> 16)) >>> 0) % a.length]; };
+
+        /* Progreso p de 0 a 1: la letra i queda fijada cuando p pasa de i/n; las demás cambian en cada tic. */
+        function render(ms) {
+          const d = params.duration * 1000;
+          const p = Math.min(1, Math.max(0, (ms - GAP) / d));
+          const k = Math.floor(ms / TICK);
+          const n = text.length;
+          let fixed = "", rest = "";
+          for (let i = 0; i < n; i++) {
+            const c = text[i];
+            if (c === " " || i < Math.floor(p * n)) { if (rest) { rest += c === " " ? " " : c; } else fixed += c; }
+            else rest += pick(i, k);
+          }
+          out.innerHTML = rest ? `${fixed}<span class="cifrado">${rest}</span>` : fixed;
+        }
+
+        function startClock(loop) {
+          if (clock) clock.cancel();
+          total = GAP + params.duration * 1000 + HOLD;
+          clock = reloj.animate([{ opacity: 0 }, { opacity: 1 }], { duration: total, iterations: loop ? Infinity : 1, easing: "linear", fill: "forwards" });
+        }
+        function frame() {
+          if (clock) render(Number(getComputedStyle(reloj).opacity) * total);
+          requestAnimationFrame(frame);
+        }
+
+        function apply() {
+          const r = document.documentElement.style;
+          r.setProperty("--texto", params.color); r.setProperty("--acento", params.accent); r.setProperty("--fondo", params.background);
+        }
+
+        // En una web real se dispara al pasar el ratón o con el foco.
+        const once = () => { if (!reduced.matches) startClock(false); };
+        h1.addEventListener("pointerenter", once);
+        h1.addEventListener("focus", once);
+
+        addEventListener("message", (event) => {
+          const data = event.data;
+          if (!data || typeof data !== "object" || typeof data.type !== "string") return;
+          if (data.type === "kp:params" && data.params && typeof data.params === "object") {
+            for (const key of ["color", "accent", "background"]) { const v = data.params[key]; if (typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v)) params[key] = v; }
+            const v = data.params.duration; if (typeof v === "number" && Number.isFinite(v)) params.duration = Math.min(LIMITS.duration[1], Math.max(LIMITS.duration[0], v));
+            if (typeof data.params.alphabet === "string" && data.params.alphabet in ALPHABETS) params.alphabet = data.params.alphabet;
+            apply();
+          }
+          if (data.type === "kp:replay" && !reduced.matches) startClock(autoplay);
+        });
+
+        playButton.addEventListener("click", () => startClock(false));
+        function sync() {
+          playButton.hidden = !reduced.matches;
+          if (reduced.matches) { if (clock) clock.cancel(); clock = null; out.textContent = text; }
+          else if (autoplay) startClock(true);
+        }
+        reduced.addEventListener("change", sync);
+        apply();
+        sync();
+        requestAnimationFrame(frame);
+      })();
+    </script>
+  </body>
+</html>

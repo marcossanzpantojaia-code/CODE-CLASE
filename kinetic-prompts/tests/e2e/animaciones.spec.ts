@@ -36,8 +36,8 @@ test.describe("/animaciones", () => {
     const dialog = page.getByRole("dialog", { name: blinds.title });
     await expect(dialog).toBeVisible();
     await expect(dialog.locator("iframe")).toHaveAttribute("sandbox", "allow-scripts");
+    await expect.poll(() => page.frames().some((f) => f.url().includes(`${blinds.slug}/preview`))).toBe(true);
     const demo = page.frames().find((f) => f.url().includes(`${blinds.slug}/preview`));
-    expect(demo).toBeTruthy();
     await demo!.waitForLoadState("load");
     const before = await demo!.evaluate(() => document.querySelectorAll(".tira").length);
 
@@ -91,6 +91,8 @@ test.describe("/animaciones", () => {
       await page.getByRole("button", { name: new RegExp(`^${item.title}, nivel`) }).click();
       const dialog = page.getByRole("dialog", { name: item.title });
       await expect(dialog.locator("iframe")).toBeVisible();
+      // El marco puede tardar un instante en tener su dirección: se espera a que aparezca.
+      await expect.poll(() => page.frames().some((f) => f.url().includes(`${item.slug}/preview`))).toBe(true);
       const demo = page.frames().find((f) => f.url().includes(`${item.slug}/preview`))!;
       await demo.waitForLoadState("load");
       const broken = await demo.evaluate(() =>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Titular que emerge por líneas · demo</title>
+    <style>
+      /* Demo de Kinetic Prompts: identidad propia, no usa los tokens de la app. */
+      :root { --texto: #1c1b19; --fondo: #efe9df; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; background: var(--fondo); color: var(--texto); }
+      main { height: 100%; display: flex; flex-direction: column; justify-content: center; gap: clamp(12px, 2.4vw, 28px); padding: clamp(16px, 6vw, 96px); }
+      .eyebrow { margin: 0; font-size: clamp(11px, 1.4vw, 15px); letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.7; }
+      /* Sin text-wrap: balance: cambia los cortes de línea después de dividir (TXT-001). */
+      h1 { margin: 0; font-size: clamp(34px, 8vw, 120px); line-height: 0.98; letter-spacing: -0.045em; font-weight: 800; max-width: 13ch; }
+      .linea { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+      .linea > span { display: block; will-change: transform; }
+      #reproducir { position: fixed; right: 12px; bottom: 12px; z-index: 20; font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 0; background: var(--texto); color: var(--fondo); cursor: pointer; }
+      #reproducir[hidden] { display: none; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">Estudio Marea · arquitectura</p>
+      <h1 id="titular">Construimos espacios que se recuerdan durante años</h1>
+    </main>
+    <button id="reproducir" type="button" hidden>Reproducir</button>
+    <script>
+      (() => {
+        "use strict";
+        const params = { color: "#1c1b19", background: "#efe9df", duration: 0.75, stagger: 0.075 };
+        const LIMITS = { duration: [0.4, 1.2], stagger: [0, 0.2] };
+        const EASE_IN = "cubic-bezier(0.33, 1, 0.68, 1)"; // ≈ easeOutCubic = power2.out (TXT-002 §8)
+        const EASE_OUT = "cubic-bezier(0.32, 0, 0.67, 0)";
+        const HOLD = 2000, GAP = 500, OUT = 450;
+        const h1 = document.getElementById("titular");
+        const text = h1.textContent.trim();
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+        const playButton = document.getElementById("reproducir");
+        let lines = [];
+
+        /* División por líneas reales: palabras a spans, agrupadas por su posición vertical. Se rehace al cambiar
+         * el ancho (equivale a autoSplit de SplitText). El texto completo queda en aria-label y los trozos, ocultos. */
+        function split() {
+          h1.setAttribute("aria-label", text);
+          h1.innerHTML = text.split(/\s+/).map((w) => `<span class="w" aria-hidden="true">${w}</span>`).join(" ");
+          const groups = [];
+          let top = null;
+          for (const w of h1.querySelectorAll(".w")) {
+            if (top === null || Math.abs(w.offsetTop - top) > 2) { groups.push([]); top = w.offsetTop; }
+            groups.at(-1).push(w.textContent);
+          }
+          h1.innerHTML = groups.map((g) => `<span class="linea" aria-hidden="true"><span>${g.join(" ")}</span></span>`).join("");
+          lines = [...h1.querySelectorAll(".linea > span")];
+        }
+
+        /* Un bucle periódico por línea (entrar escalonado, quedarse, salir hacia arriba): se puede congelar y grabar. */
+        function animate() {
+          document.getAnimations().forEach((a) => a.cancel());
+          if (reduced.matches && !playButton.dataset.on) return;
+          const n = lines.length, d = params.duration * 1000, s = params.stagger * 1000;
+          const total = GAP + d + s * (n - 1) + HOLD + OUT + s * (n - 1);
+          lines.forEach((el, i) => {
+            const inStart = (GAP + s * i) / total, inEnd = (GAP + s * i + d) / total;
+            const outStart = (GAP + d + s * (n - 1) + HOLD + s * i) / total, outEnd = outStart + OUT / total;
+            el.animate(
+              [
+                { transform: "translateY(105%)", offset: 0 },
+                { transform: "translateY(105%)", offset: inStart, easing: EASE_IN },
+                { transform: "translateY(0)", offset: inEnd },
+                { transform: "translateY(0)", offset: outStart, easing: EASE_OUT },
+                { transform: "translateY(-105%)", offset: Math.min(1, outEnd) },
+                { transform: "translateY(-105%)", offset: 1 },
+              ],
+              { duration: total, iterations: Infinity },
+            );
+          });
+        }
+
+        function apply() {
+          document.documentElement.style.setProperty("--texto", params.color);
+          document.documentElement.style.setProperty("--fondo", params.background);
+        }
+
+        addEventListener("message", (event) => {
+          const data = event.data;
+          if (!data || typeof data !== "object" || typeof data.type !== "string") return;
+          if (data.type === "kp:params" && data.params && typeof data.params === "object") {
+            for (const key of ["color", "background"]) { const v = data.params[key]; if (typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v)) params[key] = v; }
+            for (const key of ["duration", "stagger"]) { const v = data.params[key]; if (typeof v === "number" && Number.isFinite(v)) params[key] = Math.min(LIMITS[key][1], Math.max(LIMITS[key][0], v)); }
+            apply(); animate();
+          }
+          if (data.type === "kp:replay") animate();
+        });
+
+        let resizeTimer = 0, lastWidth = innerWidth;
+        addEventListener("resize", () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => { if (innerWidth !== lastWidth) { lastWidth = innerWidth; split(); animate(); } }, 150);
+        });
+        playButton.addEventListener("click", () => {
+          if (playButton.dataset.on) { delete playButton.dataset.on; playButton.textContent = "Reproducir"; }
+          else { playButton.dataset.on = "1"; playButton.textContent = "Pausar"; }
+          animate();
+        });
+        const sync = () => { playButton.hidden = !reduced.matches; animate(); };
+        reduced.addEventListener("change", sync);
+        apply();
+        // Dividir después de cargar las fuentes, para que los cortes de línea sean los definitivos (TXT-001 §10).
+        document.fonts.ready.then(() => { split(); sync(); });
+      })();
+    </script>
+  </body>
+</html>
