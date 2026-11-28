@@ -1,6 +1,6 @@
 # Validación de Cortina con borde curvo (page-transition-curtain)
 
-Fecha: 2026-11-26 · Herramienta: scripts/validar-animacion.mjs (Playwright + Chromium) · Estado: **VALIDADO**
+Fecha: 2026-11-28 · Herramienta: scripts/validar-animacion.mjs (Playwright + Chromium) · Estado: **VALIDADO**
 
 | Comprobación | Resultado | Detalle |
 |---|---|---|
@@ -28,5 +28,6 @@ Fecha: 2026-11-26 · Herramienta: scripts/validar-animacion.mjs (Playwright + Ch
 | Póster WebP < 80 KB | ✓ | 6 KB |
 
 Pesos: loop.webm 85 KB · loop.mp4 92 KB · poster.webp 6 KB
+Calidad de compresión: CRF 38 (WebM) y 27 (MP4).
 
 Comprobado ejecutando la demo en Chromium. No comprobado aquí: Safari y Firefox (pendiente de prueba manual).

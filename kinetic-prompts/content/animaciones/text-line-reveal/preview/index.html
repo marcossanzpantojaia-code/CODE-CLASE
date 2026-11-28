@@ -18,6 +18,13 @@
       #reproducir { position: fixed; right: 12px; bottom: 12px; z-index: 20; font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 0; background: var(--texto); color: var(--fondo); cursor: pointer; }
       #reproducir[hidden] { display: none; }
     </style>
+    <script>if (new URLSearchParams(location.search).get("modo") === "capa") document.documentElement.classList.add("capa");</script>
+    <style>
+      /* Modo capa (?modo=capa): solo el efecto, para la web montada del constructor. */
+      html.capa, html.capa body { background: transparent !important; }
+      html.capa .eyebrow, html.capa #reproducir { display: none !important; }
+      html.capa main { justify-content: flex-end; padding: 0; }
+    </style>
   </head>
   <body>
     <main>
@@ -34,6 +41,9 @@
         const EASE_OUT = "cubic-bezier(0.32, 0, 0.67, 0)";
         const HOLD = 2000, GAP = 500, OUT = 450;
         const h1 = document.getElementById("titular");
+        const capa = document.documentElement.classList.contains("capa");
+        const qs = new URLSearchParams(location.search);
+        if (qs.get("texto")) h1.textContent = qs.get("texto").slice(0, 80);
         const text = h1.textContent.trim();
         const reduced = matchMedia("(prefers-reduced-motion: reduce)");
         const playButton = document.getElementById("reproducir");
@@ -59,6 +69,11 @@
           document.getAnimations().forEach((a) => a.cancel());
           if (reduced.matches && !playButton.dataset.on) return;
           const n = lines.length, d = params.duration * 1000, s = params.stagger * 1000;
+          if (capa) {
+            // En la web montada, el titular entra una vez y se queda.
+            lines.forEach((el, i) => el.animate([{ transform: "translateY(105%)" }, { transform: "translateY(0)" }], { duration: d, delay: GAP + s * i, easing: EASE_IN, fill: "both" }));
+            return;
+          }
           const total = GAP + d + s * (n - 1) + HOLD + OUT + s * (n - 1);
           lines.forEach((el, i) => {
             const inStart = (GAP + s * i) / total, inEnd = (GAP + s * i + d) / total;

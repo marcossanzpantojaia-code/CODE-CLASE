@@ -24,11 +24,12 @@ Fecha: 2026-11-28 · Herramienta: scripts/validar-animacion.mjs (Playwright + Ch
 | Con movimiento reducido, «Reproducir» pone el fondo en marcha (solo transform y opacity) | ✓ | offset, easing, composite, opacity, computedOffset |
 | El prompt tiene las 9 secciones de la plantilla en orden | ✓ |  |
 | Cada {{variable}} existe en params y cada parámetro sale en el prompt | ✓ |  |
-| Vídeo WebM de 4–8 s | ✓ | 7.03 s |
-| Vídeo WebM < 600 KB | ✓ | 377 KB |
-| Vídeo MP4 (Safari) < 600 KB | ✓ | 367 KB |
+| Vídeo WebM de 4–8 s | ✓ | 7.00 s |
+| Vídeo WebM < 600 KB | ✓ | 379 KB |
+| Vídeo MP4 (Safari) < 600 KB | ✓ | 368 KB |
 | Póster WebP < 80 KB | ✓ | 23 KB |
 
-Pesos: loop.webm 377 KB · loop.mp4 367 KB · poster.webp 23 KB
+Pesos: loop.webm 379 KB · loop.mp4 368 KB · poster.webp 23 KB
+Calidad de compresión: CRF 38 (WebM) y 27 (MP4).
 
 Comprobado ejecutando la demo en Chromium. No comprobado aquí: Safari y Firefox (pendiente de prueba manual).

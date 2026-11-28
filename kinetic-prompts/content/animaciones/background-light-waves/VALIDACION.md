@@ -26,11 +26,11 @@ Fecha: 2026-11-28 · Herramienta: scripts/validar-animacion.mjs (Playwright + Ch
 | El prompt tiene las 9 secciones de la plantilla en orden | ✓ |  |
 | Cada {{variable}} existe en params y cada parámetro sale en el prompt | ✓ |  |
 | Vídeo WebM de 4–8 s | ✓ | 7.00 s |
-| Vídeo WebM < 600 KB | ✓ | 246 KB |
-| Vídeo MP4 (Safari) < 600 KB | ✓ | 565 KB |
+| Vídeo WebM < 600 KB | ✓ | 264 KB |
+| Vídeo MP4 (Safari) < 600 KB | ✓ | 592 KB |
 | Póster WebP < 80 KB | ✓ | 21 KB |
 
-Pesos: loop.webm 246 KB · loop.mp4 565 KB · poster.webp 21 KB
+Pesos: loop.webm 264 KB · loop.mp4 592 KB · poster.webp 21 KB
 Calidad de compresión: CRF 38 (WebM) y 27 (MP4).
 
 Comprobado ejecutando la demo en Chromium. No comprobado aquí: Safari y Firefox (pendiente de prueba manual).

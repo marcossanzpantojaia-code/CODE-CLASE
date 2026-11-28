@@ -21,6 +21,11 @@
       #reproducir[hidden] { display: none; }
       #reloj { position: absolute; width: 1px; height: 1px; pointer-events: none; }
     </style>
+    <script>if (new URLSearchParams(location.search).get("modo") === "capa") document.documentElement.classList.add("capa");</script>
+    <style>
+      /* Modo capa (?modo=capa): solo el efecto, para la web montada del constructor. */
+      html.capa .hero, html.capa #reproducir { display: none !important; }
+    </style>
   </head>
   <body>
     <div class="fondo" aria-hidden="true"><canvas></canvas></div>

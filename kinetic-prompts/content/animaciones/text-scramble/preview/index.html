@@ -19,6 +19,13 @@
       #reproducir[hidden] { display: none; }
       #reloj { position: absolute; width: 1px; height: 1px; pointer-events: none; }
     </style>
+    <script>if (new URLSearchParams(location.search).get("modo") === "capa") document.documentElement.classList.add("capa");</script>
+    <style>
+      /* Modo capa (?modo=capa): solo el efecto, para la web montada del constructor. */
+      html.capa, html.capa body { background: transparent !important; }
+      html.capa .eyebrow, html.capa .hero p, html.capa #reproducir { display: none !important; }
+      html.capa main { justify-content: flex-end; padding: 0; }
+    </style>
   </head>
   <body>
     <main class="hero">
@@ -38,11 +45,14 @@
         const HOLD = 2600, GAP = 400; // bucle de 4 s con los valores por defecto
         const h1 = document.getElementById("titular");
         const out = document.getElementById("letras");
+        const capa = document.documentElement.classList.contains("capa");
+        const qs = new URLSearchParams(location.search);
+        if (qs.get("texto")) { const t = qs.get("texto").slice(0, 40).toUpperCase(); h1.setAttribute("aria-label", t); out.textContent = t; }
         const text = h1.getAttribute("aria-label");
         const reloj = document.getElementById("reloj");
         const reduced = matchMedia("(prefers-reduced-motion: reduce)");
         const playButton = document.getElementById("reproducir");
-        const autoplay = new URLSearchParams(location.search).get("loop") !== "0";
+        const autoplay = new URLSearchParams(location.search).get("loop") !== "0" && !document.documentElement.classList.contains("capa");
         let clock = null, total = 0;
 
         /* Letra «aleatoria» que depende solo de la posición y del tic: el mismo instante se ve igual siempre. */
@@ -100,6 +110,7 @@
           playButton.hidden = !reduced.matches;
           if (reduced.matches) { if (clock) clock.cancel(); clock = null; out.textContent = text; }
           else if (autoplay) startClock(true);
+          else if (capa) startClock(false); // en la web montada, se descifra una vez al cargar
         }
         reduced.addEventListener("change", sync);
         apply();

@@ -1,6 +1,6 @@
 # Validación de Persianas desde el centro (page-transition-blinds)
 
-Fecha: 2026-11-26 · Herramienta: scripts/validar-animacion.mjs (Playwright + Chromium) · Estado: **VALIDADO**
+Fecha: 2026-11-28 · Herramienta: scripts/validar-animacion.mjs (Playwright + Chromium) · Estado: **VALIDADO**
 
 | Comprobación | Resultado | Detalle |
 |---|---|---|
@@ -24,10 +24,11 @@ Fecha: 2026-11-26 · Herramienta: scripts/validar-animacion.mjs (Playwright + Ch
 | El prompt tiene las 9 secciones de la plantilla en orden | ✓ |  |
 | Cada {{variable}} existe en params y cada parámetro sale en el prompt | ✓ |  |
 | Vídeo WebM de 4–8 s | ✓ | 5.33 s |
-| Vídeo WebM < 600 KB | ✓ | 336 KB |
-| Vídeo MP4 (Safari) < 600 KB | ✓ | 251 KB |
+| Vídeo WebM < 600 KB | ✓ | 349 KB |
+| Vídeo MP4 (Safari) < 600 KB | ✓ | 253 KB |
 | Póster WebP < 80 KB | ✓ | 18 KB |
 
-Pesos: loop.webm 336 KB · loop.mp4 251 KB · poster.webp 18 KB
+Pesos: loop.webm 349 KB · loop.mp4 253 KB · poster.webp 18 KB
+Calidad de compresión: CRF 38 (WebM) y 27 (MP4).
 
 Comprobado ejecutando la demo en Chromium. No comprobado aquí: Safari y Firefox (pendiente de prueba manual).

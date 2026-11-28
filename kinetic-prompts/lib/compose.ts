@@ -3,6 +3,7 @@
  * Sin fs: se usa en el cliente. Cada prompt.md se incrusta sin su título ni su línea de introducción,
  * con sus «##» bajados a «###» (docs/PLAN.md, «Constructor de webs por partes»).
  */
+import { contrastRatio, MIN_TEXT_CONTRAST } from "./contrast";
 import { type ParamValue, renderPrompt, selectStack, type StackId } from "./prompt-render";
 
 export type BuilderPiece = {
@@ -127,4 +128,38 @@ export function composeWebPrompt({
 /** Valores por defecto de los parámetros de una pieza (lo que copia el constructor en su primera versión). */
 export function paramDefaults(params: { id: string; default: ParamValue }[]): Record<string, ParamValue> {
   return Object.fromEntries(params.map((p) => [p.id, p.default]));
+}
+
+/** Colores de titular que propone el constructor cuando el elegido no se lee sobre el fondo. */
+const HEADLINE_LIGHT = "#f6f3ee"; // kp-permitir-hex: color de contenido de la web del usuario
+const HEADLINE_DARK = "#141311"; // kp-permitir-hex: color de contenido de la web del usuario
+
+export type HeadlineContrast = {
+  ratio: number;
+  ok: boolean;
+  /** El color de titular (claro u oscuro) que mejor se lee sobre el color base del fondo. */
+  suggestion: string;
+  tone: "claro" | "oscuro";
+};
+
+/**
+ * ¿Se lee el titular sobre el fondo? Compara el color del texto de la pieza de Letras (su parámetro
+ * «color») con el color base de la pieza de Fondos (su parámetro «base»), con el mínimo de 4,5:1 que
+ * piden las reglas de convivencia. Es una comprobación sobre el color base: el prompt pide además
+ * revisar el peor momento de la animación. Devuelve null si falta alguno de los dos colores.
+ */
+export function headlineContrast(
+  base: ParamValue | undefined,
+  text: ParamValue | undefined,
+): HeadlineContrast | null {
+  if (typeof base !== "string" || typeof text !== "string") return null;
+  const light = contrastRatio(base, HEADLINE_LIGHT);
+  const dark = contrastRatio(base, HEADLINE_DARK);
+  const ratio = contrastRatio(base, text);
+  return {
+    ratio,
+    ok: ratio >= MIN_TEXT_CONTRAST,
+    suggestion: light >= dark ? HEADLINE_LIGHT : HEADLINE_DARK,
+    tone: light >= dark ? "claro" : "oscuro",
+  };
 }

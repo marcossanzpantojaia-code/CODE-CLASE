@@ -1,6 +1,7 @@
 "use client";
 
-import { Palette } from "lucide-react";
+import { Contrast, Eye, Palette } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 import { ParamControl } from "@/components/catalog/param-control";
@@ -10,9 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { ColorPicker } from "@/components/ui/color-picker";
 import { CopyButton } from "@/components/ui/copy-button";
+import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { APARTADOS } from "@/lib/apartados";
-import { BUILD_ORDER, composeWebPrompt, paramDefaults } from "@/lib/compose";
+import { BUILD_ORDER, composeWebPrompt, headlineContrast, paramDefaults } from "@/lib/compose";
 import { type ParamValue, STACKS, type StackId } from "@/lib/prompt-render";
 
 import { PieceOption } from "./piece-option";
@@ -40,6 +42,22 @@ export function WebBuilder({ items }: { items: GalleryItem[] }) {
   const setValue = (slug: string, id: string, value: ParamValue) =>
     setValues((v) => ({ ...v, [slug]: { ...v[slug], [id]: value } }));
 
+  /** El nombre del negocio también va a los textos de las piezas (nameParam), salvo si ya se cambiaron a mano. */
+  function changeName(next: string) {
+    setValues((v) => {
+      const out = { ...v };
+      for (const item of items) {
+        if (!item.nameParam) continue;
+        const fallback = item.params.find((p) => p.id === item.nameParam)?.default;
+        const current = v[item.slug]?.[item.nameParam];
+        if (current === fallback || current === name.trim())
+          out[item.slug] = { ...v[item.slug], [item.nameParam]: next.trim() || fallback! };
+      }
+      return out;
+    });
+    setName(next);
+  }
+
   // El compilador de React memoiza solo: no hace falta useMemo.
   const chosen = steps
     .map((s) => items.find((i) => i.slug === choice[s.id]))
@@ -56,6 +74,24 @@ export function WebBuilder({ items }: { items: GalleryItem[] }) {
     });
     setBrandApplied(targets.map((t) => t.title));
   }
+
+  // ¿Se lee el titular sobre el fondo? (color de Letras frente al color base de Fondos)
+  const fondoItem = chosen.find((i) => i.category === "fondos");
+  const letrasItem = chosen.find((i) => i.category === "texto");
+  const headline =
+    fondoItem && letrasItem
+      ? headlineContrast(values[fondoItem.slug]?.base, values[letrasItem.slug]?.color)
+      : null;
+
+  // Enlace a la web montada (/crear/vista) con lo elegido, las opciones y el nombre.
+  const assemblyHref = (() => {
+    const key = { fondos: "f", transiciones: "t", objetos: "o", texto: "l" } as Record<string, string>;
+    const qs = new URLSearchParams();
+    for (const item of chosen) if (key[item.category]) qs.set(key[item.category]!, item.slug);
+    if (name.trim()) qs.set("n", name.trim());
+    qs.set("v", JSON.stringify(Object.fromEntries(chosen.map((i) => [i.slug, values[i.slug] ?? {}]))));
+    return `/crear/vista?${qs.toString()}`;
+  })();
 
   const prompt = composeWebPrompt({
     stack,
@@ -125,6 +161,32 @@ export function WebBuilder({ items }: { items: GalleryItem[] }) {
                 meta="Sin pieza de este apartado"
               />
             </div>
+            {step.id === "texto" && headline && !headline.ok && fondoItem && letrasItem ? (
+              <div
+                role="status"
+                className="flex flex-col gap-3 rounded-card border border-border bg-surface p-4 sm:flex-row sm:items-center sm:justify-between"
+                data-aviso-contraste
+              >
+                <p className="flex items-start gap-3 text-14">
+                  <Icon icon={Contrast} className="shrink-0 text-warning" />
+                  <span>
+                    El titular casi no se lee sobre «{fondoItem.title}»: contraste de{" "}
+                    {headline.ratio.toLocaleString("es-ES", {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}
+                    :1 con su color base, y hace falta 4,5:1.
+                  </span>
+                </p>
+                <Button
+                  variant="secundario"
+                  className="shrink-0"
+                  onClick={() => setValue(letrasItem.slug, "color", headline.suggestion)}
+                >
+                  Usar texto {headline.tone}
+                </Button>
+              </div>
+            ) : null}
             {(() => {
               const item = items.find((i) => i.slug === choice[step.id]);
               if (!item || item.params.length === 0) return null;
@@ -205,7 +267,7 @@ export function WebBuilder({ items }: { items: GalleryItem[] }) {
           <Input
             label="Nombre del negocio (opcional)"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => changeName(e.target.value)}
             placeholder="Café Norte"
           />
           <Input
@@ -237,6 +299,11 @@ export function WebBuilder({ items }: { items: GalleryItem[] }) {
           </div>
         </div>
         {copy}
+        <Button asChild variant="secundario" icon={Eye}>
+          <Link href={assemblyHref} data-ver-montada>
+            Ver mi web montada
+          </Link>
+        </Button>
         <p className="text-12 text-text-muted">
           {chosen.length} {chosen.length === 1 ? "pieza" : "piezas"} con sus reglas para convivir: capas, una
           sola transición de página, un solo fondo y movimiento reducido para todo.

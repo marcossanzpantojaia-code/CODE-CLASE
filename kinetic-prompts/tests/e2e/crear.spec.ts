@@ -79,6 +79,66 @@ test.describe("/crear", () => {
     );
   });
 
+  test("«Ver mi web montada» junta las piezas en una página y la transición cambia de página", async ({
+    page,
+  }) => {
+    const messages = watchConsole(page);
+    await page.goto("/crear");
+    await page.getByLabel("Nombre del negocio (opcional)").fill("Café Norte");
+    await page.locator("[data-ver-montada]").click();
+    await expect(page).toHaveURL(/\/crear\/vista\?/);
+    await expect(page.getByRole("navigation", { name: "Web de ejemplo" })).toContainText("Café Norte");
+    // Fondo, titular, capa de transición y sección del objeto.
+    await expect(page.locator("iframe[data-capa]")).toHaveCount(4);
+    // El titular recibe el nombre del negocio.
+    // Se busca la capa del titular (lleva el texto); la página anterior puede dejar otros marcos un instante.
+    const isLetras = (url: string) => url.includes("text-scramble/preview") && url.includes("texto=");
+    await expect.poll(() => page.frames().some((f) => isLetras(f.url()))).toBe(true);
+    const letras = page.frames().find((f) => isLetras(f.url()))!;
+    await expect
+      .poll(() => letras.evaluate(() => document.querySelector("h1")?.getAttribute("aria-label")))
+      .toBe("CAFÉ NORTE");
+    // Las capas se ven a través: si el esquema de color del iframe no coincide con el de su documento
+    // (la app es dark y las demos no declaran ninguno), el navegador lo pinta opaco y tapa la página.
+    const schemes = await page
+      .locator("iframe[data-capa]")
+      .evaluateAll((frames) => frames.map((f) => getComputedStyle(f).colorScheme));
+    expect(schemes.every((s) => s === "light")).toBe(true);
+    await expect
+      .poll(() => letras.evaluate(() => getComputedStyle(document.documentElement).colorScheme))
+      .toBe("normal");
+    // La transición tapa la página, avisa y se cambia de página.
+    await page.getByRole("button", { name: "Proyectos" }).click();
+    await expect(page.locator('[data-pagina="proyectos"]')).toBeVisible({ timeout: 3000 });
+    expect(messages).toEqual([]);
+  });
+
+  test("avisa si el titular no se lee sobre el fondo y lo arregla con un clic", async ({ page }) => {
+    await page.goto("/crear");
+    const aviso = page.locator('[data-paso="texto"] ~ [data-aviso-contraste]');
+    await expect(aviso).toHaveCount(0);
+    // El titular por líneas es oscuro y todos los fondos tienen base oscura.
+    await page.locator('[data-paso="texto"]').getByText("Titular que emerge por líneas").click();
+    await expect(aviso).toBeVisible();
+    await expect(aviso).toContainText("4,5:1");
+    await aviso.getByRole("button", { name: "Usar texto claro" }).click();
+    await expect(aviso).toHaveCount(0);
+  });
+
+  test("el nombre del negocio va al rótulo de la cortina, salvo si se cambia a mano", async ({ page }) => {
+    await page.goto("/crear");
+    await page.locator('[data-paso="transiciones"]').getByText("Cortina con borde curvo").click();
+    const opciones = page.locator('[data-opciones="transiciones"]');
+    await opciones.locator("summary").click();
+    const rotulo = opciones.getByLabel("Texto en la cortina");
+    await expect(rotulo).toHaveValue("alba");
+    await page.getByLabel("Nombre del negocio (opcional)").fill("Café Norte");
+    await expect(rotulo).toHaveValue("Café Norte");
+    await rotulo.fill("Hola");
+    await page.getByLabel("Nombre del negocio (opcional)").fill("Café Sur");
+    await expect(rotulo).toHaveValue("Hola");
+  });
+
   test("las piezas se eligen con el teclado (grupo de radios)", async ({ page, isMobile }) => {
     test.skip(isMobile, "El teclado se prueba en escritorio.");
     await page.goto("/crear");

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { composeWebPrompt, embedPiece } from "./compose";
+import { composeWebPrompt, embedPiece, headlineContrast } from "./compose";
 import { CATEGORIES, defaultValues, getPublishedAnimations } from "./content";
 
 const items = getPublishedAnimations();
@@ -40,5 +40,32 @@ describe("composeWebPrompt", () => {
     const text = composeWebPrompt({ pieces, stack: "nextjs" });
     expect(text).toContain("usa el nombre y el contenido que ya tenga el proyecto");
     expect(text).not.toContain("Astro o HTML de varias páginas");
+  });
+});
+
+describe("headlineContrast", () => {
+  test("avisa del titular oscuro sobre un fondo oscuro y propone uno claro que sí se lee", () => {
+    const check = headlineContrast("#071a1f", "#1c1b19")!; // kp-permitir-hex: colores de las demos
+    expect(check.ok).toBe(false);
+    expect(check.tone).toBe("claro");
+    expect(headlineContrast("#071a1f", check.suggestion)!.ok).toBe(true); // kp-permitir-hex
+  });
+
+  test("da por bueno un titular claro sobre un fondo oscuro y no comprueba si falta un color", () => {
+    expect(headlineContrast("#0e1417", "#e9f5d0")!.ok).toBe(true); // kp-permitir-hex
+    expect(headlineContrast(undefined, "#e9f5d0")).toBeNull(); // kp-permitir-hex
+  });
+
+  test("todos los fondos tienen color base y todas las letras color de texto (la comprobación depende de ello)", () => {
+    for (const item of items.filter((i) => i.category === "fondos"))
+      expect(
+        item.params.some((p) => p.id === "base" && p.type === "color"),
+        item.slug,
+      ).toBe(true);
+    for (const item of items.filter((i) => i.category === "texto"))
+      expect(
+        item.params.some((p) => p.id === "color" && p.type === "color"),
+        item.slug,
+      ).toBe(true);
   });
 });

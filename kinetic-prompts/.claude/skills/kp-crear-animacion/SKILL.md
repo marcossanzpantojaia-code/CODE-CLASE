@@ -58,6 +58,15 @@ content/animaciones/<slug>/
   - `{ "type": "kp:params", "params": { "<id>": <valor>, … } }` aplica los valores.
   - `{ "type": "kp:replay" }` reinicia la animación desde el principio.
   - Valida `event.data.type` y el tipo de cada valor antes de usarlo.
+- **Modo capa (`?modo=capa`)**, para la web montada del constructor (`/crear/vista`). Un script en
+  `<head>` añade `html.capa` antes de pintar, y con él la demo enseña solo su efecto, con fondo
+  transparente y sin declarar `color-scheme` (el iframe de la app lo empareja para que se vea a través):
+  - Fondos: solo el fondo, a pantalla completa.
+  - Letras: solo el titular, sin márgenes propios, pegado abajo; el texto llega en `?texto=` y se anima
+    una vez al cargar.
+  - Transiciones de página: solo la capa que tapa, sin bucle. `kp:replay` lanza una transición y la
+    demo envía `{ "type": "kp:covered" }` a la página madre en cuanto la página está tapada (también
+    con movimiento reducido), que es cuando la web montada cambia de página.
 - Con `prefers-reduced-motion: reduce`, queda en pausa en un fotograma representativo
   y solo se reproduce al pulsar «Reproducir».
 - Anima solo `transform` y `opacity`. Limpia listeners, timelines y `requestAnimationFrame`.
@@ -74,6 +83,8 @@ Sigue el modelo de datos de animación de `docs/PLAN.md`:
   último, con `statusReason`; ver «Estado y `statusReason`» en `docs/PLAN.md`).
 - `knowledgeRefs` con la ruta de la ficha, `usedIn` con los slugs de webs que la usan.
 - `brandParam`: el id del parámetro de color que toma el color de marca en el constructor (el color principal de la pieza).
+- `nameParam` (opcional): el id del parámetro de texto que toma el nombre del negocio en el constructor (p. ej. el rótulo de la cortina).
+- Convenciones que usa el constructor: las piezas de Fondos tienen un color `base` y las de Letras un color `color` (el del texto); con ellos avisa si el titular no se lee sobre el fondo.
 - **Siempre al menos un parámetro de color** (`color` o `palette`): todo efecto se puede cambiar de
   color (regla del 2026-11-26; lo comprueba `lib/content.test.ts`).
 - `params`: cada uno con `id`, `label`, `type` (`range`, `color`, `select`, `text`,

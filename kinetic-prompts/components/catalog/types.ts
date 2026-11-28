@@ -15,6 +15,8 @@ export type GalleryItem = {
   promptTemplate: string;
   /** Parámetro de color que toma el color de marca en el constructor. */
   brandParam?: string;
+  /** Parámetro de texto que toma el nombre del negocio en el constructor. */
+  nameParam?: string;
   /** Consejos de la biblioteca en lenguaje llano. */
   tips: string[];
   /** Títulos de las fichas de la biblioteca en las que se basa. */

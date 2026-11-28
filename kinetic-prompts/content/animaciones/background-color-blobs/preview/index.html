@@ -36,6 +36,11 @@
       #reproducir { position: fixed; right: 12px; bottom: 12px; z-index: 20; font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 0; background: #f7f3ec; color: #10181a; cursor: pointer; }
       #reproducir[hidden] { display: none; }
     </style>
+    <script>if (new URLSearchParams(location.search).get("modo") === "capa") document.documentElement.classList.add("capa");</script>
+    <style>
+      /* Modo capa (?modo=capa): solo el efecto, para la web montada del constructor. */
+      html.capa .hero, html.capa #reproducir { display: none !important; }
+    </style>
   </head>
   <body>
     <div class="fondo" aria-hidden="true">

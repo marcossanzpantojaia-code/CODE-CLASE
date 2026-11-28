@@ -24,6 +24,7 @@ export function toGalleryItem(item: AnimationItem): GalleryItem {
     promptTemplate: item.promptTemplate,
     tips: item.tips,
     brandParam: item.brandParam,
+    nameParam: item.nameParam,
     sources: knowledgeTitles(item.knowledgeRefs),
     demo: contentUrl(item, "preview/index.html"),
     poster: item.media.poster ? contentUrl(item, item.media.poster) : undefined,

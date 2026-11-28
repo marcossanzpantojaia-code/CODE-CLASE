@@ -64,6 +64,12 @@
       }
       .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     </style>
+    <script>if (new URLSearchParams(location.search).get("modo") === "capa") document.documentElement.classList.add("capa");</script>
+    <style>
+      /* Modo capa (?modo=capa): solo el efecto, para la web montada del constructor. */
+      html.capa, html.capa body { background: transparent !important; }
+      html.capa .page, html.capa #reproducir { display: none !important; }
+    </style>
   </head>
   <body>
     <section class="page" id="inicio" aria-labelledby="t-inicio">
@@ -112,7 +118,8 @@
         const playButton = document.getElementById("reproducir");
         const aviso = document.getElementById("aviso");
         const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-        const autoplay = new URLSearchParams(location.search).get("loop") !== "0";
+        const capa = document.documentElement.classList.contains("capa");
+        const autoplay = new URLSearchParams(location.search).get("loop") !== "0" && !capa;
 
         let current = "inicio";
         let running = false;
@@ -184,11 +191,13 @@
           try {
             if (reduced.matches) {
               /* Movimiento reducido: fundido corto, sin persianas. */
+              if (capa) window.parent.postMessage({ type: "kp:covered" }, "*");
               show(to, fromUser);
               await pages[to].animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: "linear" }).finished;
             } else {
               await animateStrips(0, 1); // cubrir
               if (id !== generation) return;
+              if (capa) window.parent.postMessage({ type: "kp:covered" }, "*"); // la web montada cambia de página ahora
               show(to, fromUser); // cambiar
               await animateStrips(1, 0); // descubrir
             }
@@ -237,7 +246,7 @@
           const data = event.data;
           if (!data || typeof data !== "object" || typeof data.type !== "string") return;
           if (data.type === "kp:params") applyParams(data.params);
-          if (data.type === "kp:replay") replay();
+          if (data.type === "kp:replay") { if (capa) go(current === "inicio" ? "proyectos" : "inicio"); else replay(); }
         });
 
         /* Los enlaces son reales: sin JavaScript también llevan a su sección. */
