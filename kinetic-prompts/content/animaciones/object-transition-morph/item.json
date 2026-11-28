@@ -1,0 +1,81 @@
+{
+  "section": "animaciones",
+  "slug": "object-transition-morph",
+  "title": "Forma que se transforma",
+  "summary": "Una forma grande pasa de círculo a flor, a losa y a sol sin retorcerse, con un contorno que la sigue; al elegir una colección, se transforma en ella.",
+  "category": "objetos",
+  "tech": [
+    "JavaScript",
+    "SVG"
+  ],
+  "difficulty": 1,
+  "performance": "ligero",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/transitions/MORPH-001-morphsvg.md",
+    "knowledge/accessibility/A11Y-002-wcag-movimiento-y-contenido-animado.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md",
+    "knowledge/ux/UX-001-duracion-y-easing.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "color",
+      "label": "Color de la forma",
+      "type": "color",
+      "default": "#c4532d"
+    },
+    {
+      "id": "background",
+      "label": "Color de fondo",
+      "type": "color",
+      "default": "#f1e7dc"
+    },
+    {
+      "id": "duration",
+      "label": "Duración de cada cambio",
+      "type": "range",
+      "min": 0.4,
+      "max": 1.6,
+      "step": 0.1,
+      "default": 0.8,
+      "unit": "s"
+    },
+    {
+      "id": "hold",
+      "label": "Pausa en cada forma",
+      "type": "range",
+      "min": 0.3,
+      "max": 2,
+      "step": 0.1,
+      "default": 0.8,
+      "unit": "s"
+    },
+    {
+      "id": "rotate",
+      "label": "Giro en cada cambio",
+      "type": "range",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "default": 45,
+      "unit": "°"
+    }
+  ],
+  "brandParam": "color",
+  "tips": [
+    "Para que un morph no se retuerza, las dos formas tienen que tener el mismo número de puntos y en el mismo orden. Aquí todas se dibujan con 120 puntos en los mismos ángulos, así que mezclarlas es mezclar sus radios.",
+    "Si tus formas vienen de un programa de diseño (un logo, un icono), usa MorphSVG de GSAP, que es gratuito: iguala los puntos por ti y, si el cambio se retuerce, se corrige con shapeIndex.",
+    "Con formas complejas, el primer cálculo del morph cuesta: precalcúlalo una vez o simplifica el SVG. Si va a tirones todo el rato, el problema es el pintado del navegador, no el JavaScript.",
+    "El dibujo es decorativo: el nombre de cada forma lo dicen los botones, no el SVG (aria-hidden).",
+    "Un bucle que dura más de 5 segundos junto a otro contenido necesita un botón para pausarlo (WCAG 2.2.2). Pausar solo con el ratón encima no cuenta.",
+    "Un contorno que llega un poco después que la forma da sensación de material sin añadir más figuras.",
+    "En el bucle el cambio puede ir despacio porque es ambiente; cuando responde a un clic, que no pase de medio segundo (aquí, 0,45 s): más lento ya se nota."
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-28"
+}

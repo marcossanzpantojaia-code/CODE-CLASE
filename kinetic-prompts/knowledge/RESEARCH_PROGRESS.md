@@ -896,3 +896,4 @@ IMG-001 (imágenes responsive), CSS-004 (container queries), TYPE-001 (tipograf�
 - **2026-11-28 · FONDO-003** (`fondos/`) — Olas de luz con un shader WebGL puro. Fuentes: MDN «WebGL best practices» y «Adding 2D content to a WebGL context» (leídos el 2026-11-28). IMPLEMENTADO por la demo `background-light-waves`. Índice y manifiesto: 165 fichas.
 | 2026-11-28 | animaciones | text-line-reveal | TXT-002 | VALIDADO (Chromium) | WebM 72 KB · MP4 74 KB | 19 KB | Lector de pantalla real, Safari y Firefox sin probar |
 | 2026-11-28 | animaciones | text-scramble | TXT-003 | VALIDADO (Chromium) | WebM 60 KB · MP4 54 KB | 14 KB | Lector de pantalla real, Safari y Firefox sin probar |
+| 2026-11-28 | animaciones | object-transition-morph | MORPH-001 (+ A11Y-002, A11Y-001, UX-001) | VALIDADO (Chromium) | WebM 142 KB · MP4 197 KB | 19 KB | Morph por muestreo polar propio (sin MorphSVG); 0 cruces en 401 fotogramas; Safari y Firefox sin probar |
