@@ -58,7 +58,7 @@ export default function Home() {
               </Link>
             </Button>
             <Button asChild size="lg" variant="secundario">
-              <a href="#como-funciona">Cómo funciona</a>
+              <Link href="/crear">Crear mi web por partes</Link>
             </Button>
           </div>
           <div className="flex flex-wrap gap-8 pt-4">
@@ -124,8 +124,8 @@ export default function Home() {
               Apartados
             </h2>
             <p className="text-14 text-text-muted">
-              Las piezas con las que se monta una web. Pronto podrás combinarlas en el constructor y copiar el
-              prompt de tu web entera.
+              Las piezas con las que se monta una web. Combínalas en el constructor y copia el prompt de tu
+              web entera.
             </p>
           </div>
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

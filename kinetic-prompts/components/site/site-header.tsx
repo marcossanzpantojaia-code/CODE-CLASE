@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/cn";
 
 const link =
-  "rounded-control px-3 py-2 text-14 font-medium outline-none transition-colors duration-(--dur-hover) ease-kp kp-hover:text-text kp-focus:outline-(length:--focus-w) kp-focus:outline-offset-2 kp-focus:outline-accent kp-focus:outline-solid";
+  "rounded-control px-3 py-2 text-14 font-medium whitespace-nowrap outline-none transition-colors duration-(--dur-hover) ease-kp kp-hover:text-text kp-focus:outline-(length:--focus-w) kp-focus:outline-offset-2 kp-focus:outline-accent kp-focus:outline-solid";
 
 /** Cabecera fija de 64 px. Al hacer scroll se vuelve translúcida con desenfoque de 12 px (única translucidez permitida). */
 export function SiteHeader({ count }: { count: number }) {
@@ -37,7 +37,8 @@ export function SiteHeader({ count }: { count: number }) {
           >
             K
           </span>
-          Kinetic Prompts
+          {/* En pantallas estrechas solo la «K»: el nombre sigue ahí para los lectores de pantalla. */}
+          <span className="max-sm:sr-only">Kinetic Prompts</span>
         </Link>
         <nav aria-label="Principal" className="flex items-center gap-1">
           <Link
@@ -46,6 +47,13 @@ export function SiteHeader({ count }: { count: number }) {
             className={cn(link, pathname === "/animaciones" ? "bg-surface-2 text-text" : "text-text-muted")}
           >
             Animaciones <span className="font-mono text-12 text-text-muted">{count}</span>
+          </Link>
+          <Link
+            href="/crear"
+            aria-current={pathname === "/crear" ? "page" : undefined}
+            className={cn(link, pathname === "/crear" ? "bg-surface-2 text-text" : "text-text-muted")}
+          >
+            Crear web
           </Link>
         </nav>
       </div>
