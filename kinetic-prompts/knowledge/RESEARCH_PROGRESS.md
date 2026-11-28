@@ -885,3 +885,8 @@ IMG-001 (imágenes responsive), CSS-004 (container queries), TYPE-001 (tipograf�
 | 2026-11-26 | animaciones | page-transition-card-expand | FLIP-001 (revalidación: color del detalle) | VALIDADO (Chromium) | WebM 89 KB · MP4 92 KB | 3 KB | Texto blanco o negro según el contraste |
 | 2026-11-26 | animaciones | object-transition-pour | REC-001 (+ CONT-001, A11Y-001) | VALIDADO (Chromium) | WebM 146 KB · MP4 127 KB | 13 KB | Reversibilidad 0,000 %; objetos SVG procedurales (sin C1/C3); Safari y Firefox sin probar |
 | 2026-11-28 | animaciones | object-transition-pour | REC-001 + AIIMG-001 (revalidación con imágenes reales de IA) | VALIDADO (Chromium) | WebM 179 KB · MP4 296 KB | 37 KB | Recorte sin halo; C3 humano pendiente; Safari y Firefox sin probar |
+| 2026-11-28 | animaciones | background-color-blobs | FONDO-001 (nueva) (+ A11Y-001, UX-001) | VALIDADO (Chromium) | WebM 159 KB · MP4 458 KB | 20 KB | Bucle cerrado al fotograma; contraste en el peor punto sin medir; Safari y Firefox sin probar |
+
+### Fichas nuevas añadidas desde Kinetic Prompts (permiso del usuario, 2026-11-26)
+
+- **2026-11-28 · FONDO-001** (`fondos/`, nueva categoría) — Fondo de manchas de color en movimiento solo con CSS. Fuentes: MDN radial-gradient, MDN prefers-reduced-motion, web.dev «Animations guide» (leídos el 2026-11-28). Estado IMPLEMENTADO por la demo `background-color-blobs`. Índice y manifiesto actualizados (163 fichas; `library_check.py --write-manifest`).

@@ -1,0 +1,78 @@
+{
+  "section": "animaciones",
+  "slug": "background-color-blobs",
+  "title": "Manchas de color en movimiento",
+  "summary": "Tres manchas de color grandes y difusas flotan despacio detrás del contenido y se mezclan entre sí. Solo CSS.",
+  "category": "fondos",
+  "tech": [
+    "CSS"
+  ],
+  "difficulty": 1,
+  "performance": "ligero",
+  "status": "VALIDADO",
+  "knowledgeRefs": [
+    "knowledge/fondos/FONDO-001-manchas-de-color-en-movimiento-css.md",
+    "knowledge/accessibility/A11Y-001-reduced-motion.md",
+    "knowledge/ux/UX-001-duracion-y-easing.md"
+  ],
+  "usedIn": [],
+  "params": [
+    {
+      "id": "color1",
+      "label": "Color 1",
+      "type": "color",
+      "default": "#ff6f59"
+    },
+    {
+      "id": "color2",
+      "label": "Color 2",
+      "type": "color",
+      "default": "#1fb5a6"
+    },
+    {
+      "id": "color3",
+      "label": "Color 3",
+      "type": "color",
+      "default": "#6b3fa0"
+    },
+    {
+      "id": "base",
+      "label": "Color de fondo",
+      "type": "color",
+      "default": "#10181a"
+    },
+    {
+      "id": "duration",
+      "label": "Duración de cada recorrido",
+      "type": "range",
+      "min": 3,
+      "max": 15,
+      "step": 0.5,
+      "default": 3.5,
+      "unit": "s"
+    },
+    {
+      "id": "size",
+      "label": "Tamaño de las manchas",
+      "type": "range",
+      "min": 40,
+      "max": 90,
+      "step": 5,
+      "default": 65,
+      "unit": "% de la pantalla"
+    }
+  ],
+  "tips": [
+    "El difuminado va en el degradado (radial-gradient hasta transparent): nada de filter: blur() en capas que se mueven, que obliga a repintar en cada fotograma.",
+    "Mueve las manchas solo con transform; así el navegador lo resuelve en el compositor, sin recalcular la página.",
+    "Usa la misma duración para todas y retardos negativos distintos: no se mueven al unísono y el bucle sigue cerrando.",
+    "Comprueba el contraste del texto en el peor momento, cuando la mancha más clara pasa por detrás.",
+    "Es decorativo: aria-hidden, pointer-events: none y, con movimiento reducido, quieto."
+  ],
+  "media": {
+    "video": "media/loop.webm",
+    "videoMp4": "media/loop.mp4",
+    "poster": "media/poster.webp"
+  },
+  "createdAt": "2026-11-28"
+}

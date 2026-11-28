@@ -241,14 +241,28 @@ try {
           document.getAnimations().flatMap((a) => a.effect.getKeyframes().flatMap((k) => Object.keys(k))),
         ),
       ]);
-      const onlyFade = props.every((p) =>
-        ["opacity", "offset", "easing", "composite", "computedOffset"].includes(p),
-      );
-      record(
-        "Con movimiento reducido, «Reproducir» usa un fundido",
-        props.length > 0 && onlyFade,
-        props.join(", ") || "sin animación",
-      );
+      if (config.reducedPlay === "movimiento") {
+        // Fondos: con movimiento reducido quedan quietos; «Reproducir» los pone en marcha si la persona quiere.
+        const ok =
+          props.length > 0 &&
+          props.every((p) =>
+            ["transform", "opacity", "offset", "easing", "composite", "computedOffset"].includes(p),
+          );
+        record(
+          "Con movimiento reducido, «Reproducir» pone el fondo en marcha (solo transform y opacity)",
+          ok,
+          props.join(", ") || "sin animación",
+        );
+      } else {
+        const onlyFade = props.every((p) =>
+          ["opacity", "offset", "easing", "composite", "computedOffset"].includes(p),
+        );
+        record(
+          "Con movimiento reducido, «Reproducir» usa un fundido",
+          props.length > 0 && onlyFade,
+          props.join(", ") || "sin animación",
+        );
+      }
     }
     await page.screenshot({ path: join(capturesDir, "movimiento-reducido.png") });
     await context.close();

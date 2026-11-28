@@ -792,6 +792,7 @@ Criterios de cierre:
 
 **Pendientes apuntados por el usuario (2026-11-26):**
 
+- **Fondos, en marcha (2026-11-28).** Primera pieza: «Manchas de color en movimiento» (básico, solo CSS, ficha nueva FONDO-001). Siguen: un fondo intermedio (partículas ligeras o ruido en canvas 2D) y uno avanzado (shader en WebGL, con TSL-003 o GL-004). Cada uno necesita su ficha nueva.
 - **Permiso para ampliar la biblioteca (2026-11-26).** Se pueden añadir fichas nuevas a `knowledge/` (con la plantilla `_templates/FICHA_TECNICA.md`, fuentes conservadas y estado INVESTIGADO o PROPUESTO) para Fondos, Letras y transiciones que no tengan ficha. Las fichas existentes no se modifican.
 
 - **Transiciones de objetos.** Es un apartado propio (`objetos`), distinto de las transiciones de página: un objeto que viaja, se transforma o une dos secciones. La biblioteca tiene buen material, cuatro de ellas en estado IMPLEMENTADO:

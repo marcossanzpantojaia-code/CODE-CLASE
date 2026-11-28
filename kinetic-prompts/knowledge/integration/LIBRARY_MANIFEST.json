@@ -3,7 +3,7 @@
  "generado_por": "integration/tools/library_check.py",
  "nota": "Índice legible por máquina para recuperación selectiva. La fuente de verdad son las fichas.",
  "formato": "una ficha por línea como lista en el orden de columnas; títulos abreviados a 60 caracteres; título y evidencia completos en la cabecera de cada ficha",
- "total_fichas": 162,
+ "total_fichas": 163,
  "columnas": ["id", "ruta", "titulo", "categoria", "estado", "perfil", "ultima_revision"],
  "fichas": [
   ["A11Y-001", "accessibility/A11Y-001-reduced-motion.md", "Movimiento reducido (prefers-reduced-motion) en GSAP, Lenis…", "accessibility", "INVESTIGADO", "ambos (obligatorio)", "2026-10-27"],
@@ -60,6 +60,7 @@
   ["EVAL-001", "testing/EVAL-001-criterios-fidelidad-visual-movimiento-calidad-creativa.md", "Tres criterios obligatorios para aprobar una web como \"cine…", "testing", "PROPUESTO", "cinematografico (C3 también en el héroe de webs comerciales premium)", "2026-11-02"],
   ["FLIP-001", "transitions/FLIP-001-flip-transiciones-layout.md", "Transiciones de layout con GSAP Flip (getState → cambio de…", "transitions", "INVESTIGADO", "ambos", "2026-10-26"],
   ["FLIP-002", "transitions/FLIP-002-galeria-bento-flip-scrub.md", "Galería bento que se amplía con el scroll (Flip.to + Scroll…", "transitions", "INVESTIGADO", "ambos", "2026-10-26"],
+  ["FONDO-001", "fondos/FONDO-001-manchas-de-color-en-movimiento-css.md", "Fondo de manchas de color en movimiento solo con CSS — degr…", "fondos", "IMPLEMENTADO", "ambos", "2026-11-28"],
   ["FOOT-001", "scrolltrigger/FOOT-001-footer-revelado-sticky.md", "Footer que se revela bajo el contenido (clip-path + sticky…", "scrolltrigger", "INVESTIGADO", "ambos (muy útil en comercial)", "2026-10-26"],
   ["FORM-001", "frontend/FORM-001-formularios-validacion.md", "Formularios y validación accesible (HTML nativo, :user-inva…", "frontend", "INVESTIGADO", "comercial (conversión)", "2026-10-27"],
   ["GL-001", "threejs/GL-001-planos-webgl-sincronizados-dom.md", "Planos WebGL sincronizados con imágenes del DOM (1 unidad =…", "threejs", "INVESTIGADO", "cinematografico", "2026-10-26"],

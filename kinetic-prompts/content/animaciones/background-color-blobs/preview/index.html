@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manchas de color en movimiento · demo</title>
+    <style>
+      /* Demo de Kinetic Prompts: identidad propia, no usa los tokens de la app. */
+      :root {
+        --base: #10181a; --c1: #ff6f59; --c2: #1fb5a6; --c3: #6b3fa0;
+        --ida: 3.5s; --tam: 65vmax;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; overflow: hidden; background: var(--base); color: #f7f3ec; }
+      /* Fondo: manchas de degradado radial que solo se mueven con transform (FONDO-001). */
+      .fondo { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+      .mancha {
+        position: absolute; width: var(--tam); aspect-ratio: 1; border-radius: 50%;
+        background: radial-gradient(circle at center, var(--c) 0%, transparent 70%);
+        opacity: 0.75; will-change: transform;
+        animation: deriva var(--ida) ease-in-out infinite alternate;
+      }
+      .m1 { --c: var(--c1); left: -18vmax; top: -22vmax; --dx: 38vw; --dy: 18vh; --s: 1.15; }
+      .m2 { --c: var(--c2); right: -20vmax; top: 10vh; --dx: -30vw; --dy: 22vh; --s: 0.9; animation-delay: calc(var(--ida) * -0.5); }
+      .m3 { --c: var(--c3); left: 20vw; bottom: -30vmax; --dx: 18vw; --dy: -26vh; --s: 1.2; animation-delay: calc(var(--ida) * -1); }
+      @keyframes deriva { from { transform: none; } to { transform: translate(var(--dx), var(--dy)) scale(var(--s)); } }
+      @media (prefers-reduced-motion: reduce) {
+        .mancha { animation: none; }
+        .fondo.reproducir .mancha { animation: deriva var(--ida) ease-in-out infinite alternate; }
+      }
+      .hero { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; gap: clamp(10px, 2vw, 22px); padding: clamp(16px, 6vw, 96px); }
+      .eyebrow { margin: 0; font-size: clamp(11px, 1.4vw, 15px); letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; }
+      h1 { margin: 0; font-size: clamp(34px, 8.5vw, 128px); line-height: 0.92; letter-spacing: -0.05em; font-weight: 800; max-width: 12ch; }
+      .hero p { margin: 0; max-width: 42ch; font-size: clamp(13px, 1.7vw, 19px); line-height: 1.5; opacity: 0.9; }
+      #reproducir { position: fixed; right: 12px; bottom: 12px; z-index: 20; font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 0; background: #f7f3ec; color: #10181a; cursor: pointer; }
+      #reproducir[hidden] { display: none; }
+    </style>
+  </head>
+  <body>
+    <div class="fondo" aria-hidden="true">
+      <div class="mancha m1"></div>
+      <div class="mancha m2"></div>
+      <div class="mancha m3"></div>
+    </div>
+    <main class="hero">
+      <p class="eyebrow">Estudio Marea · producto digital</p>
+      <h1>Ideas que se mueven</h1>
+      <p>Diseñamos y construimos productos digitales con calma, oficio y mucho color.</p>
+    </main>
+    <button id="reproducir" type="button" hidden>Reproducir</button>
+    <script>
+      (() => {
+        "use strict";
+        const root = document.documentElement;
+        const fondo = document.querySelector(".fondo");
+        const params = { color1: "#ff6f59", color2: "#1fb5a6", color3: "#6b3fa0", base: "#10181a", duration: 3.5, size: 65 };
+        const LIMITS = { duration: [3, 15], size: [40, 90] };
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+        const playButton = document.getElementById("reproducir");
+
+        function apply() {
+          root.style.setProperty("--c1", params.color1);
+          root.style.setProperty("--c2", params.color2);
+          root.style.setProperty("--c3", params.color3);
+          root.style.setProperty("--base", params.base);
+          root.style.setProperty("--ida", `${params.duration}s`);
+          root.style.setProperty("--tam", `${params.size}vmax`);
+        }
+
+        addEventListener("message", (event) => {
+          const data = event.data;
+          if (!data || typeof data !== "object" || typeof data.type !== "string") return;
+          if (data.type === "kp:params" && data.params && typeof data.params === "object") {
+            for (const key of ["color1", "color2", "color3", "base"]) {
+              const v = data.params[key];
+              if (typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v)) params[key] = v;
+            }
+            for (const key of ["duration", "size"]) {
+              const v = data.params[key];
+              if (typeof v === "number" && Number.isFinite(v)) params[key] = Math.min(LIMITS[key][1], Math.max(LIMITS[key][0], v));
+            }
+            apply();
+          }
+          if (data.type === "kp:replay") document.getAnimations().forEach((a) => { a.currentTime = 0; a.play(); });
+        });
+
+        /* Con movimiento reducido el fondo queda quieto; «Reproducir» lo pone en marcha si la persona quiere. */
+        playButton.addEventListener("click", () => {
+          const on = fondo.classList.toggle("reproducir");
+          playButton.textContent = on ? "Pausar" : "Reproducir";
+        });
+        const sync = () => (playButton.hidden = !reduced.matches);
+        reduced.addEventListener("change", sync);
+        apply();
+        sync();
+      })();
+    </script>
+  </body>
+</html>
